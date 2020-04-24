@@ -4,7 +4,7 @@ export default function App() {
   return (
     <>
       <h1>당근마켓</h1>
-      <h2>testing...</h2>
+      <h2>testing</h2>
     </>
   );
 }
