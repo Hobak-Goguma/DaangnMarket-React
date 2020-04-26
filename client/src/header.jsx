@@ -2,15 +2,18 @@ import React from 'react';
 import styled from 'styled-components';
 const Header = () =>{
     const Headers = styled.header`
+        width:100%;
         box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.1);
-        
+        position:fixed;
+        background-color: #fff;
+        z-index:100;
         .container{
             position: relative;
             width: 980px;
             margin : 0 auto;
             img{
                 display:inline-block;
-                margin-bottom:15px;
+                margin-top:12px;
                 padding : 10px 0;
                 width: 132px;
             }
@@ -40,6 +43,7 @@ const Header = () =>{
                     img{
                         padding : 0;
                         width: 26px;
+                        margin-top:0px;
                     }
                 }
             }
