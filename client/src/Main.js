@@ -136,21 +136,21 @@ const Main = () =>{
         })
 
 
-    return(
+  return (
     <Mains>
-        <div className="container">
-            <div className="title" key="0">    
-                <p>우리 동네 중고 직거래 마켓</p>
-                <p>동네 주민들과 가깝고 따뜻한 거래를 지금 경험해보세요.</p>
-            </div>
-            <ul>
-                <li className="keyword">오늘의 인기 검색어</li>
-                {Ranking}
-            </ul>
-            <img src="./img/mainpageBgc.png" alt="거래화면"/>
+      <div className="container">
+        <div className="title" key="0">
+          <p>우리 동네 중고 직거래 마켓</p>
+          <p>동네 주민들과 가깝고 따뜻한 거래를 지금 경험해보세요.</p>
         </div>
-    </Mains>);
-}
-
+        <ul>
+          <li className="keyword">오늘의 인기 검색어</li>
+          {Ranking}
+        </ul>
+        <img src="./img/mainpageBgc.png" alt="거래화면" />
+      </div>
+    </Mains>
+  );
+};
 
 export default Main;
