@@ -1,9 +1,6 @@
 import React from "react";
 import styled from 'styled-components';
-
-
-const Main = () =>{
-    const Mains = styled.section`
+const Mains = styled.section`
         width: 100%;
         height: 700px;
         background:#eee;
@@ -65,6 +62,9 @@ const Main = () =>{
             }
         }
     `;
+
+const Main = () =>{
+    
         // map으로 순위 매기기
         const rank = [{
             name:"자전거",

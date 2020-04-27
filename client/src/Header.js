@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-const Header = () =>{
-    const Headers = styled.header`
+
+const Headers = styled.header`
         width:100%;
         box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.1);
         position:fixed;
@@ -79,6 +79,8 @@ const Header = () =>{
             }
         }
     `;
+const Header = () =>{
+    
 
     return(<Headers>
         <div className="container">
