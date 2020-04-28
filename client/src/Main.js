@@ -5,10 +5,7 @@ const Mains = styled.section`
         height: 700px;
         background:#eee;
         .container{
-            position :relative;
-            width: 980px;
             height:100%;
-            margin : 0 auto;
             .title{
                 text-align:center;
                 padding-top: 187px;
