@@ -63,7 +63,7 @@ function Login(props) {
     // );
   }
   function goRegister() {
-    props.history.push("/login");
+    props.history.push("/register");
   }
   return (
     <>
