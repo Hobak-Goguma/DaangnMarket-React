@@ -60,6 +60,7 @@ const Headers = styled.header`
         text-align: center;
         height: 40px;
         position: relative;
+        transition: 0.1s;
         &:hover {
           background-color: #ff8a3d;
           color: white;

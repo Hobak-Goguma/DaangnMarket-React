@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 import Header from "../Header";
 import styled from "styled-components";
 
-function Login(props) {
+function Login({ history }) {
   const [ID, setID] = useState("");
   const [PW, setPW] = useState("");
 
@@ -19,7 +19,7 @@ function Login(props) {
   }
   function loginFetch() {
     if (ID === "admin" && PW === "0000") {
-      props.history.push("/");
+      history.push("/");
     }
     // fetch(`${API_JONG}/users/sign-in`, {
     //   method: "POST",
@@ -63,55 +63,53 @@ function Login(props) {
     // );
   }
   function goRegister() {
-    props.history.push("/register");
+    history.push("/register");
   }
   return (
-    <>
+    <LoginContainer>
       <Header />
-      <LoginOuter>
-        <div className="contents">
-          <div className="login-top">로그인</div>
-          <div className="input-area">
-            <input
-              className="id"
-              placeholder="아이디를 입력해주세요"
-              onChange={handleID}
-            ></input>
-          </div>
-          <div className="input-area">
-            <input
-              className="password"
-              type="password"
-              placeholder="비밀번호를 입력해주세요"
-              onChange={handlePW}
-            ></input>
-          </div>
-          <div>
-            <div className="finding">
-              <span>아이디찾기</span>
-              <span className="line"></span>
-              <span>비밀번호찾기</span>
-            </div>
-          </div>
-          <div className="button">
-            <div className="login-button" onClick={loginFetch}>
-              로그인
-            </div>
-          </div>
-          <div className="button">
-            <div className="register-button" onClick={goRegister}>
-              회원가입
-            </div>
+      <div className="contents">
+        <div className="login-top">로그인</div>
+        <div className="input-area">
+          <input
+            className="id"
+            placeholder="아이디를 입력해주세요"
+            onChange={handleID}
+          ></input>
+        </div>
+        <div className="input-area">
+          <input
+            className="password"
+            type="password"
+            placeholder="비밀번호를 입력해주세요"
+            onChange={handlePW}
+          ></input>
+        </div>
+        <div>
+          <div className="finding">
+            <span>아이디찾기</span>
+            <span className="line"></span>
+            <span>비밀번호찾기</span>
           </div>
         </div>
-      </LoginOuter>
-    </>
+        <div className="button">
+          <div className="login-button" onClick={loginFetch}>
+            로그인
+          </div>
+        </div>
+        <div className="button">
+          <div className="register-button" onClick={goRegister}>
+            회원가입
+          </div>
+        </div>
+      </div>
+    </LoginContainer>
   );
 }
 
 export default withRouter(Login);
 
-const LoginOuter = styled.div`
+const LoginContainer = styled.div`
   div,
   span,
   p,
@@ -144,6 +142,7 @@ const LoginOuter = styled.div`
     border-radius: 4px;
     border: 1px solid #cfcccf;
     margin-bottom: 10px;
+    text-indent: 20px;
     ::placeholder {
       font-weight: bold;
       color: #cfcccf;
@@ -184,10 +183,11 @@ const LoginOuter = styled.div`
     border: 1px solid #ff8a3d;
   }
   input {
+    transition: all 0.3s ease-in-out;
     &:focus {
-      border-color: #000;
+      box-shadow: 0 0 2px #ff8a3d;
+      border: 1px solid #ff8a3d;
       outline: none;
     }
-    text-indent: 20px;
   }
 `;

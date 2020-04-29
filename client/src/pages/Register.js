@@ -160,12 +160,12 @@ function Register({ history }) {
     setCellphone(e.target.value);
   }
   function yearLimit(e) {
-    if (e.target.value <= 999.1) {
+    if (e.target.value <= 2000) {
       setYear(e.target.value);
     }
   }
   function monthLimit(e) {
-    if (e.target.value <= 99.1) {
+    if (e.target.value <= 12) {
       setMonth(e.target.value);
     }
   }
@@ -572,7 +572,7 @@ function Register({ history }) {
                               className="birth-input year"
                               placeholder="YYYY"
                               type="number"
-                              maxLength="4"
+                              maxLength="5"
                               onChange={yearLimit}
                               value={year}
                             ></input>
