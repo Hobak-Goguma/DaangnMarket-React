@@ -1,0 +1,381 @@
+-- 멤버
+CREATE TABLE "member" (
+		"id_member" INT NOT NULL COMMENT '멤버 키' ,
+		"name" VARCHAR(30) NOT NULL COMMENT '이름' ,
+		"user_id" VARCHAR(20) NOT NULL COMMENT '아이디' ,
+		"user_pw" VARCHAR(20) NOT NULL COMMENT '비밀번호' ,
+		"tel" VARCHAR(20) NOT NULL COMMENT '전화번호' ,
+		"birth" DATETIME NOT NULL COMMENT '생년월일' ,
+		"email" VARCHAR30) NOT NULL COMMENT '이메일' ,
+		"gender" VARCHAR(6) NOT NULL COMMENT '성별' ,
+		"add" VARCHAR(200) NOT NULL COMMENT '주소' ,
+		"cdate" DATETIME NOT NULL COMMENT '생성일' ,
+		"udate" DATETIME NOT NULL COMMENT '수정일' ,
+		"last_date" DATETIME NOT NULL COMMENT '최후접속' 
+);
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('member', '*', '멤버', systimestamp, CURRENT_USER);
+
+-- 멤버
+ALTER TABLE "member"
+	ADD CONSTRAINT "PK_member" -- 멤버 기본키
+	PRIMARY KEY (
+		"id_member" -- 멤버 키
+	);
+
+ALTER TABLE "member"
+	MODIFY COLUMN "id_member" INT NOT NULL AUTO_INCREMENT COMMENT '멤버 키';
+
+ALTER TABLE "member"
+	MODIFY COLUMN "id_member" INT NOT NULL AUTO_INCREMENT(1,1) COMMENT '멤버 키';
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('member', 'id_member', '멤버 키', systimestamp, CURRENT_USER);
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('member', 'name', '이름', systimestamp, CURRENT_USER);
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('member', 'user_id', '아이디', systimestamp, CURRENT_USER);
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('member', 'user_pw', '비밀번호', systimestamp, CURRENT_USER);
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('member', 'tel', '전화번호', systimestamp, CURRENT_USER);
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('member', 'birth', '생년월일', systimestamp, CURRENT_USER);
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('member', 'email', '이메일', systimestamp, CURRENT_USER);
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('member', 'gender', '성별', systimestamp, CURRENT_USER);
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('member', 'add', '주소', systimestamp, CURRENT_USER);
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('member', 'cdate', '생성일', systimestamp, CURRENT_USER);
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('member', 'udate', '수정일', systimestamp, CURRENT_USER);
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('member', 'last_date', '최후접속', systimestamp, CURRENT_USER);
+
+-- 제품
+CREATE TABLE "product" (
+		"id_product" INT NOT NULL COMMENT '제품키' ,
+		"id_member" INT NOT NULL COMMENT '멤버 키' ,
+		"name" VARCHAR(100) NOT NULL COMMENT '제품 이름' ,
+		"price" INT NOT NULL COMMENT '제품 가격' ,
+		"info" VARCHAR NOT NULL COMMENT '제품 설명' ,
+		"img" VARCHAR(500) NULL COMMENT '제품 사진' ,
+		"cdate" DATETIME NOT NULL COMMENT '생성일' ,
+		"udate" DATETIME NOT NULL COMMENT '수정일' 
+);
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('product', '*', '제품', systimestamp, CURRENT_USER);
+
+-- 제품
+ALTER TABLE "product"
+	ADD CONSTRAINT "PK_product" -- 제품 기본키
+	PRIMARY KEY (
+		"id_product" -- 제품키
+	);
+
+ALTER TABLE "product"
+	MODIFY COLUMN "id_product" INT NOT NULL AUTO_INCREMENT COMMENT '제품키';
+
+ALTER TABLE "product"
+	MODIFY COLUMN "id_product" INT NOT NULL AUTO_INCREMENT(1,1) COMMENT '제품키';
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('product', 'id_product', '제품키', systimestamp, CURRENT_USER);
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('product', 'id_member', '멤버 키', systimestamp, CURRENT_USER);
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('product', 'name', '제품 이름', systimestamp, CURRENT_USER);
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('product', 'price', '제품 가격', systimestamp, CURRENT_USER);
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('product', 'info', '제품 설명', systimestamp, CURRENT_USER);
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('product', 'img', '제품 사진', systimestamp, CURRENT_USER);
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('product', 'cdate', '생성일', systimestamp, CURRENT_USER);
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('product', 'udate', '수정일', systimestamp, CURRENT_USER);
+
+-- 업체
+CREATE TABLE "company" (
+		"id_company" INT NOT NULL COMMENT '업체 키' ,
+		"id_member" INT NOT NULL COMMENT '멤버 키' ,
+		"name" VARCHAR(50) NOT NULL COMMENT '업체 이름' ,
+		"add" VARCHAR(200) NOT NULL COMMENT '업체 위치' ,
+		"com_tel" INT NULL COMMENT '업체 번호' ,
+		"com_info" VARCHAR NULL COMMENT '업체 소개' ,
+		"img" VARCHAR(500) NULL COMMENT '업체 사진' ,
+		"cdate" DATETIME NOT NULL COMMENT '생성일' ,
+		"udate" DATETIME NOT NULL COMMENT '수정일' 
+);
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('company', '*', '업체', systimestamp, CURRENT_USER);
+
+-- 업체
+ALTER TABLE "company"
+	ADD CONSTRAINT "PK_company" -- 업체 기본키
+	PRIMARY KEY (
+		"id_company" -- 업체 키
+	);
+
+ALTER TABLE "company"
+	MODIFY COLUMN "id_company" INT NOT NULL AUTO_INCREMENT COMMENT '업체 키';
+
+ALTER TABLE "company"
+	MODIFY COLUMN "id_company" INT NOT NULL AUTO_INCREMENT(1,1) COMMENT '업체 키';
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('company', 'id_company', '업체 키', systimestamp, CURRENT_USER);
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('company', 'id_member', '멤버 키', systimestamp, CURRENT_USER);
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('company', 'name', '업체 이름', systimestamp, CURRENT_USER);
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('company', 'add', '업체 위치', systimestamp, CURRENT_USER);
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('company', 'com_tel', '업체 번호', systimestamp, CURRENT_USER);
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('company', 'com_info', '업체 소개', systimestamp, CURRENT_USER);
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('company', 'img', '업체 사진', systimestamp, CURRENT_USER);
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('company', 'cdate', '생성일', systimestamp, CURRENT_USER);
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('company', 'udate', '수정일', systimestamp, CURRENT_USER);
+
+-- 로그
+CREATE TABLE "log" (
+		"id_log" INT NOT NULL COMMENT '로그 키' ,
+		"id_member" INT NOT NULL COMMENT '멤버 키' ,
+		"search" VARCHAR(60) NOT NULL COMMENT '검색 내용' 
+);
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('log', '*', '로그', systimestamp, CURRENT_USER);
+
+-- 로그
+ALTER TABLE "log"
+	ADD CONSTRAINT "PK_log" -- 로그 기본키
+	PRIMARY KEY (
+		"id_log" -- 로그 키
+	);
+
+ALTER TABLE "log"
+	MODIFY COLUMN "id_log" INT NOT NULL AUTO_INCREMENT COMMENT '로그 키';
+
+ALTER TABLE "log"
+	MODIFY COLUMN "id_log" INT NOT NULL AUTO_INCREMENT(1,1) COMMENT '로그 키';
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('log', 'id_log', '로그 키', systimestamp, CURRENT_USER);
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('log', 'id_member', '멤버 키', systimestamp, CURRENT_USER);
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('log', 'search', '검색 내용', systimestamp, CURRENT_USER);
+
+-- 판매자후기
+CREATE TABLE "seller_review" (
+		"id_review" INT NOT NULL COMMENT '리뷰 키' ,
+		"title" VARCHAR(50) NOT NULL COMMENT '후기 제목' ,
+		"cdate" DATETIME NOT NULL COMMENT '생성일' ,
+		"id_real_deal" INT NOT NULL COMMENT '실거래' 
+);
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('seller_review', '*', '판매자후기', systimestamp, CURRENT_USER);
+
+-- 판매자후기
+ALTER TABLE "seller_review"
+	ADD CONSTRAINT "PK_seller_review" -- 판매자후기 기본키
+	PRIMARY KEY (
+		"id_review" -- 리뷰 키
+	);
+
+ALTER TABLE "seller_review"
+	MODIFY COLUMN "id_review" INT NOT NULL AUTO_INCREMENT COMMENT '리뷰 키';
+
+ALTER TABLE "seller_review"
+	MODIFY COLUMN "id_review" INT NOT NULL AUTO_INCREMENT(1,1) COMMENT '리뷰 키';
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('seller_review', 'id_review', '리뷰 키', systimestamp, CURRENT_USER);
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('seller_review', 'title', '후기 제목', systimestamp, CURRENT_USER);
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('seller_review', 'cdate', '생성일', systimestamp, CURRENT_USER);
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('seller_review', 'id_real_deal', '실거래', systimestamp, CURRENT_USER);
+
+-- 새 테이블5
+CREATE TABLE "TABLE" (
+);
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('TABLE', '*', '새 테이블5', systimestamp, CURRENT_USER);
+
+-- 메너온도
+CREATE TABLE "manner" (
+		"id_manner" INT NOT NULL COMMENT '매너 키' ,
+		"id_member" INT NOT NULL COMMENT '멤버 키' ,
+		"score" INT NOT NULL COMMENT '점수' ,
+		"reviewer" INT NOT NULL COMMENT '평가자' 
+);
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('manner', '*', '메너온도', systimestamp, CURRENT_USER);
+
+-- 메너온도
+ALTER TABLE "manner"
+	ADD CONSTRAINT "PK_manner" -- 메너온도 기본키
+	PRIMARY KEY (
+		"id_manner" -- 매너 키
+	);
+
+ALTER TABLE "manner"
+	MODIFY COLUMN "id_manner" INT NOT NULL AUTO_INCREMENT COMMENT '매너 키';
+
+ALTER TABLE "manner"
+	MODIFY COLUMN "id_manner" INT NOT NULL AUTO_INCREMENT(1,1) COMMENT '매너 키';
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('manner', 'id_manner', '매너 키', systimestamp, CURRENT_USER);
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('manner', 'id_member', '멤버 키', systimestamp, CURRENT_USER);
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('manner', 'score', '점수', systimestamp, CURRENT_USER);
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('manner', 'reviewer', '평가자', systimestamp, CURRENT_USER);
+
+-- 새 테이블
+CREATE TABLE "TABLE2" (
+);
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('TABLE2', '*', '새 테이블', systimestamp, CURRENT_USER);
+
+-- 구매자후기
+CREATE TABLE "shopper_review" (
+		"id_review" INT NOT NULL COMMENT '리뷰 키' ,
+		"title" VARCHAR(50) NOT NULL COMMENT '후기 제목' ,
+		"cdate" DATETIME NOT NULL COMMENT '생성일' ,
+		"id_real_deal" INT NOT NULL COMMENT 'id_real_deal' 
+);
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('shopper_review', '*', '구매자후기', systimestamp, CURRENT_USER);
+
+-- 구매자후기
+ALTER TABLE "shopper_review"
+	ADD CONSTRAINT "PK_shopper_review" -- 구매자후기 기본키
+	PRIMARY KEY (
+		"id_review" -- 리뷰 키
+	);
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('shopper_review', 'id_review', '리뷰 키', systimestamp, CURRENT_USER);
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('shopper_review', 'title', '후기 제목', systimestamp, CURRENT_USER);
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('shopper_review', 'cdate', '생성일', systimestamp, CURRENT_USER);
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('shopper_review', 'id_real_deal', 'id_real_deal', systimestamp, CURRENT_USER);
+
+-- 실거래
+CREATE TABLE "real_deal" (
+		"id_real_deal" INT NOT NULL COMMENT 'id_real_deal' ,
+		"id_product" INT NOT NULL COMMENT '제품키' ,
+		"id_seller" INT NOT NULL COMMENT '판매자' ,
+		"id_shopper" INT NOT NULL COMMENT '구매자' 
+);
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('real_deal', '*', '실거래', systimestamp, CURRENT_USER);
+
+-- 실거래
+ALTER TABLE "real_deal"
+	ADD CONSTRAINT "PK_real_deal" -- 실거래 기본키
+	PRIMARY KEY (
+		"id_real_deal" -- id_real_deal
+	);
+
+ALTER TABLE "real_deal"
+	MODIFY COLUMN "id_real_deal" INT NOT NULL AUTO_INCREMENT COMMENT 'id_real_deal';
+
+ALTER TABLE "real_deal"
+	MODIFY COLUMN "id_real_deal" INT NOT NULL AUTO_INCREMENT(1,1) COMMENT 'id_real_deal';
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('real_deal', 'id_real_deal', 'id_real_deal', systimestamp, CURRENT_USER);
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('real_deal', 'id_product', '제품키', systimestamp, CURRENT_USER);
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('real_deal', 'id_seller', '판매자', systimestamp, CURRENT_USER);
+
+INSERT INTO _cub_schema_comments (table_name, column_name, description, last_updated, last_updated_user) VALUES ('real_deal', 'id_shopper', '구매자', systimestamp, CURRENT_USER);
+
+-- 제품
+ALTER TABLE "product"
+	ADD CONSTRAINT "FK_member_TO_product" -- 멤버 -> 제품
+	FOREIGN KEY (
+		"id_member" -- 멤버 키
+	)
+	REFERENCES "member" ( -- 멤버
+		"id_member" -- 멤버 키
+	);
+
+-- 업체
+ALTER TABLE "company"
+	ADD CONSTRAINT "FK_member_TO_company" -- 멤버 -> 업체
+	FOREIGN KEY (
+		"id_member" -- 멤버 키
+	)
+	REFERENCES "member" ( -- 멤버
+		"id_member" -- 멤버 키
+	);
+
+-- 로그
+ALTER TABLE "log"
+	ADD CONSTRAINT "FK_member_TO_log" -- 멤버 -> 로그
+	FOREIGN KEY (
+		"id_member" -- 멤버 키
+	)
+	REFERENCES "member" ( -- 멤버
+		"id_member" -- 멤버 키
+	);
+
+-- 판매자후기
+ALTER TABLE "seller_review"
+	ADD CONSTRAINT "FK_real_deal_TO_seller_review" -- 실거래 -> 판매자후기
+	FOREIGN KEY (
+		"id_real_deal" -- 실거래
+	)
+	REFERENCES "real_deal" ( -- 실거래
+		"id_real_deal" -- id_real_deal
+	);
+
+-- 메너온도
+ALTER TABLE "manner"
+	ADD CONSTRAINT "FK_member_TO_manner" -- 멤버 -> 메너온도
+	FOREIGN KEY (
+		"id_member" -- 멤버 키
+	)
+	REFERENCES "member" ( -- 멤버
+		"id_member" -- 멤버 키
+	);
+
+-- 구매자후기
+ALTER TABLE "shopper_review"
+	ADD CONSTRAINT "FK_real_deal_TO_shopper_review" -- 실거래 -> 구매자후기
+	FOREIGN KEY (
+		"id_real_deal" -- id_real_deal
+	)
+	REFERENCES "real_deal" ( -- 실거래
+		"id_real_deal" -- id_real_deal
+	);
+
+-- 실거래
+ALTER TABLE "real_deal"
+	ADD CONSTRAINT "FK_product_TO_real_deal" -- 제품 -> 실거래
+	FOREIGN KEY (
+		"id_product" -- 제품키
+	)
+	REFERENCES "product" ( -- 제품
+		"id_product" -- 제품키
+	);
+
+-- 실거래
+ALTER TABLE "real_deal"
+	ADD CONSTRAINT "FK_member_TO_real_deal" -- 멤버 -> 실거래
+	FOREIGN KEY (
+		"id_seller" -- 판매자
+	)
+	REFERENCES "member" ( -- 멤버
+		"id_member" -- 멤버 키
+	);
