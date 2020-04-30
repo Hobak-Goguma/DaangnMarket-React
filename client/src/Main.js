@@ -123,9 +123,9 @@ const Main = () =>{
                 <div className="upDown">
                     {v.nowRank===v.prevRank? `-`:
                         v.nowRank<v.prevRank? (
-                        <><span className="up" >^</span>{Math.abs(v.nowRank-v.prevRank)}</>
+                        <><i class="fas fa-caret-up up"></i>{" "+Math.abs(v.nowRank-v.prevRank)}</>
                         ):(
-                        <><span className="down">v</span>{Math.abs(v.nowRank-v.prevRank)}</>
+                        <><i class="fas fa-caret-down down"></i>{" "+Math.abs(v.nowRank-v.prevRank)}</>
                     )}
                 </div>
             </a></li>);}
