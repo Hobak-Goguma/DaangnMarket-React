@@ -45,8 +45,11 @@ function Register({ history }) {
     setPasswordShown(!passwordShown);
   };
 
-  const toggleFocus = () => {
-    setBirthFocus(!birthFocus);
+  const outBirthFocus = () => {
+    setBirthFocus(false);
+  };
+  const onBirthFocus = () => {
+    setBirthFocus(true);
   };
 
   function man() {
@@ -252,7 +255,7 @@ function Register({ history }) {
     // console.log("email 중복확인 ", this.state.ID);
   }
   function agreeAll() {
-    setAllAgree(true);
+    setAllAgree(!allAgree);
   }
 
   async function joinFetch() {
@@ -593,7 +596,12 @@ function Register({ history }) {
                         <div className="birth col2">
                           <div
                             className="birth-inputs col2"
-                            onClick={toggleFocus}
+                            onBlur={outBirthFocus}
+                            style={
+                              birthFocus
+                                ? { border: "1px solid #000" }
+                                : { border: "1px solid #ccc" }
+                            }
                           >
                             <input
                               className="birth-input year"
@@ -602,6 +610,7 @@ function Register({ history }) {
                               maxLength="4"
                               onChange={yearLimit}
                               value={year}
+                              onFocus={onBirthFocus}
                             ></input>
                             <span>/</span>
                             <input
@@ -610,6 +619,7 @@ function Register({ history }) {
                               maxLength="2"
                               onChange={monthLimit}
                               value={month}
+                              onFocus={onBirthFocus}
                             ></input>
                             <span>/</span>
                             <input
@@ -618,6 +628,7 @@ function Register({ history }) {
                               maxLength="4"
                               onChange={dayLimit}
                               value={day}
+                              onFocus={onBirthFocus}
                             ></input>
                           </div>
                         </div>
@@ -719,6 +730,7 @@ function Register({ history }) {
                             type="checkbox"
                             className="info-share"
                             name="checkRow"
+
                             // checked={state.infoChecked}
                           ></input>
                           <span className="agree-explanation">SMS</span>
@@ -1146,6 +1158,7 @@ const RegisterStyleComponent = styled.div`
     margin-top: 90px;
 
     .birth-inputs {
+      transition: all 0.3s ease-in-out;
     }
 
     input {
