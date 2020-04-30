@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { withRouter } from "react-router-dom";
-import Header from "../Header";
+import Header from "../components/Header";
 import styled from "styled-components";
 
 function Login({ history }) {

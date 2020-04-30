@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import styled, { css } from "styled-components";
-import Header from "../Header";
+import Header from "../components/Header";
 
 function Register({ history }) {
   const [birthFocus, setBirthFocus] = useState(false);
