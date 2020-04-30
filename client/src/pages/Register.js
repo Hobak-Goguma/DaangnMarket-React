@@ -4,6 +4,7 @@ import styled, { css } from "styled-components";
 import Header from "../Header";
 
 function Register({ history }) {
+  const [passwordShown, setPasswordShown] = useState(false);
   const [IDFocusMode, setIDFocusMode] = useState(false);
   const [PWFocusMode, setPWFocusMode] = useState(false);
   const [PWConfirmFocusMode, setPWConfirmFocusMode] = useState(false);
@@ -38,6 +39,10 @@ function Register({ history }) {
   const [again, setAgain] = useState(false);
   const [infoChecked, setInfoChecked] = useState(false);
   const [allAgree, setAllAgree] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setPasswordShown(!passwordShown);
+  };
 
   function man() {
     let sexBullion = document.getElementsByClassName("sex-bullion");
@@ -345,17 +350,28 @@ function Register({ history }) {
                 <table>
                   <tbody>
                     <tr>
-                      <td className="pw-write col1">비밀번호*</td>
-                      <td className="pw-write col2">
+                      <td className="col1">비밀번호*</td>
+                      <td className="col2">
                         <input
                           className="typing"
-                          type="password"
+                          type={passwordShown ? "text" : "password"}
                           placeholder="비밀번호를 입력해주세요"
                           onFocus={PWPopup}
                           onChange={handlePW}
                           value={PW}
                           required
                         ></input>
+                        {passwordShown ? (
+                          <i
+                            className="fa fa-eye-slash password-icon"
+                            onClick={togglePasswordVisibility}
+                          />
+                        ) : (
+                          <i
+                            className="fa fa-eye password-icon"
+                            onClick={togglePasswordVisibility}
+                          />
+                        )}
                       </td>
                     </tr>
                   </tbody>
@@ -388,8 +404,8 @@ function Register({ history }) {
                 <table>
                   <tbody>
                     <tr>
-                      <td className="pw-confirm col1">비밀번호확인*</td>
-                      <td className="pw-confirm col2">
+                      <td className="col1">비밀번호확인*</td>
+                      <td className="col2">
                         <input
                           className="typing"
                           type="password"
@@ -794,11 +810,20 @@ const RegisterStyleComponent = styled.div`
   p {
     border: 0px solid #ff8a3d;
   }
+  .col2 {
+    position: relative;
+  }
+  .password-icon {
+    position: absolute;
+    top: 21px;
+    left: 270px;
+  }
   input {
     border-radius: 4px;
     border: 1px solid #ccc;
 
     &.typing {
+      height: 42px;
       text-indent: 20px;
     }
     &[type="radio"],
