@@ -4,6 +4,7 @@ import styled, { css } from "styled-components";
 import Header from "../Header";
 
 function Register({ history }) {
+  const [birthFocus, setBirthFocus] = useState(false);
   const [passwordShown, setPasswordShown] = useState(false);
   const [IDFocusMode, setIDFocusMode] = useState(false);
   const [PWFocusMode, setPWFocusMode] = useState(false);
@@ -42,6 +43,10 @@ function Register({ history }) {
 
   const togglePasswordVisibility = () => {
     setPasswordShown(!passwordShown);
+  };
+
+  const toggleFocus = () => {
+    setBirthFocus(!birthFocus);
   };
 
   function man() {
@@ -165,17 +170,17 @@ function Register({ history }) {
     setCellphone(e.target.value);
   }
   function yearLimit(e) {
-    if (e.target.value <= 2000) {
+    if (e.target.value <= 9999) {
       setYear(e.target.value);
     }
   }
   function monthLimit(e) {
-    if (e.target.value <= 12) {
+    if (e.target.value <= 99) {
       setMonth(e.target.value);
     }
   }
   function dayLimit(e) {
-    if (e.target.value <= 99.1) {
+    if (e.target.value <= 99) {
       setDay(e.target.value);
       setBirth(`${year} ${month} ${e.target.value}` * 1);
     }
@@ -292,7 +297,7 @@ function Register({ history }) {
               <div className="head-section">
                 <h2 className="join-title">회원가입</h2>
               </div>
-              <div className="head-notification1">
+              <div className="head-notification1" style={{ marginBottom: 10 }}>
                 <p>*필수입력사항</p>
               </div>
               <div className="write-board2">
@@ -527,7 +532,10 @@ function Register({ history }) {
                       <td className="address2 col1">배송주소</td>
                       <td>
                         <div className="col2-2">
-                          <div className="normal-button address">
+                          <div
+                            className="normal-button address"
+                            style={{ marginBottom: 10 }}
+                          >
                             <span onClick={goSorry}>주소 검색</span>
                           </div>
                         </div>
@@ -583,12 +591,15 @@ function Register({ history }) {
                       <td className="birth col1">생년월일</td>
                       <td>
                         <div className="birth col2">
-                          <div className="birth-inputs col2">
+                          <div
+                            className="birth-inputs col2"
+                            onClick={toggleFocus}
+                          >
                             <input
                               className="birth-input year"
                               placeholder="YYYY"
                               type="number"
-                              maxLength="5"
+                              maxLength="4"
                               onChange={yearLimit}
                               value={year}
                             ></input>
@@ -622,28 +633,11 @@ function Register({ history }) {
                     </tr>
                   </tbody>
                 </table>
-                <table>
-                  <tbody>
-                    <tr>
-                      <td className="extra-info col1">추가입력사항</td>
-                      <td className="extra col2">
-                        <label className="label-radio">
-                          <input type="radio" name="reco-bullion"></input>
-                          <span>추천인 아이디</span>
-                        </label>
-                        <label className="label-radio">
-                          <input type="radio" name="reco-bullion"></input>
-                          <span>참여 이벤트명</span>
-                        </label>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
               </div>
 
               <div className="agree-board">
                 <div className="agree-head">
-                  <h3>이용약관동의*</h3>
+                  <h3 style={{ fontSize: 20, opacity: 0.6 }}>이용약관동의*</h3>
                   <p className="agree-note">
                     선택항목에 동의하지 않은 경우도 회원가입 및 일반적인
                     서비스를 이용할 수 있습니다.
@@ -798,10 +792,6 @@ const defaultButtonStyle = css`
 const RegisterStyleComponent = styled.div`
   overflow-x: hidden;
   background-color: #f9f9f9;
-  .join-start {
-    box-sizing: border-box;
-    margin-top: 90px;
-  }
 
   tr,
   td,
@@ -936,7 +926,7 @@ const RegisterStyleComponent = styled.div`
     width: 80px;
     text-align: center;
   }
-  .birth-iputs {
+  .birth-inputs {
     width: 300px;
     display: flex;
     justify-content: center;
@@ -973,14 +963,7 @@ const RegisterStyleComponent = styled.div`
     font-size: 12px;
     color: gray;
   }
-  .birth-input {
-    border: none;
-    width: 80px;
-    outline: none;
-    &::placeholder {
-      text-align: center;
-    }
-  }
+
   .birth-inputs {
     display: flex;
     align-items: center;
@@ -988,6 +971,10 @@ const RegisterStyleComponent = styled.div`
     border: 1px solid #ccc;
     width: 300px;
     height: 40px;
+
+    .birth-input:focus .birth-inputs {
+      border: 1px solid #000;
+    }
   }
   .benefit-info {
     width: 323px;
@@ -1025,12 +1012,14 @@ const RegisterStyleComponent = styled.div`
     height: 20px;
   }
   .agree-board {
-    margin-top: 10px;
+    margin-top: 15px;
+    padding-top: 25px;
   }
   .agree-head {
     display: flex;
     justify-content: left;
     margin-left: 30px;
+    margin-bottom: 15px;
   }
   .agree-note {
     display: flex;
@@ -1150,5 +1139,32 @@ const RegisterStyleComponent = styled.div`
   }
   .guide-tr-pwc {
     height: 30px;
+  }
+
+  .join-start {
+    box-sizing: border-box;
+    margin-top: 90px;
+
+    .birth-inputs {
+    }
+
+    input {
+      transition: all 0.3s ease-in-out;
+      &:focus {
+        border: 1px solid #000;
+        outline: none;
+      }
+    }
+    .birth-input {
+      border: none;
+      width: 95px;
+      outline: none;
+      &:focus {
+        border: unset;
+      }
+      &::placeholder {
+        text-align: center;
+      }
+    }
   }
 `;

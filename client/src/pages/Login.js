@@ -185,8 +185,7 @@ const LoginContainer = styled.div`
   input {
     transition: all 0.3s ease-in-out;
     &:focus {
-      box-shadow: 0 0 2px #ff8a3d;
-      border: 1px solid #ff8a3d;
+      border: 1px solid #000;
       outline: none;
     }
   }
