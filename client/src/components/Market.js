@@ -173,7 +173,7 @@ const Market = () =>{
     const Items = items.map(v=>{
         let cost = "";
         const costString=String(v.cost);
-        for(let i = 0 ; i <costString.length;i++){
+        for(let i = 0 ; i <costString.length;i++){ // 3자리마다 , 넣기위하여
             cost += costString[i];
             if((costString.length-1-i)%3===0 &&costString.length-1 !== i){
                 cost+=",";
@@ -183,7 +183,7 @@ const Market = () =>{
         return(
         <div className="item" key = {v.name}>
             <div className="img">
-                <img src={v.thumb} alt={v.name}/>
+                <img src={v.thumb} alt={v.name}/> 
             </div>
             <div className="discription">    
                 <h1>{v.name}</h1>
