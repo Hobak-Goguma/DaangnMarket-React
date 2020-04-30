@@ -1,0 +1,249 @@
+-- 멤버
+CREATE TABLE `member` (
+	`id_member` INT          NOT NULL COMMENT '멤버 키', -- 멤버 키
+	`name`      VARCHAR(30)  NOT NULL COMMENT '이름', -- 이름
+	`user_id`   VARCHAR(30)  NOT NULL COMMENT '아이디', -- 아이디
+	`user_pw`   VARCHAR(55)  NOT NULL COMMENT '비밀번호', -- 비밀번호
+	`tel`       VARCHAR(20)  NOT NULL COMMENT '전화번호', -- 전화번호
+	`birth`     DATE         NOT NULL COMMENT '생년월일', -- 생년월일
+	`email`     VARCHAR(30)  NOT NULL COMMENT '이메일', -- 이메일
+	`gender`    VARCHAR(6)   NOT NULL COMMENT '성별', -- 성별
+	`add`       VARCHAR(200) NOT NULL COMMENT '주소', -- 주소
+	`cdate`     DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성일', -- 생성일
+	`udate`     DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP
+	 COMMENT '수정일', -- 수정일
+	`last_date` DATETIME     NOT NULL COMMENT '최후접속' -- 최후접속
+)
+COMMENT '멤버';
+
+-- 멤버
+ALTER TABLE `member`
+	ADD CONSTRAINT `PK_member` -- 멤버 기본키
+		PRIMARY KEY (
+			`id_member` -- 멤버 키
+		);
+
+ALTER TABLE `member`
+	MODIFY COLUMN `id_member` INT NOT NULL AUTO_INCREMENT COMMENT '멤버 키';
+
+-- 제품
+CREATE TABLE `product` (
+	`id_product` INT           NOT NULL COMMENT '제품키', -- 제품키
+	`id_member`  INT           NOT NULL COMMENT '멤버 키', -- 멤버 키
+	`name`       VARCHAR(100)  NOT NULL COMMENT '제품 이름', -- 제품 이름
+	`price`      INT           NOT NULL COMMENT '제품 가격', -- 제품 가격
+	`info`       VARCHAR(3000) NOT NULL COMMENT '제품 설명', -- 제품 설명
+	`img`        VARCHAR(500)  NULL     COMMENT '제품 사진', -- 제품 사진
+	`cdate`      DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성일', -- 생성일
+	`udate`      DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '수정일' -- 수정일
+)
+COMMENT '제품';
+
+-- 제품
+ALTER TABLE `product`
+	ADD CONSTRAINT `PK_product` -- 제품 기본키
+		PRIMARY KEY (
+			`id_product` -- 제품키
+		);
+
+ALTER TABLE `product`
+	MODIFY COLUMN `id_product` INT NOT NULL AUTO_INCREMENT COMMENT '제품키';
+
+-- 메너온도
+CREATE TABLE `manner` (
+	`id_manner` INT NOT NULL COMMENT '매너 키', -- 매너 키
+	`id_member` INT NOT NULL COMMENT '멤버 키', -- 멤버 키
+	`score`     INT NOT NULL COMMENT '점수', -- 점수
+	`reviewer`  INT NOT NULL COMMENT '평가자' -- 평가자
+)
+COMMENT '메너온도';
+
+-- 메너온도
+ALTER TABLE `manner`
+	ADD CONSTRAINT `PK_manner` -- 메너온도 기본키
+		PRIMARY KEY (
+			`id_manner` -- 매너 키
+		);
+
+ALTER TABLE `manner`
+	MODIFY COLUMN `id_manner` INT NOT NULL AUTO_INCREMENT COMMENT '매너 키';
+
+-- 구매자후기
+CREATE TABLE `shopper_review` (
+	`id_review`    INT         NOT NULL COMMENT '리뷰 키', -- 리뷰 키
+	`title`        VARCHAR(50) NOT NULL COMMENT '후기 제목', -- 후기 제목
+	`cdate`        DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성일', -- 생성일
+	`id_real_deal` INT         NOT NULL COMMENT 'id_real_deal' -- id_real_deal
+)
+COMMENT '구매자후기';
+
+-- 구매자후기
+ALTER TABLE `shopper_review`
+	ADD CONSTRAINT `PK_shopper_review` -- 구매자후기 기본키
+		PRIMARY KEY (
+			`id_review` -- 리뷰 키
+		);
+
+ALTER TABLE `shopper_review`
+	MODIFY COLUMN `id_review` INT NOT NULL AUTO_INCREMENT COMMENT '리뷰 키';
+
+-- 로그
+CREATE TABLE `log` (
+	`id_log`    INT         NOT NULL COMMENT '로그 키', -- 로그 키
+	`id_member` INT         NOT NULL COMMENT '멤버 키', -- 멤버 키
+	`search`    VARCHAR(60) NOT NULL COMMENT '검색 내용' -- 검색 내용
+)
+COMMENT '로그';
+
+-- 로그
+ALTER TABLE `log`
+	ADD CONSTRAINT `PK_log` -- 로그 기본키
+		PRIMARY KEY (
+			`id_log` -- 로그 키
+		);
+
+ALTER TABLE `log`
+	MODIFY COLUMN `id_log` INT NOT NULL AUTO_INCREMENT COMMENT '로그 키';
+
+-- 판매자후기
+CREATE TABLE `seller_review` (
+	`id_review`    INT         NOT NULL COMMENT '리뷰 키', -- 리뷰 키
+	`title`        VARCHAR(50) NOT NULL COMMENT '후기 제목', -- 후기 제목
+	`cdate`        DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성일', -- 생성일
+	`id_real_deal` INT         NOT NULL COMMENT '실거래' -- 실거래
+)
+COMMENT '판매자후기';
+
+-- 판매자후기
+ALTER TABLE `seller_review`
+	ADD CONSTRAINT `PK_seller_review` -- 판매자후기 기본키
+		PRIMARY KEY (
+			`id_review` -- 리뷰 키
+		);
+
+ALTER TABLE `seller_review`
+	MODIFY COLUMN `id_review` INT NOT NULL AUTO_INCREMENT COMMENT '리뷰 키';
+
+-- 실거래
+CREATE TABLE `real_deal` (
+	`id_real_deal` INT      NOT NULL COMMENT 'id_real_deal', -- id_real_deal
+	`id_product`   INT      NOT NULL COMMENT '제품키', -- 제품키
+	`id_seller`    INT      NOT NULL COMMENT '판매자', -- 판매자
+	`id_shopper`   INT      NOT NULL COMMENT '구매자', -- 구매자
+	`cdate`        DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성일' -- 생성일
+)
+COMMENT '실거래';
+
+-- 실거래
+ALTER TABLE `real_deal`
+	ADD CONSTRAINT `PK_real_deal` -- 실거래 기본키
+		PRIMARY KEY (
+			`id_real_deal` -- id_real_deal
+		);
+
+ALTER TABLE `real_deal`
+	MODIFY COLUMN `id_real_deal` INT NOT NULL AUTO_INCREMENT COMMENT 'id_real_deal';
+
+-- 업체
+CREATE TABLE `company` (
+	`id_company` INT           NOT NULL COMMENT '업체 키', -- 업체 키
+	`id_member`  INT           NOT NULL COMMENT '멤버 키', -- 멤버 키
+	`name`       VARCHAR(50)   NOT NULL COMMENT '업체 이름', -- 업체 이름
+	`add`        VARCHAR(200)  NOT NULL COMMENT '업체 위치', -- 업체 위치
+	`com_tel`    INT           NULL     COMMENT '업체 번호', -- 업체 번호
+	`com_info`   VARCHAR(3000) NULL     COMMENT '업체 소개', -- 업체 소개
+	`img`        VARCHAR(500)  NULL     COMMENT '업체 사진', -- 업체 사진
+	`cdate`      DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성일', -- 생성일
+	`udate`      DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '수정일' -- 수정일
+)
+COMMENT '업체';
+
+-- 업체
+ALTER TABLE `company`
+	ADD CONSTRAINT `PK_company` -- 업체 기본키
+		PRIMARY KEY (
+			`id_company` -- 업체 키
+		);
+
+ALTER TABLE `company`
+	MODIFY COLUMN `id_company` INT NOT NULL AUTO_INCREMENT COMMENT '업체 키';
+
+-- 제품
+ALTER TABLE `product`
+	ADD CONSTRAINT `FK_member_TO_product` -- 멤버 -> 제품
+		FOREIGN KEY (
+			`id_member` -- 멤버 키
+		)
+		REFERENCES `member` ( -- 멤버
+			`id_member` -- 멤버 키
+		);
+
+-- 메너온도
+ALTER TABLE `manner`
+	ADD CONSTRAINT `FK_member_TO_manner` -- 멤버 -> 메너온도
+		FOREIGN KEY (
+			`id_member` -- 멤버 키
+		)
+		REFERENCES `member` ( -- 멤버
+			`id_member` -- 멤버 키
+		);
+
+-- 구매자후기
+ALTER TABLE `shopper_review`
+	ADD CONSTRAINT `FK_real_deal_TO_shopper_review` -- 실거래 -> 구매자후기
+		FOREIGN KEY (
+			`id_real_deal` -- id_real_deal
+		)
+		REFERENCES `real_deal` ( -- 실거래
+			`id_real_deal` -- id_real_deal
+		);
+
+-- 로그
+ALTER TABLE `log`
+	ADD CONSTRAINT `FK_member_TO_log` -- 멤버 -> 로그
+		FOREIGN KEY (
+			`id_member` -- 멤버 키
+		)
+		REFERENCES `member` ( -- 멤버
+			`id_member` -- 멤버 키
+		);
+
+-- 판매자후기
+ALTER TABLE `seller_review`
+	ADD CONSTRAINT `FK_real_deal_TO_seller_review` -- 실거래 -> 판매자후기
+		FOREIGN KEY (
+			`id_real_deal` -- 실거래
+		)
+		REFERENCES `real_deal` ( -- 실거래
+			`id_real_deal` -- id_real_deal
+		);
+
+-- 실거래
+ALTER TABLE `real_deal`
+	ADD CONSTRAINT `FK_product_TO_real_deal` -- 제품 -> 실거래
+		FOREIGN KEY (
+			`id_product` -- 제품키
+		)
+		REFERENCES `product` ( -- 제품
+			`id_product` -- 제품키
+		);
+
+-- 실거래
+ALTER TABLE `real_deal`
+	ADD CONSTRAINT `FK_member_TO_real_deal` -- 멤버 -> 실거래
+		FOREIGN KEY (
+			`id_seller` -- 판매자
+		)
+		REFERENCES `member` ( -- 멤버
+			`id_member` -- 멤버 키
+		);
+
+-- 업체
+ALTER TABLE `company`
+	ADD CONSTRAINT `FK_member_TO_company` -- 멤버 -> 업체
+		FOREIGN KEY (
+			`id_member` -- 멤버 키
+		)
+		REFERENCES `member` ( -- 멤버
+			`id_member` -- 멤버 키
+		);
