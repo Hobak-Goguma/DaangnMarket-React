@@ -1,6 +1,45 @@
 import React from "react";
 import styled from "styled-components";
 
+    const Abouts = styled.section`
+    background:#eee;
+        .container{
+            .title{
+                padding-top:100px;
+                padding-bottom:50px;
+                text-align : center; 
+                position:relative;
+                font-size:32px;
+                &::before{
+                    content:"";
+                    position:absolute;
+                    bottom:0;
+                    left:50%;
+                    transform:translateX(-50%);
+                    width:80px;
+                    height:2px;
+                    background-color:#FF8A3D;
+                }
+            }
+            article{
+                margin-top: 80px;
+                text-align:center;
+                .descript{
+                    width:230px;
+                    display:inline-block;
+                    margin : 0 ${(980 - 230*3)/2}px 100px 0;
+                    &:nth-child(3n){
+                        margin-right:0;
+                    }
+                    h1{
+                        margin-top:30px;
+                        font-size:20px;
+                    }
+
+                }
+            }
+        }
+    `;
 
 const About =() =>{
     const descriptions = [{
@@ -35,49 +74,16 @@ const About =() =>{
         감사인사를 보내보세요.`
     }];
     
-    const Abouts = styled.section`
-    background:#eee;
-        .container{
-            height: 700px;
-            .title{
-                padding-top:100px;
-                padding-bottom:50px;
-                text-align : center; 
-                position:relative;
-                font-size:32px;
-                &::before{
-                    content:"";
-                    position:absolute;
-                    bottom:0;
-                    left:50%;
-                    transform:translateX(-50%);
-                    width:80px;
-                    height:2px;
-                    background-color:#FF8A3D;
-                }
-            }
-            article{
-                margin-top: 80px;
-                .descript{
-                   
-                    width:30%;
-                    height:250px;
-                    background-color: red;
-                    display:inline-block;
-                }
-
-            }
-        }
-    `;
     const Deses = descriptions.map((v)=>{
         const Image = styled.div`
             width:230px;
             height:230px;
+            background:url("https://www.daangn.com/assets/home/base/icon-set-50e8f0ea464db3f581f26893911142973cff6fedc7c2c917725338ddd47f5648.png");
             background-position: -0px ${0-230*v.idx}px;
         `;
         return(
-        <div className="descript">
-            {Image}
+        <div className="descript" key ={v.idx}>
+            <Image/>
             <h1>{v.title}</h1>
             <p>{v.des}</p>
         </div>);

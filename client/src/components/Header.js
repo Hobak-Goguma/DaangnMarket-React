@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link  } from "react-router-dom";
 
@@ -79,7 +79,7 @@ const Headers = styled.header`
         }
     `;
 const Header = () =>{
-    
+    const [logoff,setLogin] = useState(true);
 
     return(
     <Headers>
@@ -91,7 +91,8 @@ const Header = () =>{
                     <img src="./img/search-icon.svg" alt="search"/>
                 </label>
             </div>
-            <section>
+            {logoff?//로그인 여부확인
+            (<section>
                 <div className="signIn"><span>회원가입</span></div>
           <Link to="/login">
             <div className="logIn">
@@ -99,6 +100,10 @@ const Header = () =>{
             </div>
           </Link>
             </section>
+            )://로그인이 아닐시 아래쪽 실행
+            (<div>
+                로그인 중입니다.
+            </div>)}
         </div>
     </Headers>
   );
