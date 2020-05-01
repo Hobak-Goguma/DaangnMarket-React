@@ -113,25 +113,24 @@ const Main = () =>{
             prevRank: 15
         }];
         const ranks = rank.slice(0,7);
-        console.log(rank,ranks);
         const Ranking = ranks.map((v)=>{ 
 
             if(v.nowRank < 8){ // 7위까지만 넣기위해
             return (
-            <li key = {rank.name}><a href="#">
+            <li key = {v.name}><a href="#">
                 <div><strong>{v.nowRank} </strong>{v.name}</div> 
                 <div className="upDown">
                     {v.nowRank===v.prevRank? `-`:
                         v.nowRank<v.prevRank? (
-                        <><i class="fas fa-caret-up up"></i>{" "+Math.abs(v.nowRank-v.prevRank)}</>
+                        <><i className="fas fa-caret-up up"></i>{" "+Math.abs(v.nowRank-v.prevRank)}</>
                         ):(
-                        <><i class="fas fa-caret-down down"></i>{" "+Math.abs(v.nowRank-v.prevRank)}</>
+                        <><i className="fas fa-caret-down down"></i>{" "+Math.abs(v.nowRank-v.prevRank)}</>
                     )}
                 </div>
-            </a></li>);}
-            else{return(<></>);}
-        })
-
+            </a></li>);
+            }
+        });
+        console.log(Ranking);
 
   return (
     <Mains>
