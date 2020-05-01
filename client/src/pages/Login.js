@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { withRouter } from "react-router-dom";
 import Layout from "../components/Layout";
 import styled from "styled-components";
@@ -103,11 +103,10 @@ const StyledLogin = styled.div`
   label {
     border: unset;
   }
-  box-sizing: border-box;
 
   .contents {
     width: 340px;
-    margin: 15rem auto;
+    margin: 12rem auto;
   }
 
   .login-top {

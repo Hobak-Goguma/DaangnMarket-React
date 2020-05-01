@@ -59,13 +59,13 @@ function Register({ history }) {
     }
   }
   function woman() {
-    let genderBullion = document.getElementsByClassName("sex-bullion");
+    let genderBullion = document.getElementsByClassName("gender-bullion");
     if (genderBullion[1].checked === true) {
       setGender(genderBullion[1].value);
     }
   }
   function nothing() {
-    let genderBullion = document.getElementsByClassName("sex-bullion");
+    let genderBullion = document.getElementsByClassName("gender-bullion");
     if (genderBullion[2].checked === true) {
       setGender(genderBullion[2].value);
     }
@@ -380,17 +380,6 @@ function Register({ history }) {
                             value={PW}
                             required
                           ></input>
-                          {passwordShown ? (
-                            <i
-                              className="fa fa-eye-slash password-icon"
-                              onClick={togglePasswordVisibility}
-                            />
-                          ) : (
-                            <i
-                              className="fa fa-eye password-icon"
-                              onClick={togglePasswordVisibility}
-                            />
-                          )}
                         </td>
                       </tr>
                     </tbody>
@@ -567,7 +556,7 @@ function Register({ history }) {
                         <td className="sex col2">
                           <label className="label-radio">
                             <input
-                              className="sex-bullion"
+                              className="gender-bullion"
                               type="radio"
                               name="genderBullion"
                               value="남성"
@@ -577,7 +566,7 @@ function Register({ history }) {
                           </label>
                           <label className="label-radio">
                             <input
-                              className="sex-bullion"
+                              className="gender-bullion"
                               type="radio"
                               name="genderBullion"
                               value="여성"
@@ -587,7 +576,7 @@ function Register({ history }) {
                           </label>
                           <label className="label-radio">
                             <input
-                              className="sex-bullion"
+                              className="gender-bullion"
                               type="radio"
                               name="genderBullion"
                               value="선택안함"
@@ -860,9 +849,9 @@ const StyledRegister = styled.div`
       width: 16px;
       height: 16px;
       border: 1px solid gray;
-      border-radius: 2px;
+      /* border-radius: 2px;
       margin-top: 4px;
-      z-index: 10;
+      z-index: 10; */
     }
   }
   .nece1 {
@@ -939,7 +928,7 @@ const StyledRegister = styled.div`
     font-size: 14px;
   }
   .col2 {
-    width: 480px;
+    /* width: 480px; */
   }
   .head-section {
     background: #f9f9f9;
@@ -997,10 +986,6 @@ const StyledRegister = styled.div`
     border: 1px solid #ccc;
     width: 300px;
     height: 40px;
-
-    .birth-input:focus .birth-inputs {
-      border: 1px solid #000;
-    }
   }
   .benefit-info {
     width: 323px;
@@ -1166,17 +1151,10 @@ const StyledRegister = styled.div`
   .guide-tr-pwc {
     height: 30px;
   }
-
   .join-start {
-    box-sizing: border-box;
-    margin-top: 90px;
-
-    .birth-inputs {
-      transition: all 0.3s ease-in-out;
-    }
+    margin-top: 10rem;
 
     input {
-      transition: all 0.3s ease-in-out;
       &:focus {
         border: 1px solid #000;
         outline: none;
