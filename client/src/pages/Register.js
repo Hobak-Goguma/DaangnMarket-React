@@ -28,7 +28,7 @@ function Register({ history }) {
   const [email, setEmail] = useState("");
   const [cellPhone, setCellphone] = useState("");
   const [address, setAddress] = useState("서울특별시 강북구 4.19로2길");
-  const [sex, setSex] = useState("");
+  const [gender, setGender] = useState("");
   const [birthYear, setBirthYear] = useState("");
   const [birthMonth, setBirthMonth] = useState("");
   const [birthDay, setBirthDay] = useState("");
@@ -53,21 +53,21 @@ function Register({ history }) {
   };
 
   function man() {
-    let sexBullion = document.getElementsByClassName("sex-bullion");
-    if (sexBullion[0].checked === true) {
-      setSex(sexBullion[0].value);
+    let genderBullion = document.getElementsByClassName("gender-bullion");
+    if (genderBullion[0].checked === true) {
+      setGender(genderBullion[0].value);
     }
   }
   function woman() {
-    let sexBullion = document.getElementsByClassName("sex-bullion");
-    if (sexBullion[1].checked === true) {
-      setSex(sexBullion[1].value);
+    let genderBullion = document.getElementsByClassName("sex-bullion");
+    if (genderBullion[1].checked === true) {
+      setGender(genderBullion[1].value);
     }
   }
   function nothing() {
-    let sexBullion = document.getElementsByClassName("sex-bullion");
-    if (sexBullion[2].checked === true) {
-      setSex(sexBullion[2].value);
+    let genderBullion = document.getElementsByClassName("sex-bullion");
+    if (genderBullion[2].checked === true) {
+      setGender(genderBullion[2].value);
     }
   }
   function necessaryOne() {
@@ -558,7 +558,7 @@ function Register({ history }) {
                           <input
                             className="sex-bullion"
                             type="radio"
-                            name="sexBullion"
+                            name="genderBullion"
                             value="남성"
                             onChange={man}
                           ></input>
@@ -568,7 +568,7 @@ function Register({ history }) {
                           <input
                             className="sex-bullion"
                             type="radio"
-                            name="sexBullion"
+                            name="genderBullion"
                             value="여성"
                             onChange={woman}
                           ></input>
@@ -578,7 +578,7 @@ function Register({ history }) {
                           <input
                             className="sex-bullion"
                             type="radio"
-                            name="sexBullion"
+                            name="genderBullion"
                             value="선택안함"
                             onChange={nothing}
                           ></input>
