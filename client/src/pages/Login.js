@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { withRouter } from "react-router-dom";
-import Header from "../components/Header";
+import Layout from "../components/Layout";
 import styled from "styled-components";
 
 function Login({ history }) {
@@ -66,44 +66,45 @@ function Login({ history }) {
     history.push("/register");
   }
   return (
-    <LoginContainer>
-      <Header />
-      <div className="contents">
-        <div className="login-top">로그인</div>
-        <div className="input-area">
-          <input
-            className="id"
-            placeholder="아이디를 입력해주세요"
-            onChange={handleID}
-          ></input>
-        </div>
-        <div className="input-area">
-          <input
-            className="password"
-            type="password"
-            placeholder="비밀번호를 입력해주세요"
-            onChange={handlePW}
-          ></input>
-        </div>
-        <div>
-          <div className="finding">
-            <span>아이디찾기</span>
-            <span className="line"></span>
-            <span>비밀번호찾기</span>
+    <Layout>
+      <LoginContainer>
+        <div className="contents">
+          <div className="login-top">로그인</div>
+          <div className="input-area">
+            <input
+              className="id"
+              placeholder="아이디를 입력해주세요"
+              onChange={handleID}
+            ></input>
+          </div>
+          <div className="input-area">
+            <input
+              className="password"
+              type="password"
+              placeholder="비밀번호를 입력해주세요"
+              onChange={handlePW}
+            ></input>
+          </div>
+          <div>
+            <div className="finding">
+              <span>아이디찾기</span>
+              <span className="line"></span>
+              <span>비밀번호찾기</span>
+            </div>
+          </div>
+          <div className="button">
+            <div className="login-button" onClick={loginFetch}>
+              로그인
+            </div>
+          </div>
+          <div className="button">
+            <div className="register-button" onClick={goRegister}>
+              회원가입
+            </div>
           </div>
         </div>
-        <div className="button">
-          <div className="login-button" onClick={loginFetch}>
-            로그인
-          </div>
-        </div>
-        <div className="button">
-          <div className="register-button" onClick={goRegister}>
-            회원가입
-          </div>
-        </div>
-      </div>
-    </LoginContainer>
+      </LoginContainer>
+    </Layout>
   );
 }
 
