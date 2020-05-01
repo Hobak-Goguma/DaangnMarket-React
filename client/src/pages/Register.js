@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import styled, { css } from "styled-components";
-import Header from "../components/Header";
+import Layout from "../components/Layout";
 
 function Register({ history }) {
   const [birthFocus, setBirthFocus] = useState(false);
@@ -258,529 +258,543 @@ function Register({ history }) {
     setAllAgree(!allAgree);
   }
 
-  async function joinFetch() {
-    // const post = await fetch(`${API_JONG}/users/sign-up`, {
-    //   method: "POST",
-    //   body: JSON.stringify({
-    //     account: this.state.ID,
-    //     password: this.state.PW,
-    //     name: this.state.name,
-    //     email: this.state.email,
-    //     phone: this.state.cellPhone,
-    //     gender: this.state.sex,
-    //     birthday: this.state.birth,
-    //     address: this.state.address
-    //   })
-    // });
-    // const postJSON = await post.json();
-    // if (post.status === 200) {
-    //   alert("회원가입을 축하드립니다! \n당신의 일상에 컬리를 더해보세요");
-    //   this.props.history.push("/joincomplete", { state: postJSON.data });
-    // } else {
-    //   alert("올바른 가입정보를 기입하여, \n다시 시도하여 주십시오!");
-    // }
-    console.log("something");
+  function joinFetch() {
+    fetch("http://localhost:8084/auth/register", {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({
+        email: ID,
+        password: PW,
+      }),
+    })
+      .then((response) => {
+        // console.log(response);
+        // console.log(response.status);
+        if (response.status === 200) {
+          alert("정상 로그인 되었습니다");
+          console.log(response);
+          history.push("/");
+        } else {
+          alert("wrong");
+        }
+        console.log(response, response.json);
+        return response.json();
+        //response.json으로 하면 에러나서 json을 없애버림. 그런데 갑자기 붙여도 됨.
+      })
+      .then((response) => {
+        if (response.token) {
+          localStorage.setItem("wetoken", response.token);
+        }
+      });
   }
 
   return (
-    <RegisterStyleComponent>
-      <form action="">
-        <Header />
-        <div className="join-start">
-          <div className="contents">
-            <div className="page-location">
-              <div className="home-menu" onClick={goHome}>
-                홈
+    <Layout>
+      <StyledRegister>
+        <form action="">
+          <div className="join-start">
+            <div className="contents">
+              <div className="page-location">
+                <div className="home-menu" onClick={goHome}>
+                  홈
+                </div>
+                <span className="page-symbol"> > </span>
+                <strong>회원가입</strong>
               </div>
-              <span className="page-symbol"> > </span>
-              <strong>회원가입</strong>
-            </div>
 
-            <div className="page-article2">
-              <div className="head-section">
-                <h2 className="join-title">회원가입</h2>
-              </div>
-              <div className="head-notification1" style={{ marginBottom: 10 }}>
-                <p>*필수입력사항</p>
-              </div>
-              <div className="write-board2">
-                <div className="ghost-tr"></div>
-                <table>
-                  <tbody>
-                    <tr className="first-tr">
-                      <td className="id-write col1">
-                        <span>아이디*</span>
-                      </td>
-                      <td className="id-write col2">
-                        <div className="col2-2">
-                          <input
-                            className="typing"
-                            type="text"
-                            placeholder="6자 이상의 영문 혹은 영문과 숫자를 조합"
-                            onFocus={IDPopup}
-                            onChange={handleID}
-                            value={ID}
-                            required
-                          ></input>
-                          <div
-                            className="normal-button colbutton"
-                            onClick={IDDuplication}
-                          >
-                            중복확인
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                {IDFocusMode === true ? (
+              <div className="page-article2">
+                <div className="head-section">
+                  <h2 className="join-title">회원가입</h2>
+                </div>
+                <div
+                  className="head-notification1"
+                  style={{ marginBottom: 10 }}
+                >
+                  <p>*필수입력사항</p>
+                </div>
+                <div className="write-board2">
+                  <div className="ghost-tr"></div>
                   <table>
                     <tbody>
-                      <tr className="guide-tr">
-                        <td className="give-number col1"></td>
-                        <td className="give-number col2">
-                          <div className="col2-2">
-                            <div className="guide-box">
-                              <div className={guideIDFirstClass}>
-                                6자 이상의 영문 혹은 영문과 숫자를 조합
-                              </div>
-                              <div className="guide-id-second">
-                                아이디 중복확인
-                              </div>
-                            </div>
-                          </div>
+                      <tr className="first-tr">
+                        <td className="id-write col1">
+                          <span>아이디*</span>
                         </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                ) : null}
-
-                <table>
-                  <tbody>
-                    <tr>
-                      <td className="col1">비밀번호*</td>
-                      <td className="col2">
-                        <input
-                          className="typing"
-                          type={passwordShown ? "text" : "password"}
-                          placeholder="비밀번호를 입력해주세요"
-                          onFocus={PWPopup}
-                          onChange={handlePW}
-                          value={PW}
-                          required
-                        ></input>
-                        {passwordShown ? (
-                          <i
-                            className="fa fa-eye-slash password-icon"
-                            onClick={togglePasswordVisibility}
-                          />
-                        ) : (
-                          <i
-                            className="fa fa-eye password-icon"
-                            onClick={togglePasswordVisibility}
-                          />
-                        )}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                {PWFocusMode === true ? (
-                  <table>
-                    <tbody>
-                      <tr className="guide-tr">
-                        <td className="give-number col1"></td>
-                        <td className="give-number col2">
+                        <td className="id-write col2">
                           <div className="col2-2">
-                            <div className="guide-box">
-                              <div className={guidePWFirstClass}>
-                                10자 이상 입력
-                              </div>
-                              <div className={guidePWSecondClass}>
-                                영문/숫자/특수문자(공백제외)만 허용하며, 2개이상
-                                조합
-                              </div>
-                              <div className={guidePWThirdClass}>
-                                동일한 숫자 3개 이상 연속 사용 불가
-                              </div>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                ) : null}
-                <table>
-                  <tbody>
-                    <tr>
-                      <td className="col1">비밀번호확인*</td>
-                      <td className="col2">
-                        <input
-                          className="typing"
-                          type="password"
-                          placeholder="비밀번호를 한번 더 입력해주세요"
-                          onFocus={PWConfirmPopup}
-                          onChange={handlePWConfirm}
-                          value={PWConfirm}
-                          required
-                        ></input>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                {PWConfirmFocusMode === true ? (
-                  <table>
-                    <tbody>
-                      <tr className="guide-tr-pwc">
-                        <td className="give-number col1"></td>
-                        <td className="give-number col2-pwc">
-                          <div className="col2-2">
-                            <div className="guide-box">
-                              <div className={guidePWCFirstClass}>
-                                동일한 비밀번호를 입력해주세요
-                              </div>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                ) : null}
-                <table>
-                  <tbody>
-                    <tr>
-                      <td className="name col1">이름*</td>
-                      <td className="name col2">
-                        <input
-                          className="typing"
-                          type="text"
-                          placeholder="고객님의 이름을 입력해주세요"
-                          onChange={handleName}
-                          value={name}
-                          required
-                        ></input>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <table>
-                  <tbody>
-                    <tr>
-                      <td className="email col1">이메일*</td>
-                      <td className="email col2">
-                        <div className="col2-2">
-                          <input
-                            className="typing"
-                            type="text"
-                            placeholder="예: danggn@danggn.com"
-                            onChange={handleEmail}
-                            required
-                          ></input>
-                          <div
-                            className="normal-button colbutton"
-                            onClick={emailDuplication}
-                          >
-                            이메일 중복확인
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <table>
-                  <tbody>
-                    <tr>
-                      <td className="cell col1">휴대폰*</td>
-                      <td className="cell col2">
-                        <div className="col2-2">
-                          <input
-                            className="typing"
-                            type="number"
-                            placeholder="숫자만 입력해주세요"
-                            onChange={handleCellPhone}
-                            required
-                          ></input>
-                          <div
-                            className="normal-button-gray colbutton"
-                            onClick={goSorry}
-                          >
-                            인증번호받기
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <table>
-                  <tbody>
-                    <tr>
-                      <td className="give-number col1"></td>
-                      <td className="give-number col2">
-                        <div className="col2-2">
-                          <input
-                            className="typing"
-                            type="text"
-                            onChange={handleCellPhone}
-                          ></input>
-                          <div className="normal-button-white colbutton">
-                            인증번호 확인
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <table>
-                  <tbody>
-                    <tr>
-                      <td className="address2 col1">배송주소</td>
-                      <td>
-                        <div className="col2-2">
-                          <div
-                            className="normal-button address"
-                            style={{ marginBottom: 10 }}
-                          >
-                            <span onClick={goSorry}>주소 검색</span>
-                          </div>
-                        </div>
-                        <p className="address-hint">
-                          배송가능여부를 확인할수 있습니다.
-                        </p>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <table>
-                  <tbody>
-                    <tr>
-                      <td className="sex col1">성별</td>
-                      <td className="sex col2">
-                        <label className="label-radio">
-                          <input
-                            className="sex-bullion"
-                            type="radio"
-                            name="genderBullion"
-                            value="남성"
-                            onChange={man}
-                          ></input>
-                          <span>남자</span>
-                        </label>
-                        <label className="label-radio">
-                          <input
-                            className="sex-bullion"
-                            type="radio"
-                            name="genderBullion"
-                            value="여성"
-                            onChange={woman}
-                          ></input>
-                          <span>여자</span>
-                        </label>
-                        <label className="label-radio">
-                          <input
-                            className="sex-bullion"
-                            type="radio"
-                            name="genderBullion"
-                            value="선택안함"
-                            onChange={nothing}
-                          ></input>
-                          <span>선택안함</span>
-                        </label>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <table>
-                  <tbody>
-                    <tr className="birth-tr">
-                      <td className="birth col1">생년월일</td>
-                      <td>
-                        <div className="birth col2">
-                          <div
-                            className="birth-inputs col2"
-                            onBlur={outBirthFocus}
-                            style={
-                              birthFocus
-                                ? { border: "1px solid #000" }
-                                : { border: "1px solid #ccc" }
-                            }
-                          >
                             <input
-                              className="birth-input year"
-                              placeholder="YYYY"
+                              className="typing"
+                              type="text"
+                              placeholder="6자 이상의 영문 혹은 영문과 숫자를 조합"
+                              onFocus={IDPopup}
+                              onChange={handleID}
+                              value={ID}
+                              required
+                            ></input>
+                            <div
+                              className="normal-button colbutton"
+                              onClick={IDDuplication}
+                            >
+                              중복확인
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  {IDFocusMode === true ? (
+                    <table>
+                      <tbody>
+                        <tr className="guide-tr">
+                          <td className="give-number col1"></td>
+                          <td className="give-number col2">
+                            <div className="col2-2">
+                              <div className="guide-box">
+                                <div className={guideIDFirstClass}>
+                                  6자 이상의 영문 혹은 영문과 숫자를 조합
+                                </div>
+                                <div className="guide-id-second">
+                                  아이디 중복확인
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  ) : null}
+
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td className="col1">비밀번호*</td>
+                        <td className="col2">
+                          <input
+                            className="typing"
+                            type={passwordShown ? "text" : "password"}
+                            placeholder="비밀번호를 입력해주세요"
+                            onFocus={PWPopup}
+                            onChange={handlePW}
+                            value={PW}
+                            required
+                          ></input>
+                          {passwordShown ? (
+                            <i
+                              className="fa fa-eye-slash password-icon"
+                              onClick={togglePasswordVisibility}
+                            />
+                          ) : (
+                            <i
+                              className="fa fa-eye password-icon"
+                              onClick={togglePasswordVisibility}
+                            />
+                          )}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  {PWFocusMode === true ? (
+                    <table>
+                      <tbody>
+                        <tr className="guide-tr">
+                          <td className="give-number col1"></td>
+                          <td className="give-number col2">
+                            <div className="col2-2">
+                              <div className="guide-box">
+                                <div className={guidePWFirstClass}>
+                                  10자 이상 입력
+                                </div>
+                                <div className={guidePWSecondClass}>
+                                  영문/숫자/특수문자(공백제외)만 허용하며,
+                                  2개이상 조합
+                                </div>
+                                <div className={guidePWThirdClass}>
+                                  동일한 숫자 3개 이상 연속 사용 불가
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  ) : null}
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td className="col1">비밀번호확인*</td>
+                        <td className="col2">
+                          <input
+                            className="typing"
+                            type="password"
+                            placeholder="비밀번호를 한번 더 입력해주세요"
+                            onFocus={PWConfirmPopup}
+                            onChange={handlePWConfirm}
+                            value={PWConfirm}
+                            required
+                          ></input>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  {PWConfirmFocusMode === true ? (
+                    <table>
+                      <tbody>
+                        <tr className="guide-tr-pwc">
+                          <td className="give-number col1"></td>
+                          <td className="give-number col2-pwc">
+                            <div className="col2-2">
+                              <div className="guide-box">
+                                <div className={guidePWCFirstClass}>
+                                  동일한 비밀번호를 입력해주세요
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  ) : null}
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td className="name col1">이름*</td>
+                        <td className="name col2">
+                          <input
+                            className="typing"
+                            type="text"
+                            placeholder="고객님의 이름을 입력해주세요"
+                            onChange={handleName}
+                            value={name}
+                            required
+                          ></input>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td className="email col1">이메일*</td>
+                        <td className="email col2">
+                          <div className="col2-2">
+                            <input
+                              className="typing"
+                              type="text"
+                              placeholder="예: danggn@danggn.com"
+                              onChange={handleEmail}
+                              required
+                            ></input>
+                            <div
+                              className="normal-button colbutton"
+                              onClick={emailDuplication}
+                            >
+                              이메일 중복확인
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td className="cell col1">휴대폰*</td>
+                        <td className="cell col2">
+                          <div className="col2-2">
+                            <input
+                              className="typing"
                               type="number"
-                              maxLength="4"
-                              onChange={yearLimit}
-                              value={year}
-                              onFocus={onBirthFocus}
+                              placeholder="숫자만 입력해주세요"
+                              onChange={handleCellPhone}
+                              required
                             ></input>
-                            <span>/</span>
-                            <input
-                              className="birth-input month"
-                              placeholder="MM"
-                              maxLength="2"
-                              onChange={monthLimit}
-                              value={month}
-                              onFocus={onBirthFocus}
-                            ></input>
-                            <span>/</span>
-                            <input
-                              className="birth-input day"
-                              placeholder="DD"
-                              maxLength="4"
-                              onChange={dayLimit}
-                              value={day}
-                              onFocus={onBirthFocus}
-                            ></input>
+                            <div
+                              className="normal-button-gray colbutton"
+                              onClick={goSorry}
+                            >
+                              인증번호받기
+                            </div>
                           </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td className="give-number col1"></td>
+                        <td className="give-number col2">
+                          <div className="col2-2">
+                            <input
+                              className="typing"
+                              type="text"
+                              onChange={handleCellPhone}
+                            ></input>
+                            <div className="normal-button-white colbutton">
+                              인증번호 확인
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td className="address2 col1">배송주소</td>
+                        <td>
+                          <div className="col2-2">
+                            <div
+                              className="normal-button address"
+                              style={{ marginBottom: 10 }}
+                            >
+                              <span onClick={goSorry}>주소 검색</span>
+                            </div>
+                          </div>
+                          <p className="address-hint">
+                            배송가능여부를 확인할수 있습니다.
+                          </p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td className="sex col1">성별</td>
+                        <td className="sex col2">
+                          <label className="label-radio">
+                            <input
+                              className="sex-bullion"
+                              type="radio"
+                              name="genderBullion"
+                              value="남성"
+                              onChange={man}
+                            ></input>
+                            <span>남자</span>
+                          </label>
+                          <label className="label-radio">
+                            <input
+                              className="sex-bullion"
+                              type="radio"
+                              name="genderBullion"
+                              value="여성"
+                              onChange={woman}
+                            ></input>
+                            <span>여자</span>
+                          </label>
+                          <label className="label-radio">
+                            <input
+                              className="sex-bullion"
+                              type="radio"
+                              name="genderBullion"
+                              value="선택안함"
+                              onChange={nothing}
+                            ></input>
+                            <span>선택안함</span>
+                          </label>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <table>
+                    <tbody>
+                      <tr className="birth-tr">
+                        <td className="birth col1">생년월일</td>
+                        <td>
+                          <div className="birth col2">
+                            <div
+                              className="birth-inputs col2"
+                              onBlur={outBirthFocus}
+                              style={
+                                birthFocus
+                                  ? { border: "1px solid #000" }
+                                  : { border: "1px solid #ccc" }
+                              }
+                            >
+                              <input
+                                className="birth-input year"
+                                placeholder="YYYY"
+                                type="number"
+                                maxLength="4"
+                                onChange={yearLimit}
+                                value={year}
+                                onFocus={onBirthFocus}
+                              ></input>
+                              <span>/</span>
+                              <input
+                                className="birth-input month"
+                                placeholder="MM"
+                                maxLength="2"
+                                onChange={monthLimit}
+                                value={month}
+                                onFocus={onBirthFocus}
+                              ></input>
+                              <span>/</span>
+                              <input
+                                className="birth-input day"
+                                placeholder="DD"
+                                maxLength="4"
+                                onChange={dayLimit}
+                                value={day}
+                                onFocus={onBirthFocus}
+                              ></input>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <table>
+                    <tbody>
+                      <tr className="ghost-tr">
+                        <td className="birth col1"></td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div className="agree-board">
+                  <div className="agree-head">
+                    <h3 style={{ fontSize: 20, opacity: 0.6 }}>
+                      이용약관동의*
+                    </h3>
+                    <p className="agree-note">
+                      선택항목에 동의하지 않은 경우도 회원가입 및 일반적인
+                      서비스를 이용할 수 있습니다.
+                    </p>
+                  </div>
+                  <div className="agree-neck">
+                    <label>
+                      <input type="checkbox"></input>
+                      <span
+                        className="agree-explanation"
+                        onClick={agreeAll}
+                        id="checkAll"
+                      >
+                        전체동의
+                      </span>
+                    </label>
+                  </div>
+                  <div className="agree-body">
+                    <div className="agree-body-line">
+                      <label>
+                        <input
+                          className="nece1"
+                          type="checkbox"
+                          onChange={necessaryOne}
+                          name="checkRow"
+                          required
+                        ></input>
+                        <span className="agree-explanation">
+                          이용약관
+                          <span className="agree-gray-guide">(필수)</span>
+                        </span>
+                        <div className="clasuse">약관보기></div>
+                      </label>
+                    </div>
+                    <div className="agree-body-line">
+                      <label>
+                        <input
+                          className="nece2"
+                          type="checkbox"
+                          onChange={necessaryTwo}
+                          name="checkRow"
+                          required
+                        ></input>
+                        <span className="agree-explanation">
+                          개인정보처리방침
+                          <span className="agree-gray-guide">(필수)</span>
+                        </span>
+                        <div className="clasuse">약관보기></div>
+                      </label>
+                    </div>
+                    <div className="agree-body-line">
+                      <label>
+                        <input type="checkbox" name="checkRow"></input>
+                        <span className="agree-explanation">
+                          개인정보처리방침
+                          <span className="agree-gray-guide">(선택)</span>
+                        </span>
+                        <div className="clasuse">약관보기></div>
+                      </label>
+                    </div>
+                    <div className="agree-body-line">
+                      <label>
+                        <input
+                          type="checkbox"
+                          className="info-share"
+                          onClick={infoCheck}
+                          name="checkRow"
+                        ></input>
+                        <span className="agree-explanation">
+                          무료배송, 할인쿠폰 등 혜택/정보 수신
+                          <span className="agree-gray-guide">(선택)</span>
+                        </span>
+                      </label>
+
+                      <div className="subscription">
+                        <div className="subscript-detail">
+                          <label>
+                            <input
+                              type="checkbox"
+                              className="info-share"
+                              name="checkRow"
+
+                              // checked={state.infoChecked}
+                            ></input>
+                            <span className="agree-explanation">SMS</span>
+                          </label>
+
+                          <label>
+                            <input
+                              type="checkbox"
+                              className="info-share"
+                              name="checkRow"
+                              // checked={state.infoChecked}
+                            ></input>
+                            <span className="agree-explanation">이메일</span>
+                          </label>
                         </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <table>
-                  <tbody>
-                    <tr className="ghost-tr">
-                      <td className="birth col1"></td>
-                      <td></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-
-              <div className="agree-board">
-                <div className="agree-head">
-                  <h3 style={{ fontSize: 20, opacity: 0.6 }}>이용약관동의*</h3>
-                  <p className="agree-note">
-                    선택항목에 동의하지 않은 경우도 회원가입 및 일반적인
-                    서비스를 이용할 수 있습니다.
-                  </p>
-                </div>
-                <div className="agree-neck">
-                  <label>
-                    <input type="checkbox"></input>
-                    <span
-                      className="agree-explanation"
-                      onClick={agreeAll}
-                      id="checkAll"
-                    >
-                      전체동의
-                    </span>
-                  </label>
-                </div>
-                <div className="agree-body">
-                  <div className="agree-body-line">
-                    <label>
-                      <input
-                        className="nece1"
-                        type="checkbox"
-                        onChange={necessaryOne}
-                        name="checkRow"
-                        required
-                      ></input>
-                      <span className="agree-explanation">
-                        이용약관
-                        <span className="agree-gray-guide">(필수)</span>
-                      </span>
-                      <div className="clasuse">약관보기></div>
-                    </label>
-                  </div>
-                  <div className="agree-body-line">
-                    <label>
-                      <input
-                        className="nece2"
-                        type="checkbox"
-                        onChange={necessaryTwo}
-                        name="checkRow"
-                        required
-                      ></input>
-                      <span className="agree-explanation">
-                        개인정보처리방침
-                        <span className="agree-gray-guide">(필수)</span>
-                      </span>
-                      <div className="clasuse">약관보기></div>
-                    </label>
-                  </div>
-                  <div className="agree-body-line">
-                    <label>
-                      <input type="checkbox" name="checkRow"></input>
-                      <span className="agree-explanation">
-                        개인정보처리방침
-                        <span className="agree-gray-guide">(선택)</span>
-                      </span>
-                      <div className="clasuse">약관보기></div>
-                    </label>
-                  </div>
-                  <div className="agree-body-line">
-                    <label>
-                      <input
-                        type="checkbox"
-                        className="info-share"
-                        onClick={infoCheck}
-                        name="checkRow"
-                      ></input>
-                      <span className="agree-explanation">
-                        무료배송, 할인쿠폰 등 혜택/정보 수신
-                        <span className="agree-gray-guide">(선택)</span>
-                      </span>
-                    </label>
-
-                    <div className="subscription">
-                      <div className="subscript-detail">
-                        <label>
-                          <input
-                            type="checkbox"
-                            className="info-share"
-                            name="checkRow"
-
-                            // checked={state.infoChecked}
-                          ></input>
-                          <span className="agree-explanation">SMS</span>
-                        </label>
-
-                        <label>
-                          <input
-                            type="checkbox"
-                            className="info-share"
-                            name="checkRow"
-                            // checked={state.infoChecked}
-                          ></input>
-                          <span className="agree-explanation">이메일</span>
-                        </label>
+                        <div className="benefit-info"></div>
                       </div>
-                      <div className="benefit-info"></div>
+                    </div>
+                    <div className="agree-body-line">
+                      <label>
+                        <input
+                          className="nece3"
+                          type="checkbox"
+                          onChange={necessaryThree}
+                          name="checkRow"
+                          required
+                        ></input>
+                        <span className="agree-explanation">
+                          본인은 만 14세 이상입니다.
+                          <span className="agree-gray-guide">(필수)</span>
+                        </span>
+                      </label>
                     </div>
                   </div>
-                  <div className="agree-body-line">
-                    <label>
-                      <input
-                        className="nece3"
-                        type="checkbox"
-                        onChange={necessaryThree}
-                        name="checkRow"
-                        required
-                      ></input>
-                      <span className="agree-explanation">
-                        본인은 만 14세 이상입니다.
-                        <span className="agree-gray-guide">(필수)</span>
-                      </span>
-                    </label>
-                  </div>
+                  <div className="ghost-tr"></div>
                 </div>
-                <div className="ghost-tr"></div>
-              </div>
-              <div className="final-join">
-                <button
-                  type="button"
-                  className="final-button-join"
-                  onClick={joinFetch}
-                >
-                  가입하기
-                </button>
+                <div className="final-join">
+                  <button
+                    type="button"
+                    className="final-button-join"
+                    onClick={joinFetch}
+                  >
+                    가입하기
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </form>
-    </RegisterStyleComponent>
+        </form>
+      </StyledRegister>
+    </Layout>
   );
 }
 
@@ -801,7 +815,7 @@ const defaultButtonStyle = css`
   align-items: center;
 `;
 
-const RegisterStyleComponent = styled.div`
+const StyledRegister = styled.div`
   overflow-x: hidden;
   background-color: #f9f9f9;
 

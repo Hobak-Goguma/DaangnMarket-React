@@ -85,6 +85,7 @@ const StyledFooter = styled.footer`
 
     .footer-list-item:last-child {
       vertical-align: top;
+      text-align: left;
     }
 
     .footer-list-item:last-child p {
