@@ -1,130 +1,69 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { withRouter } from "react-router-dom";
+import { Checkbox, Radio } from "@material-ui/core";
 import styled, { css } from "styled-components";
 import Layout from "../components/Layout";
 
-function Register({ history }) {
-  const [birthFocus, setBirthFocus] = useState(false);
-  const [passwordShown, setPasswordShown] = useState(false);
-  const [IDFocusMode, setIDFocusMode] = useState(false);
-  const [PWFocusMode, setPWFocusMode] = useState(false);
-  const [PWConfirmFocusMode, setPWConfirmFocusMode] = useState(false);
-  const [guideIDFirstClass, setGuideIDFirstClass] = useState("guide-id-first1");
-  const [guidePWFirstClass, setGuidePWFirstClass] = useState("guide-pw-first1");
-  const [guidePWSecondClass, setGuidePWSecondClass] = useState(
-    "guide-pw-second1"
-  );
-  const [guidePWThirdClass, setGuidePWThirdClass] = useState("guide-pw-third1");
-  const [guidePWCFirstClass, setGuidePWCFirstClass] = useState(
-    "guide-pwc-first1"
-  );
-  const [ID, setID] = useState("");
-  const [PW, setPW] = useState("");
-  const [PWConfirm, setPWConfirm] = useState("");
-  const [name, setName] = useState("");
-  const [year, setYear] = useState("");
-  const [month, setMonth] = useState("");
-  const [day, setDay] = useState("");
-  const [email, setEmail] = useState("");
-  const [cellPhone, setCellphone] = useState("");
-  const [address, setAddress] = useState("서울특별시 강북구 4.19로2길");
-  const [gender, setGender] = useState("");
-  const [birthYear, setBirthYear] = useState("");
-  const [birthMonth, setBirthMonth] = useState("");
-  const [birthDay, setBirthDay] = useState("");
-  const [birth, setBirth] = useState("");
-  const [necessary1, setNecessary1] = useState("");
-  const [necessary2, setNecessary2] = useState("");
-  const [necessary3, setNecessary3] = useState("");
-  const [necessaryAll, setNecessaryAll] = useState("");
-  const [again, setAgain] = useState(false);
-  const [infoChecked, setInfoChecked] = useState(false);
-  const [allAgree, setAllAgree] = useState(false);
+const Register = ({ history }) => {
+  const [inputState, setInputState] = useState({
+    id: "",
+    pw: "",
+    name: "",
+    pwConfirm: "",
+    phone: "",
+    gender: "",
+    birth: "",
+  });
 
-  function handleID(e) {
-    setID(e.target.value.replace(/\s/g, ""));
+  const [checkbox, setCheckbox] = useState({
+    checkedA: false,
+    checkedB: false,
+    checkedC: false,
+    checkedD: false,
+    checkedE: false,
+    checkedF: false,
+    checkedG: false,
+  });
 
-    if (e.target.value.length < 6) {
-      setGuideIDFirstClass("guide-id-first2");
-    } else if (e.target.value.length >= 6) {
-      setGuideIDFirstClass("guide-id-first3");
-    }
-  }
-  function handlePW(e) {
-    setPW(e.target.value.replace(/\s/g, ""));
+  const handleInputState = (e) => {
+    setInputState({
+      [e.target.name]: e.target.value,
+    });
+  };
 
-    if (e.target.value.length >= 10) {
-      setGuidePWFirstClass("guide-pw-first2");
-    } else {
-      setGuidePWCFirstClass("guide-pw-first1");
-    }
+  const handleCheckbox = (e) => {
+    setCheckbox({
+      ...checkbox,
+      [e.target.name]: e.target.checked,
+    });
+  };
 
-    let checkNum = /[0-9]/;
-    let checkEng = /[a-zA-Z]/;
-    let checkSpc = /[~!@#$%^&*()_+|<>?:{}]/;
+  const handleAllCheck = (e) => {
+    setCheckbox({
+      checkedA: e.target.checked,
+      checkedB: e.target.checked,
+      checkedC: e.target.checked,
+      checkedD: e.target.checked,
+      checkedE: e.target.checked,
+      checkedF: e.target.checked,
+      checkedG: e.target.checked,
+    });
+  };
 
-    if (
-      (checkNum.test(e.target.value) && checkEng.test(e.target.value)) ||
-      (checkEng.test(e.target.value) && checkSpc.test(e.target.value)) ||
-      (checkSpc.test(e.target.value) && checkNum.test(e.target.value))
-    ) {
-      setGuidePWSecondClass("guide-pw-second2");
-    } else {
-      setGuidePWSecondClass("guide-pw-second1");
-    }
-
-    if (/(\d)\1\1/.test(e.target.value)) {
-      setGuidePWThirdClass("guide-pw-third2");
-    } else {
-      setGuidePWThirdClass("guide-pw-third1");
-    }
-  }
-  function handlePWConfirm(e) {
-    setPWConfirm(e.target.value);
-    if (PW === e.target.value) {
-      setGuidePWCFirstClass("guide-pwc-first2");
-    }
-  }
-  function handleName(e) {
-    setName(e.target.value);
-  }
-  function handleEmail(e) {
-    setEmail(e.target.value);
-  }
-  function handleCellPhone(e) {
-    setCellphone(e.target.value);
-  }
-  function yearLimit(e) {
-    if (e.target.value <= 9999) {
-      setYear(e.target.value);
-    }
-  }
-  function monthLimit(e) {
-    if (e.target.value <= 99) {
-      setMonth(e.target.value);
-    }
-  }
-  function dayLimit(e) {
-    if (e.target.value <= 99) {
-      setDay(e.target.value);
-      setBirth(`${year} ${month} ${e.target.value}` * 1);
-    }
-  }
-
-  function goHome() {
+  const goHome = () => {
     history.push("/");
-  }
+  };
   return (
     <Layout>
       <StyledRegister>
-        <form action="">
+        <form>
           <div className="join-start">
             <div className="contents">
               <div className="page-location">
                 <div className="home-menu" onClick={goHome}>
                   홈
                 </div>
-                <span className="page-symbol"> > </span>
+                <span className="gt-symbol">&gt;</span>
                 <strong>회원가입</strong>
               </div>
 
@@ -152,8 +91,8 @@ function Register({ history }) {
                               className="typing"
                               type="text"
                               placeholder="6자 이상의 영문 혹은 영문과 숫자를 조합"
-                              onChange={handleID}
-                              value={ID}
+                              onChange={handleInputState}
+                              name="id"
                               required
                             ></input>
                             <div className="normal-button colbutton">
@@ -164,28 +103,6 @@ function Register({ history }) {
                       </tr>
                     </tbody>
                   </table>
-                  {IDFocusMode === true ? (
-                    <table>
-                      <tbody>
-                        <tr className="guide-tr">
-                          <td className="give-number col1"></td>
-                          <td className="give-number col2">
-                            <div className="col2-2">
-                              <div className="guide-box">
-                                <div className={guideIDFirstClass}>
-                                  6자 이상의 영문 혹은 영문과 숫자를 조합
-                                </div>
-                                <div className="guide-id-second">
-                                  아이디 중복확인
-                                </div>
-                              </div>
-                            </div>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  ) : null}
-
                   <table>
                     <tbody>
                       <tr>
@@ -193,41 +110,16 @@ function Register({ history }) {
                         <td className="col2">
                           <input
                             className="typing"
-                            type={passwordShown ? "text" : "password"}
+                            type="password"
                             placeholder="비밀번호를 입력해주세요"
-                            onChange={handlePW}
-                            value={PW}
+                            onChange={handleInputState}
+                            name="pw"
                             required
                           ></input>
                         </td>
                       </tr>
                     </tbody>
                   </table>
-                  {PWFocusMode === true ? (
-                    <table>
-                      <tbody>
-                        <tr className="guide-tr">
-                          <td className="give-number col1"></td>
-                          <td className="give-number col2">
-                            <div className="col2-2">
-                              <div className="guide-box">
-                                <div className={guidePWFirstClass}>
-                                  10자 이상 입력
-                                </div>
-                                <div className={guidePWSecondClass}>
-                                  영문/숫자/특수문자(공백제외)만 허용하며,
-                                  2개이상 조합
-                                </div>
-                                <div className={guidePWThirdClass}>
-                                  동일한 숫자 3개 이상 연속 사용 불가
-                                </div>
-                              </div>
-                            </div>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  ) : null}
                   <table>
                     <tbody>
                       <tr>
@@ -237,32 +129,14 @@ function Register({ history }) {
                             className="typing"
                             type="password"
                             placeholder="비밀번호를 한번 더 입력해주세요"
-                            onChange={handlePWConfirm}
-                            value={PWConfirm}
+                            onChange={handleInputState}
+                            name="pwConfirm"
                             required
                           ></input>
                         </td>
                       </tr>
                     </tbody>
                   </table>
-                  {PWConfirmFocusMode === true ? (
-                    <table>
-                      <tbody>
-                        <tr className="guide-tr-pwc">
-                          <td className="give-number col1"></td>
-                          <td className="give-number col2-pwc">
-                            <div className="col2-2">
-                              <div className="guide-box">
-                                <div className={guidePWCFirstClass}>
-                                  동일한 비밀번호를 입력해주세요
-                                </div>
-                              </div>
-                            </div>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  ) : null}
                   <table>
                     <tbody>
                       <tr>
@@ -272,8 +146,8 @@ function Register({ history }) {
                             className="typing"
                             type="text"
                             placeholder="고객님의 이름을 입력해주세요"
-                            onChange={handleName}
-                            value={name}
+                            onChange={handleInputState}
+                            name="name"
                             required
                           ></input>
                         </td>
@@ -288,9 +162,10 @@ function Register({ history }) {
                           <div className="col2-2">
                             <input
                               className="typing"
-                              type="text"
-                              placeholder="예: danggn@danggn.com"
-                              onChange={handleEmail}
+                              type="email"
+                              placeholder="예: ID@daangn.com"
+                              onChange={handleInputState}
+                              name="email"
                               required
                             ></input>
                             <div className="normal-button colbutton">
@@ -311,7 +186,11 @@ function Register({ history }) {
                               className="typing"
                               type="number"
                               placeholder="숫자만 입력해주세요"
-                              onChange={handleCellPhone}
+                              onChange={handleInputState}
+                              onKeyDown={(e) =>
+                                e.keyCode === 69 && e.preventDefault()
+                              }
+                              name="phone"
                               required
                             ></input>
                             <div className="normal-button-gray colbutton">
@@ -328,11 +207,7 @@ function Register({ history }) {
                         <td className="give-number col1"></td>
                         <td className="give-number col2">
                           <div className="col2-2">
-                            <input
-                              className="typing"
-                              type="text"
-                              onChange={handleCellPhone}
-                            ></input>
+                            <input className="typing" />
                             <div className="normal-button-white colbutton">
                               인증번호 확인
                             </div>
@@ -344,56 +219,43 @@ function Register({ history }) {
                   <table>
                     <tbody>
                       <tr>
-                        {/* <td className="address2 col1">배송주소</td>
+                        <td className="address2 col1">주소</td>
                         <td>
                           <div className="col2-2">
-                            <div
-                              className="normal-button address"
-                              style={{ marginBottom: 10 }}
-                            >
-                              <span>주소 검색</span>
+                            <div className="normal-button address">
+                              <span>동네 검색</span>
                             </div>
                           </div>
-                          <p className="address-hint">
-                            배송가능여부를 확인할수 있습니다.
-                          </p>
-                        </td> */}
+                        </td>
                       </tr>
                     </tbody>
                   </table>
                   <table>
                     <tbody>
                       <tr>
-                        <td className="sex col1">성별</td>
-                        <td className="sex col2">
+                        <td className="gender col1">성별</td>
+                        <td className="gender col2">
                           <label className="label-radio">
-                            {/* <input
-                              className="sex-bullion"
-                              type="radio"
-                              name="genderBullion"
-                              value="남성"
-                            ></input> */}
+                            <Radio
+                              checked={inputState.gender === "male"}
+                              size="small"
+                              value="male"
+                              style={{ color: "#ff8a3d" }}
+                              onChange={handleInputState}
+                              name="gender"
+                            />
                             <span>남자</span>
                           </label>
                           <label className="label-radio">
-                            {/* <input
-                              className="sex-bullion"
-                              type="radio"
-                              name="genderBullion"
-                              value="여성"
-                              onChange={woman}
-                            ></input> */}
+                            <Radio
+                              checked={inputState.gender === "female"}
+                              value="female"
+                              size="small"
+                              style={{ color: "#ff8a3d" }}
+                              onChange={handleInputState}
+                              name="gender"
+                            />
                             <span>여자</span>
-                          </label>
-                          <label className="label-radio">
-                            <input
-                              className="sex-bullion"
-                              type="radio"
-                              name="genderBullion"
-                              value="선택안함"
-                              onChange={nothing}
-                            ></input>
-                            <span>선택안함</span>
                           </label>
                         </td>
                       </tr>
@@ -433,7 +295,11 @@ function Register({ history }) {
                   </div>
                   <div className="agree-neck">
                     <label>
-                      <input type="checkbox"></input>
+                      <Checkbox
+                        style={{ color: "#ff8a3d" }}
+                        size="small"
+                        onChange={handleAllCheck}
+                      />
                       <span className="agree-explanation" id="checkAll">
                         전체동의
                       </span>
@@ -442,53 +308,61 @@ function Register({ history }) {
                   <div className="agree-body">
                     <div className="agree-body-line">
                       <label>
-                        <input
-                          className="nece1"
-                          type="checkbox"
-                          onChange={necessaryOne}
-                          name="checkRow"
-                          required
-                        ></input>
+                        <Checkbox
+                          checked={checkbox.checkedA}
+                          style={{ color: "#ff8a3d" }}
+                          size="small"
+                          onChange={handleCheckbox}
+                          name="checkedA"
+                        />
                         <span className="agree-explanation">
                           이용약관
                           <span className="agree-gray-guide">(필수)</span>
                         </span>
-                        <div className="clasuse">약관보기></div>
+                        <div className="clasuse">약관보기</div>
                       </label>
                     </div>
                     <div className="agree-body-line">
                       <label>
-                        <input
-                          className="nece2"
-                          type="checkbox"
-                          onChange={necessaryTwo}
-                          name="checkRow"
-                          required
-                        ></input>
+                        <Checkbox
+                          checked={checkbox.checkedB}
+                          style={{ color: "#ff8a3d" }}
+                          size="small"
+                          onChange={handleCheckbox}
+                          name="checkedB"
+                        />
                         <span className="agree-explanation">
                           개인정보처리방침
                           <span className="agree-gray-guide">(필수)</span>
                         </span>
-                        <div className="clasuse">약관보기></div>
+                        <div className="clasuse">약관보기</div>
                       </label>
                     </div>
                     <div className="agree-body-line">
                       <label>
-                        <input type="checkbox" name="checkRow"></input>
+                        <Checkbox
+                          checked={checkbox.checkedC}
+                          style={{ color: "#ff8a3d" }}
+                          size="small"
+                          onChange={handleCheckbox}
+                          name="checkedC"
+                        />
                         <span className="agree-explanation">
                           개인정보처리방침
                           <span className="agree-gray-guide">(선택)</span>
                         </span>
-                        <div className="clasuse">약관보기></div>
+                        <div className="clasuse">약관보기</div>
                       </label>
                     </div>
                     <div className="agree-body-line">
                       <label>
-                        <input
-                          type="checkbox"
-                          className="info-share"
-                          name="checkRow"
-                        ></input>
+                        <Checkbox
+                          checked={checkbox.checkedD}
+                          style={{ color: "#ff8a3d" }}
+                          size="small"
+                          onChange={handleCheckbox}
+                          name="checkedD"
+                        />
                         <span className="agree-explanation">
                           무료배송, 할인쿠폰 등 혜택/정보 수신
                           <span className="agree-gray-guide">(선택)</span>
@@ -498,23 +372,24 @@ function Register({ history }) {
                       <div className="subscription">
                         <div className="subscript-detail">
                           <label>
-                            <input
-                              type="checkbox"
-                              className="info-share"
-                              name="checkRow"
-
-                              // checked={state.infoChecked}
-                            ></input>
+                            <Checkbox
+                              checked={checkbox.checkedE}
+                              style={{ color: "#ff8a3d" }}
+                              size="small"
+                              onChange={handleCheckbox}
+                              name="checkedE"
+                            />
                             <span className="agree-explanation">SMS</span>
                           </label>
 
                           <label>
-                            <input
-                              type="checkbox"
-                              className="info-share"
-                              name="checkRow"
-                              // checked={state.infoChecked}
-                            ></input>
+                            <Checkbox
+                              checked={checkbox.checkedF}
+                              style={{ color: "#ff8a3d" }}
+                              size="small"
+                              onChange={handleCheckbox}
+                              name="checkedF"
+                            />
                             <span className="agree-explanation">이메일</span>
                           </label>
                         </div>
@@ -523,13 +398,13 @@ function Register({ history }) {
                     </div>
                     <div className="agree-body-line">
                       <label>
-                        <input
-                          className="nece3"
-                          type="checkbox"
-                          onChange={necessaryThree}
-                          name="checkRow"
-                          required
-                        ></input>
+                        <Checkbox
+                          checked={checkbox.checkedG}
+                          style={{ color: "#ff8a3d" }}
+                          size="small"
+                          onChange={handleCheckbox}
+                          name="checkedG"
+                        />
                         <span className="agree-explanation">
                           본인은 만 14세 이상입니다.
                           <span className="agree-gray-guide">(필수)</span>
@@ -540,7 +415,7 @@ function Register({ history }) {
                   <div className="ghost-tr"></div>
                 </div>
                 <div className="final-join">
-                  <button type="button" className="final-button-join">
+                  <button type="submit" className="final-button-join">
                     가입하기
                   </button>
                 </div>
@@ -551,7 +426,7 @@ function Register({ history }) {
       </StyledRegister>
     </Layout>
   );
-}
+};
 
 export default withRouter(Register);
 
@@ -571,9 +446,6 @@ const defaultButtonStyle = css`
 `;
 
 const StyledRegister = styled.div`
-  overflow-x: hidden;
-  background-color: #f9f9f9;
-
   tr,
   td,
   div,
@@ -581,14 +453,7 @@ const StyledRegister = styled.div`
   p {
     border: 0px solid #ff8a3d;
   }
-  .col2 {
-    position: relative;
-  }
-  .password-icon {
-    position: absolute;
-    top: 21px;
-    left: 270px;
-  }
+
   input {
     border-radius: 4px;
     border: 1px solid #ccc;
@@ -597,11 +462,7 @@ const StyledRegister = styled.div`
       height: 42px;
       text-indent: 20px;
     }
-    &[type="radio"],
-    &[type="radio"]:checked {
-      width: 16px;
-      height: 16px;
-    }
+
     &[type="number"]::-webkit-outer-spin-button,
     &[type="number"]::-webkit-inner-spin-button {
       -webkit-appearance: none;
@@ -610,24 +471,14 @@ const StyledRegister = styled.div`
     &::placeholder {
       color: #ccc;
     }
-    &[type="checkbox"],
-    &[type="checkbox"]:checked {
-      width: 16px;
-      height: 16px;
-      border: 1px solid gray;
-      border-radius: 2px;
-      margin-top: 4px;
-      z-index: 10;
-    }
   }
-  .nece1 {
-    border: 1px solid gray;
-  }
+
   .home-menu {
+    letter-spacing: 0;
     cursor: pointer;
   }
   .page-article2 {
-    width: 630px;
+    width: 660px;
     margin: 0 auto;
   }
   .write-board2 {
@@ -638,6 +489,7 @@ const StyledRegister = styled.div`
   }
   .contents {
     background: #f9f9f9;
+    height: 100%;
   }
 
   a {
@@ -654,9 +506,14 @@ const StyledRegister = styled.div`
   .join-title {
     display: flex;
     justify-content: center;
-    background: #f9f9f9;
+    /* background: #f9f9f9; */
     font-size: 20px;
     margin: 0;
+  }
+
+  .gt-symbol {
+    line-height: 1;
+    margin: 0 5px;
   }
 
   .page-location {
@@ -664,12 +521,10 @@ const StyledRegister = styled.div`
     width: 1050px;
     padding-top: 26px;
     display: flex;
+    color: #4c4c4c;
     justify-content: flex-end;
     font-size: 12px;
-  }
-  .page-symbol {
-    margin-left: 5px;
-    margin-right: 5px;
+    letter-spacing: -0.6px;
   }
 
   .head-notification1 {
@@ -677,8 +532,8 @@ const StyledRegister = styled.div`
     display: flex;
     justify-content: flex-end;
     background: #f9f9f9;
+    opacity: 0.8;
   }
-
   .ghost-tr {
     height: 20px;
   }
@@ -689,12 +544,11 @@ const StyledRegister = styled.div`
     vertical-align: middle;
   }
   .col1 {
-    width: 119px;
+    width: 120px;
     padding-left: 30px;
     font-size: 14px;
-  }
-  .col2 {
-    width: 480px;
+    font-weight: bold;
+    opacity: 0.8;
   }
   .head-section {
     background: #f9f9f9;
@@ -737,7 +591,6 @@ const StyledRegister = styled.div`
     align-items: center;
   }
   .address {
-    margin-top: 15px;
     cursor: pointer;
   }
   .address-hint {
@@ -770,12 +623,12 @@ const StyledRegister = styled.div`
     align-items: flex-start;
     margin-top: 24px;
   }
-  .sex.col2 {
+  .gender.col2 {
+    margin-left: -8px;
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    width: 230px;
-    margin-top: 17px;
+    width: 160px;
+    margin-top: 10px;
   }
   .extra.col2 {
     width: 260px;
@@ -823,7 +676,7 @@ const StyledRegister = styled.div`
   }
   .clasuse {
     margin-left: 20px;
-    color: #5f0080;
+    color: #ff8a3d;
   }
   .agree-body {
     margin-left: 60px;
@@ -832,7 +685,6 @@ const StyledRegister = styled.div`
     margin-bottom: 10px;
     font-size: 14px;
   }
-
   .subscription {
     margin-left: 22px;
     font-size: 14px;
@@ -848,7 +700,8 @@ const StyledRegister = styled.div`
   .final-join {
     display: flex;
     justify-content: center;
-    margin: 50px auto;
+    margin: 50px auto 0;
+    padding-bottom: 50px;
   }
   .final-button-join {
     width: 340px;
@@ -861,91 +714,14 @@ const StyledRegister = styled.div`
     border: 0px;
     cursor: pointer;
   }
-  .guide-id-first1 {
-    font-size: 12px;
-    color: #747774;
-  }
-  .guide-id-first2 {
-    font-size: 12px;
-    color: #b8534a;
-  }
-  .guide-id-first3 {
-    font-size: 12px;
-    color: green;
-  }
-  .guide-id-second {
-    font-size: 12px;
-    color: #747774;
-  }
-  .guidePWThirdClass {
-    font-size: 12px;
-    color: green;
-  }
-  .guide-pw-first1 {
-    font-size: 12px;
-    color: #b8534a;
-  }
-  .guide-pw-first2 {
-    font-size: 12px;
-    color: green;
-  }
-  .guide-pw-second1 {
-    font-size: 12px;
-    color: #b8534a;
-  }
-  .guide-pw-second2 {
-    font-size: 12px;
-    color: green;
-  }
-  .guide-pw-third1 {
-    font-size: 12px;
-    color: green;
-  }
-  .guide-pw-third2 {
-    font-size: 12px;
-    color: #b8534a;
-  }
-  .guide-pwc-first1 {
-    font-size: 12px;
-    color: #b8534a;
-  }
-  .guide-pwc-first2 {
-    font-size: 12px;
-    color: green;
-  }
-  .col2-pwc {
-    display: flex;
-    align-items: flex-start;
-    margin-top: 0px;
-  }
-  .guide-tr-pwc {
-    height: 30px;
-  }
 
   .join-start {
-    box-sizing: border-box;
     margin-top: 90px;
 
-    .birth-inputs {
-      transition: all 0.3s ease-in-out;
-    }
-
     input {
-      transition: all 0.3s ease-in-out;
       &:focus {
         border: 1px solid #000;
         outline: none;
-      }
-    }
-    .birth-input {
-      border: none;
-      width: 95px;
-      outline: none;
-      &:focus {
-        border: unset;
-      }
-      &::placeholder {
-        text-align: center;
       }
     }
   }
