@@ -41,86 +41,8 @@ function Register({ history }) {
   const [infoChecked, setInfoChecked] = useState(false);
   const [allAgree, setAllAgree] = useState(false);
 
-  const togglePasswordVisibility = () => {
-    setPasswordShown(!passwordShown);
-  };
-
-  const outBirthFocus = () => {
-    setBirthFocus(false);
-  };
-  const onBirthFocus = () => {
-    setBirthFocus(true);
-  };
-
-  function man() {
-    let genderBullion = document.getElementsByClassName("gender-bullion");
-    if (genderBullion[0].checked === true) {
-      setGender(genderBullion[0].value);
-    }
-  }
-  function woman() {
-    let genderBullion = document.getElementsByClassName("sex-bullion");
-    if (genderBullion[1].checked === true) {
-      setGender(genderBullion[1].value);
-    }
-  }
-  function nothing() {
-    let genderBullion = document.getElementsByClassName("sex-bullion");
-    if (genderBullion[2].checked === true) {
-      setGender(genderBullion[2].value);
-    }
-  }
-  function necessaryOne() {
-    let nece1 = document.getElementsByClassName("nece1");
-    if (nece1[0].checked === true) {
-      setNecessary1(true);
-    } else {
-      setNecessary1(false);
-    }
-    if (necessary1 === true && necessary2 === true && necessary3 === true) {
-      setNecessaryAll(true);
-    } else {
-      setNecessaryAll(false);
-    }
-  }
-  function necessaryTwo() {
-    let nece2 = document.getElementsByClassName("nece2");
-    if (nece2[0].checked === true) {
-      setNecessary2(true);
-    } else {
-      setNecessary2(false);
-    }
-    if (necessary1 === true && necessary2 === true && necessary3 === true) {
-      setNecessaryAll(true);
-    } else {
-      setNecessaryAll(false);
-    }
-  }
-  function necessaryThree() {
-    let nece3 = document.getElementsByClassName("nece3");
-    if (nece3[0].checked === true) {
-      setNecessary3(true);
-    } else {
-      setNecessary3(false);
-    }
-    if (necessary1 === true && necessary2 === true && necessary3 === true) {
-      setNecessaryAll(true);
-    } else {
-      setNecessaryAll(false);
-    }
-  }
-
-  function IDPopup() {
-    setIDFocusMode(true);
-  }
-  function PWPopup() {
-    setPWFocusMode(true);
-  }
-  function PWConfirmPopup() {
-    setPWConfirmFocusMode(true);
-  }
   function handleID(e) {
-    setID(e.target.value);
+    setID(e.target.value.replace(/\s/g, ""));
 
     if (e.target.value.length < 6) {
       setGuideIDFirstClass("guide-id-first2");
@@ -129,7 +51,7 @@ function Register({ history }) {
     }
   }
   function handlePW(e) {
-    setPW(e.target.value);
+    setPW(e.target.value.replace(/\s/g, ""));
 
     if (e.target.value.length >= 10) {
       setGuidePWFirstClass("guide-pw-first2");
@@ -188,108 +110,10 @@ function Register({ history }) {
       setBirth(`${year} ${month} ${e.target.value}` * 1);
     }
   }
-  // function neceAll() {
-  //   if (necessary1 === true && necessary2 === true && necessary3 === true) {
-  //     setNecessaryAll(true);
-  //   } else {
-  //     setNecessaryAll(false);
-  //   }
-  // }
 
   function goHome() {
     history.push("/");
   }
-  // function goJoinComplete() {
-  //   props.history.push("/joincomplete");
-  // }
-  function infoCheck() {
-    let infoShare = document.getElementsByClassName("info-share");
-    if (infoShare[0].checked === true) {
-      setInfoChecked(true);
-    } else {
-      setInfoChecked(false);
-    }
-  }
-  function goSorry() {
-    alert("기술상의 이유로 접속불가 합니다. \n내년에 시도하여 주십시오.");
-  }
-  function IDDuplication() {
-    console.log("something");
-    // fetch(`${API_JONG}/users/check-account`, {
-    //   method: "POST",
-    //   body: JSON.stringify({
-    //     account: this.state.ID,
-    //   }),
-    // })
-    //   .then((response) => {
-    //     console.log(response);
-    //     if (response.status === 200) {
-    //       alert("사용할수 있는 ID입니다!");
-    //     } else {
-    //       alert("사용할수 없는 ID입니다!");
-    //     }
-    //     console.log(response.data);
-    //     return response;
-    //   })
-    //   .then((response) => {});
-  }
-  function emailDuplication() {
-    console.log("something");
-    // fetch(`${API_JONG}/users/check-email`, {
-    //   method: "POST",
-    //   body: JSON.stringify({
-    //     email: this.state.email
-    //   })
-    // })
-    //   .then(response => {
-    //     console.log(response);
-    //     if (response.status === 200) {
-    //       alert("사용할수 있는 이메일입니다!");
-    //     } else {
-    //       alert("사용할수 없는 이메일입니다!");
-    //     }
-    //     console.log(response.data);
-    //     return response;
-    //   })
-    //   .then(response => {});
-    // console.log("email 중복확인 ", this.state.ID);
-  }
-  function agreeAll() {
-    setAllAgree(!allAgree);
-  }
-
-  function joinFetch() {
-    fetch("http://localhost:8084/auth/register", {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify({
-        email: ID,
-        password: PW,
-      }),
-    })
-      .then((response) => {
-        // console.log(response);
-        // console.log(response.status);
-        if (response.status === 200) {
-          alert("정상 로그인 되었습니다");
-          console.log(response);
-          history.push("/");
-        } else {
-          alert("wrong");
-        }
-        console.log(response, response.json);
-        return response.json();
-        //response.json으로 하면 에러나서 json을 없애버림. 그런데 갑자기 붙여도 됨.
-      })
-      .then((response) => {
-        if (response.token) {
-          localStorage.setItem("wetoken", response.token);
-        }
-      });
-  }
-
   return (
     <Layout>
       <StyledRegister>
@@ -328,15 +152,11 @@ function Register({ history }) {
                               className="typing"
                               type="text"
                               placeholder="6자 이상의 영문 혹은 영문과 숫자를 조합"
-                              onFocus={IDPopup}
                               onChange={handleID}
                               value={ID}
                               required
                             ></input>
-                            <div
-                              className="normal-button colbutton"
-                              onClick={IDDuplication}
-                            >
+                            <div className="normal-button colbutton">
                               중복확인
                             </div>
                           </div>
@@ -375,22 +195,10 @@ function Register({ history }) {
                             className="typing"
                             type={passwordShown ? "text" : "password"}
                             placeholder="비밀번호를 입력해주세요"
-                            onFocus={PWPopup}
                             onChange={handlePW}
                             value={PW}
                             required
                           ></input>
-                          {passwordShown ? (
-                            <i
-                              className="fa fa-eye-slash password-icon"
-                              onClick={togglePasswordVisibility}
-                            />
-                          ) : (
-                            <i
-                              className="fa fa-eye password-icon"
-                              onClick={togglePasswordVisibility}
-                            />
-                          )}
                         </td>
                       </tr>
                     </tbody>
@@ -429,7 +237,6 @@ function Register({ history }) {
                             className="typing"
                             type="password"
                             placeholder="비밀번호를 한번 더 입력해주세요"
-                            onFocus={PWConfirmPopup}
                             onChange={handlePWConfirm}
                             value={PWConfirm}
                             required
@@ -486,10 +293,7 @@ function Register({ history }) {
                               onChange={handleEmail}
                               required
                             ></input>
-                            <div
-                              className="normal-button colbutton"
-                              onClick={emailDuplication}
-                            >
+                            <div className="normal-button colbutton">
                               이메일 중복확인
                             </div>
                           </div>
@@ -510,10 +314,7 @@ function Register({ history }) {
                               onChange={handleCellPhone}
                               required
                             ></input>
-                            <div
-                              className="normal-button-gray colbutton"
-                              onClick={goSorry}
-                            >
+                            <div className="normal-button-gray colbutton">
                               인증번호받기
                             </div>
                           </div>
@@ -543,20 +344,20 @@ function Register({ history }) {
                   <table>
                     <tbody>
                       <tr>
-                        <td className="address2 col1">배송주소</td>
+                        {/* <td className="address2 col1">배송주소</td>
                         <td>
                           <div className="col2-2">
                             <div
                               className="normal-button address"
                               style={{ marginBottom: 10 }}
                             >
-                              <span onClick={goSorry}>주소 검색</span>
+                              <span>주소 검색</span>
                             </div>
                           </div>
                           <p className="address-hint">
                             배송가능여부를 확인할수 있습니다.
                           </p>
-                        </td>
+                        </td> */}
                       </tr>
                     </tbody>
                   </table>
@@ -566,23 +367,22 @@ function Register({ history }) {
                         <td className="sex col1">성별</td>
                         <td className="sex col2">
                           <label className="label-radio">
-                            <input
+                            {/* <input
                               className="sex-bullion"
                               type="radio"
                               name="genderBullion"
                               value="남성"
-                              onChange={man}
-                            ></input>
+                            ></input> */}
                             <span>남자</span>
                           </label>
                           <label className="label-radio">
-                            <input
+                            {/* <input
                               className="sex-bullion"
                               type="radio"
                               name="genderBullion"
                               value="여성"
                               onChange={woman}
-                            ></input>
+                            ></input> */}
                             <span>여자</span>
                           </label>
                           <label className="label-radio">
@@ -604,45 +404,9 @@ function Register({ history }) {
                       <tr className="birth-tr">
                         <td className="birth col1">생년월일</td>
                         <td>
-                          <div className="birth col2">
-                            <div
-                              className="birth-inputs col2"
-                              onBlur={outBirthFocus}
-                              style={
-                                birthFocus
-                                  ? { border: "1px solid #000" }
-                                  : { border: "1px solid #ccc" }
-                              }
-                            >
-                              <input
-                                className="birth-input year"
-                                placeholder="YYYY"
-                                type="number"
-                                maxLength="4"
-                                onChange={yearLimit}
-                                value={year}
-                                onFocus={onBirthFocus}
-                              ></input>
-                              <span>/</span>
-                              <input
-                                className="birth-input month"
-                                placeholder="MM"
-                                maxLength="2"
-                                onChange={monthLimit}
-                                value={month}
-                                onFocus={onBirthFocus}
-                              ></input>
-                              <span>/</span>
-                              <input
-                                className="birth-input day"
-                                placeholder="DD"
-                                maxLength="4"
-                                onChange={dayLimit}
-                                value={day}
-                                onFocus={onBirthFocus}
-                              ></input>
-                            </div>
-                          </div>
+                          {/* <div className="birth col2">
+                            <div className="birth-inputs col2"></div>
+                          </div> */}
                         </td>
                       </tr>
                     </tbody>
@@ -670,11 +434,7 @@ function Register({ history }) {
                   <div className="agree-neck">
                     <label>
                       <input type="checkbox"></input>
-                      <span
-                        className="agree-explanation"
-                        onClick={agreeAll}
-                        id="checkAll"
-                      >
+                      <span className="agree-explanation" id="checkAll">
                         전체동의
                       </span>
                     </label>
@@ -727,7 +487,6 @@ function Register({ history }) {
                         <input
                           type="checkbox"
                           className="info-share"
-                          onClick={infoCheck}
                           name="checkRow"
                         ></input>
                         <span className="agree-explanation">
@@ -781,11 +540,7 @@ function Register({ history }) {
                   <div className="ghost-tr"></div>
                 </div>
                 <div className="final-join">
-                  <button
-                    type="button"
-                    className="final-button-join"
-                    onClick={joinFetch}
-                  >
+                  <button type="button" className="final-button-join">
                     가입하기
                   </button>
                 </div>

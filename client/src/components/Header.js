@@ -113,7 +113,7 @@ const Header = () => {
         {login ? ( //로그인 여부확인
           <section>
             <Link to="/login">
-              <div className="logIn" onClick={logOut}>
+              <div onClick={logOut}>
                 <span>로그아웃</span>
               </div>
             </Link>
