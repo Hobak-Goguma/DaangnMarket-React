@@ -29,6 +29,12 @@ const Register = ({ history }) => {
     setInputState({
       [e.target.name]: e.target.value,
     });
+
+    console.log(inputState.phone);
+
+    // if (e.target.name === "birth") {
+    //   setInputState({ [inputState.birth: Date(e.target.value) });
+    // }
   };
 
   const handleCheckbox = (e) => {
@@ -47,6 +53,37 @@ const Register = ({ history }) => {
       checkedE: e.target.checked,
       checkedF: e.target.checked,
       checkedG: e.target.checked,
+    });
+  };
+
+  const fetchRegister = () => {
+    fetch("http://bb00a631.ngrok.io/api/v1/members/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      // mode: "no-cors",
+      body: JSON.stringify({
+        name: inputState.name,
+        user_id: inputState.id,
+        user_pw: inputState.pw,
+        tel: inputState.phone,
+        birth: "1994-03-30",
+        email: inputState.email,
+        gender: inputState.gender,
+        add: "인천시몰라 내 주소가 뭔지",
+        cdate: new Date(),
+        udate: new Date(),
+        last_date: new Date(),
+      }),
+    }).then((response) => {
+      if (response.status === 200 || response.status === 201) {
+        alert("정상 로그인 되었습니다");
+        console.log(response);
+        history.push("/");
+      } else {
+        alert("응, 틀렸어~");
+      }
     });
   };
 
@@ -266,9 +303,17 @@ const Register = ({ history }) => {
                       <tr className="birth-tr">
                         <td className="birth col1">생년월일</td>
                         <td>
-                          {/* <div className="birth col2">
-                            <div className="birth-inputs col2"></div>
-                          </div> */}
+                          <div className="birth col2">
+                            <div className="col2">
+                              <input
+                                placeholder="생년월일 6자 입력해주세요"
+                                type="text"
+                                className="typing"
+                                name="birth"
+                                // onChange={handleInputState}
+                              />
+                            </div>
+                          </div>
                         </td>
                       </tr>
                     </tbody>
@@ -415,7 +460,11 @@ const Register = ({ history }) => {
                   <div className="ghost-tr"></div>
                 </div>
                 <div className="final-join">
-                  <button type="submit" className="final-button-join">
+                  <button
+                    type="button"
+                    className="final-button-join"
+                    onClick={fetchRegister}
+                  >
                     가입하기
                   </button>
                 </div>
