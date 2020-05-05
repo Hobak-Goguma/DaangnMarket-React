@@ -27,7 +27,10 @@ const Register = ({ history }) => {
   });
   const regexBirth = /([0-9]{2}(0[1-9]|1[0-2])(0[1-9]|[1,2][0-9]|3[0,1]))/;
   const regexEmail = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/;
-  const regexPw = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
+  const regexPw = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[~!@#$%^&*()_+|<>?:{}])[A-Za-z\d~!@#$%^&*()_+|<>?:{}]{8,}$/;
+  const regexSpec = /[~!@#$%^&*()_+|<>?:{}]/;
+  const regexPhone = /^\d{3}\d{3,4}\d{4}$/;
+  const regexKor = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
 
   const handleInputState = (e) => {
     setInputState({
@@ -39,6 +42,12 @@ const Register = ({ history }) => {
       setInputState({
         ...inputState,
         [e.target.name]: e.target.value.replace(/[^0-9]/, ""),
+      });
+    }
+    if (e.target.name === "name" || e.target.name === "id") {
+      setInputState({
+        ...inputState,
+        [e.target.name]: e.target.value.replace(regexSpec, ""),
       });
     }
   };
@@ -63,38 +72,59 @@ const Register = ({ history }) => {
   };
 
   const fetchRegister = () => {
-    fetch("http://bb00a631.ngrok.io/api/v1/members/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: "조뚜시",
-        user_id: "ddusi",
-        user_pw: "1234",
-        tel: "010-4000-8884",
-        birth: "1994-03-30",
-        email: "ddusi@naver.com",
-        gender: "MALE",
-        add: "인천시",
-        cdate: new Date(),
-        udate: new Date(),
-        last_date: new Date(),
-      }),
-    }).then((response) => {
-      if (response.status === 200 || response.status === 201) {
-        alert("회원가입 됨 ㅋ!");
-        history.push("/");
-      } else {
-        alert("");
-      }
-    });
+    if (
+      inputState.id.length > 5 &&
+      /[0-9]/.test(inputState.id) &&
+      /[a-zA-Z]/.test(inputState.id) &&
+      !regexKor.test(inputState.id) &&
+      regexPw.test(inputState.pw) &&
+      !regexKor.test(inputState.pw) &&
+      inputState.pw === inputState.pwConfirm &&
+      inputState.name.length > 1 &&
+      regexEmail.test(inputState.email) &&
+      regexPhone.test(inputState.phone) &&
+      inputState.gender !== "" &&
+      regexBirth.test(inputState.birth) &&
+      checkbox.checkedA &&
+      checkbox.checkedB &&
+      checkbox.checkedG
+    ) {
+      // fetch("http://bb00a631.ngrok.io/api/v1/members/", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({
+      //     name: "조뚜시",
+      //     user_id: "ddusi",
+      //     user_pw: "1234",
+      //     tel: "010-4000-8884",
+      //     birth: "1994-03-30",
+      //     email: "ddusi@naver.com",
+      //     gender: "MALE",
+      //     add: "인천시",
+      //     cdate: new Date(),
+      //     udate: new Date(),
+      //     last_date: new Date(),
+      //   }),
+      // }).then((response) => {
+      //   if (response.status === 200 || response.status === 201) {
+      //     alert("회원가입 됨 ㅋ!");
+      //   } else {
+      //     alert("안된다 ㅜㅜ");
+      //   }
+      // });
+      alert("회원가입 되었습니다.");
+      history.push("/");
+    } else {
+      alert("양식에 맞게 작성하였는지 다시한번 확인해 주세요");
+    }
   };
 
   return (
     <Layout>
       <StyledRegister>
-        <form autoComplete="off">
+        <form autoComplete="off" onSubmit={(e) => e.preventDefault()}>
           <div className="join-start">
             <div className="contents">
               <div className="page-location">
@@ -152,7 +182,8 @@ const Register = ({ history }) => {
                             <div>
                               {inputState.id.length > 5 &&
                               /[0-9]/.test(inputState.id) &&
-                              /[a-zA-Z]/.test(inputState.id) ? (
+                              /[a-zA-Z]/.test(inputState.id) &&
+                              !regexKor.test(inputState.id) ? (
                                 <p className="correct-txt">
                                   아이디 형식에 맞습니다.
                                 </p>
@@ -196,7 +227,8 @@ const Register = ({ history }) => {
                         <td>
                           <div>
                             <div>
-                              {regexPw.test(inputState.pw) ? (
+                              {regexPw.test(inputState.pw) &&
+                              !regexKor.test(inputState.pw) ? (
                                 <p className="correct-txt">
                                   안전한 비밀번호 입니다.
                                 </p>
@@ -204,7 +236,7 @@ const Register = ({ history }) => {
                                 inputState.pw.length !== 0 && (
                                   <p className="wrong-txt">
                                     8자 이상 입력 <br />
-                                    영문/숫자/특수문자만 허용하며, 2개 이상 조합
+                                    영문/숫자/특수문자만 허용하며, 모두 조합
                                   </p>
                                 )
                               )}
@@ -234,6 +266,31 @@ const Register = ({ history }) => {
                       </tr>
                     </tbody>
                   </table>
+
+                  <table>
+                    <tbody>
+                      <tr className="validate-tr">
+                        <td className="col1"></td>
+                        <td>
+                          <div>
+                            <div>
+                              {inputState.pw === inputState.pwConfirm &&
+                              inputState.pw.length !== 0 ? (
+                                <p className="correct-txt">비밀번호 일치!</p>
+                              ) : (
+                                inputState.pwConfirm.length !== 0 && (
+                                  <p className="wrong-txt">
+                                    동일한 비밀번호를 입력해주세요
+                                  </p>
+                                )
+                              )}
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+
                   <table>
                     <tbody>
                       <tr>
@@ -351,6 +408,32 @@ const Register = ({ history }) => {
                       </tr>
                     </tbody>
                   </table>
+
+                  <table>
+                    <tbody>
+                      <tr className="validate-tr">
+                        <td className="col1"></td>
+                        <td>
+                          <div>
+                            <div>
+                              {regexPhone.test(inputState.phone) ? (
+                                <p className="correct-txt">
+                                  휴대폰 번호일 수도 있습니다.
+                                </p>
+                              ) : (
+                                inputState.phone.length !== 0 && (
+                                  <p className="wrong-txt">
+                                    휴대폰 번호가 아닙니다.
+                                  </p>
+                                )
+                              )}
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+
                   <table>
                     <tbody>
                       <tr>
@@ -440,8 +523,7 @@ const Register = ({ history }) => {
                         <td>
                           <div>
                             <div>
-                              {inputState.birth.length === 6 &&
-                              regexBirth.test(inputState.birth) ? (
+                              {regexBirth.test(inputState.birth) ? (
                                 <p className="correct-txt">
                                   올바른 생년월일이 맞습니다.
                                 </p>
