@@ -84,11 +84,10 @@ const Header = () => {
     const localID = localStorage.getItem("id");
     const localPW = localStorage.getItem("pw");
 
-    if (localID !== "" && localPW !== "") {
+    if (localID && localPW) {
       setLogin(true);
     }
   }, []);
-
   const logOut = () => {
     setLogin(false);
     localStorage.setItem("id", "");
