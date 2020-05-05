@@ -25,12 +25,13 @@ const Register = ({ history }) => {
     checkedF: false,
     checkedG: false,
   });
-  const regexBirth = /([0-9]{2}(0[1-9]|1[0-2])(0[1-9]|[1,2][0-9]|3[0,1]))/;
+  const regexBirth = /^(19[0-9][0-9]|20\d{2})(0[0-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])$/;
   const regexEmail = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/;
   const regexPw = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[~!@#$%^&*()_+|<>?:{}])[A-Za-z\d~!@#$%^&*()_+|<>?:{}]{8,}$/;
   const regexSpec = /[~!@#$%^&*()_+|<>?:{}]/;
   const regexPhone = /^\d{3}\d{3,4}\d{4}$/;
   const regexKor = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+  console.log(inputState.birth.replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3"));
 
   const handleInputState = (e) => {
     setInputState({
@@ -89,31 +90,31 @@ const Register = ({ history }) => {
       checkbox.checkedB &&
       checkbox.checkedG
     ) {
-      // fetch("http://bb00a631.ngrok.io/api/v1/members/", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify({
-      //     name: "조뚜시",
-      //     user_id: "ddusi",
-      //     user_pw: "1234",
-      //     tel: "010-4000-8884",
-      //     birth: "1994-03-30",
-      //     email: "ddusi@naver.com",
-      //     gender: "MALE",
-      //     add: "인천시",
-      //     cdate: new Date(),
-      //     udate: new Date(),
-      //     last_date: new Date(),
-      //   }),
-      // }).then((response) => {
-      //   if (response.status === 200 || response.status === 201) {
-      //     alert("회원가입 됨 ㅋ!");
-      //   } else {
-      //     alert("안된다 ㅜㅜ");
-      //   }
-      // });
+      fetch("http://bb00a631.ngrok.io/api/v1/members/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: inputState.name,
+          user_id: inputState.id,
+          user_pw: inputState.pw,
+          tel: inputState.phone,
+          birth: inputState.birth.replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3"),
+          email: inputState.email,
+          gender: inputState.gender,
+          add: "서울 서대문구 영천동 66-13",
+          cdate: new Date(),
+          udate: new Date(),
+          last_date: new Date(),
+        }),
+      }).then((response) => {
+        if (response.status === 200 || response.status === 201) {
+          alert("회원가입 됨 ㅋ!");
+        } else {
+          alert("안된다 ㅜㅜ");
+        }
+      });
       alert("회원가입 되었습니다.");
       history.push("/");
     } else {
@@ -502,13 +503,13 @@ const Register = ({ history }) => {
                           <div className="birth col2">
                             <div className="col2">
                               <input
-                                placeholder="생년월일 6자 입력해주세요"
+                                placeholder="생년월일 8자 입력해주세요"
                                 type="text"
                                 className="typing"
                                 name="birth"
                                 onChange={handleInputState}
                                 value={inputState.birth}
-                                maxLength="6"
+                                maxLength="8"
                               />
                             </div>
                           </div>
@@ -528,8 +529,7 @@ const Register = ({ history }) => {
                                   올바른 생년월일이 맞습니다.
                                 </p>
                               ) : (
-                                inputState.birth.length !== 0 &&
-                                !regexBirth.test(inputState.birth) && (
+                                inputState.birth.length !== 0 && (
                                   <p className="wrong-txt">
                                     올바른 생년월일을 입력해주세요.
                                   </p>
