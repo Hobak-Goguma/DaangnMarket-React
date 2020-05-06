@@ -8,8 +8,8 @@ class Company(models.Model):
     com_tel = models.IntegerField(blank=True, null=True)
     com_info = models.CharField(max_length=3000, blank=True, null=True)
     img = models.CharField(max_length=500, blank=True, null=True)
-    cdate = models.DateTimeField()
-    udate = models.DateTimeField()
+    cdate = models.DateTimeField(null=True)
+    udate = models.DateTimeField(null=True)
 
     class Meta:
         managed = False
