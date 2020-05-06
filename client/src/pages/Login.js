@@ -7,8 +7,6 @@ const Login = ({ history }) => {
   const [ID, setID] = useState("");
   const [PW, setPW] = useState("");
 
-  console.log(Date.now());
-
   const handleID = (e) => {
     setID(e.target.value);
   };
@@ -32,8 +30,9 @@ const Login = ({ history }) => {
     //     // console.log(response);
     //     // console.log(response.status);
     //     if (response.status === 200) {
-    //       localStorage.setItem("id", ID);
-    //       localStorage.setItem("pw", PW);
+          localStorage.setItem("id", ID);
+          localStorage.setItem("pw", PW);
+          history.push('/')
     //       alert("정상 로그인 되었습니다");
     //       console.log(response);
     //       history.push("/");
@@ -49,13 +48,6 @@ const Login = ({ history }) => {
     //       localStorage.setItem("wetoken", response.token);
     //     }
     //   });
-    if (ID === "admin" && PW === "0000") {
-      history.push("/");
-    } else {
-      alert("아이디 비번 맞는지 확인좀");
-    }
-    localStorage.setItem("id", ID);
-    localStorage.setItem("pw", PW);
   }
   const goRegister = () => {
     history.push("/register");

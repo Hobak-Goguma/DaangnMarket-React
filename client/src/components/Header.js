@@ -1,8 +1,29 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import MyDrop from "./MyDropMenu";
 
-const Headers = styled.header`
+let localID, localPW ;
+const Header = () => {
+  const [login, setLogin] = useState(false);
+
+  useEffect(() => {
+    localID = localStorage.getItem("id");
+    localPW = localStorage.getItem("pw");
+
+    if (localID  && localPW ) {
+        console.log(localID,localPW);
+        setLogin(true);
+    }
+  }, []);
+
+  const logOut = () => {
+    setLogin(false);
+    localStorage.setItem("id", "");
+    localStorage.setItem("pw", "");
+  };
+
+  const Headers = styled.header`
   width: 100%;
   box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.1);
   top: 0;
@@ -47,57 +68,49 @@ const Headers = styled.header`
       }
     }
     section {
-      position: absolute;
-      top: 50%;
-      right: 0;
-      transform: translateY(-50%);
-      div {
-        width: 140px;
-        border: 1px solid #ff8a3d;
-        border-radius: 20px;
-        color: #ff8a3d;
-        font-weight: bold;
-        text-align: center;
-        height: 40px;
-        position: relative;
-        &:hover {
-          background-color: #ff8a3d;
-          color: white;
+        position: absolute;
+        top: 50%;
+        right: 0;
+        transform: translateY(-50%);
+        >a{
+            
+            display:inline-block;
+            >div {
+                width: 140px;
+                border: 1px solid #ff8a3d;
+                border-radius: 20px;
+                color: #ff8a3d;
+                font-weight: bold;
+                text-align: center;
+                height: 40px;
+                position: relative;
+                margin:0;
+                &:hover {
+                    background-color: #ff8a3d;
+                    color: white;
+                }
+                div {
+                    position: absolute;
+                    width:100%;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                }
+            }
         }
-        span {
-          display: block;
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-        }
-      }
-      div:first-child {
+        div:first-child {
         margin-right: 10px;
-      }
+        }
     }
   }
 `;
-const Header = () => {
-  const [login, setLogin] = useState(false);
-  useEffect(() => {
-    const localID = localStorage.getItem("id");
-    const localPW = localStorage.getItem("pw");
-
-    if (localID && localPW) {
-      setLogin(true);
-    }
-  }, []);
-  const logOut = () => {
-    setLogin(false);
-    localStorage.setItem("id", "");
-    localStorage.setItem("pw", "");
-  };
-
-  return (
+    return (
     <Headers>
       <div className="container">
-        <img src="./img/logo.svg" alt="로고" />
+        <Link to="/">{// 로고 클릭시 메인으로 이동 
+        }
+            <img src="./img/logo.svg" alt="로고" />
+        </Link>
         <div className="inputBox">
           <input
             type="text"
@@ -110,23 +123,17 @@ const Header = () => {
           </label>
         </div>
         {login ? ( //로그인 여부확인
-          <section>
-            <Link to="/login">
-              <div onClick={logOut}>
-                <span>로그아웃</span>
-              </div>
-            </Link>
-          </section>
+          <MyDrop localID={localID} logOut={logOut}></MyDrop>
         ) : (
           <section>
             <Link to="/register">
               <div className="signIn">
-                <span>회원가입</span>
+                <div>회원가입</div>
               </div>
             </Link>
             <Link to="/login">
               <div className="logIn">
-                <span>로그인</span>
+                <div>로그인</div>
               </div>
             </Link>
           </section>
