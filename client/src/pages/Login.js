@@ -30,8 +30,9 @@ const Login = ({ history }) => {
     //     // console.log(response);
     //     // console.log(response.status);
     //     if (response.status === 200) {
-    //       localStorage.setItem("id", ID);
-    //       localStorage.setItem("pw", PW);
+          localStorage.setItem("id", ID);
+          localStorage.setItem("pw", PW);
+          history.push('/')
     //       alert("정상 로그인 되었습니다");
     //       console.log(response);
     //       history.push("/");
