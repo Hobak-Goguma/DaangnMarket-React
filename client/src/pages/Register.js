@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { withRouter } from "react-router-dom";
 import { Checkbox, Radio } from "@material-ui/core";
 import styled, { css } from "styled-components";
 import Layout from "../components/Layout";
 
 const Register = ({ history }) => {
+  const [visible, setVisible] = useState(false);
+
+  let addrInput = useRef("");
+
   const [inputState, setInputState] = useState({
     id: "",
     pw: "",
@@ -14,7 +18,6 @@ const Register = ({ history }) => {
     gender: "",
     birth: "",
     email: "",
-    address: "",
   });
   const [checkbox, setCheckbox] = useState({
     checkedA: false,
@@ -51,6 +54,26 @@ const Register = ({ history }) => {
         [e.target.name]: e.target.value.replace(regexSpec, ""),
       });
     }
+  };
+
+  const handlePostCode = () => {
+    setVisible(true);
+
+    new window.daum.Postcode({
+      oncomplete: function (data) {
+        let addr = "";
+
+        if (data.userSelectedType === "R") {
+          addr = data.roadAddress;
+        } else {
+          addr = data.jibunAddress;
+        }
+
+        addrInput.current.value = addr;
+      },
+    }).open({
+      popupName: "postcodePopup",
+    });
   };
 
   const handleCheckbox = (e) => {
@@ -99,11 +122,11 @@ const Register = ({ history }) => {
           name: inputState.name,
           user_id: inputState.id,
           user_pw: inputState.pw,
-          tel: inputState.phone,
+          tel: inputState.phone.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3"),
           birth: inputState.birth.replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3"),
           email: inputState.email,
           gender: inputState.gender,
-          add: "서울 서대문구 영천동 66-13",
+          add: addrInput.current.value,
           cdate: new Date(),
           udate: new Date(),
           last_date: new Date(),
@@ -119,6 +142,7 @@ const Register = ({ history }) => {
       history.push("/");
     } else {
       alert("양식에 맞게 작성하였는지 다시한번 확인해 주세요");
+      console.log(addrInput.current.value);
     }
   };
 
@@ -456,7 +480,10 @@ const Register = ({ history }) => {
                         <td className="address2 col1">주소*</td>
                         <td>
                           <div className="col2-2">
-                            <div className="normal-button address">
+                            <div
+                              className="normal-button address"
+                              onClick={handlePostCode}
+                            >
                               <span>동네 검색</span>
                             </div>
                           </div>
@@ -464,6 +491,28 @@ const Register = ({ history }) => {
                       </tr>
                     </tbody>
                   </table>
+
+                  <table
+                    style={visible ? { display: "block" } : { display: "none" }}
+                  >
+                    <tbody>
+                      <tr>
+                        <td className="address2 col1"></td>
+                        <td>
+                          <div className="col2-2">
+                            <input
+                              id="addrInput"
+                              className="typing"
+                              type="text"
+                              ref={addrInput}
+                              required
+                            ></input>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+
                   <table>
                     <tbody>
                       <tr>
@@ -736,6 +785,7 @@ const StyledRegister = styled.div`
     border: 1px solid #ccc;
 
     &.typing {
+      font-size: 14px;
       height: 42px;
       text-indent: 20px;
     }
@@ -872,10 +922,6 @@ const StyledRegister = styled.div`
   }
   .address {
     cursor: pointer;
-  }
-  .address-hint {
-    font-size: 12px;
-    color: gray;
   }
 
   .birth-inputs {
