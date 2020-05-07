@@ -42,7 +42,6 @@ const Review =() =>{
     }];
     const Review = styled.section`
         .container{
-            height:700px;
             .title{
                 padding-top:100px;
                 padding-bottom:50px;

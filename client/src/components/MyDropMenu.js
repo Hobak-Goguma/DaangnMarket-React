@@ -31,41 +31,44 @@ const MyDrop = ({localID,logOut}) =>{
           line-height:20px;
           color: #ff8a3d; 
       }
-      .dropdown{
-          margin-left:15px;
-          font-size:12px;
-          i{
-              right:15px;
-          }
+      .mouseOver{
+            display: block;
+            height:30px;
+        .dropdown{
+            margin-left:15px;
+            font-size:12px;
+            i{
+                right:15px;
+            }
+        }
       }
       
   `;
     return(<LoginTrue>
     <ul className="myMenu"
             onMouseOver={()=>dropdownOpen()}
-            onMouseOut ={()=>dropdownClose()}
         >
         <li className="welcome">
             <span>웰컴</span>
         </li>
-        <li >
+        <li className = "mouseOver">
             <span className="dropdown">{localID}님 <i className="fas fa-chevron-down"> </i></span>
         </li>
         <li>
             
-    <ul className={myMenu? "dropMenu active":"dropMenu"}>
-        <li>정보수정</li>
-        <li>채팅내역</li>
-        <li>채팅내역</li>
-        <li>채팅내역</li>
-        <li>
-            <Link to="/login">
-                <div onClick={logOut}>
-                    <span>로그아웃</span>
-                </div>
-            </Link>
-        </li>
-    </ul>
+            <ul className={myMenu? "dropMenu active":"dropMenu"} onMouseOver={()=>dropdownOpen()} onMouseOut={()=>dropdownClose()}>
+                <li>정보수정</li>
+                <li>채팅내역</li>
+                <li>채팅내역</li>
+                <li>채팅내역</li>
+                <li>
+                    <Link to="/login">
+                        <div onClick={logOut}>
+                            <span>로그아웃</span>
+                        </div>
+                    </Link>
+                </li>
+            </ul>
         </li>
     </ul>
     {/*  */}
