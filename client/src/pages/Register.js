@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { withRouter } from "react-router-dom";
 import { Checkbox, Radio } from "@material-ui/core";
 import styled, { css } from "styled-components";
 import Layout from "../components/Layout";
 
 const Register = ({ history }) => {
+  const [visible, setVisible] = useState(false);
+
+  let addrInput = useRef("");
+
   const [inputState, setInputState] = useState({
     id: "",
     pw: "",
@@ -13,8 +17,8 @@ const Register = ({ history }) => {
     phone: "",
     gender: "",
     birth: "",
+    email: "",
   });
-
   const [checkbox, setCheckbox] = useState({
     checkedA: false,
     checkedB: false,
@@ -24,17 +28,52 @@ const Register = ({ history }) => {
     checkedF: false,
     checkedG: false,
   });
+  const regexBirth = /^(19[0-9][0-9]|20\d{2})(0[0-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])$/;
+  const regexEmail = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/;
+  const regexPw = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[~!@#$%^&*()_+|<>?:{}])[A-Za-z\d~!@#$%^&*()_+|<>?:{}]{8,}$/;
+  const regexSpec = /[~!@#$%^&*()_+|<>?:{}]/;
+  const regexPhone = /^\d{3}\d{3,4}\d{4}$/;
+  const regexKor = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+  console.log(inputState.birth.replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3"));
 
   const handleInputState = (e) => {
     setInputState({
-      [e.target.name]: e.target.value,
+      ...inputState,
+      [e.target.name]: e.target.value.replace(/\s/, ""),
     });
 
-    console.log(inputState.phone);
+    if (e.target.name === "birth" || e.target.name === "phone") {
+      setInputState({
+        ...inputState,
+        [e.target.name]: e.target.value.replace(/[^0-9]/, ""),
+      });
+    }
+    if (e.target.name === "name" || e.target.name === "id") {
+      setInputState({
+        ...inputState,
+        [e.target.name]: e.target.value.replace(regexSpec, ""),
+      });
+    }
+  };
 
-    // if (e.target.name === "birth") {
-    //   setInputState({ [inputState.birth: Date(e.target.value) });
-    // }
+  const handlePostCode = () => {
+    setVisible(true);
+
+    new window.daum.Postcode({
+      oncomplete: function (data) {
+        let addr = "";
+
+        if (data.userSelectedType === "R") {
+          addr = data.roadAddress;
+        } else {
+          addr = data.jibunAddress;
+        }
+
+        addrInput.current.value = addr;
+      },
+    }).open({
+      popupName: "postcodePopup",
+    });
   };
 
   const handleCheckbox = (e) => {
@@ -57,47 +96,64 @@ const Register = ({ history }) => {
   };
 
   const fetchRegister = () => {
-    fetch("http://bb00a631.ngrok.io/api/v1/members/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      // mode: "no-cors",
-      body: JSON.stringify({
-        name: inputState.name,
-        user_id: inputState.id,
-        user_pw: inputState.pw,
-        tel: inputState.phone,
-        birth: "1994-03-30",
-        email: inputState.email,
-        gender: inputState.gender,
-        add: "인천시몰라 내 주소가 뭔지",
-        cdate: new Date(),
-        udate: new Date(),
-        last_date: new Date(),
-      }),
-    }).then((response) => {
-      if (response.status === 200 || response.status === 201) {
-        alert("정상 로그인 되었습니다");
-        console.log(response);
-        history.push("/");
-      } else {
-        alert("응, 틀렸어~");
-      }
-    });
+    if (
+      inputState.id.length > 5 &&
+      /[0-9]/.test(inputState.id) &&
+      /[a-zA-Z]/.test(inputState.id) &&
+      !regexKor.test(inputState.id) &&
+      regexPw.test(inputState.pw) &&
+      !regexKor.test(inputState.pw) &&
+      inputState.pw === inputState.pwConfirm &&
+      inputState.name.length > 1 &&
+      regexEmail.test(inputState.email) &&
+      regexPhone.test(inputState.phone) &&
+      inputState.gender !== "" &&
+      regexBirth.test(inputState.birth) &&
+      checkbox.checkedA &&
+      checkbox.checkedB &&
+      checkbox.checkedG
+    ) {
+      fetch("http://bb00a631.ngrok.io/api/v1/members/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: inputState.name,
+          user_id: inputState.id,
+          user_pw: inputState.pw,
+          tel: inputState.phone.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3"),
+          birth: inputState.birth.replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3"),
+          email: inputState.email,
+          gender: inputState.gender,
+          add: addrInput.current.value,
+          cdate: new Date(),
+          udate: new Date(),
+          last_date: new Date(),
+        }),
+      }).then((response) => {
+        if (response.status === 200 || response.status === 201) {
+          alert("회원가입 됨 ㅋ!");
+        } else {
+          alert("안된다 ㅜㅜ");
+        }
+      });
+      alert("회원가입 되었습니다.");
+      history.push("/");
+    } else {
+      alert("양식에 맞게 작성하였는지 다시한번 확인해 주세요");
+      console.log(addrInput.current.value);
+    }
   };
 
-  const goHome = () => {
-    history.push("/");
-  };
   return (
     <Layout>
       <StyledRegister>
-        <form>
+        <form autoComplete="off" onSubmit={(e) => e.preventDefault()}>
           <div className="join-start">
             <div className="contents">
               <div className="page-location">
-                <div className="home-menu" onClick={goHome}>
+                <div className="home-menu" onClick={() => history.push("/")}>
                   홈
                 </div>
                 <span className="gt-symbol">&gt;</span>
@@ -112,7 +168,7 @@ const Register = ({ history }) => {
                   className="head-notification1"
                   style={{ marginBottom: 10 }}
                 >
-                  <p>*필수입력사항</p>
+                  <p>*필수입력사항 (주소 일단 제외)</p>
                 </div>
                 <div className="write-board2">
                   <div className="ghost-tr"></div>
@@ -131,9 +187,38 @@ const Register = ({ history }) => {
                               onChange={handleInputState}
                               name="id"
                               required
+                              maxLength="15"
+                              value={inputState.id}
                             ></input>
                             <div className="normal-button colbutton">
                               중복확인
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <table>
+                    <tbody>
+                      <tr className="validate-tr">
+                        <td className="col1"></td>
+                        <td>
+                          <div>
+                            <div>
+                              {inputState.id.length > 5 &&
+                              /[0-9]/.test(inputState.id) &&
+                              /[a-zA-Z]/.test(inputState.id) &&
+                              !regexKor.test(inputState.id) ? (
+                                <p className="correct-txt">
+                                  아이디 형식에 맞습니다.
+                                </p>
+                              ) : (
+                                inputState.id.length !== 0 && (
+                                  <p className="wrong-txt">
+                                    6자 이상의 영문 혹은 영문과 숫자의 조합
+                                  </p>
+                                )
+                              )}
                             </div>
                           </div>
                         </td>
@@ -152,11 +237,41 @@ const Register = ({ history }) => {
                             onChange={handleInputState}
                             name="pw"
                             required
+                            maxLength="18"
+                            value={inputState.pw}
                           ></input>
                         </td>
                       </tr>
                     </tbody>
                   </table>
+
+                  <table>
+                    <tbody>
+                      <tr className="validate-tr">
+                        <td className="col1"></td>
+                        <td>
+                          <div>
+                            <div>
+                              {regexPw.test(inputState.pw) &&
+                              !regexKor.test(inputState.pw) ? (
+                                <p className="correct-txt">
+                                  안전한 비밀번호 입니다.
+                                </p>
+                              ) : (
+                                inputState.pw.length !== 0 && (
+                                  <p className="wrong-txt">
+                                    8자 이상 입력 <br />
+                                    영문/숫자/특수문자만 허용하며, 모두 조합
+                                  </p>
+                                )
+                              )}
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+
                   <table>
                     <tbody>
                       <tr>
@@ -169,11 +284,38 @@ const Register = ({ history }) => {
                             onChange={handleInputState}
                             name="pwConfirm"
                             required
+                            maxLength="18"
+                            value={inputState.pwConfirm}
                           ></input>
                         </td>
                       </tr>
                     </tbody>
                   </table>
+
+                  <table>
+                    <tbody>
+                      <tr className="validate-tr">
+                        <td className="col1"></td>
+                        <td>
+                          <div>
+                            <div>
+                              {inputState.pw === inputState.pwConfirm &&
+                              inputState.pw.length !== 0 ? (
+                                <p className="correct-txt">비밀번호 일치!</p>
+                              ) : (
+                                inputState.pwConfirm.length !== 0 && (
+                                  <p className="wrong-txt">
+                                    동일한 비밀번호를 입력해주세요
+                                  </p>
+                                )
+                              )}
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+
                   <table>
                     <tbody>
                       <tr>
@@ -186,11 +328,37 @@ const Register = ({ history }) => {
                             onChange={handleInputState}
                             name="name"
                             required
+                            maxLength="15"
+                            value={inputState.name}
                           ></input>
                         </td>
                       </tr>
                     </tbody>
                   </table>
+
+                  <table>
+                    <tbody>
+                      <tr className="validate-tr">
+                        <td className="col1"></td>
+                        <td>
+                          <div>
+                            <div>
+                              {inputState.name.length > 1 ? (
+                                <p className="correct-txt">멋진 이름이군요!</p>
+                              ) : (
+                                inputState.name.length !== 0 && (
+                                  <p className="wrong-txt">
+                                    두글자 이상 입력해주세요.
+                                  </p>
+                                )
+                              )}
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+
                   <table>
                     <tbody>
                       <tr>
@@ -204,6 +372,8 @@ const Register = ({ history }) => {
                               onChange={handleInputState}
                               name="email"
                               required
+                              maxLength="50"
+                              value={inputState.email}
                             ></input>
                             <div className="normal-button colbutton">
                               이메일 중복확인
@@ -213,6 +383,32 @@ const Register = ({ history }) => {
                       </tr>
                     </tbody>
                   </table>
+
+                  <table>
+                    <tbody>
+                      <tr className="validate-tr">
+                        <td className="col1"></td>
+                        <td>
+                          <div>
+                            <div>
+                              {regexEmail.test(inputState.email) ? (
+                                <p className="correct-txt">
+                                  올바른 이메일 입니다.
+                                </p>
+                              ) : (
+                                inputState.email.length !== 0 && (
+                                  <p className="wrong-txt">
+                                    이메일이 맞습니까?
+                                  </p>
+                                )
+                              )}
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+
                   <table>
                     <tbody>
                       <tr>
@@ -221,14 +417,13 @@ const Register = ({ history }) => {
                           <div className="col2-2">
                             <input
                               className="typing"
-                              type="number"
+                              type="text"
                               placeholder="숫자만 입력해주세요"
                               onChange={handleInputState}
-                              onKeyDown={(e) =>
-                                e.keyCode === 69 && e.preventDefault()
-                              }
+                              value={inputState.phone}
                               name="phone"
                               required
+                              maxLength="11"
                             ></input>
                             <div className="normal-button-gray colbutton">
                               인증번호받기
@@ -238,13 +433,39 @@ const Register = ({ history }) => {
                       </tr>
                     </tbody>
                   </table>
+
+                  <table>
+                    <tbody>
+                      <tr className="validate-tr">
+                        <td className="col1"></td>
+                        <td>
+                          <div>
+                            <div>
+                              {regexPhone.test(inputState.phone) ? (
+                                <p className="correct-txt">
+                                  휴대폰 번호일 수도 있습니다.
+                                </p>
+                              ) : (
+                                inputState.phone.length !== 0 && (
+                                  <p className="wrong-txt">
+                                    휴대폰 번호가 아닙니다.
+                                  </p>
+                                )
+                              )}
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+
                   <table>
                     <tbody>
                       <tr>
                         <td className="give-number col1"></td>
                         <td className="give-number col2">
                           <div className="col2-2">
-                            <input className="typing" />
+                            <input className="typing" disabled />
                             <div className="normal-button-white colbutton">
                               인증번호 확인
                             </div>
@@ -256,10 +477,13 @@ const Register = ({ history }) => {
                   <table>
                     <tbody>
                       <tr>
-                        <td className="address2 col1">주소</td>
+                        <td className="address2 col1">주소*</td>
                         <td>
                           <div className="col2-2">
-                            <div className="normal-button address">
+                            <div
+                              className="normal-button address"
+                              onClick={handlePostCode}
+                            >
                               <span>동네 검색</span>
                             </div>
                           </div>
@@ -267,16 +491,38 @@ const Register = ({ history }) => {
                       </tr>
                     </tbody>
                   </table>
+
+                  <table
+                    style={visible ? { display: "block" } : { display: "none" }}
+                  >
+                    <tbody>
+                      <tr>
+                        <td className="address2 col1"></td>
+                        <td>
+                          <div className="col2-2">
+                            <input
+                              id="addrInput"
+                              className="typing"
+                              type="text"
+                              ref={addrInput}
+                              required
+                            ></input>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+
                   <table>
                     <tbody>
                       <tr>
-                        <td className="gender col1">성별</td>
+                        <td className="gender col1">성별*</td>
                         <td className="gender col2">
                           <label className="label-radio">
                             <Radio
-                              checked={inputState.gender === "male"}
+                              checked={inputState.gender === "MALE"}
                               size="small"
-                              value="male"
+                              value="MALE"
                               style={{ color: "#ff8a3d" }}
                               onChange={handleInputState}
                               name="gender"
@@ -285,8 +531,8 @@ const Register = ({ history }) => {
                           </label>
                           <label className="label-radio">
                             <Radio
-                              checked={inputState.gender === "female"}
-                              value="female"
+                              checked={inputState.gender === "FEMALE"}
+                              value="FEMALE"
                               size="small"
                               style={{ color: "#ff8a3d" }}
                               onChange={handleInputState}
@@ -301,17 +547,43 @@ const Register = ({ history }) => {
                   <table>
                     <tbody>
                       <tr className="birth-tr">
-                        <td className="birth col1">생년월일</td>
+                        <td className="birth col1">생년월일*</td>
                         <td>
                           <div className="birth col2">
                             <div className="col2">
                               <input
-                                placeholder="생년월일 6자 입력해주세요"
+                                placeholder="생년월일 8자 입력해주세요"
                                 type="text"
                                 className="typing"
                                 name="birth"
-                                // onChange={handleInputState}
+                                onChange={handleInputState}
+                                value={inputState.birth}
+                                maxLength="8"
                               />
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <table>
+                    <tbody>
+                      <tr className="validate-tr">
+                        <td className="col1"></td>
+                        <td>
+                          <div>
+                            <div>
+                              {regexBirth.test(inputState.birth) ? (
+                                <p className="correct-txt">
+                                  올바른 생년월일이 맞습니다.
+                                </p>
+                              ) : (
+                                inputState.birth.length !== 0 && (
+                                  <p className="wrong-txt">
+                                    올바른 생년월일을 입력해주세요.
+                                  </p>
+                                )
+                              )}
                             </div>
                           </div>
                         </td>
@@ -460,11 +732,7 @@ const Register = ({ history }) => {
                   <div className="ghost-tr"></div>
                 </div>
                 <div className="final-join">
-                  <button
-                    type="button"
-                    className="final-button-join"
-                    onClick={fetchRegister}
-                  >
+                  <button className="final-button-join" onClick={fetchRegister}>
                     가입하기
                   </button>
                 </div>
@@ -495,6 +763,15 @@ const defaultButtonStyle = css`
 `;
 
 const StyledRegister = styled.div`
+  .wrong-txt {
+    color: orange;
+    font-size: 12px;
+  }
+  .correct-txt {
+    color: green;
+    font-size: 12px;
+  }
+
   tr,
   td,
   div,
@@ -508,6 +785,7 @@ const StyledRegister = styled.div`
     border: 1px solid #ccc;
 
     &.typing {
+      font-size: 14px;
       height: 42px;
       text-indent: 20px;
     }
@@ -589,6 +867,9 @@ const StyledRegister = styled.div`
   tr {
     height: 60px;
   }
+  tr.validate-tr {
+    height: unset;
+  }
   td {
     vertical-align: middle;
   }
@@ -641,10 +922,6 @@ const StyledRegister = styled.div`
   }
   .address {
     cursor: pointer;
-  }
-  .address-hint {
-    font-size: 12px;
-    color: gray;
   }
 
   .birth-inputs {

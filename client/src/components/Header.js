@@ -106,6 +106,7 @@ const Header = () => {
 `;
     return (
     <Headers>
+      <Category />
       <div className="container">
         <Link to="/">{// 로고 클릭시 메인으로 이동 
         }
@@ -122,6 +123,7 @@ const Header = () => {
             <img src="./img/search-icon.svg" alt="search" />
           </label>
         </div>
+
         {login ? ( //로그인 여부확인
           <MyDrop localID={localID} logOut={logOut}></MyDrop>
         ) : (
