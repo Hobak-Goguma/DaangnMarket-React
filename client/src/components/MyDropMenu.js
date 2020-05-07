@@ -4,13 +4,17 @@ import { Link } from "react-router-dom";
 
 const MyDrop = ({localID,logOut}) =>{
     
-  const [myMenu, setMyMenu] = useState(false);
-  const dropdownOpen = ()=>{
-      setMyMenu(true);
-  }
-  const dropdownClose = ()=>{
-      setMyMenu(false);
-  }
+    const [myMenu, setMyMenu] = useState(false);
+    const dropdownOpen = ()=>{
+        if(!myMenu){
+            setMyMenu(true);
+        };
+    }
+    const dropdownClose = ()=>{
+        if(myMenu){  
+            setMyMenu(false);
+        }   
+    }
 
   const LoginTrue = styled.section`
   
@@ -27,12 +31,16 @@ const MyDrop = ({localID,logOut}) =>{
           line-height:20px;
           color: #ff8a3d; 
       }
-      .dropdown{
-          margin-left:15px;
-          font-size:12px;
-          i{
-              right:15px;
-          }
+      .mouseOver{
+            display: block;
+            height:30px;
+        .dropdown{
+            margin-left:15px;
+            font-size:12px;
+            i{
+                right:15px;
+            }
+        }
       }
       
   `;
@@ -44,11 +52,12 @@ const MyDrop = ({localID,logOut}) =>{
         <li className="welcome">
             <span>웰컴</span>
         </li>
-        <li >
+        <li className = "mouseOver">
             <span className="dropdown">{localID}님 <i className="fas fa-chevron-down"> </i></span>
         </li>
         <li>
-            <ul className={myMenu? "dropMenu active":"dropMenu"}>
+            
+            <ul className={myMenu? "dropMenu active":"dropMenu"} onMouseOver={()=>dropdownOpen()} onMouseOut={()=>dropdownClose()}>
                 <li>정보수정</li>
                 <li>채팅내역</li>
                 <li>채팅내역</li>
@@ -63,8 +72,6 @@ const MyDrop = ({localID,logOut}) =>{
             </ul>
         </li>
     </ul>
-
-    {/*  */}
   </LoginTrue>);
 }
 

@@ -1,29 +1,10 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+
+import Category from "./Category";
 import MyDrop from "./MyDropMenu";
-
-let localID, localPW ;
-const Header = () => {
-  const [login, setLogin] = useState(false);
-
-  useEffect(() => {
-    localID = localStorage.getItem("id");
-    localPW = localStorage.getItem("pw");
-
-    if (localID  && localPW ) {
-        console.log(localID,localPW);
-        setLogin(true);
-    }
-  }, []);
-
-  const logOut = () => {
-    setLogin(false);
-    localStorage.setItem("id", "");
-    localStorage.setItem("pw", "");
-  };
-
-  const Headers = styled.header`
+const Headers = styled.header`
   width: 100%;
   box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.1);
   top: 0;
@@ -106,6 +87,7 @@ const Header = () => {
 `;
     return (
     <Headers>
+      <Category />
       <div className="container">
         <Link to="/">{// 로고 클릭시 메인으로 이동 
         }
@@ -122,6 +104,7 @@ const Header = () => {
             <img src="./img/search-icon.svg" alt="search" />
           </label>
         </div>
+
         {login ? ( //로그인 여부확인
           <MyDrop localID={localID} logOut={logOut}></MyDrop>
         ) : (
