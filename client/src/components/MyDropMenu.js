@@ -47,20 +47,23 @@ const MyDrop = ({localID,logOut}) =>{
         <li >
             <span className="dropdown">{localID}님 <i className="fas fa-chevron-down"> </i></span>
         </li>
-    </ul>
-    <ul className={myMenu? "dropMenu active":"dropMenu"}>
-        <li>정보수정</li>
-        <li>채팅내역</li>
-        <li>채팅내역</li>
-        <li>채팅내역</li>
         <li>
-            <Link to="/login">
-                <div onClick={logOut}>
-                    <span>로그아웃</span>
-                </div>
-            </Link>
+            <ul className={myMenu? "dropMenu active":"dropMenu"}>
+                <li>정보수정</li>
+                <li>채팅내역</li>
+                <li>채팅내역</li>
+                <li>채팅내역</li>
+                <li>
+                    <Link to="/login">
+                        <div onClick={logOut}>
+                            <span>로그아웃</span>
+                        </div>
+                    </Link>
+                </li>
+            </ul>
         </li>
     </ul>
+
     {/*  */}
   </LoginTrue>);
 }
