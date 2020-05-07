@@ -142,7 +142,7 @@ body {
   width: 200px;
   height:200px;
   position:absolute;
-  top:calc(98% - 30px) ;
+  top:calc(98% - 30px) 
   right:0;
 }
 

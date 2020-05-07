@@ -47,6 +47,7 @@ const MyDrop = ({localID,logOut}) =>{
     return(<LoginTrue>
     <ul className="myMenu"
             onMouseOver={()=>dropdownOpen()}
+            onMouseOut ={()=>dropdownClose()}
         >
         <li className="welcome">
             <span>웰컴</span>
@@ -71,7 +72,6 @@ const MyDrop = ({localID,logOut}) =>{
             </ul>
         </li>
     </ul>
-    {/*  */}
   </LoginTrue>);
 }
 
