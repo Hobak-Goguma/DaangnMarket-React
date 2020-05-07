@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import Category from "./Category";
 
 const Headers = styled.header`
   width: 100%;
@@ -96,6 +97,7 @@ const Header = () => {
 
   return (
     <Headers>
+      <Category />
       <div className="container">
         <img src="./img/logo.svg" alt="로고" />
         <div className="inputBox">
@@ -109,6 +111,7 @@ const Header = () => {
             <img src="./img/search-icon.svg" alt="search" />
           </label>
         </div>
+
         {login ? ( //로그인 여부확인
           <section>
             <Link to="/login">
