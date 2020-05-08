@@ -112,7 +112,7 @@ const StyledTotalMenu = styled.ul`
       li {
         transition: 0.2s;
         &:hover {
-          background: #f1f1f1;
+          background: #ffbe93;;
         }
         width: 100px;
         padding: 1rem;

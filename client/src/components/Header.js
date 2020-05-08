@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import Category from "./Category";
 import MyDrop from "./MyDropMenu";
-const Headers = styled.header`
+import  TotalMenu from "./TotalMenu";
+  const Headers = styled.header`
   width: 100%;
   box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.1);
   top: 0;
@@ -47,15 +47,17 @@ const Headers = styled.header`
         }
       }
     }
+    section.log{
+      right: 140px;
+    }
     section {
         position: absolute;
         top: 50%;
-        right: 0;
         transform: translateY(-50%);
         >a{
             
             display:inline-block;
-            >div {
+            .logIn {
                 width: 140px;
                 border: 1px solid #ff8a3d;
                 border-radius: 20px;
@@ -65,6 +67,7 @@ const Headers = styled.header`
                 height: 40px;
                 position: relative;
                 margin:0;
+                top:2px;
                 &:hover {
                     background-color: #ff8a3d;
                     color: white;
@@ -107,7 +110,6 @@ const Header = () => {
 
     return (
     <Headers>
-      <Category />
       <div className="container">
         <Link to="/">{// 로고 클릭시 메인으로 이동 
         }
@@ -126,14 +128,9 @@ const Header = () => {
         </div>
 
         {login ? ( //로그인 여부확인
-          <MyDrop localID={localID} logOut={logOut}></MyDrop>
+          <MyDrop localID={localID}></MyDrop>
         ) : (
-          <section>
-            <Link to="/register">
-              <div className="signIn">
-                <div>회원가입</div>
-              </div>
-            </Link>
+          <section className="log">
             <Link to="/login">
               <div className="logIn">
                 <div>로그인</div>
@@ -141,6 +138,7 @@ const Header = () => {
             </Link>
           </section>
         )}
+        <TotalMenu  logOut={logOut}/>
       </div>
     </Headers>
   );
