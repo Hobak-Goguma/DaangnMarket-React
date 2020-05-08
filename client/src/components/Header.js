@@ -84,6 +84,27 @@ const Headers = styled.header`
     }
   }
 `;
+
+let localID, localPW ;
+const Header = () => {
+  const [login, setLogin] = useState(false);
+
+  useEffect(() => {
+    localID = localStorage.getItem("id");
+    localPW = localStorage.getItem("pw");
+
+    if (localID  && localPW ) {
+        console.log(localID,localPW);
+        setLogin(true);
+    }
+  }, []);
+
+  const logOut = () => {
+    setLogin(false);
+    localStorage.setItem("id", "");
+    localStorage.setItem("pw", "");
+  };
+
     return (
     <Headers>
       <Category />
