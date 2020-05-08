@@ -27,33 +27,6 @@ def member_list(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['POST'])
-def member_login(request):
-    """
-    멤버 테이블 로그인
-    """
-    try:
-        Data = json.loads(request.body)
-        user_id = Data['user_id']
-        user_pw = Data['user_pw']
-        member = Member.objects.get(user_id = user_id, user_pw = user_pw)
-    except Member.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-        # return HttpResponse(data)
-
-    if request.method == 'POST':
-        serializer = LoginSerializer(member)
-        return Response(serializer.data)
-
-    # user_pw = Data['user_pw']
-    # if Member.user_pw == user_pw:
-    #     if request.method == 'POST':
-    #         serializer = LoginSerializer(member)
-    #         return Response(serializer.data)
-    # else:
-    #     return HttpResponse('비밀번호가 틀렸습니다.')
-
-
 @api_view(['GET', 'PUT', 'DELETE'])
 def member_detail(request, pk):
     """
@@ -78,6 +51,52 @@ def member_detail(request, pk):
     elif request.method == 'DELETE':
         Member.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(['GET'])
+def member_overlap(request):
+    """
+    아이디값이 중복되는지 확인해줍니다.
+    """
+    try:
+        User_id = request.GET['user_id']
+        member = Member.objects.get(user_id = User_id)
+    except Member.DoesNotExist:
+        #중복아이디 없음
+        return Response(status=status.HTTP_200_OK)
+    #중복아이디 있음
+    return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+def member_login(request):
+    """
+    멤버 테이블 로그인
+    """
+    try:
+        Data = json.loads(request.body)
+        user_id = Data['user_id']
+        user_pw = Data['user_pw']
+        member = Member.objects.get(user_id = user_id, user_pw = user_pw)
+    except Member.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'POST':
+        # serializer = LoginSerializer(member)
+        return Response(status=status.HTTP_200_OK)
+    
+    else:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+    # user_pw = Data['user_pw']
+    # if Member.user_pw == user_pw:
+    #     if request.method == 'POST':
+    #         serializer = LoginSerializer(member)
+    #         return Response(serializer.data)
+    # else:
+    #     return HttpResponse('비밀번호가 틀렸습니다.')
+
+
 
 
 

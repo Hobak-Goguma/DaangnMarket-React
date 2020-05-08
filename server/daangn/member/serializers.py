@@ -8,10 +8,11 @@ class MemberSerializer(serializers.ModelSerializer):
         model = Member
         fields = ('pk', 'name', 'nick_name', 'user_id', 'user_pw', 'tel', 'birth', 'email', 'gender', 'add', 'cdate', 'udate', 'last_date')
 
-class LoginSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Member
-        fields = ('pk', 'user_id')
+# 로그인 시리얼라이저 ( 보내줘야 할 값이 있을 경우 )
+# class LoginSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Member
+#         fields = ('pk', 'user_id')
 
 
 # class MemberSerializer(serializers.Serializer):
