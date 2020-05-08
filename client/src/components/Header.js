@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-
 import Category from "./Category";
 import MyDrop from "./MyDropMenu";
 const Headers = styled.header`

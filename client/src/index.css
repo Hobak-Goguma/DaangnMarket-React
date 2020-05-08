@@ -134,18 +134,3 @@ body {
   width: 980px;
   margin: 0 auto;
 }
-.dropMenu{
-  display:none;
-  border: 1px solid #ccc;
-  background:white;
-  margin-top: 30px;
-  width: 200px;
-  height:200px;
-  position:absolute;
-  top:calc(98% - 30px) 
-  right:0;
-}
-
-.dropMenu.active{
-  display: block;
-}
