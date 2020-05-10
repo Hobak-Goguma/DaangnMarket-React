@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { withRouter } from "react-router-dom";
 import Layout from "../components/Layout";
+import KakaoLogin from "react-kakao-login";
 import styled from "styled-components";
 
 const Login = ({ history }) => {
   const [ID, setID] = useState("");
   const [PW, setPW] = useState("");
+  // 0e1d341e30c7b15e74b227fa49633c63
 
   const handleID = (e) => {
     setID(e.target.value);
@@ -16,36 +18,35 @@ const Login = ({ history }) => {
   };
 
   function loginFetch() {
-    fetch("http://16535b06.ngrok.io/member/login/", {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify({
-        user_id: ID,
-        user_pw: PW,
-      }),
-    }).then((response) => {
-      if (response.status === 200) {
-        // localStorage.setItem("id", ID);
-        // localStorage.setItem("pw", PW);
-        history.push("/");
-        alert("정상 로그인 되었습니다");
-        console.log(response);
-        history.push("/");
-      } else {
-        alert("응, 틀렸어~");
-      }
-    });
-    // .then((response) => {
-    //   if (response.token) {
-    //     localStorage.setItem("wetoken", response.token);
+    window.sessionStorage.setItem("id", ID);
+    history.push("/");
+    // fetch("http://16535b06.ngrok.io/member/login/", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     user_id: ID,
+    //     user_pw: PW,
+    //   }),
+    // }).then((response) => {
+    //   if (response.status === 200) {
+    //     alert("정상 로그인 되었습니다");
+    //     history.push("/");
+    //     console.log(response);
+    //   } else {
+    //     alert("응, 틀렸어~");
     //   }
     // });
   }
   const goRegister = () => {
     history.push("/register");
   };
+
+  const responseKakao = (res) => {
+    setID(res.profile.id);
+  };
+
   return (
     <Layout>
       <StyledLogin>
@@ -72,6 +73,15 @@ const Login = ({ history }) => {
               <span className="line"></span>
               <span>비밀번호찾기</span>
             </div>
+          </div>
+          <div className="button">
+            <KakaoButton
+              jsKey="950d9cb4afd925ae08aeb0fc8924baf8"
+              buttonText="카카오 로그인"
+              onSuccess={responseKakao}
+              onFailure={() => console.log("failed")}
+              getProfile="true"
+            />
           </div>
           <div className="button">
             <div className="login-button" onClick={loginFetch}>
@@ -169,4 +179,20 @@ const StyledLogin = styled.div`
       outline: none;
     }
   }
+`;
+
+const KakaoButton = styled(KakaoLogin)`
+  cursor: pointer;
+  margin-bottom: 10px;
+  padding: 0;
+  width: 340px;
+  height: 52px;
+  line-height: 44px;
+  color: #783c00;
+  background: #ffeb00;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
 `;

@@ -88,23 +88,33 @@ const Headers = styled.header`
 `;
 
 let localID, localPW;
+let id;
 const Header = () => {
   const [login, setLogin] = useState(false);
 
   useEffect(() => {
-    localID = localStorage.getItem("id");
-    localPW = localStorage.getItem("pw");
+    // localID = localStorage.getItem("id");
+    // localPW = localStorage.getItem("pw");
 
-    if (localID && localPW) {
-      console.log(localID, localPW);
+    // if (localID && localPW) {
+    //   console.log(localID, localPW);
+    //   setLogin(true);
+    // }
+    id = window.sessionStorage.getItem("id");
+    if (id) {
       setLogin(true);
+    } else {
+      setLogin(false);
+      window.sessionStorage.clear();
     }
   }, []);
 
   const logOut = () => {
+    window.sessionStorage.clear();
     setLogin(false);
-    localStorage.setItem("id", "");
-    localStorage.setItem("pw", "");
+
+    // localStorage.setItem("id", "");
+    // localStorage.setItem("pw", "");
   };
 
   return (
@@ -130,7 +140,7 @@ const Header = () => {
         </div>
 
         {login ? ( //로그인 여부확인
-          <MyDrop localID={localID}></MyDrop>
+          <MyDrop localID={id}></MyDrop>
         ) : (
           <section className="log">
             <Link to="/login">

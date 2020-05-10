@@ -133,9 +133,6 @@ body {
   position: relative;
   width: 980px;
   margin: 0 auto;
-<<<<<<< HEAD
-}
-=======
 }
 .myM .dropMenu {
   display: none;
@@ -151,4 +148,3 @@ body {
 .dropMenu.active {
   display: block;
 }
->>>>>>> b70c194ffd0659eaafe61076ca1a8b52b7e5f89b

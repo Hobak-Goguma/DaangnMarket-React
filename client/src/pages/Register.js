@@ -57,15 +57,18 @@ const Register = ({ history }) => {
   };
 
   const fetchIdDuplication = () => {
-    fetch(
-      `http://28d6d1ad.ngrok.io/member/overlap/?user_id=${inputState.id}`
-    ).then((res) => {
-      if (res.status === 200) {
-        alert("중복확인이 완료되었습니다.");
-      } else {
-        alert("중복된 아이디가 있습니다.");
-      }
-    });
+    fetch(`http://28d6d1ad.ngrok.io/member/overlap/?user_id=${inputState.id}`)
+      .then((res) => {
+        if (res.status === 200) {
+          alert("중복확인이 완료되었습니다.");
+        } else {
+          alert("중복된 아이디가 있습니다.");
+        }
+      })
+      // console.log 에 status error 안띄우기
+      .catch((err) => {
+        const mute = err;
+      });
   };
 
   const handlePostCode = () => {
@@ -125,11 +128,7 @@ const Register = ({ history }) => {
       checkbox.checkedB &&
       checkbox.checkedG
     ) {
-<<<<<<< HEAD
-      fetch("http://a17a3ca5.ngrok.io/api/v1/members/", {
-=======
       fetch("http://16535b06.ngrok.io/member/", {
->>>>>>> b70c194ffd0659eaafe61076ca1a8b52b7e5f89b
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -508,7 +507,8 @@ const Register = ({ history }) => {
                             </div>
                           </div>
                           <p className="address-hint">
-                            도로명을 선택하여도 지번(동) 까지 입력됩니다.
+                            도로명을 선택하여도 지번(법정동/법정리) 까지
+                            입력됩니다.
                           </p>
                         </td>
                       </tr>
