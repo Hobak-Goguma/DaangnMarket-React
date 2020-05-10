@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import MyDrop from "./MyDropMenu";
-import  TotalMenu from "./TotalMenu";
-  const Headers = styled.header`
+import TotalMenu from "./TotalMenu";
+const Headers = styled.header`
   width: 100%;
   box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.1);
   top: 0;
@@ -47,48 +47,47 @@ import  TotalMenu from "./TotalMenu";
         }
       }
     }
-    section.log{
+    section.log {
       right: 140px;
     }
     section {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        >a{
-            
-            display:inline-block;
-            .logIn {
-                width: 140px;
-                border: 1px solid #ff8a3d;
-                border-radius: 20px;
-                color: #ff8a3d;
-                font-weight: bold;
-                text-align: center;
-                height: 40px;
-                position: relative;
-                margin:0;
-                top:2px;
-                &:hover {
-                    background-color: #ff8a3d;
-                    color: white;
-                }
-                div {
-                    position: absolute;
-                    width:100%;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%, -50%);
-                }
-            }
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      > a {
+        display: inline-block;
+        .logIn {
+          width: 140px;
+          border: 1px solid #ff8a3d;
+          border-radius: 20px;
+          color: #ff8a3d;
+          font-weight: bold;
+          text-align: center;
+          height: 40px;
+          position: relative;
+          margin: 0;
+          top: 2px;
+          &:hover {
+            background-color: #ff8a3d;
+            color: white;
+          }
+          div {
+            position: absolute;
+            width: 100%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+          }
         }
-        div:first-child {
+      }
+      div:first-child {
         margin-right: 10px;
-        }
+      }
     }
   }
 `;
 
-let localID, localPW ;
+let localID, localPW;
 const Header = () => {
   const [login, setLogin] = useState(false);
 
@@ -96,9 +95,9 @@ const Header = () => {
     localID = localStorage.getItem("id");
     localPW = localStorage.getItem("pw");
 
-    if (localID  && localPW ) {
-        console.log(localID,localPW);
-        setLogin(true);
+    if (localID && localPW) {
+      console.log(localID, localPW);
+      setLogin(true);
     }
   }, []);
 
@@ -108,12 +107,15 @@ const Header = () => {
     localStorage.setItem("pw", "");
   };
 
-    return (
+  return (
     <Headers>
+      {/* <Category /> */}
       <div className="container">
-        <Link to="/">{// 로고 클릭시 메인으로 이동 
-        }
-            <img src="./img/logo.svg" alt="로고" />
+        <Link to="/">
+          {
+            // 로고 클릭시 메인으로 이동
+          }
+          <img src="./img/logo.svg" alt="로고" />
         </Link>
         <div className="inputBox">
           <input
@@ -138,7 +140,7 @@ const Header = () => {
             </Link>
           </section>
         )}
-        <TotalMenu  logOut={logOut}/>
+        <TotalMenu logOut={logOut} />
       </div>
     </Headers>
   );

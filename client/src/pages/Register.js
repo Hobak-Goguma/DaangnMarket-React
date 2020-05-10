@@ -56,6 +56,18 @@ const Register = ({ history }) => {
     }
   };
 
+  const fetchIdDuplication = () => {
+    fetch(
+      `http://28d6d1ad.ngrok.io/member/overlap/?user_id=${inputState.id}`
+    ).then((res) => {
+      if (res.status === 200) {
+        alert("중복확인이 완료되었습니다.");
+      } else {
+        alert("중복된 아이디가 있습니다.");
+      }
+    });
+  };
+
   const handlePostCode = () => {
     setVisible(true);
 
@@ -64,9 +76,9 @@ const Register = ({ history }) => {
         let addr = "";
 
         if (data.userSelectedType === "R") {
-          addr = data.roadAddress;
+          addr = data.sido + " " + data.sigungu + " " + data.bname;
         } else {
-          addr = data.jibunAddress;
+          addr = data.sido + " " + data.sigungu + " " + data.bname;
         }
 
         addrInput.current.value = addr;
@@ -113,13 +125,18 @@ const Register = ({ history }) => {
       checkbox.checkedB &&
       checkbox.checkedG
     ) {
+<<<<<<< HEAD
       fetch("http://a17a3ca5.ngrok.io/api/v1/members/", {
+=======
+      fetch("http://16535b06.ngrok.io/member/", {
+>>>>>>> b70c194ffd0659eaafe61076ca1a8b52b7e5f89b
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           name: inputState.name,
+          nick_name: inputState.id,
           user_id: inputState.id,
           user_pw: inputState.pw,
           tel: inputState.phone.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3"),
@@ -168,7 +185,7 @@ const Register = ({ history }) => {
                   className="head-notification1"
                   style={{ marginBottom: 10 }}
                 >
-                  <p>*필수입력사항 (주소 일단 제외)</p>
+                  <p>*필수입력사항</p>
                 </div>
                 <div className="write-board2">
                   <div className="ghost-tr"></div>
@@ -190,7 +207,10 @@ const Register = ({ history }) => {
                               maxLength="15"
                               value={inputState.id}
                             ></input>
-                            <div className="normal-button colbutton">
+                            <div
+                              className="normal-button colbutton"
+                              onClick={fetchIdDuplication}
+                            >
                               중복확인
                             </div>
                           </div>
@@ -487,6 +507,9 @@ const Register = ({ history }) => {
                               <span>동네 검색</span>
                             </div>
                           </div>
+                          <p className="address-hint">
+                            도로명을 선택하여도 지번(동) 까지 입력됩니다.
+                          </p>
                         </td>
                       </tr>
                     </tbody>
@@ -504,6 +527,7 @@ const Register = ({ history }) => {
                               id="addrInput"
                               className="typing"
                               type="text"
+                              disabled
                               ref={addrInput}
                               required
                             ></input>
@@ -921,7 +945,13 @@ const StyledRegister = styled.div`
     align-items: center;
   }
   .address {
+    margin-top: 15px;
     cursor: pointer;
+  }
+  .address-hint {
+    margin-top: 2px;
+    font-size: 12px;
+    color: gray;
   }
 
   .birth-inputs {
