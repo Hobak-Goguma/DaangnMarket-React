@@ -134,17 +134,17 @@ body {
   width: 980px;
   margin: 0 auto;
 }
-.dropMenu{
-  display:none;
+.myM .dropMenu {
+  display: none;
   border: 1px solid #ccc;
-  background:white;
+  background: white;
   width: 200px;
-  height:200px;
-  position:absolute;
-  top:calc(100% + 3px);
-  right:0;
+  height: 200px;
+  position: absolute;
+  top: calc(100% + 3px);
+  right: 0;
 }
 
-.dropMenu.active{
+.dropMenu.active {
   display: block;
 }

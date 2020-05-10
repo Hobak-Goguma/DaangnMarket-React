@@ -16,38 +16,32 @@ const Login = ({ history }) => {
   };
 
   function loginFetch() {
-    // fetch("http://localhost:8084/auth/login", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-type": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     email: ID,
-    //     password: PW,
-    //   }),
-    // })
-    //   .then((response) => {
-    //     // console.log(response);
-    //     // console.log(response.status);
-    //     if (response.status === 200) {
-          localStorage.setItem("id", ID);
-          localStorage.setItem("pw", PW);
-          history.push('/')
-    //       alert("정상 로그인 되었습니다");
-    //       console.log(response);
-    //       history.push("/");
-    //     } else {
-    //       alert("응, 틀렸어~");
-    //     }
-    //     console.log(response, response.json);
-    //     return response.json();
-    //     //response.json으로 하면 에러나서 json을 없애버림. 그런데 갑자기 붙여도 됨.
-    //   })
-    //   .then((response) => {
-    //     if (response.token) {
-    //       localStorage.setItem("wetoken", response.token);
-    //     }
-    //   });
+    fetch("http://16535b06.ngrok.io/member/login/", {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({
+        user_id: ID,
+        user_pw: PW,
+      }),
+    }).then((response) => {
+      if (response.status === 200) {
+        // localStorage.setItem("id", ID);
+        // localStorage.setItem("pw", PW);
+        history.push("/");
+        alert("정상 로그인 되었습니다");
+        console.log(response);
+        history.push("/");
+      } else {
+        alert("응, 틀렸어~");
+      }
+    });
+    // .then((response) => {
+    //   if (response.token) {
+    //     localStorage.setItem("wetoken", response.token);
+    //   }
+    // });
   }
   const goRegister = () => {
     history.push("/register");

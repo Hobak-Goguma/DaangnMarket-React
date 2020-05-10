@@ -106,7 +106,7 @@ const Header = () => {
   `;
   return (
     <Headers>
-      <Category />
+      {/* <Category /> */}
       <div className="container">
         <Link to="/">
           {
