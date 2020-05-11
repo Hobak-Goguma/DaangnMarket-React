@@ -97,7 +97,6 @@ const Header = () => {
     localPW = localStorage.getItem("pw");
 
     if (localID  && localPW ) {
-        console.log(localID,localPW);
         setLogin(true);
     }
   }, []);
