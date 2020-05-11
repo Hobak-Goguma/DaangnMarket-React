@@ -106,7 +106,33 @@ const Header = () => {
     localStorage.setItem("id", "");
     localStorage.setItem("pw", "");
   };
+  let search="";
 
+
+  function searchFetch() {
+    fetch(`http://c2388d02.ngrok.io/member/search?q=${search}`, {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(),
+    })
+      .then((response) => {
+        console.log(response);
+        console.log(response.status);
+        console.log(response, response.json);
+        return response.json();
+      })
+      .then((response) => {
+        if (response.token) {
+          localStorage.setItem("wetoken", response.token);
+        }
+      });
+  }
+  const change = (e)=>{
+    search= e.target.value;
+
+  }
     return (
     <Headers>
       <div className="container">
@@ -119,6 +145,7 @@ const Header = () => {
             type="text"
             name="search"
             id="searchItem"
+            onChange={change}
             placeholder="지역, 상품, 업체등을 검색해보세요."
           />
           <label htmlFor="searchItem">

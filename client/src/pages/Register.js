@@ -113,7 +113,7 @@ const Register = ({ history }) => {
       checkbox.checkedB &&
       checkbox.checkedG
     ) {
-      fetch("http://a17a3ca5.ngrok.io/api/v1/members/", {
+      fetch("http://c2388d02.ngrok.io/member/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
