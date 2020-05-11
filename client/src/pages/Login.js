@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import Layout from "../components/Layout";
 import styled from "styled-components";
@@ -6,6 +6,20 @@ import styled from "styled-components";
 const Login = ({ history }) => {
   const [ID, setID] = useState("");
   const [PW, setPW] = useState("");
+
+  // useEffect(() => {
+  //   window.Kakao.init("950d9cb4afd925ae08aeb0fc8924baf8");
+
+  //   window.Kakao.Auth.createLoginButton({
+  //     container: "#kakao-login-btn",
+  //     success: function (authObj) {
+  //       alert(JSON.stringify(authObj));
+  //     },
+  //     fail: function (err) {
+  //       alert(JSON.stringify(err));
+  //     },
+  //   });
+  // });
 
   const handleID = (e) => {
     setID(e.target.value);
@@ -16,6 +30,8 @@ const Login = ({ history }) => {
   };
 
   function loginFetch() {
+    window.sessionStorage.setItem("id", ID);
+    history.push("/");
     fetch("http://16535b06.ngrok.io/member/login/", {
       method: "POST",
       headers: {
@@ -27,25 +43,18 @@ const Login = ({ history }) => {
       }),
     }).then((response) => {
       if (response.status === 200) {
-        // localStorage.setItem("id", ID);
-        // localStorage.setItem("pw", PW);
-        history.push("/");
         alert("정상 로그인 되었습니다");
-        console.log(response);
         history.push("/");
+        console.log(response);
       } else {
         alert("응, 틀렸어~");
       }
     });
-    // .then((response) => {
-    //   if (response.token) {
-    //     localStorage.setItem("wetoken", response.token);
-    //   }
-    // });
   }
   const goRegister = () => {
     history.push("/register");
   };
+
   return (
     <Layout>
       <StyledLogin>
