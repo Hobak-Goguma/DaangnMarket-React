@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { withRouter } from "react-router-dom";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import MyDrop from "./MyDropMenu";
@@ -29,6 +30,7 @@ const Headers = styled.header`
       border: 1px solid #ff8a3d;
       border-radius: 5px;
       input {
+        outline: none;
         position: absolute;
         top: 13px;
         left: 10px;
@@ -89,8 +91,9 @@ const Headers = styled.header`
 
 let localID, localPW;
 let id;
-const Header = () => {
+const Header = ({ history }) => {
   const [login, setLogin] = useState(false);
+  const [keyword, setKeyword] = useState("");
 
   useEffect(() => {
     // localID = localStorage.getItem("id");
@@ -117,6 +120,12 @@ const Header = () => {
     // localStorage.setItem("pw", "");
   };
 
+  const searchKeyPress = (e) => {
+    if (window.event.keyCode === 13 && keyword === "자전거") {
+      history.push("/search");
+    }
+  };
+
   return (
     <Headers>
       {/* <Category /> */}
@@ -133,6 +142,9 @@ const Header = () => {
             name="search"
             id="searchItem"
             placeholder="지역, 상품, 업체등을 검색해보세요."
+            onKeyPress={searchKeyPress}
+            value={keyword}
+            onChange={(e) => setKeyword(e.target.value)}
           />
           <label htmlFor="searchItem">
             <img src="./img/search-icon.svg" alt="search" />
@@ -156,4 +168,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default withRouter(Header);
