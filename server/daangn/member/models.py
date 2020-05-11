@@ -60,7 +60,7 @@ class Member(models.Model):
 
 class Product(models.Model):
     id_product = models.AutoField(primary_key=True)
-    id_member = models.ForeignKey(Member, models.DO_NOTHING, db_column='id_member')
+    id_member = models.ForeignKey(Member, models.CASCADE, db_column='id_member')
     name = models.CharField(max_length=100)
     price = models.IntegerField()
     info = models.CharField(max_length=3000)
