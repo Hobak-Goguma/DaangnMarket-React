@@ -121,34 +121,33 @@ const Header = ({ history }) => {
   };
   let search="";
 
-  // function searchFetch() {
-  //   fetch(`http://c2388d02.ngrok.io/member/search?q=${search}`, {
-  //     method: "GET",
-  //     headers: {
-  //       "Content-type": "application/json",
-  //     },
-  //     body: JSON.stringify(),
-  //   })
-  //     .then((response) => {
-  //       console.log(response);
-  //       console.log(response.status);
-  //       console.log(response, response.json);
-  //       return response.json();
-  //     })
-  //     .then((response) => {
-  //       if (response.token) {
-  //         localStorage.setItem("wetoken", response.token);
-  //       }
-  //     });
-  // }
-  // const change = (e)=>{
-  //   search= e.target.value;
+  function searchFetch() {
+    fetch(`http://c2388d02.ngrok.io/member/product/search/?q=${search}`, {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(),
+    })
+      .then((response) => {
+        console.log(response);
+        console.log(response.status);
+        console.log(response, response.json);
+        return response.json();
+        if (response.status === 200) {
+          console.log("좋아쓰");
+        }
+      });
+  }
+  const change = (e)=>{
+    search= e.target.value;
 
-  // }
-  //   return (
+  }
+    // return (
   const searchKeyPress = (e) => {
-    if (window.event.keyCode === 13 && keyword === "자전거") {
-      history.push("/search");
+    if (window.event.keyCode === 13) {
+  //     history.push("/search");
+  searchFetch();
     }
   };
 
@@ -166,11 +165,9 @@ const Header = ({ history }) => {
             type="text"
             name="search"
             id="searchItem"
-            onChange={change}
+            onChange={(e)=>change(e)}
             placeholder="지역, 상품, 업체등을 검색해보세요."
-            onKeyPress={searchKeyPress}
-            value={keyword}
-            onChange={(e) => setKeyword(e.target.value)}
+            onKeyPress={()=>searchKeyPress()}
           />
           <label htmlFor="searchItem">
             <img src="./img/search-icon.svg" alt="search" />
