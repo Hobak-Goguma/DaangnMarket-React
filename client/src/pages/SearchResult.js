@@ -4,6 +4,9 @@ import styled from "styled-components";
 import FlatCard from "../components/FlatCard";
 
 const SearchResult = () => {
+  var link = document.location.href; 
+  console.log(link);
+
   return (
     <Layout>
       <StyledSearchResult>

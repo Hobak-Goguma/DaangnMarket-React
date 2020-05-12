@@ -2,11 +2,11 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-const TotalMenu = ({ logOut }) => {
-  let localID;
-  useEffect(() => {
-    localID = window.sessionStorage.getItem("id");
-  }, []);
+const TotalMenu = ({ logOut,login }) => {
+  let localID="선우씨 언제되요";
+  // useEffect(() => {
+  //   localID = window.sessionStorage.getItem("id");
+  // }, []);
   return (
     <StyledTotalMenu>
       <li className="totalLists">
@@ -33,21 +33,28 @@ const TotalMenu = ({ logOut }) => {
           <li>냉장소</li>
           <li>쇼파</li>
               <li>
-            <Link to={{pathname : "/my/change", state:{
+            <Link to={{pathname : "/mychange", state:{
               localID :localID,
             }}}>
             <div>
-                <span>내 정보 변경</span>
+                <span>내 정보 수정</span>
               </div>
             </Link>
               </li>
-          <li onClick={logOut}>
-            <Link to="/login">
-              <div>
-                <span>로그아웃</span>
-              </div>
-            </Link>
-          </li>
+              {login?//로그인 여부에따라 로그인인지 회원가입인지 결정
+                <li onClick={logOut}>
+                  <Link to="/login">
+                    <div>
+                      <span>로그아웃</span>
+                    </div>
+                  </Link>
+                </li>:<li>
+                  <Link to="/register">
+                    <div>
+                      <span>회원가입</span>
+                    </div>
+                  </Link>
+                </li>}
         </ul>
       </li>
     </StyledTotalMenu>

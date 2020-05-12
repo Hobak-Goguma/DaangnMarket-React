@@ -89,7 +89,6 @@ const Headers = styled.header`
   }
 `;
 
-let localID, localPW;
 let id;
 const Header = ({ history }) => {
   const [login, setLogin] = useState(false);
@@ -146,7 +145,7 @@ const Header = ({ history }) => {
     // return (
   const searchKeyPress = (e) => {
     if (window.event.keyCode === 13) {
-  //     history.push("/search");
+  //     history.push("/search?p='자전거'");
   searchFetch();
     }
   };
@@ -185,7 +184,7 @@ const Header = ({ history }) => {
             </Link>
           </section>
         )}
-        <TotalMenu logOut={logOut} />
+        <TotalMenu logOut={logOut} login={login} />
       </div>
     </Headers>
   );
