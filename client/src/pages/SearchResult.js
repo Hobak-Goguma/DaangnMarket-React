@@ -11,23 +11,6 @@ const SearchResult = () => {
           <div className="articles-wrap">
             <p className="article-kind">중고거래</p>
             <FlatCard />
-            <FlatCard />
-            <FlatCard />
-            <FlatCard />
-            <FlatCard />
-            <FlatCard />
-            <FlatCard />
-            <FlatCard />
-            <FlatCard />
-            <FlatCard />
-            <FlatCard />
-            <FlatCard />
-            <FlatCard />
-            <FlatCard />
-            <FlatCard />
-            <FlatCard />
-            <FlatCard />
-            <FlatCard />
           </div>
         </div>
       </StyledSearchResult>
@@ -49,9 +32,9 @@ const StyledSearchResult = styled.section`
     margin: 0 auto;
     margin-bottom: 20px;
     background: #fff;
+
     .articles-wrap {
-      /* padding: 0 40px; */
-      margin-left: 60px;
+      margin-left: 40px;
 
       p.article-kind {
         font-weight: 600;
@@ -65,7 +48,7 @@ const StyledSearchResult = styled.section`
         position: relative;
         text-align: left;
         display: inline-block;
-        width: 200px;
+        width: 217px;
         margin-right: 34px;
         margin-bottom: 40px;
 

@@ -1,0 +1,40 @@
+{
+  "card_data": [
+    {
+      "img": "https://dnvefa72aowie.cloudfront.net/origin/article/202005/f326399e82ca7c2284f53a8b776dd2cae9628a0367cdc0caa482dd2ed66d6b74.webp?q=82&s=300x300&t=crop",
+      "title": "여성용 자전거/바구니 자전거 삼천리자전거 24 프림로즈",
+      "region_name": "대구 수성구 수성동1가",
+      "price": "66,000원"
+    },
+    {
+      "img": "https://dnvefa72aowie.cloudfront.net/origin/article/202005/EDFF0A13F8458029E5688B3AD40A800AFCA53A8812D6F002189313F2D68793E2.jpg?q=82&s=300x300&t=crop",
+      "title": "로드자전거 자전거 성인자전거 팔아요",
+      "region_name": "서울 구로구 고척동",
+      "price": "40,000원"
+    },
+    {
+      "img": "https://dnvefa72aowie.cloudfront.net/origin/article/202005/54DCEE9ED1B9938709A2F54420B239D25ADDE697BD9224912AE85C8C5FC453A4.jpg?q=82&s=300x300&t=crop",
+      "title": "클래식자전거 , 자전거 유아안장, 여성 자전거",
+      "region_name": "경기도 고양시 덕양구 도내동",
+      "price": "40,000원"
+    },
+    {
+      "img": "https://dnvefa72aowie.cloudfront.net/origin/article/202005/120bd35ddd819a0fc56a45a078f79c691139324870f9564ba5c8a1b5bd7b9f4c.webp?q=82&s=300x300&t=crop",
+      "title": "생활자전거 마실용자전거 스팅거자전거",
+      "region_name": "부산 해운대구 중제1동",
+      "price": "80,000원"
+    },
+    {
+      "img": "https://dnvefa72aowie.cloudfront.net/origin/article/202005/526fea2593b3a7fd29bec9bdc95e36c4fd595da3a98615e4a511d33c2cd81fbc.webp?q=82&s=300x300&t=crop",
+      "title": "여성용 자전거/바구니 자전거 삼천리자전거 24 프림로즈",
+      "region_name": "서울 노원구 월계동",
+      "price": "45,000원"
+    },
+    {
+      "img": "https://dnvefa72aowie.cloudfront.net/origin/article/202005/de7a99713755534c70b8235ff6a10cff3a0eee532f974662dbafb821e9e04dbd.webp?q=82&s=300x300&t=crop",
+      "title": "픽시자전거, 로드자전거 팝니다.",
+      "region_name": "대전 유성구 노은2동",
+      "price": "안팔아 ㅋ"
+    }
+  ]
+}

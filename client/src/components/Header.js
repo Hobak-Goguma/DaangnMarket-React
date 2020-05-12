@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import MyDrop from "./MyDropMenu";
 import TotalMenu from "./TotalMenu";
+
 const Headers = styled.header`
   width: 100%;
   box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.1);
@@ -91,7 +92,7 @@ const Headers = styled.header`
 
 let localID, localPW;
 let id;
-const Header = ({ history }) => {
+const Header = (props) => {
   const [login, setLogin] = useState(false);
   const [keyword, setKeyword] = useState("");
 
@@ -121,8 +122,11 @@ const Header = ({ history }) => {
   };
 
   const searchKeyPress = (e) => {
-    if (window.event.keyCode === 13 && keyword === "자전거") {
-      history.push("/search");
+    if (
+      window.event.keyCode === 13 &&
+      (keyword === "자전거" || keyword === "유아" || keyword === "김치")
+    ) {
+      props.history.push(`/search?q=${keyword}`);
     }
   };
 
