@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Layout from "../components/Layout";
 import styled from "styled-components";
 import FlatCard1 from "../components/FlatCard/FlatCard1";
@@ -6,6 +6,10 @@ import FlatCard2 from "../components/FlatCard/FlatCard2";
 import FlatCard3 from "../components/FlatCard/FlatCard3";
 
 const SearchResult = () => {
+  const [cards1, setCards1] = useState([]);
+  const [cards2, setCards2] = useState([]);
+  const [cards3, setCards3] = useState([]);
+
   return (
     <Layout>
       <StyledSearchResult>
@@ -13,8 +17,20 @@ const SearchResult = () => {
           <div className="articles-wrap">
             <p className="article-kind">중고거래</p>
             <FlatCard1 />
+            {cards1}
           </div>
-          <div className="more-btn">
+          <div
+            className="more-btn"
+            onClick={() =>
+              setCards1([
+                ...cards1,
+                <div key={cards1}>
+                  <FlatCard1 />
+                  <FlatCard1 />
+                </div>,
+              ])
+            }
+          >
             <span>더보기</span>
           </div>
         </div>
@@ -22,8 +38,20 @@ const SearchResult = () => {
           <div className="articles-wrap">
             <p className="article-kind">동네업체</p>
             <FlatCard2 />
+            {cards2}
           </div>
-          <div className="more-btn">
+          <div
+            className="more-btn"
+            onClick={() =>
+              setCards2([
+                ...cards2,
+                <div key={cards2}>
+                  <FlatCard2 />
+                  <FlatCard2 />
+                </div>,
+              ])
+            }
+          >
             <span>더보기</span>
           </div>
         </div>
@@ -33,8 +61,20 @@ const SearchResult = () => {
               동네정보
             </p>
             <FlatCard3 />
+            {cards3}
           </div>
-          <div className="more-btn">
+          <div
+            className="more-btn"
+            onClick={() =>
+              setCards3([
+                ...cards3,
+                <div key={cards3}>
+                  <FlatCard3 />
+                  <FlatCard3 />
+                </div>,
+              ])
+            }
+          >
             <span>더보기</span>
           </div>
         </div>

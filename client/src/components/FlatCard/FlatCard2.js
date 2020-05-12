@@ -14,8 +14,8 @@ const FlatCard2 = (props) => {
 
   return (
     <>
-      {cardData.map((v) => (
-        <article className="flat-card">
+      {cardData.map((v, i) => (
+        <article className="flat-card" key={i}>
           <div className="card-photo">
             <img src={v.img} alt="자전거" />
           </div>
