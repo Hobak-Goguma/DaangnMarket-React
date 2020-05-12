@@ -1,5 +1,5 @@
 {
-  "card_data": [
+  "card_data1": [
     {
       "img": "https://dnvefa72aowie.cloudfront.net/origin/article/202005/f326399e82ca7c2284f53a8b776dd2cae9628a0367cdc0caa482dd2ed66d6b74.webp?q=82&s=300x300&t=crop",
       "title": "여성용 자전거/바구니 자전거 삼천리자전거 24 프림로즈",
@@ -34,7 +34,83 @@
       "img": "https://dnvefa72aowie.cloudfront.net/origin/article/202005/de7a99713755534c70b8235ff6a10cff3a0eee532f974662dbafb821e9e04dbd.webp?q=82&s=300x300&t=crop",
       "title": "픽시자전거, 로드자전거 팝니다.",
       "region_name": "대전 유성구 노은2동",
-      "price": "안팔아 ㅋ"
+      "price": "100,000원"
+    }
+  ],
+  "card_data2": [
+    {
+      "img": "https://dnvefa72aowie.cloudfront.net/origin/smb/202005/044725274a09a4da485fe616a149b60340fa0eb56f74662127389a3841568083.webp?q=82&s=300x300&t=crop",
+      "title": "경상자전거",
+      "region_name": "가좌동 ∙ 자전거"
+    },
+    {
+      "img": "https://dnvefa72aowie.cloudfront.net/origin/smb/202005/c6813d744ad6f1255fd8a8692b0600da93d88f81995d5e564f1cdb87d97e60b1.webp?q=82&s=300x300&t=crop",
+      "title": "알톤자전거 경상대점",
+      "region_name": "가좌동 ∙ 자전거전문업체"
+    },
+    {
+      "img": "https://dnvefa72aowie.cloudfront.net/origin/smb/202005/8c2cbb6fc950033c9b2f41e1fab4c54e45794c016d617b051579f0eec0a6baab.webp?q=82&s=300x300&t=crop",
+      "title": "최신전파사",
+      "region_name": "안양동 ∙ 가전제품자전거수리"
+    },
+    {
+      "img": "https://dnvefa72aowie.cloudfront.net/origin/smb/202005/a62bf06d9b7439f7416d844f3ab6b29806ebcf6958ec5e3b31a897d1435854eb.webp?q=82&s=300x300&t=crop",
+      "title": "자전거포유",
+      "region_name": "상동 ∙ 자전거"
+    },
+    {
+      "img": "https://dnvefa72aowie.cloudfront.net/origin/smb/202004/a049136fc3a845c6cdc40fd02d6605ca41f8326bf0c22a7d1c77c4444df1e0cc.webp?q=82&s=300x300&t=crop",
+      "title": "하이킥전동킥보드",
+      "region_name": "용봉동 ∙ 전동모빌리티"
+    },
+    {
+      "img": "https://dnvefa72aowie.cloudfront.net/origin/smb/202004/80916B82827820887EB81A8F1474020CEF6CE7D53ED9C7A56C0B8C6B09B68BF6.jpg?q=82&s=300x300&t=crop",
+      "title": "약속의 자전거",
+      "region_name": "녹번동 ∙ 자전거"
+    }
+  ],
+  "card_data3": [
+    {
+      "img": "https://dnvefa72aowie.cloudfront.net/hoian/category/thumbnails/v2/img_thumb_job.png",
+      "title": "피쉬자전거가 피싸요그래서 15만원으로 팔깨요그래서 쓰지도않고해서 팔깨요",
+      "content": "사기꾼아닙니다",
+      "region_name": "의령읍",
+      "price": "150,000원"
+    },
+    {
+      "img": "https://dnvefa72aowie.cloudfront.net/origin/article/202005/22b4942ba94ec45b0fdb52799165afa839db5be09c39d0d137e97ecde7c76e3d.webp?q=82&s=300x300&t=crop",
+      "title": "이삿짐,자전거등등 각종화물 택배발송합니다",
+      "content": "010-5209-5017 문의바랍니다",
+      "region_name": "동홍동",
+      "price": "-"
+    },
+    {
+      "img": "https://dnvefa72aowie.cloudfront.net/origin/article/202005/ccc518b6004789429829797790d26d16d95b0ff2cdb753ce3e7f14696ddb0a31.webp?q=82&s=300x300&t=crop",
+      "title": "엑스포MTB ♥부품.용품 천~조국 ★전기.로드 생활.모든.수리 .핏팅.전문♥중고 자전거 현금 즉시 매입.판매 ♥",
+      "content": "약도) 전민동 엑스포 아파트4단지 409동  옆 조은동물 병원.정관장.홍삼 건물 바로 뒤에 있습니다♥  꾸~벅^^ 24시간 풀~울 가동중♥010 8811 5255 대전 유성구 전민로6번길13",
+      "region_name": "전민동",
+      "price": "-"
+    },
+    {
+      "img": "https://dnvefa72aowie.cloudfront.net/origin/article/202003/459fc4dfb81790ed06ded62622f2e3eb77f27bd49fce6bec5c703c794a9df976.webp?q=82&s=300x300&t=crop",
+      "title": "생활자전거 마실용자전거 스팅거자전거",
+      "content": "저희 업체는 친환경 대체연료인 전기를 이용한 이동수단 전동류 판매 및 수리 튜닝 렌탈 배터리 수리를 전문으로 하고있습니다.",
+      "region_name": "화북동",
+      "price": "10,000원"
+    },
+    {
+      "img": "https://dnvefa72aowie.cloudfront.net/origin/article/202004/1A7BCC219EEF6AF4F34AC0D5C18AE6DF6F5E450A1BB19D6582137534D5543220.jpg?q=82&s=300x300&t=crop",
+      "title": "상인동 자전거매장 - 자전거판매및 수리 / 분해세차 정비서비스",
+      "content": "대구 달서구 상인동에 위치한 자전거 판매 수리 정비 전문 매장 선데이모닝입니다. 상화 네거리 도원 우체국에서 가깝습니다.",
+      "region_name": "상인1동",
+      "price": "-"
+    },
+    {
+      "img": "https://dnvefa72aowie.cloudfront.net/origin/article/202005/d8fb7721f64d37e43d68cf1cb28fd0b726f2ea4f887d19c95825e9274a317931.webp?q=82&s=300x300&t=crop",
+      "title": "분수대.호수공원자전거 대여",
+      "content": "안녕하세요 윈마운트 에 위치한 자저거대여점 입니다. 주차무료. 분수대. 호수공원을 바로진입안전1인.2인.트레일러.유아자동차.킥보드 대여 단체환영.",
+      "region_name": "대화동",
+      "price": "5,000원"
     }
   ]
 }

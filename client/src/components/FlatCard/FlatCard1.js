@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const FlatCard = (props) => {
+const FlatCard1 = (props) => {
   const [cardData, setCardData] = useState([]);
   // console.log(decodeURI(window.location.href.split("=")[1]));
 
@@ -8,7 +8,7 @@ const FlatCard = (props) => {
     fetch("http://localhost:3000/data/data.json")
       .then((res) => res.json())
       .then((res) => {
-        setCardData(res.card_data);
+        setCardData(res.card_data1);
       });
   }, []);
 
@@ -41,4 +41,4 @@ const FlatCard = (props) => {
   );
 };
 
-export default FlatCard;
+export default FlatCard1;
