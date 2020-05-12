@@ -14,8 +14,8 @@ const FlatCard3 = (props) => {
 
   return (
     <>
-      {cardData.map((v) => (
-        <>
+      {cardData.map((v, i) => (
+        <div key={i}>
           <article className="business-article">
             <div className="article-photo">
               <img src={v.img} alt="자전거" />
@@ -46,7 +46,7 @@ const FlatCard3 = (props) => {
             </div>
           </article>
           <hr className="article-hr-border" />
-        </>
+        </div>
       ))}
     </>
   );
