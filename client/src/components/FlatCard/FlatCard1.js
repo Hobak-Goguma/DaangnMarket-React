@@ -1,20 +1,9 @@
 import React, { useEffect, useState } from "react";
 
 const FlatCard1 = (props) => {
-  const [cardData, setCardData] = useState([]);
-  // console.log(decodeURI(window.location.href.split("=")[1]));
-
-  useEffect(() => {
-    fetch("http://localhost:3000/data/data.json")
-      .then((res) => res.json())
-      .then((res) => {
-        setCardData(res.card_data1);
-      });
-  }, []);
-
   return (
     <>
-      {cardData.map((v, i) => (
+      {props.data.map((v, i) => (
         <article className="flat-card" key={i}>
           <div className="card-photo">
             <img src={v.img} alt="자전거" />

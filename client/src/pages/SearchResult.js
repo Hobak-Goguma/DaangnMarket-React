@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Layout from "../components/Layout";
 import styled from "styled-components";
 import FlatCard1 from "../components/FlatCard/FlatCard1";
@@ -9,6 +9,21 @@ const SearchResult = () => {
   const [cards1, setCards1] = useState([]);
   const [cards2, setCards2] = useState([]);
   const [cards3, setCards3] = useState([]);
+  const [cardData1, setCardData1] = useState([]);
+  const [cardData2, setCardData2] = useState([]);
+  const [cardData3, setCardData3] = useState([]);
+
+  // console.log(decodeURI(window.location.href.split("=")[1]));
+
+  useEffect(() => {
+    fetch("http://localhost:3000/data/data.json")
+      .then((res) => res.json())
+      .then((res) => {
+        setCardData1(res.card_data1);
+        setCardData2(res.card_data2);
+        setCardData3(res.card_data3);
+      });
+  }, []);
 
   return (
     <Layout>
@@ -16,7 +31,7 @@ const SearchResult = () => {
         <div className="result-container">
           <div className="articles-wrap">
             <p className="article-kind">중고거래</p>
-            <FlatCard1 />
+            <FlatCard1 data={cardData1} />
             {cards1}
           </div>
           <div
@@ -25,8 +40,8 @@ const SearchResult = () => {
               setCards1([
                 ...cards1,
                 <div key={cards1}>
-                  <FlatCard1 />
-                  <FlatCard1 />
+                  <FlatCard1 data={cardData1} />
+                  <FlatCard1 data={cardData1} />
                 </div>,
               ])
             }
@@ -37,7 +52,7 @@ const SearchResult = () => {
         <div className="result-container">
           <div className="articles-wrap">
             <p className="article-kind">동네업체</p>
-            <FlatCard2 />
+            <FlatCard2 data={cardData2} />
             {cards2}
           </div>
           <div
@@ -46,8 +61,8 @@ const SearchResult = () => {
               setCards2([
                 ...cards2,
                 <div key={cards2}>
-                  <FlatCard2 />
-                  <FlatCard2 />
+                  <FlatCard2 data={cardData2} />
+                  <FlatCard2 data={cardData2} />
                 </div>,
               ])
             }
@@ -60,7 +75,7 @@ const SearchResult = () => {
             <p className="article-kind" style={{ marginBottom: 0 }}>
               동네정보
             </p>
-            <FlatCard3 />
+            <FlatCard3 data={cardData3} />
             {cards3}
           </div>
           <div
@@ -69,8 +84,8 @@ const SearchResult = () => {
               setCards3([
                 ...cards3,
                 <div key={cards3}>
-                  <FlatCard3 />
-                  <FlatCard3 />
+                  <FlatCard3 data={cardData3} />
+                  <FlatCard3 data={cardData3} />
                 </div>,
               ])
             }
