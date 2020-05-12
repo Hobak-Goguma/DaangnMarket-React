@@ -3,7 +3,7 @@ import Header from "./Header";
 import Footer from "./Footer";
 
 const Layout = ({ children }) => {
-  const myList=[]
+  const myList = [];
   return (
     <>
       <Header />

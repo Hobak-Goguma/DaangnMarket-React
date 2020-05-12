@@ -1,7 +1,9 @@
 import React from "react";
 import Layout from "../components/Layout";
 import styled from "styled-components";
-import FlatCard from "../components/FlatCard";
+import FlatCard1 from "../components/FlatCard/FlatCard1";
+import FlatCard2 from "../components/FlatCard/FlatCard2";
+import FlatCard3 from "../components/FlatCard/FlatCard3";
 
 const SearchResult = () => {
   return (
@@ -10,24 +12,30 @@ const SearchResult = () => {
         <div className="result-container">
           <div className="articles-wrap">
             <p className="article-kind">중고거래</p>
-            <FlatCard />
-            <FlatCard />
-            <FlatCard />
-            <FlatCard />
-            <FlatCard />
-            <FlatCard />
-            <FlatCard />
-            <FlatCard />
-            <FlatCard />
-            <FlatCard />
-            <FlatCard />
-            <FlatCard />
-            <FlatCard />
-            <FlatCard />
-            <FlatCard />
-            <FlatCard />
-            <FlatCard />
-            <FlatCard />
+            <FlatCard1 />
+          </div>
+          <div className="more-btn">
+            <span>더보기</span>
+          </div>
+        </div>
+        <div className="result-container">
+          <div className="articles-wrap">
+            <p className="article-kind">동네업체</p>
+            <FlatCard2 />
+          </div>
+          <div className="more-btn">
+            <span>더보기</span>
+          </div>
+        </div>
+        <div className="result-container">
+          <div className="articles-wrap wrap-last">
+            <p className="article-kind" style={{ marginBottom: 0 }}>
+              동네정보
+            </p>
+            <FlatCard3 />
+          </div>
+          <div className="more-btn">
+            <span>더보기</span>
           </div>
         </div>
       </StyledSearchResult>
@@ -49,9 +57,12 @@ const StyledSearchResult = styled.section`
     margin: 0 auto;
     margin-bottom: 20px;
     background: #fff;
+    .wrap-last {
+      margin-right: 40px;
+    }
+
     .articles-wrap {
-      /* padding: 0 40px; */
-      margin-left: 60px;
+      margin-left: 40px;
 
       p.article-kind {
         font-weight: 600;
@@ -60,12 +71,110 @@ const StyledSearchResult = styled.section`
         margin: 20px 0;
       }
 
+      .article-hr-border {
+        display: block;
+        height: 1px;
+        border: 0;
+        border-top: 1px solid #e9ecef;
+        padding: 0;
+
+        &:last-of-type {
+          display: none;
+        }
+      }
+
+      .business-article {
+        display: block;
+        padding: 20px 0;
+        line-height: 26px;
+        overflow: auto;
+
+        .article-photo {
+          float: left;
+          width: 120px;
+          height: 120px;
+          overflow: hidden;
+          border-radius: 8px;
+          background-color: #f8f9fa;
+
+          img {
+            width: 100%;
+          }
+        }
+
+        .article-desc {
+          margin-left: 140px;
+          padding-top: 8px;
+          position: relative;
+          .article-title-content {
+            .article-title {
+              display: block;
+              font-weight: 600;
+              color: #212529;
+              font-size: 16px;
+              line-height: 18px;
+              margin-top: 10px;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
+            .article-content {
+              font-size: 16px;
+              line-height: 18px;
+              margin-top: 6px;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              display: block;
+            }
+          }
+
+          .article-region-name {
+            font-size: 14px;
+            line-height: 18px;
+            margin-top: 6px;
+            color: #868e96;
+          }
+          .article-price {
+            font-weight: 600;
+            color: #ff8a3d;
+            font-size: 15px;
+            line-height: 18px;
+            margin-top: 6px;
+          }
+          .article-sub-info {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            font-size: 14px;
+            color: #868e96;
+
+            .article-comment,
+            .article-watch {
+              color: #212529;
+              display: inline-block;
+              font-size: 14px;
+              position: relative;
+
+              img {
+                width: 13px;
+                margin: 7px 6px;
+              }
+            }
+
+            .article-watch img {
+              margin-top: 7.5px;
+            }
+          }
+        }
+      }
+
       .flat-card {
         cursor: pointer;
         position: relative;
         text-align: left;
         display: inline-block;
-        width: 200px;
+        width: 217px;
         margin-right: 34px;
         margin-bottom: 40px;
 
@@ -104,7 +213,6 @@ const StyledSearchResult = styled.section`
             color: #868e96;
           }
           p.article-price {
-            font-weight: 600;
             color: #ff8a3d;
             font-size: 15px;
             line-height: 18px;
@@ -128,6 +236,17 @@ const StyledSearchResult = styled.section`
           }
         }
       }
+    }
+    .more-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 50px;
+      cursor: pointer;
+      width: 100%;
+      color: #868e96;
+      font-size: 16px;
+      border-top: 1px solid #e8ecef;
     }
   }
 `;
