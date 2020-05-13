@@ -1,10 +1,20 @@
 import React, { useEffect, useState } from "react";
+import { withRouter } from "react-router-dom";
 
 const FlatCard1 = (props) => {
+  const handleCardClick = (event, id) => {
+    event.preventDefault();
+    props.history.push(`/articles:${id}`);
+  };
+
   return (
     <>
       {props.data.map((v, i) => (
-        <article className="flat-card" key={i}>
+        <article
+          className="flat-card"
+          key={i}
+          onClick={(e) => handleCardClick(e, i)}
+        >
           <div className="card-photo">
             <img src={v.img} alt="자전거" />
           </div>
@@ -30,4 +40,4 @@ const FlatCard1 = (props) => {
   );
 };
 
-export default FlatCard1;
+export default withRouter(FlatCard1);

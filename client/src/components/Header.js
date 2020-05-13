@@ -124,7 +124,7 @@ const Header = (props) => {
   const searchKeyPress = (e) => {
     if (
       window.event.keyCode === 13 &&
-      (keyword === "자전거" || keyword === "유아" || keyword === "김치")
+      (keyword === "자전거" || keyword === "아이폰" || keyword === "김치")
     ) {
       props.history.push(`/search?q=${keyword}`);
     }

@@ -5,7 +5,7 @@ import FlatCard1 from "../components/FlatCard/FlatCard1";
 import FlatCard2 from "../components/FlatCard/FlatCard2";
 import FlatCard3 from "../components/FlatCard/FlatCard3";
 
-const SearchResult = () => {
+const SearchResult = (props) => {
   const [cards1, setCards1] = useState([]);
   const [cards2, setCards2] = useState([]);
   const [cards3, setCards3] = useState([]);
@@ -16,7 +16,7 @@ const SearchResult = () => {
   // console.log(decodeURI(window.location.href.split("=")[1]));
 
   useEffect(() => {
-    fetch("http://localhost:3000/data/data.json")
+    fetch("http://localhost:3000/data/cardData.json")
       .then((res) => res.json())
       .then((res) => {
         setCardData1(res.card_data1);

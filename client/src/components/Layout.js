@@ -4,6 +4,7 @@ import Footer from "./Footer";
 
 const Layout = ({ children }) => {
   const myList = [];
+
   return (
     <>
       <Header />
