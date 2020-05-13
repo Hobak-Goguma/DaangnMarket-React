@@ -158,4 +158,9 @@ def product_search(request):
     return Response(serializer.data)
     # return HttpResponse(product)
 
-    
+@api_view(['GET'])
+def test(request):
+    """
+    테스트용 api
+    """
+    return Response(status=status.HTTP_200_OK)
