@@ -15,11 +15,10 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = ('pk', 'id_member', 'name', 'price', 'info', 'category', 'img', 'cdate', 'udate')
 
-# 로그인 시리얼라이저 ( 보내줘야 할 값이 있을 경우 )
-# class LoginSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Member
-#         fields = ('pk', 'user_id')
+class LoginSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Member
+        fields = ('pk', 'user_id', 'name','nick_name', 'tel', 'add')
 
 
 # class MemberSerializer(serializers.Serializer):

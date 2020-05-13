@@ -81,9 +81,13 @@ def member_login(request):
     except Member.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
+    # if request.method == 'POST':
+    #     # serializer = LoginSerializer(member)
+    #     return Response(status=status.HTTP_200_OK)
+
     if request.method == 'POST':
-        # serializer = LoginSerializer(member)
-        return Response(status=status.HTTP_200_OK)
+        serializer = LoginSerializer(member)
+        return Response(serializer.data)
     
     else:
         return Response(status=status.HTTP_400_BAD_REQUEST)
