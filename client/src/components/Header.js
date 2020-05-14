@@ -97,11 +97,13 @@ const Header = (props) => {
   const [keyword, setKeyword] = useState("");
 
   useEffect(() => {
+    let isMounted = true;
+
     if (props.location.pathname === "/search") {
       fetch(`http://b9ca8d28.ngrok.io/member/product/search/?q=${keyword}`)
         .then((res) => res.json())
         .then((res) => {
-          props.setCardData(res);
+          if (isMounted) props.setCardData(res);
         });
     }
 
@@ -112,7 +114,10 @@ const Header = (props) => {
       setLogin(false);
       window.sessionStorage.clear();
     }
-  }, [props.location.pathname, props]);
+    return () => {
+      isMounted = false;
+    };
+  }, [props.location.pathname, props, keyword]);
 
   const logOut = () => {
     window.sessionStorage.clear();
@@ -122,20 +127,19 @@ const Header = (props) => {
     // localStorage.setItem("pw", "");
   };
 
-  const searchKeyPress = (e) => {
+  const searchKeyPress = () => {
     if (
       window.event.keyCode === 13 &&
       (keyword === "자전거" || keyword === "아이폰" || keyword === "김치")
     ) {
-      props.history.push(`/search?q=${keyword}`);
       if (props.location.pathname === "/search") {
         fetch(`http://b9ca8d28.ngrok.io/member/product/search/?q=${keyword}`)
           .then((res) => res.json())
           .then((res) => {
             props.setCardData(res);
-            props.setCards([]);
           });
       }
+      props.history.push(`/search?q=${keyword}`);
     }
   };
 

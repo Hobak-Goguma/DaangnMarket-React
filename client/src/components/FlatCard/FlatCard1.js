@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import { withRouter } from "react-router-dom";
 
 const FlatCard1 = (props) => {
-  const handleCardClick = (event, id) => {
-    event.preventDefault();
+  const handleCardClick = (id) => {
     props.history.push(`/articles:${id}`);
   };
 
@@ -13,17 +12,17 @@ const FlatCard1 = (props) => {
         <article
           className="flat-card"
           key={i}
-          onClick={(e) => handleCardClick(e, i)}
+          onClick={(i) => handleCardClick(i)}
         >
           <div className="card-photo">
-            <img src={v.img} alt="사진임둥" />
+            <img src="./img/4단선반.jpg" alt="사진임둥" />
           </div>
           <div className="article-info">
             <div className="article-title-content">
               <span className="article-title">{v.name}</span>
             </div>
             <p className="article-region-name">주민동</p>
-            <p className="article-price">{v.price}원</p>
+            <p className="article-price">{v.price.toLocaleString()}원</p>
             <section className="article-sub-info">
               <span className="article-watch">
                 <img

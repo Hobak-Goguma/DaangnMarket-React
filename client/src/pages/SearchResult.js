@@ -12,16 +12,10 @@ const SearchResult = (props) => {
   const [cardData, setCardData] = useState([]);
   const [cardData2, setCardData2] = useState([]);
   const [cardData3, setCardData3] = useState([]);
+  const [numA, setNumA] = useState(6);
+  const [numB, setNumB] = useState(18);
 
   // console.log(decodeURI(window.location.href.split("=")[1]));
-
-  useEffect(() => {
-    let mounted = true;
-
-    return () => {
-      mounted = false;
-    };
-  }, []);
 
   // const fetchData = () => {
   //   fetch("http://localhost:3000/data/cardData.json")
@@ -29,21 +23,41 @@ const SearchResult = (props) => {
   //     .then((res) => {});
   // };
 
+  const showMore = () => {
+    setCards([
+      ...cards,
+      <FlatCard1 data={cardData} key={cards} a={numA} b={numB} />,
+    ]);
+    console.log(numA, numB);
+    setNumA(numA + 12);
+    setNumB(numB + 12);
+  };
+
   return (
     <Layout setCardData={setCardData} setCards={setCards}>
       <StyledSearchResult>
         <div className="result-container">
           <div className="articles-wrap">
             <p className="article-kind">중고거래</p>
+            {console.log(cardData)}
+            {cardData.length === 0 && (
+              <div
+                style={{
+                  fontSize: 50,
+                  fontWeight: "bold",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: "300px",
+                }}
+              >
+                로딩중...
+              </div>
+            )}
             <FlatCard1 data={cardData} a={0} b={6} />
             {cards}
           </div>
-          <div
-            className="more-btn"
-            onClick={() =>
-              setCards([...cards, <FlatCard1 data={cardData} key={cards} />])
-            }
-          >
+          <div className="more-btn" onClick={showMore}>
             <span>더보기</span>
           </div>
         </div>
