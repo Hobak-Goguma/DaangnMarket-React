@@ -132,6 +132,7 @@ const Header = (props) => {
     // localStorage.setItem("id", "");
     // localStorage.setItem("pw", "");
   };
+  let search = "";
 
   const searchKeyPress = () => {
     if (window.event.keyCode === 13) {
