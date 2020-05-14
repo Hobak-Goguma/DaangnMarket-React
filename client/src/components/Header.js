@@ -97,13 +97,22 @@ const Header = (props) => {
   const [keyword, setKeyword] = useState("");
 
   useEffect(() => {
-    // localID = localStorage.getItem("id");
-    // localPW = localStorage.getItem("pw");
+    let isMounted = true;
 
-    // if (localID && localPW) {
-    //   console.log(localID, localPW);
-    //   setLogin(true);
-    // }
+    if (props.location.pathname === "/search") {
+      console.log(props.location);
+      console.log(keyword);
+      fetch(
+        `http://b9ca8d28.ngrok.io/member/product/search/?q=${
+          window.location.href.split("=")[1]
+        }`
+      )
+        .then((res) => res.json())
+        .then((res) => {
+          if (isMounted) props.setCardData(res);
+        });
+    }
+
     id = window.sessionStorage.getItem("id");
     if (id) {
       setLogin(true);
@@ -111,6 +120,9 @@ const Header = (props) => {
       setLogin(false);
       window.sessionStorage.clear();
     }
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const logOut = () => {
@@ -120,38 +132,18 @@ const Header = (props) => {
     // localStorage.setItem("id", "");
     // localStorage.setItem("pw", "");
   };
-  let search="";
+  let search = "";
 
-  // function searchFetch() {
-  //   fetch(`http://c2388d02.ngrok.io/member/search?q=${search}`, {
-  //     method: "GET",
-  //     headers: {
-  //       "Content-type": "application/json",
-  //     },
-  //     body: JSON.stringify(),
-  //   })
-  //     .then((response) => {
-  //       console.log(response);
-  //       console.log(response.status);
-  //       console.log(response, response.json);
-  //       return response.json();
-  //     })
-  //     .then((response) => {
-  //       if (response.token) {
-  //         localStorage.setItem("wetoken", response.token);
-  //       }
-  //     });
-  // }
-  // const change = (e)=>{
-  //   search= e.target.value;
-
-  // }
-  //   return (
-  const searchKeyPress = (e) => {
-    if (
-      window.event.keyCode === 13 &&
-      (keyword === "자전거" || keyword === "유아" || keyword === "김치")
-    ) {
+  const searchKeyPress = () => {
+    if (window.event.keyCode === 13) {
+      if (props.location.pathname === "/search") {
+        fetch(`http://b9ca8d28.ngrok.io/member/product/search/?q=${keyword}`)
+          .then((res) => res.json())
+          .then((res) => {
+            props.setCardData(res);
+            props.setCards([]);
+          });
+      }
       props.history.push(`/search?q=${keyword}`);
     }
   };
@@ -170,7 +162,6 @@ const Header = (props) => {
             type="text"
             name="search"
             id="searchItem"
-            onChange={change}
             placeholder="지역, 상품, 업체등을 검색해보세요."
             onKeyPress={searchKeyPress}
             value={keyword}

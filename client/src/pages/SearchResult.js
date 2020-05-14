@@ -1,55 +1,75 @@
 import React, { useState, useEffect } from "react";
-import Layout from "../components/Layout";
-import styled from "styled-components";
 import FlatCard1 from "../components/FlatCard/FlatCard1";
 import FlatCard2 from "../components/FlatCard/FlatCard2";
 import FlatCard3 from "../components/FlatCard/FlatCard3";
+import styled from "styled-components";
+import Layout from "../components/Layout";
 
-const SearchResult = () => {
-  const [cards1, setCards1] = useState([]);
+const SearchResult = (props) => {
+  const [cards, setCards] = useState([]);
   const [cards2, setCards2] = useState([]);
   const [cards3, setCards3] = useState([]);
-  const [cardData1, setCardData1] = useState([]);
+  const [cardData, setCardData] = useState([]);
   const [cardData2, setCardData2] = useState([]);
   const [cardData3, setCardData3] = useState([]);
+  const [numA, setNumA] = useState(6);
+  const [numB, setNumB] = useState(18);
+  const [fetched, setFetched] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setFetched(true);
+    }, 3000);
+  });
 
   // console.log(decodeURI(window.location.href.split("=")[1]));
 
-  useEffect(() => {
-    fetch("http://localhost:3000/data/data.json")
-      .then((res) => res.json())
-      .then((res) => {
-        setCardData1(res.card_data1);
-        setCardData2(res.card_data2);
-        setCardData3(res.card_data3);
-      });
-  }, []);
+  // const fetchData = () => {
+  //   fetch("http://localhost:3000/data/cardData.json")
+  //     .then((res) => res.json())
+  //     .then((res) => {});
+  // };
+
+  const showMore = () => {
+    setCards([
+      ...cards,
+      <FlatCard1 data={cardData} key={cards} a={numA} b={numB} />,
+    ]);
+    console.log(numA, numB);
+    setNumA(numA + 12);
+    setNumB(numB + 12);
+  };
 
   return (
-    <Layout>
+    <Layout setCardData={setCardData} setCards={setCards}>
       <StyledSearchResult>
         <div className="result-container">
           <div className="articles-wrap">
             <p className="article-kind">중고거래</p>
-            <FlatCard1 data={cardData1} />
-            {cards1}
+            {cardData.length === 0 ? (
+              <div
+                style={{
+                  fontSize: 50,
+                  fontWeight: "bold",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: "300px",
+                }}
+              >
+                {fetched ? "물품이 없네요" : "로딩중..."}
+              </div>
+            ) : (
+              <FlatCard1 data={cardData} a={0} b={6} />
+            )}
+
+            {cards}
           </div>
-          <div
-            className="more-btn"
-            onClick={() =>
-              setCards1([
-                ...cards1,
-                <div key={cards1}>
-                  <FlatCard1 data={cardData1} />
-                  <FlatCard1 data={cardData1} />
-                </div>,
-              ])
-            }
-          >
+          <div className="more-btn" onClick={showMore}>
             <span>더보기</span>
           </div>
         </div>
-        <div className="result-container">
+        {/* <div className="result-container">
           <div className="articles-wrap">
             <p className="article-kind">동네업체</p>
             <FlatCard2 data={cardData2} />
@@ -92,7 +112,7 @@ const SearchResult = () => {
           >
             <span>더보기</span>
           </div>
-        </div>
+        </div> */}
       </StyledSearchResult>
     </Layout>
   );
