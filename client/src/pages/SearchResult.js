@@ -14,6 +14,13 @@ const SearchResult = (props) => {
   const [cardData3, setCardData3] = useState([]);
   const [numA, setNumA] = useState(6);
   const [numB, setNumB] = useState(18);
+  const [fetched, setFetched] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setFetched(true);
+    }, 3000);
+  });
 
   // console.log(decodeURI(window.location.href.split("=")[1]));
 
@@ -39,8 +46,7 @@ const SearchResult = (props) => {
         <div className="result-container">
           <div className="articles-wrap">
             <p className="article-kind">중고거래</p>
-            {console.log(cardData)}
-            {cardData.length === 0 && (
+            {cardData.length === 0 ? (
               <div
                 style={{
                   fontSize: 50,
@@ -51,10 +57,12 @@ const SearchResult = (props) => {
                   height: "300px",
                 }}
               >
-                로딩중...
+                {fetched ? "물품이 없네요" : "로딩중..."}
               </div>
+            ) : (
+              <FlatCard1 data={cardData} a={0} b={6} />
             )}
-            <FlatCard1 data={cardData} a={0} b={6} />
+
             {cards}
           </div>
           <div className="more-btn" onClick={showMore}>
