@@ -1,55 +1,53 @@
 import React, { useState, useEffect } from "react";
-import Layout from "../components/Layout";
-import styled from "styled-components";
 import FlatCard1 from "../components/FlatCard/FlatCard1";
 import FlatCard2 from "../components/FlatCard/FlatCard2";
 import FlatCard3 from "../components/FlatCard/FlatCard3";
+import styled from "styled-components";
+import Layout from "../components/Layout";
 
 const SearchResult = (props) => {
-  const [cards1, setCards1] = useState([]);
+  const [cards, setCards] = useState([]);
   const [cards2, setCards2] = useState([]);
   const [cards3, setCards3] = useState([]);
-  const [cardData1, setCardData1] = useState([]);
+  const [cardData, setCardData] = useState([]);
   const [cardData2, setCardData2] = useState([]);
   const [cardData3, setCardData3] = useState([]);
 
   // console.log(decodeURI(window.location.href.split("=")[1]));
 
   useEffect(() => {
-    fetch("http://localhost:3000/data/cardData.json")
-      .then((res) => res.json())
-      .then((res) => {
-        setCardData1(res.card_data1);
-        setCardData2(res.card_data2);
-        setCardData3(res.card_data3);
-      });
+    let mounted = true;
+
+    return () => {
+      mounted = false;
+    };
   }, []);
 
+  // const fetchData = () => {
+  //   fetch("http://localhost:3000/data/cardData.json")
+  //     .then((res) => res.json())
+  //     .then((res) => {});
+  // };
+
   return (
-    <Layout>
+    <Layout setCardData={setCardData} setCards={setCards}>
       <StyledSearchResult>
         <div className="result-container">
           <div className="articles-wrap">
             <p className="article-kind">중고거래</p>
-            <FlatCard1 data={cardData1} />
-            {cards1}
+            <FlatCard1 data={cardData} a={0} b={6} />
+            {cards}
           </div>
           <div
             className="more-btn"
             onClick={() =>
-              setCards1([
-                ...cards1,
-                <div key={cards1}>
-                  <FlatCard1 data={cardData1} />
-                  <FlatCard1 data={cardData1} />
-                </div>,
-              ])
+              setCards([...cards, <FlatCard1 data={cardData} key={cards} />])
             }
           >
             <span>더보기</span>
           </div>
         </div>
-        <div className="result-container">
+        {/* <div className="result-container">
           <div className="articles-wrap">
             <p className="article-kind">동네업체</p>
             <FlatCard2 data={cardData2} />
@@ -92,7 +90,7 @@ const SearchResult = (props) => {
           >
             <span>더보기</span>
           </div>
-        </div>
+        </div> */}
       </StyledSearchResult>
     </Layout>
   );

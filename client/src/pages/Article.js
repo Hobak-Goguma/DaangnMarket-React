@@ -41,7 +41,10 @@ const Article = () => {
   }, []);
 
   return (
-    <Layout>
+    <Layout
+      overflow={isModal ? "hidden" : "unset"}
+      height={isModal ? "100vh" : "unset"}
+    >
       <StyledArticle>
         <section className="article-images">
           <div className="image-slider">
@@ -134,7 +137,7 @@ const StyledArticle = styled.article`
     }
   }
 
-  margin-top: 150px;
+  margin-top: 120px;
   padding-bottom: 50px;
   section.article-images {
     position: relative;

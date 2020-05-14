@@ -97,13 +97,14 @@ const Header = (props) => {
   const [keyword, setKeyword] = useState("");
 
   useEffect(() => {
-    // localID = localStorage.getItem("id");
-    // localPW = localStorage.getItem("pw");
+    if (props.location.pathname === "/search") {
+      fetch(`http://b9ca8d28.ngrok.io/member/product/search/?q=${keyword}`)
+        .then((res) => res.json())
+        .then((res) => {
+          props.setCardData(res);
+        });
+    }
 
-    // if (localID && localPW) {
-    //   console.log(localID, localPW);
-    //   setLogin(true);
-    // }
     id = window.sessionStorage.getItem("id");
     if (id) {
       setLogin(true);
@@ -111,7 +112,7 @@ const Header = (props) => {
       setLogin(false);
       window.sessionStorage.clear();
     }
-  }, []);
+  }, [props.location.pathname, props]);
 
   const logOut = () => {
     window.sessionStorage.clear();
@@ -127,6 +128,14 @@ const Header = (props) => {
       (keyword === "자전거" || keyword === "아이폰" || keyword === "김치")
     ) {
       props.history.push(`/search?q=${keyword}`);
+      if (props.location.pathname === "/search") {
+        fetch(`http://b9ca8d28.ngrok.io/member/product/search/?q=${keyword}`)
+          .then((res) => res.json())
+          .then((res) => {
+            props.setCardData(res);
+            props.setCards([]);
+          });
+      }
     }
   };
 
