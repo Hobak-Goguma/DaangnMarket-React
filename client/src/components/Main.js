@@ -130,7 +130,6 @@ const Main = () =>{
             </a></li>);
             }
         });
-        console.log(Ranking);
 
   return (
     <Mains>
