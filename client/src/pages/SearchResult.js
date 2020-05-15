@@ -17,9 +17,13 @@ const SearchResult = (props) => {
   const [fetched, setFetched] = useState(false);
 
   useEffect(() => {
-    setTimeout(() => {
+    let timer = setTimeout(() => {
       setFetched(true);
     }, 3000);
+
+    return () => {
+      clearTimeout(timer);
+    };
   });
 
   // console.log(decodeURI(window.location.href.split("=")[1]));

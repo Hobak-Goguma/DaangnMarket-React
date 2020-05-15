@@ -6,6 +6,8 @@ import Layout from "../components/Layout";
 import styled from "styled-components";
 import ArrowNext from "../components/Arrow/Next";
 import ArrowPrev from "../components/Arrow/Prev";
+import ArticleProfile from "../components/ArticleComp/ArticleProfile";
+import ArticleDescription from "../components/ArticleComp/ArticleDescription";
 
 const settings = {
   dots: true,
@@ -78,6 +80,8 @@ const Article = () => {
             </div>
           </div>
         </section>
+        <ArticleProfile />
+        <ArticleDescription />
       </StyledArticle>
     </Layout>
   );
@@ -111,8 +115,8 @@ const StyledArticle = styled.article`
   .modal-close {
     cursor: pointer;
     position: absolute;
-    top: 15%;
-    right: 25%;
+    top: 5%;
+    right: 20%;
     color: #fff;
     font-size: 4rem;
   }
