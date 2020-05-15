@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import MyDrop from "./MyDropMenu";
 import TotalMenu from "./TotalMenu";
+
 const Headers = styled.header`
   width: 100%;
   box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.1);
@@ -90,18 +91,27 @@ const Headers = styled.header`
 `;
 
 let id;
-const Header = ({ history }) => {
+const Header = (props) => {
   const [login, setLogin] = useState(false);
   const [keyword, setKeyword] = useState("");
 
   useEffect(() => {
-    // localID = localStorage.getItem("id");
-    // localPW = localStorage.getItem("pw");
+    let isMounted = true;
 
-    // if (localID && localPW) {
-    //   console.log(localID, localPW);
-    //   setLogin(true);
-    // }
+    if (props.location.pathname === "/search") {
+      console.log(props.location);
+      console.log(keyword);
+      fetch(
+        `http://b9ca8d28.ngrok.io/member/product/search/?q=${
+          window.location.href.split("=")[1]
+        }`
+      )
+        .then((res) => res.json())
+        .then((res) => {
+          if (isMounted) props.setCardData(res);
+        });
+    }
+
     id = window.sessionStorage.getItem("id");
     if (id) {
       setLogin(true);
@@ -109,6 +119,9 @@ const Header = ({ history }) => {
       setLogin(false);
       window.sessionStorage.clear();
     }
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const logOut = () => {
@@ -118,35 +131,19 @@ const Header = ({ history }) => {
     // localStorage.setItem("id", "");
     // localStorage.setItem("pw", "");
   };
-  let search="";
+  let search = "";
 
-  function searchFetch() {
-    fetch(`http://c2388d02.ngrok.io/member/product/search/?q=${search}`, {
-      method: "GET",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify(),
-    })
-      .then((response) => {
-        console.log(response);
-        console.log(response.status);
-        console.log(response, response.json);
-        return response.json();
-        if (response.status === 200) {
-          console.log("좋아쓰");
-        }
-      });
-  }
-  const change = (e)=>{
-    search= e.target.value;
-
-  }
-    // return (
-  const searchKeyPress = (e) => {
+  const searchKeyPress = () => {
     if (window.event.keyCode === 13) {
-  //     history.push("/search?p='자전거'");
-  searchFetch();
+      if (props.location.pathname === "/search") {
+        fetch(`http://b9ca8d28.ngrok.io/member/product/search/?q=${keyword}`)
+          .then((res) => res.json())
+          .then((res) => {
+            props.setCardData(res);
+            props.setCards([]);
+          });
+      }
+      props.history.push(`/search?q=${keyword}`);
     }
   };
 
@@ -164,7 +161,6 @@ const Header = ({ history }) => {
             type="text"
             name="search"
             id="searchItem"
-            onChange={(e)=>change(e)}
             placeholder="지역, 상품, 업체등을 검색해보세요."
             onKeyPress={()=>searchKeyPress()}
           />
