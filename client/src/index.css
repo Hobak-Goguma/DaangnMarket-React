@@ -129,9 +129,8 @@ img {
 body {
   font-family: sans-serif;
 }
-.container{
+.container {
   position: relative;
   width: 980px;
-  margin : 0 auto;
-
+  margin: 0 auto;
 }
