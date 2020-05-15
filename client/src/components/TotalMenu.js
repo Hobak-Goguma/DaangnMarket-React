@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const TotalMenu = ({ logOut,login }) => {
-  let localID="선우씨 언제되요";
+  let localID="root";
   // useEffect(() => {
   //   localID = window.sessionStorage.getItem("id");
   // }, []);
@@ -129,11 +129,13 @@ const StyledTotalMenu = styled.ul`
 
       li {
         transition: 0.2s;
+        height:50px;
+        line-height:50px;
         &:hover {
           background: #ffbe93;
         }
         width: 100px;
-        padding: 1rem;
+        padding: 0 1rem;
         background: #fff;
       }
       .category-lists {

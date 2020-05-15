@@ -54,23 +54,12 @@ button{
 `;
 
 const MyPage2ndLogin = ({ID,changeLogin}) =>{
-    const pw = "1234";        /////////////////////////////더미 비밀번호
     let checkPw ="";
-    let inputPw;
     const change = (e)=>{
         checkPw=e.target.value;
-        inputPw = e.target;
     }
-    const check2ndPw = (e) =>{
-        if(pw===checkPw){
-            changeLogin();
-        }else if(checkPw===""){
-            alert("비밀번호를 입력해주세요.");
-        }else{
-            alert("비밀번호가 맞지 않습니다.");
-            inputPw.value ="";
-            inputPw.focus();
-        }
+    const click = ()=>{
+        changeLogin(checkPw,true);
     }
 return(
     <Login>
@@ -82,7 +71,7 @@ return(
             <p className="pw">비밀번호</p>
             <input type="password" id="pw" onChange={change}/>
         </div>
-        <button onClick={check2ndPw}>확인</button>
+        <button onClick={click}>확인</button>
 
     </Login>);
 }
