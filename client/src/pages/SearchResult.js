@@ -13,20 +13,24 @@ const SearchResult = (props) => {
   const [cardData2, setCardData2] = useState([]);
   const [cardData3, setCardData3] = useState([]);
 
+  const handleData1 = (res) => {
+    setCardData1(res);
+  };
+
   // console.log(decodeURI(window.location.href.split("=")[1]));
 
   useEffect(() => {
     fetch("http://localhost:3000/data/cardData.json")
       .then((res) => res.json())
       .then((res) => {
-        setCardData1(res.card_data1);
+        // setCardData1(res.card_data1);
         setCardData2(res.card_data2);
         setCardData3(res.card_data3);
       });
   }, []);
 
   return (
-    <Layout>
+    <Layout setData={handleData1}>
       <StyledSearchResult>
         <div className="result-container">
           <div className="articles-wrap">

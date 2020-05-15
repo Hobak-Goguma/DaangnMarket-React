@@ -127,6 +127,11 @@ const Header = (props) => {
       (keyword === "자전거" || keyword === "아이폰" || keyword === "김치")
     ) {
       props.history.push(`/search?q=${keyword}`);
+      fetch("http://localhost:3000/data/cardData.json")
+        .then((res) => res.json())
+        .then((res) => {
+          props.setData(res);
+        });
     }
   };
 

@@ -2,12 +2,12 @@ import React from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 
-const Layout = ({ children }) => {
+const Layout = ({ children }, props) => {
   const myList = [];
 
   return (
     <>
-      <Header />
+      <Header setData={props.setData} />
 
       {children}
       <Footer />
