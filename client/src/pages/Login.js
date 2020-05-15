@@ -1,48 +1,43 @@
 import React, { useState } from "react";
 import { withRouter } from "react-router-dom";
-import Header from "../Header";
+import Layout from "../components/Layout";
 import styled from "styled-components";
 
-function Login(props) {
+const Login = ({ history }) => {
   const [ID, setID] = useState("");
   const [PW, setPW] = useState("");
 
-  function handleID(e) {
+  const handleID = (e) => {
     setID(e.target.value);
+  };
 
-    console.log(e.target.value);
-  }
-  function handlePW(e) {
+  const handlePW = (e) => {
     setPW(e.target.value);
+  };
 
-    console.log(e.target.value);
-  }
   function loginFetch() {
-    if (ID === "admin" && PW === "0000") {
-      props.history.push("/");
-    }
-    // fetch(`${API_JONG}/users/sign-in`, {
+    // fetch("http://localhost:8084/auth/login", {
     //   method: "POST",
     //   headers: {
     //     "Content-type": "application/json",
     //   },
     //   body: JSON.stringify({
-    //     account: this.state.ID,
-    //     password: this.state.PW,
+    //     email: ID,
+    //     password: PW,
     //   }),
     // })
     //   .then((response) => {
     //     // console.log(response);
     //     // console.log(response.status);
     //     if (response.status === 200) {
+          localStorage.setItem("id", ID);
+          localStorage.setItem("pw", PW);
+          history.push('/')
     //       alert("정상 로그인 되었습니다");
     //       console.log(response);
-    //       this.props.history.push("/");
+    //       history.push("/");
     //     } else {
-    //       console.log(this.props);
-    //       alert("아이디 또는 비밀번호 오류입니다!");
-    //       console.log(response);
-    //       // this.props.history.push("/login");
+    //       alert("응, 틀렸어~");
     //     }
     //     console.log(response, response.json);
     //     return response.json();
@@ -53,22 +48,13 @@ function Login(props) {
     //       localStorage.setItem("wetoken", response.token);
     //     }
     //   });
-    // //토큰이 있으면 로컬에 저장하기
-    // console.log(
-    //   "account는 ",
-    //   this.state.ID,
-    //   "이고",
-    //   "password는 ",
-    //   this.state.PW
-    // );
   }
-  function goRegister() {
-    props.history.push("/login");
-  }
+  const goRegister = () => {
+    history.push("/register");
+  };
   return (
-    <>
-      <Header />
-      <LoginOuter>
+    <Layout>
+      <StyledLogin>
         <div className="contents">
           <div className="login-top">로그인</div>
           <div className="input-area">
@@ -104,25 +90,24 @@ function Login(props) {
             </div>
           </div>
         </div>
-      </LoginOuter>
-    </>
+      </StyledLogin>
+    </Layout>
   );
-}
+};
 
 export default withRouter(Login);
 
-const LoginOuter = styled.div`
+const StyledLogin = styled.div`
   div,
   span,
   p,
   label {
     border: unset;
   }
-  box-sizing: border-box;
 
   .contents {
     width: 340px;
-    margin: 15rem auto;
+    margin: 12rem auto;
   }
 
   .login-top {
@@ -144,6 +129,7 @@ const LoginOuter = styled.div`
     border-radius: 4px;
     border: 1px solid #cfcccf;
     margin-bottom: 10px;
+    text-indent: 20px;
     ::placeholder {
       font-weight: bold;
       color: #cfcccf;
@@ -185,9 +171,8 @@ const LoginOuter = styled.div`
   }
   input {
     &:focus {
-      border-color: #000;
+      border: 1px solid #000;
       outline: none;
     }
-    text-indent: 20px;
   }
 `;
