@@ -22,9 +22,7 @@ def member_list(request):
 
     elif request.method == 'POST':
         serializer = MemberSerializer(data=request.data)
-        print(serializer,1)
         if serializer.is_valid():
-            print(serializer,213123)
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -71,6 +69,19 @@ def member_overlap(request):
     #중복아이디 있음
     return Response(status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['GET'])
+def nick_name_overlap(request):
+    """
+    닉네임 값이 중복되는지 확인해줍니다.
+    """
+    try:
+        Nick_name = request.GET['nick_name']
+        member = Member.objects.get(nick_name = Nick_name)
+    except Member.DoesNotExist:
+        #중복아이디 없음
+        return Response(status=status.HTTP_200_OK)
+    #중복아이디 있음
+    return Response(status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 def member_login(request):
