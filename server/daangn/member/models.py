@@ -1,5 +1,6 @@
 from django.db import models
-
+from django.utils import timezone
+now = timezone.now()
 class Company(models.Model):
     id_company = models.AutoField(primary_key=True)
     id_member = models.ForeignKey('Member', models.DO_NOTHING, db_column='id_member')
@@ -9,8 +10,8 @@ class Company(models.Model):
     info = models.CharField(max_length=3000, blank=True, null=True)
     category = models.CharField(max_length=15, blank=True, null=True)
     img = models.CharField(max_length=500, blank=True, null=True)
-    cdate = models.DateTimeField()
-    udate = models.DateTimeField()
+    cdate = models.DateTimeField(auto_now_add=True)
+    udate = models.DateTimeField(auto_now=True)
 
     class Meta:
         managed = False
@@ -49,9 +50,9 @@ class Member(models.Model):
     email = models.CharField(max_length=30)
     gender = models.CharField(max_length=6)
     add = models.CharField(max_length=200)
-    cdate = models.DateTimeField()
-    udate = models.DateTimeField()
-    last_date = models.DateTimeField()
+    cdate = models.DateTimeField(auto_now_add=True)
+    udate = models.DateTimeField(auto_now=True)
+    last_date = models.DateTimeField(auto_now=True)
 
     class Meta:
         managed = False
@@ -66,8 +67,8 @@ class Product(models.Model):
     info = models.CharField(max_length=3000)
     category = models.CharField(max_length=15, blank=True, null=True)
     img = models.CharField(max_length=500, blank=True, null=True)
-    cdate = models.DateTimeField()
-    udate = models.DateTimeField()
+    cdate = models.DateTimeField(auto_now_add=True)
+    udate = models.DateTimeField(auto_now=True)
 
     class Meta:
         managed = False
@@ -79,7 +80,7 @@ class RealDeal(models.Model):
     id_product = models.ForeignKey(Product, models.DO_NOTHING, db_column='id_product')
     id_seller = models.ForeignKey(Member, models.DO_NOTHING, db_column='id_seller')
     id_shopper = models.IntegerField()
-    cdate = models.DateTimeField()
+    cdate = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         managed = False
@@ -89,7 +90,7 @@ class RealDeal(models.Model):
 class SellerReview(models.Model):
     id_review = models.AutoField(primary_key=True)
     title = models.CharField(max_length=50)
-    cdate = models.DateTimeField()
+    cdate = models.DateTimeField(auto_now_add=True)
     id_real_deal = models.ForeignKey(RealDeal, models.DO_NOTHING, db_column='id_real_deal')
 
     class Meta:
@@ -100,7 +101,7 @@ class SellerReview(models.Model):
 class ShopperReview(models.Model):
     id_review = models.AutoField(primary_key=True)
     title = models.CharField(max_length=50)
-    cdate = models.DateTimeField()
+    cdate = models.DateTimeField(auto_now_add=True)
     id_real_deal = models.ForeignKey(RealDeal, models.DO_NOTHING, db_column='id_real_deal')
 
     class Meta:
