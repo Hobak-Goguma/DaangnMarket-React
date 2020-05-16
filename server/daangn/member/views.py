@@ -5,9 +5,10 @@ from rest_framework.response import Response
 from member.models import Member, Product
 from member.serializers import *
 from django.http import HttpResponse
+from django.utils import timezone
 import json
 
-
+now = timezone.now()
 
 @api_view(['GET', 'POST'])
 def member_list(request):
@@ -21,7 +22,9 @@ def member_list(request):
 
     elif request.method == 'POST':
         serializer = MemberSerializer(data=request.data)
+        print(serializer,1)
         if serializer.is_valid():
+            print(serializer,213123)
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -43,6 +46,7 @@ def member_detail(request, pk):
 
     elif request.method == 'PUT':
         serializer = MemberSerializer(member, data=request.data)
+        print(serializer)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
