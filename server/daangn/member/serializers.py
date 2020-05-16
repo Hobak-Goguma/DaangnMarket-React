@@ -2,7 +2,6 @@ from django.forms import widgets
 from rest_framework import serializers
 from member.models import Member, Product
 
-
 class MemberSerializer(serializers.ModelSerializer):
     class Meta:
         model = Member

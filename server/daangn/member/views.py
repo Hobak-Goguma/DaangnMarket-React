@@ -7,6 +7,7 @@ from member.serializers import *
 from django.http import HttpResponse
 from django.utils import timezone
 import json
+from django.http import JsonResponse
 
 now = timezone.now()
 
@@ -36,7 +37,11 @@ def member_detail(request, pk):
     try:
         member = Member.objects.get(pk=pk)
     except Member.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+        content = {
+            "message" : "없는 사용자 입니다.",
+            "result" : {}
+                }
+        return Response(content, status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
         serializer = MemberSerializer(member)
@@ -64,10 +69,17 @@ def member_overlap(request):
         User_id = request.GET['user_id']
         member = Member.objects.get(user_id = User_id)
     except Member.DoesNotExist:
-        #중복아이디 없음
-        return Response(status=status.HTTP_200_OK)
-    #중복아이디 있음
-    return Response(status=status.HTTP_400_BAD_REQUEST)
+        content = {
+            "message" : "중복아이디가 없습니다.",
+            "result" : {}
+                }
+        return Response(content, status=status.HTTP_200_OK)
+        
+    content = {
+            "message" : "중복아이디가 있습니다.",
+            "result" : {}
+                }
+    return Response(content, status=status.HTTP_409_CONFLICT)
 
 @api_view(['GET'])
 def nick_name_overlap(request):
@@ -78,10 +90,17 @@ def nick_name_overlap(request):
         Nick_name = request.GET['nick_name']
         member = Member.objects.get(nick_name = Nick_name)
     except Member.DoesNotExist:
-        #중복아이디 없음
-        return Response(status=status.HTTP_200_OK)
-    #중복아이디 있음
-    return Response(status=status.HTTP_400_BAD_REQUEST)
+        content = {
+            "message" : "중복닉네임이 없습니다.",
+            "result" : {}
+                }
+        return Response(content, status=status.HTTP_200_OK)
+        
+    content = {
+            "message" : "중복닉네임이 있습니다.",
+            "result" : {}
+                }
+    return Response(content, status=status.HTTP_409_CONFLICT)
 
 @api_view(['POST'])
 def member_login(request):
@@ -142,7 +161,13 @@ def product_detail(request, pk):
     try:
         product = Product.objects.get(pk=pk)
     except Product.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+        content = {
+            "message" : "없는 물품리스트 입니다.",
+            "result" : {}
+                }
+        return Response(content, status=status.HTTP_404_NOT_FOUND)
+    # except Product.DoesNotExist:
+    #     return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
         serializer = ProductSerializer(product)
