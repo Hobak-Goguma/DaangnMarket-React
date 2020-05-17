@@ -97,22 +97,6 @@ const Header = (props) => {
   const [keyword, setKeyword] = useState("");
 
   useEffect(() => {
-    let isMounted = true;
-
-    if (props.location.pathname === "/search") {
-      console.log(props.location);
-      console.log(keyword);
-      fetch(
-        `http://b9ca8d28.ngrok.io/member/product/search/?q=${
-          window.location.href.split("=")[1]
-        }`
-      )
-        .then((res) => res.json())
-        .then((res) => {
-          if (isMounted) props.setCardData(res);
-        });
-    }
-
     id = window.sessionStorage.getItem("id");
     if (id) {
       setLogin(true);
@@ -120,9 +104,6 @@ const Header = (props) => {
       setLogin(false);
       window.sessionStorage.clear();
     }
-    return () => {
-      isMounted = false;
-    };
   }, []);
 
   const logOut = () => {
@@ -132,18 +113,20 @@ const Header = (props) => {
     // localStorage.setItem("id", "");
     // localStorage.setItem("pw", "");
   };
-  let search = "";
 
   const searchKeyPress = () => {
-    if (window.event.keyCode === 13) {
-      if (props.location.pathname === "/search") {
-        fetch(`http://b9ca8d28.ngrok.io/member/product/search/?q=${keyword}`)
-          .then((res) => res.json())
-          .then((res) => {
-            props.setCardData(res);
-            props.setCards([]);
-          });
-      }
+    if (
+      window.event.keyCode === 13 &&
+      keyword !== "" &&
+      !/[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(keyword)
+    ) {
+      fetch(`http://b9ca8d28.ngrok.io/member/product/search/?q=${keyword}`)
+        .then((res) => res.json())
+        .then((res) => {
+          props.setCardData(res);
+          props.setCards([]);
+        });
+
       props.history.push(`/search?q=${keyword}`);
     }
   };

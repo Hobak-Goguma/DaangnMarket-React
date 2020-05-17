@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { withRouter } from "react-router-dom";
 
-const FlatCard1 = (props) => {
+const FlatCardJungo = (props) => {
   const handleCardClick = (id) => {
     props.history.push(`/articles:${id}`);
   };
@@ -39,4 +39,4 @@ const FlatCard1 = (props) => {
   );
 };
 
-export default withRouter(FlatCard1);
+export default withRouter(FlatCardJungo);

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
-const FlatCard2 = (props) => {
+const FlatCardCompany = (props) => {
   return (
     <>
       {props.data.map((v, i) => (
@@ -29,4 +29,4 @@ const FlatCard2 = (props) => {
   );
 };
 
-export default FlatCard2;
+export default FlatCardCompany;
