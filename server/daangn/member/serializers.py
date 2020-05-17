@@ -2,7 +2,6 @@ from django.forms import widgets
 from rest_framework import serializers
 from member.models import Member, Product
 
-
 class MemberSerializer(serializers.ModelSerializer):
     class Meta:
         model = Member
@@ -15,11 +14,10 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = ('pk', 'id_member', 'name', 'price', 'info', 'category', 'img')
 
-# 로그인 시리얼라이저 ( 보내줘야 할 값이 있을 경우 )
-# class LoginSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Member
-#         fields = ('pk', 'user_id')
+class LoginSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Member
+        fields = ('pk', 'user_id', 'name','nick_name', 'tel', 'add')
 
 
 # class MemberSerializer(serializers.Serializer):
