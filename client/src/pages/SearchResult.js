@@ -1,45 +1,47 @@
 import React, { useState, useEffect } from "react";
-import FlatCard1 from "../components/FlatCard/FlatCard1";
-import FlatCard2 from "../components/FlatCard/FlatCard2";
-import FlatCard3 from "../components/FlatCard/FlatCard3";
+import { API } from "../lib/api";
+import FlatCardJungo from "../components/FlatCard/FlatCardJungo";
+import FlatCardCompany from "../components/FlatCard/FlatCardCompany";
 import styled from "styled-components";
 import Layout from "../components/Layout";
 
 const SearchResult = (props) => {
   const [cards, setCards] = useState([]);
-  const [cards2, setCards2] = useState([]);
-  const [cards3, setCards3] = useState([]);
   const [cardData, setCardData] = useState([]);
-  const [cardData2, setCardData2] = useState([]);
-  const [cardData3, setCardData3] = useState([]);
   const [numA, setNumA] = useState(6);
   const [numB, setNumB] = useState(18);
   const [fetched, setFetched] = useState(false);
 
   useEffect(() => {
+    fetch(`${API}product/search?q=${window.location.href.split("=")[1]}`)
+      .then((res) => res.json())
+      .then((res) => {
+        setCardData(res);
+        setCards([]);
+        console.log(res);
+      });
+
     let timer = setTimeout(() => {
       setFetched(true);
-    }, 3000);
+    }, 2000);
 
     return () => {
       clearTimeout(timer);
     };
-  });
-
-  // console.log(decodeURI(window.location.href.split("=")[1]));
-
-  // const fetchData = () => {
-  //   fetch("http://localhost:3000/data/cardData.json")
-  //     .then((res) => res.json())
-  //     .then((res) => {});
-  // };
-
-  const showMore = () => {
+  }, []);
+  const showMoreJungo = () => {
     setCards([
       ...cards,
-      <FlatCard1 data={cardData} key={cards} a={numA} b={numB} />,
+      <FlatCardJungo data={cardData} key={cards} a={numA} b={numB} />,
     ]);
-    console.log(numA, numB);
+    setNumA(numA + 12);
+    setNumB(numB + 12);
+  };
+  const showMoreCompany = () => {
+    setCards([
+      ...cards,
+      <FlatCardCompany data={cardData} key={cards} a={numA} b={numB} />,
+    ]);
     setNumA(numA + 12);
     setNumB(numB + 12);
   };
@@ -64,56 +66,36 @@ const SearchResult = (props) => {
                 {fetched ? "물품이 없네요" : "로딩중..."}
               </div>
             ) : (
-              <FlatCard1 data={cardData} a={0} b={6} />
+              <FlatCardJungo data={cardData} a={0} b={6} />
             )}
-
             {cards}
           </div>
-          <div className="more-btn" onClick={showMore}>
+          <div className="more-btn" onClick={showMoreJungo}>
             <span>더보기</span>
           </div>
         </div>
         {/* <div className="result-container">
           <div className="articles-wrap">
             <p className="article-kind">동네업체</p>
-            <FlatCard2 data={cardData2} />
-            {cards2}
+            {cardData.length === 0 ? (
+              <div
+                style={{
+                  fontSize: 50,
+                  fontWeight: "bold",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: "300px",
+                }}
+              >
+                {fetched ? "동네업체가 없네요" : "로딩중..."}
+              </div>
+            ) : (
+              <FlatCardCompany data={cardData} a={0} b={6} />
+            )}
+            {cards}
           </div>
-          <div
-            className="more-btn"
-            onClick={() =>
-              setCards2([
-                ...cards2,
-                <div key={cards2}>
-                  <FlatCard2 data={cardData2} />
-                  <FlatCard2 data={cardData2} />
-                </div>,
-              ])
-            }
-          >
-            <span>더보기</span>
-          </div>
-        </div>
-        <div className="result-container">
-          <div className="articles-wrap wrap-last">
-            <p className="article-kind" style={{ marginBottom: 0 }}>
-              동네정보
-            </p>
-            <FlatCard3 data={cardData3} />
-            {cards3}
-          </div>
-          <div
-            className="more-btn"
-            onClick={() =>
-              setCards3([
-                ...cards3,
-                <div key={cards3}>
-                  <FlatCard3 data={cardData3} />
-                  <FlatCard3 data={cardData3} />
-                </div>,
-              ])
-            }
-          >
+          <div className="more-btn" onClick={showMoreCompany}>
             <span>더보기</span>
           </div>
         </div> */}
