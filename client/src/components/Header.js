@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
+import { API } from "../lib/api";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import MyDrop from "./MyDropMenu";
@@ -117,14 +118,16 @@ const Header = (props) => {
     if (
       window.event.keyCode === 13 &&
       keyword !== "" &&
-      !/[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(keyword)
+      !/[`!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~]/.test(keyword)
     ) {
-      fetch(`http://b9ca8d28.ngrok.io/member/product/search/?q=${keyword}`)
-        .then((res) => res.json())
-        .then((res) => {
-          props.setCardData(res);
-          props.setCards([]);
-        });
+      if (props.location.pathname === "/search") {
+        fetch(`${API}product/search?q=${keyword}`)
+          .then((res) => res.json())
+          .then((res) => {
+            props.setCardData(res);
+            props.setCards([]);
+          });
+      }
 
       props.history.push(`/search?q=${keyword}`);
     }
@@ -145,7 +148,9 @@ const Header = (props) => {
             name="search"
             id="searchItem"
             placeholder="지역, 상품, 업체등을 검색해보세요."
-            onKeyPress={()=>searchKeyPress()}
+            onKeyPress={searchKeyPress}
+            value={keyword}
+            onChange={(e) => setKeyword(e.target.value)}
           />
           <label htmlFor="searchItem">
             <img src="./img/search-icon.svg" alt="search" />

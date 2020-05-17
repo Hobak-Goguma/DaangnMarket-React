@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
+import { API } from "../lib/api";
 import Layout from "../components/Layout";
 import styled from "styled-components";
 
@@ -18,7 +19,7 @@ const Login = ({ history }) => {
   function loginFetch() {
     window.sessionStorage.setItem("id", ID);
     // history.push("/");
-    fetch("http://b9ca8d28.ngrok.io/member/login/", {
+    fetch(`${API}member/login`, {
       method: "POST",
       headers: {
         "Content-type": "application/json",

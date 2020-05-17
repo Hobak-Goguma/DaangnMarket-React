@@ -1,19 +1,12 @@
 import React from "react";
-import { withRouter } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
 const FlatCardJungo = (props) => {
-  const handleCardClick = (id) => {
-    props.history.push(`/articles:${id}`);
-  };
-
   return (
     <>
       {props.data.slice(props.a, props.b).map((v, i) => (
-        <article
-          className="flat-card"
-          key={i}
-          onClick={(i) => handleCardClick(i)}
-        >
+        <article className="flat-card" key={i}>
+          {/* <Link to="/"> */}
           <div className="card-photo">
             <img src="./img/4단선반.jpg" alt="사진임둥" />
           </div>
@@ -33,10 +26,11 @@ const FlatCardJungo = (props) => {
               </span>
             </section>
           </div>
+          {/* </Link> */}
         </article>
       ))}
     </>
   );
 };
 
-export default withRouter(FlatCardJungo);
+export default FlatCardJungo;

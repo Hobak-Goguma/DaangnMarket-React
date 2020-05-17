@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { API } from "../lib/api";
 import FlatCardJungo from "../components/FlatCard/FlatCardJungo";
 import FlatCardCompany from "../components/FlatCard/FlatCardCompany";
 import styled from "styled-components";
@@ -12,6 +13,14 @@ const SearchResult = (props) => {
   const [fetched, setFetched] = useState(false);
 
   useEffect(() => {
+    fetch(`${API}product/search?q=${window.location.href.split("=")[1]}`)
+      .then((res) => res.json())
+      .then((res) => {
+        setCardData(res);
+        setCards([]);
+        console.log(res);
+      });
+
     let timer = setTimeout(() => {
       setFetched(true);
     }, 2000);
@@ -65,7 +74,7 @@ const SearchResult = (props) => {
             <span>더보기</span>
           </div>
         </div>
-        <div className="result-container">
+        {/* <div className="result-container">
           <div className="articles-wrap">
             <p className="article-kind">동네업체</p>
             {cardData.length === 0 ? (
@@ -89,7 +98,7 @@ const SearchResult = (props) => {
           <div className="more-btn" onClick={showMoreCompany}>
             <span>더보기</span>
           </div>
-        </div>
+        </div> */}
       </StyledSearchResult>
     </Layout>
   );
