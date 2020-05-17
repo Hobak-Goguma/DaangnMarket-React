@@ -90,7 +90,6 @@ const Headers = styled.header`
   }
 `;
 
-let localID, localPW;
 let id;
 const Header = (props) => {
   const [login, setLogin] = useState(false);
@@ -146,9 +145,7 @@ const Header = (props) => {
             name="search"
             id="searchItem"
             placeholder="지역, 상품, 업체등을 검색해보세요."
-            onKeyPress={searchKeyPress}
-            value={keyword}
-            onChange={(e) => setKeyword(e.target.value)}
+            onKeyPress={()=>searchKeyPress()}
           />
           <label htmlFor="searchItem">
             <img src="./img/search-icon.svg" alt="search" />
@@ -166,7 +163,7 @@ const Header = (props) => {
             </Link>
           </section>
         )}
-        <TotalMenu logOut={logOut} />
+        <TotalMenu logOut={logOut} login={login} />
       </div>
     </Headers>
   );

@@ -1,12 +1,19 @@
 from django.forms import widgets
 from rest_framework import serializers
-from member.models import Member
+from member.models import Member, Product
 
 
 class MemberSerializer(serializers.ModelSerializer):
     class Meta:
         model = Member
         fields = ('pk', 'name', 'nick_name', 'user_id', 'user_pw', 'tel', 'birth', 'email', 'gender', 'add', 'cdate', 'udate', 'last_date')
+
+class ProductSerializer(serializers.ModelSerializer):
+    # id_member_id = serializers.IntegerField(source='id_member')
+    # member = serializers.ForeignKey(Member, models.CASCADE, related_name='member_id')
+    class Meta:
+        model = Product
+        fields = ('pk', 'id_member', 'name', 'price', 'info', 'category', 'img', 'cdate', 'udate')
 
 # 로그인 시리얼라이저 ( 보내줘야 할 값이 있을 경우 )
 # class LoginSerializer(serializers.ModelSerializer):
