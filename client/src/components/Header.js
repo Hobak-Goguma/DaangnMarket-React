@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
+import { API } from "../lib/api";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import MyDrop from "./MyDropMenu";
@@ -96,18 +97,6 @@ const Header = (props) => {
   const [keyword, setKeyword] = useState("");
 
   useEffect(() => {
-    // if (props.location.pathname === "/search") {
-    //   fetch(
-    //     `http://4205ecae.ngrok.io/member/product/search/?q=${
-    //       window.location.href.split("=")[1]
-    //     }`
-    //   )
-    //     .then((res) => res.json())
-    //     .then((res) => {
-    //       if (isMounted) props.setCardData(res);
-    //     });
-    // }
-
     id = window.sessionStorage.getItem("id");
     if (id) {
       setLogin(true);
@@ -126,15 +115,20 @@ const Header = (props) => {
   };
 
   const searchKeyPress = () => {
-    if (window.event.keyCode === 13) {
+    if (
+      window.event.keyCode === 13 &&
+      keyword !== "" &&
+      !/[`!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~]/.test(keyword)
+    ) {
       if (props.location.pathname === "/search") {
-        fetch(`http://4205ecae.ngrok.io/member/product/search/?q=${keyword}`)
+        fetch(`${API}product/search?q=${keyword}`)
           .then((res) => res.json())
           .then((res) => {
-            props.setCardData(res);
+            props.setProdcuts(res);
             props.setCards([]);
           });
       }
+
       props.history.push(`/search?q=${keyword}`);
     }
   };
