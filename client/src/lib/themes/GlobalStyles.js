@@ -3,22 +3,19 @@ import reset from "styled-reset";
 
 export default createGlobalStyle`
   ${reset};
-  /* import font */
+  @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600,700');
   * {
     margin: 0;
     padding: 0;
   }
-
   body {
     background-color: ${(props) => props.theme.bgColor};
-    font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-family: 'Open Sans', sans-serif;
   }
-
   label,
   .btn {
     cursor: pointer;
   }
-
   a:link {
     color: #4d4d4d;
     text-decoration: none;
@@ -56,10 +53,6 @@ export default createGlobalStyle`
     color: #898989;
     text-align-last: left;
   }
-
-  body {
-    font-family: sans-serif;
-  }
   .container {
     position: relative;
     width: 980px;
@@ -75,7 +68,6 @@ export default createGlobalStyle`
     top: calc(100% + 3px);
     right: 0;
   }
-
   .dropMenu.active {
     display: block;
   }
@@ -89,7 +81,6 @@ export default createGlobalStyle`
   .mt15{
     margin-top:15px;
   }
-
   a {
     text-decoration: none;
   }

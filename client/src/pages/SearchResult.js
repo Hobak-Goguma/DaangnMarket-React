@@ -74,7 +74,7 @@ const SearchResult = (props) => {
             <span>더보기</span>
           </div>
         </div>
-        {/* <div className="result-container">
+        <div className="result-container">
           <div className="articles-wrap">
             <p className="article-kind">동네업체</p>
             {cardData.length === 0 ? (
@@ -98,7 +98,7 @@ const SearchResult = (props) => {
           <div className="more-btn" onClick={showMoreCompany}>
             <span>더보기</span>
           </div>
-        </div> */}
+        </div>
       </StyledSearchResult>
     </Layout>
   );
@@ -110,7 +110,6 @@ const StyledSearchResult = styled.section`
   background: #f8f9fa;
   padding: 30px 0 40px 0;
   margin-top: 6rem;
-
   .result-container {
     border-radius: 8px;
     border: 1px solid #e9ecef;
@@ -131,171 +130,16 @@ const StyledSearchResult = styled.section`
         font-size: 18px;
         margin: 20px 0;
       }
+    }
+    .article-hr-border {
+      display: block;
+      height: 1px;
+      border: 0;
+      border-top: 1px solid #e9ecef;
+      padding: 0;
 
-      .article-hr-border {
-        display: block;
-        height: 1px;
-        border: 0;
-        border-top: 1px solid #e9ecef;
-        padding: 0;
-
-        &:last-of-type {
-          display: none;
-        }
-      }
-
-      .business-article {
-        display: block;
-        padding: 20px 0;
-        line-height: 26px;
-        overflow: auto;
-
-        .article-photo {
-          float: left;
-          width: 120px;
-          height: 120px;
-          overflow: hidden;
-          border-radius: 8px;
-          background-color: #f8f9fa;
-
-          img {
-            width: 100%;
-          }
-        }
-
-        .article-desc {
-          margin-left: 140px;
-          padding-top: 8px;
-          position: relative;
-          .article-title-content {
-            .article-title {
-              display: block;
-              font-weight: 600;
-              color: #212529;
-              font-size: 16px;
-              line-height: 18px;
-              margin-top: 10px;
-              white-space: nowrap;
-              overflow: hidden;
-              text-overflow: ellipsis;
-            }
-            .article-content {
-              font-size: 16px;
-              line-height: 18px;
-              margin-top: 6px;
-              white-space: nowrap;
-              overflow: hidden;
-              text-overflow: ellipsis;
-              display: block;
-            }
-          }
-
-          .article-region-name {
-            font-size: 14px;
-            line-height: 18px;
-            margin-top: 6px;
-            color: #868e96;
-          }
-          .article-price {
-            font-weight: 600;
-            color: #ff8a3d;
-            font-size: 15px;
-            line-height: 18px;
-            margin-top: 6px;
-          }
-          .article-sub-info {
-            position: absolute;
-            right: 0;
-            bottom: 0;
-            font-size: 14px;
-            color: #868e96;
-
-            .article-comment,
-            .article-watch {
-              color: #212529;
-              display: inline-block;
-              font-size: 14px;
-              position: relative;
-
-              img {
-                width: 13px;
-                margin: 7px 6px;
-              }
-            }
-
-            .article-watch img {
-              margin-top: 7.5px;
-            }
-          }
-        }
-      }
-
-      .flat-card {
-        cursor: pointer;
-        position: relative;
-        text-align: left;
-        display: inline-block;
-        width: 217px;
-        margin-right: 34px;
-        margin-bottom: 40px;
-
-        .card-photo {
-          height: 160px;
-          overflow: hidden;
-          background-color: #f8f9fa;
-          border-radius: 8px;
-
-          img {
-            width: 100%;
-            display: block;
-            transform: translate(0, -13%);
-          }
-        }
-
-        .article-info {
-          .article-title-content {
-            .article-title {
-              display: block;
-              font-weight: 600;
-              color: #212529;
-              font-size: 16px;
-              line-height: 18px;
-              margin-top: 10px;
-              white-space: nowrap;
-              overflow: hidden;
-              text-overflow: ellipsis;
-            }
-          }
-
-          p.article-region-name {
-            font-size: 14px;
-            line-height: 18px;
-            margin-top: 6px;
-            color: #868e96;
-          }
-          p.article-price {
-            color: #ff8a3d;
-            font-size: 15px;
-            line-height: 18px;
-            margin-top: 6px;
-          }
-
-          section.article-sub-info {
-            position: absolute;
-            right: 0;
-            bottom: 0;
-
-            .article-watch {
-              color: #212529;
-              display: inline-block;
-              font-size: 14px;
-              img {
-                width: 13px;
-                margin: 3px 3px -1px 4px;
-              }
-            }
-          }
-        }
+      &:last-of-type {
+        display: none;
       }
     }
     .more-btn {
