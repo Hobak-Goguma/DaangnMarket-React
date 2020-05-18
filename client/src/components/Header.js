@@ -124,7 +124,7 @@ const Header = (props) => {
         fetch(`${API}product/search?q=${keyword}`)
           .then((res) => res.json())
           .then((res) => {
-            props.setCardData(res);
+            props.setProdcuts(res);
             props.setCards([]);
           });
       }

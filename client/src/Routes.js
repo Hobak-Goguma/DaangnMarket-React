@@ -6,9 +6,9 @@ import {
   Redirect,
 } from "react-router-dom";
 import App from "./App";
-import Login from "./pages/Login";
+import LoginPage from "./pages/LoginPage";
 import Register from "./pages/Register";
-import SearchResult from "./pages/SearchResult";
+import SearchPage from "./pages/SearchPage";
 import MyPage2ndLogin from "./pages/myPage/MyPage2ndLogin";
 import Article from "./pages/Article";
 
@@ -22,10 +22,10 @@ export default function Routes() {
       <Router>
         <Switch>
           <Route exact path="/" component={App} />
-          <Route exact path="/login" component={Login} />
+          <Route exact path="/login" component={LoginPage} />
           <Route exact path="/register" component={Register} />
-          <Route path="/search" component={SearchResult} />
-          <Route path="/articles:id" component={Article} />
+          <Route path="/search" component={SearchPage} />
+          <Route path="/articles" component={Article} />
           <Route exact path="/my" component={MyPage2ndLogin} />
           <Redirect from="*" to="/" />
         </Switch>
