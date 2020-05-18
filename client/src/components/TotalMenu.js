@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-const TotalMenu = ({ logOut }) => {
+const TotalMenu = ({ logOut,login }) => {
+  let localID="root";
+  // useEffect(() => {
+  //   localID = window.sessionStorage.getItem("id");
+  // }, []);
   return (
     <StyledTotalMenu>
       <li className="totalLists">
@@ -28,14 +32,29 @@ const TotalMenu = ({ logOut }) => {
           <li>노트북</li>
           <li>냉장소</li>
           <li>쇼파</li>
-          <li>화분</li>
-          <li onClick={logOut}>
-            <Link to="/login">
-              <div>
-                <span>로그아웃</span>
+              <li>
+            <Link to={{pathname : "/mychange", state:{
+              localID :localID,
+            }}}>
+            <div>
+                <span>내 정보 수정</span>
               </div>
             </Link>
-          </li>
+              </li>
+              {login?//로그인 여부에따라 로그인인지 회원가입인지 결정
+                <li onClick={logOut}>
+                  <Link to="/login">
+                    <div>
+                      <span>로그아웃</span>
+                    </div>
+                  </Link>
+                </li>:<li>
+                  <Link to="/register">
+                    <div>
+                      <span>회원가입</span>
+                    </div>
+                  </Link>
+                </li>}
         </ul>
       </li>
     </StyledTotalMenu>
@@ -103,18 +122,20 @@ const StyledTotalMenu = styled.ul`
     .dropdown {
       display: none;
       opacity: 0;
-      border: 1px solid rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(0 , 0, 0,0.1);
       min-width: 5rem;
       position: absolute;
       right: 0;
 
       li {
         transition: 0.2s;
+        height:50px;
+        line-height:50px;
         &:hover {
           background: #ffbe93;
         }
         width: 100px;
-        padding: 1rem;
+        padding: 0 1rem;
         background: #fff;
       }
       .category-lists {

@@ -2,28 +2,23 @@ import React, { useEffect, useState } from "react";
 import { withRouter } from "react-router-dom";
 
 const FlatCard1 = (props) => {
-  const handleCardClick = (event, id) => {
-    event.preventDefault();
-    props.history.push(`/articles:${id}`);
-  };
+  // const handleCardClick = (id) => {
+  //   props.history.push(`/articles`);
+  // };
 
   return (
     <>
-      {props.data.map((v, i) => (
-        <article
-          className="flat-card"
-          key={i}
-          onClick={(e) => handleCardClick(e, i)}
-        >
+      {props.data.slice(props.a, props.b).map((v, i) => (
+        <article className="flat-card" key={i}>
           <div className="card-photo">
-            <img src={v.img} alt="자전거" />
+            <img src="./img/4단선반.jpg" alt="사진임둥" />
           </div>
           <div className="article-info">
             <div className="article-title-content">
-              <span className="article-title">{v.title}</span>
+              <span className="article-title">{v.name}</span>
             </div>
-            <p className="article-region-name">{v.region_name}</p>
-            <p className="article-price">{v.price}</p>
+            <p className="article-region-name">주민동</p>
+            <p className="article-price">{v.price.toLocaleString()}원</p>
             <section className="article-sub-info">
               <span className="article-watch">
                 <img

@@ -90,20 +90,24 @@ const Headers = styled.header`
   }
 `;
 
-let localID, localPW;
 let id;
 const Header = (props) => {
   const [login, setLogin] = useState(false);
   const [keyword, setKeyword] = useState("");
 
   useEffect(() => {
-    // localID = localStorage.getItem("id");
-    // localPW = localStorage.getItem("pw");
-
-    // if (localID && localPW) {
-    //   console.log(localID, localPW);
-    //   setLogin(true);
+    // if (props.location.pathname === "/search") {
+    //   fetch(
+    //     `http://4205ecae.ngrok.io/member/product/search/?q=${
+    //       window.location.href.split("=")[1]
+    //     }`
+    //   )
+    //     .then((res) => res.json())
+    //     .then((res) => {
+    //       if (isMounted) props.setCardData(res);
+    //     });
     // }
+
     id = window.sessionStorage.getItem("id");
     if (id) {
       setLogin(true);
@@ -121,17 +125,17 @@ const Header = (props) => {
     // localStorage.setItem("pw", "");
   };
 
-  const searchKeyPress = (e) => {
-    if (
-      window.event.keyCode === 13 &&
-      (keyword === "자전거" || keyword === "아이폰" || keyword === "김치")
-    ) {
+  const searchKeyPress = () => {
+    if (window.event.keyCode === 13) {
+      if (props.location.pathname === "/search") {
+        fetch(`http://4205ecae.ngrok.io/member/product/search/?q=${keyword}`)
+          .then((res) => res.json())
+          .then((res) => {
+            props.setCardData(res);
+            props.setCards([]);
+          });
+      }
       props.history.push(`/search?q=${keyword}`);
-      fetch("http://localhost:3000/data/cardData.json")
-        .then((res) => res.json())
-        .then((res) => {
-          props.setData(res);
-        });
     }
   };
 
@@ -170,7 +174,7 @@ const Header = (props) => {
             </Link>
           </section>
         )}
-        <TotalMenu logOut={logOut} />
+        <TotalMenu logOut={logOut} login={login} />
       </div>
     </Headers>
   );

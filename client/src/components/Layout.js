@@ -1,17 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 
-const Layout = ({ children }, props) => {
+const Layout = ({ children, setCardData, setCards, overflow, height }) => {
   const myList = [];
 
   return (
-    <>
-      <Header setData={props.setData} />
-
+    <div style={{ overflow: overflow, height: height }}>
+      <Header setCardData={setCardData} setCards={setCards} />
       {children}
       <Footer />
-    </>
+    </div>
   );
 };
 
