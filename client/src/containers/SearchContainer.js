@@ -15,12 +15,12 @@ const SearchContainer = () => {
   useEffect(() => {
     fetch(`${API}product/search?q=${window.location.href.split("=")[1]}`)
       .then((res) => res.json())
-      .then((res) => {
-        setProducts(res);
-        setCards([]);
+      .then(async (res) => {
+        await setProducts(res);
+        await setCards([]);
         console.log(res);
       });
-  });
+  }, []);
 
   const showMore = () => {
     setCards([
