@@ -1,0 +1,117 @@
+import React, { useEffect, useState } from "react";
+import { API } from "../lib/api";
+import Layout from "../components/Layout";
+import Search from "../components/Search";
+import styled from "styled-components";
+import { withRouter } from "react-router-dom";
+// Hold Redux implementation
+
+const SearchContainer = () => {
+  const [products, setProducts] = useState([]);
+  const [cards, setCards] = useState([]);
+  const [numA, setNumA] = useState(6);
+  const [numB, setNumB] = useState(18);
+
+  useEffect(() => {
+    fetch(`${API}product/search?q=${window.location.href.split("=")[1]}`)
+      .then((res) => res.json())
+      .then((res) => {
+        setProducts(res);
+        setCards([]);
+        console.log(res);
+      });
+  });
+
+  const showMore = () => {
+    setCards([
+      ...cards,
+      <Search products={products} sliceStart={numA} sliceEnd={numB} />,
+    ]);
+    setNumA(numA + 12);
+    setNumB(numB + 12);
+  };
+
+  return (
+    <Layout setProducts={setProducts} setCards={setCards}>
+      <SearchContainerWrapper>
+        <div className="result-container">
+          <div className="articles-wrap">
+            <p className="article-kind">중고거래</p>
+            {products.length === 0 ? (
+              <div
+                style={{
+                  fontSize: 50,
+                  fontWeight: "bold",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: "300px",
+                }}
+              >
+                물품이 없네요
+              </div>
+            ) : (
+              <Search products={products} sliceStart={0} sliceEnd={6} />
+            )}
+            {cards}
+          </div>
+          <div className="more-btn" onClick={showMore}>
+            <span>더보기</span>
+          </div>
+        </div>
+      </SearchContainerWrapper>
+    </Layout>
+  );
+};
+
+export default withRouter(SearchContainer);
+
+const SearchContainerWrapper = styled.section`
+  background: #f8f9fa;
+  padding: 30px 0 40px 0;
+  margin-top: 6rem;
+  .result-container {
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+    width: 800px;
+    margin: 0 auto;
+    margin-bottom: 20px;
+    background: #fff;
+    .wrap-last {
+      margin-right: 40px;
+    }
+
+    .articles-wrap {
+      margin-left: 40px;
+
+      p.article-kind {
+        font-weight: 600;
+        color: #212529;
+        font-size: 18px;
+        margin: 20px 0;
+      }
+    }
+    .article-hr-border {
+      display: block;
+      height: 1px;
+      border: 0;
+      border-top: 1px solid #e9ecef;
+      padding: 0;
+
+      &:last-of-type {
+        display: none;
+      }
+    }
+    .more-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 50px;
+      cursor: pointer;
+      width: 100%;
+      color: #868e96;
+      font-size: 16px;
+      border-top: 1px solid #e8ecef;
+    }
+  }
+`;

@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import { API } from "../lib/api";
 import { withRouter } from "react-router-dom";
 import { Checkbox, Radio } from "@material-ui/core";
 import styled, { css } from "styled-components";
@@ -8,6 +9,7 @@ const Register = ({ history }) => {
   const [visible, setVisible] = useState(false);
 
   let addrInput = useRef("");
+  const [isIdDuplicate, setIdDuplicate] = useState(false);
 
   const [inputState, setInputState] = useState({
     id: "",
@@ -34,7 +36,6 @@ const Register = ({ history }) => {
   const regexSpec = /[~!@#$%^&*()_+|<>?:{}]/;
   const regexPhone = /^\d{3}\d{3,4}\d{4}$/;
   const regexKor = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
-  console.log(inputState.birth.replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3"));
 
   const handleInputState = (e) => {
     setInputState({
@@ -57,12 +58,14 @@ const Register = ({ history }) => {
   };
 
   const fetchIdDuplication = () => {
-    fetch(`http://28d6d1ad.ngrok.io/member/overlap/?user_id=${inputState.id}`)
+    fetch(`${API}member/overlap?user_id=${inputState.id}`)
       .then((res) => {
         if (res.status === 200) {
           alert("중복확인이 완료되었습니다.");
+          setIdDuplicate(true);
         } else {
           alert("중복된 아이디가 있습니다.");
+          setIdDuplicate(false);
         }
       })
       // console.log 에 status error 안띄우기
@@ -112,6 +115,7 @@ const Register = ({ history }) => {
 
   const fetchRegister = () => {
     if (
+      isIdDuplicate &&
       inputState.id.length > 5 &&
       /[0-9]/.test(inputState.id) &&
       /[a-zA-Z]/.test(inputState.id) &&
@@ -128,7 +132,7 @@ const Register = ({ history }) => {
       checkbox.checkedB &&
       checkbox.checkedG
     ) {
-      fetch("http://c2388d02.ngrok.io/member/", {
+      fetch(`${API}member`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
