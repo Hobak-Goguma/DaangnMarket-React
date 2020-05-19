@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import App from "./App";
 import LoginPage from "./pages/LoginPage";
-import Register from "./pages/Register";
+import RegisterPage from "./pages/RegisterPage";
 import MyChange from "./pages/myPage/MyChange";
 import MyProduct from "./pages/myPage/MyProduct";
 import SearchPage from "./pages/SearchPage";
@@ -18,14 +18,14 @@ import Global from "./lib/themes/GlobalStyles";
 
 export default function Routes() {
   return (
-<ThemeProvider theme={Theme}>
-    <Router>
-      <Switch>
-        <Route exact path="/" component={App} />
-        <Route exact path="/register" component={Register} />
-        <Route exact path="/mychange" component={MyChange} />
-        <Route exact path="/MyProduct" component={MyProduct} />
+    <ThemeProvider theme={Theme}>
+      <Router>
+        <Switch>
+          <Route exact path="/" component={App} />
+          <Route exact path="/mychange" component={MyChange} />
+          <Route exact path="/MyProduct" component={MyProduct} />
           <Route exact path="/login" component={LoginPage} />
+          <Route exact path="/register" component={RegisterPage} />
           <Route path="/search" component={SearchPage} />
           <Route path="/articles" component={Article} />
           <Redirect from="*" to="/" />
