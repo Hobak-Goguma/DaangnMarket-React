@@ -19,6 +19,7 @@ export const StyledRegister = styled.div`
   .wrong-txt {
     color: orange;
     font-size: 12px;
+    line-height: 1.4;
   }
   .correct-txt {
     color: green;

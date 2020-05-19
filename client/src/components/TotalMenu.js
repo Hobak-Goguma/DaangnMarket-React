@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-const TotalMenu = ({ logOut, login }) => {
+const TotalMenu = ({ logOut, login, onClick }) => {
   let localID = "root";
   // useEffect(() => {
   //   localID = window.sessionStorage.getItem("id");
@@ -18,13 +18,13 @@ const TotalMenu = ({ logOut, login }) => {
           <li className="category-lists">
             <div>카테고리</div>
             <ul className="dropdown2nd">
-              <li>의자</li>
-              <li>의자</li>
-              <li>캠핑</li>
-              <li>노트북</li>
-              <li>냉장소</li>
-              <li>쇼파</li>
-              <li>화분</li>
+              <li onClick={() => onClick("자전거")}>자전거</li>
+              <li onClick={() => onClick("의자")}>의자</li>
+              <li onClick={() => onClick("캠핑")}>캠핑</li>
+              <li onClick={() => onClick("노트북")}>노트북</li>
+              <li onClick={() => onClick("냉장고")}>냉장고</li>
+              <li onClick={() => onClick("쇼파")}>쇼파</li>
+              <li onClick={() => onClick("화분")}>화분</li>
             </ul>
           </li>
           <li>의자</li>

@@ -114,6 +114,18 @@ const Header = (props) => {
     // localStorage.setItem("pw", "");
   };
 
+  const onClickCategory = (element) => {
+    if (props.location.pathname === "/search") {
+      fetch(`${API}product/search?q=${element}`)
+        .then((res) => res.json())
+        .then((res) => {
+          props.setProducts(res);
+          props.setCards([]);
+        });
+    }
+    props.history.push(`/search?q=${element}`);
+  };
+
   const searchKeyPress = () => {
     if (
       window.event.keyCode === 13 &&
@@ -168,7 +180,7 @@ const Header = (props) => {
             </Link>
           </section>
         )}
-        <TotalMenu logOut={logOut} login={login} />
+        <TotalMenu logOut={logOut} login={login} onClick={onClickCategory} />
       </div>
     </Headers>
   );
