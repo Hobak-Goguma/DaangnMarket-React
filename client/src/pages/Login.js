@@ -4,6 +4,7 @@ import Layout from "../components/Layout";
 import styled from "styled-components";
 
 const Login = ({ history }) => {
+  console.log(history);
   const [ID, setID] = useState("");
   const [PW, setPW] = useState("");
 

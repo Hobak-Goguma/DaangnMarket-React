@@ -329,21 +329,37 @@ const MyInfoChng = ({ID}) =>{
                 break;
 
                 case "birthYear": 
-                //문자입력을 방지 - 문제 빈배열 불가
-                    if(e.target.value.charCodeAt([e.target.value.length-1])>47&&e.target.value.charCodeAt([e.target.value.length-1])<58){
-                        birthCh("year",e.target.value);
-                    }else if(e.target.value===""){
-                        birthCh("year",e.target.value);
+                //문자입력을 방지
+                    let CheckString = false;
+
+                    for(let i = 0 ; i<e.target.value.length; i++){
+                        let temp = e.target.value.charCodeAt([i]) ;
+                        if(temp<48||temp>57){
+                            CheckString = true;
+                            break;
+                        }
+                    }
+                    
+                    if(!CheckString){
+                        birthCh("year",e.target.value||e.target.value==="");
                     }else{
                         e.target.value = birth.year;
                     }
                     break;
                 case "birthMonth":
                 //문자입력을 방지
-                    if(e.target.value.charCodeAt([e.target.value.length-1])>47&&e.target.value.charCodeAt([e.target.value.length-1])<58){
-                        birthCh("month",e.target.value);
-                    }else if(e.target.value===""){
-                        birthCh("month",e.target.value);
+                    let CheckmonthString = false;
+
+                    for(let i = 0 ; i<e.target.value.length; i++){
+                        let temp = e.target.value.charCodeAt([i]) ;
+                        if(temp<48||temp>57){
+                            CheckmonthString = true;
+                            break;
+                        }
+                    }
+                    
+                    if(!CheckmonthString){
+                        birthCh("month",e.target.value||e.target.value==="");
                     }else{
                         e.target.value = birth.month;
                     }
@@ -354,9 +370,17 @@ const MyInfoChng = ({ID}) =>{
                 break;
                 case "birthDay":
                 //문자입력을 방지
-                    if(e.target.value.charCodeAt([e.target.value.length-1])>47&&e.target.value.charCodeAt([e.target.value.length-1])<58){
-                        birthCh("day",e.target.value);
-                    }else if(e.target.value===""){
+                    let CheckdayString = false;
+
+                    for(let i = 0 ; i<e.target.value.length; i++){
+                        let temp = e.target.value.charCodeAt([i]) ;
+                        if(temp<48||temp>57){
+                            CheckdayString = true;
+                            break;
+                        }
+                    }
+                    
+                    if(!CheckdayString||e.target.value===""){
                         birthCh("day",e.target.value);
                     }else{
                         e.target.value = birth.day;
@@ -369,53 +393,37 @@ const MyInfoChng = ({ID}) =>{
         }
     }
 
-    const birthCh = (type,value)=>{
+    const birthCh = (type,value)=>{ // 생일 체크를 위한 함수
 
-        let year= type==="year"? Number(value):Number(birth.year); //연도 입력
-        let month= type==="month"? Number(value):Number(birth.month); // 월 입력
-        let day= type==="day"? Number(value):Number(birth.day); //일 입력
-        let chList = [false,false,false]; // [year,month,day]
-        if(String(day).length===2&&String(year).length===4&&String(month).length===2){
+        let year= type==="year"? value===""? "":Number(value):Number(birth.year); //연도 입력
+        let month= type==="month"? value===""? "":Number(value):Number(birth.month); // 월 입력
+        let day= type==="day"? value===""? "":Number(value):Number(birth.day); //일 입력
+        let dayCheck = true; // [year,month,day]
+        if(day>0&&day<32&&year>1918&&year<2021&&month>0&&month<13){//연도 달 체크는 여기서
             if(month===1||month===3||month===5||month===7||month===8||month===10||month===12){ //윤달 및 달별 일자 체크
                 if(day>31){
-                    chList[2] =false;
-                }else{
-                    chList[2] =true;
+                    dayCheck =false;
                 }
             }else if(month===4||month===6||month===9||month===11){
                 if(day>30){
-                    chList[2] =false;
-                }else{
-                    chList[2] =true;
+                    dayCheck =false;
                 }
-            }else if(year%400 === 0 && month===2 && day>29){
-                chList[2] =false;
-            }else if(year%100 === 0 && month===2 && day>28){
-                chList[2] =false;
-            }else if(year%4 === 0 && month===2 && day>29){
-                chList[2] =false;
+            }else if(year%400 === 0 && month===2){ //윤달 체크
+                dayCheck = day>29? false:true;
+            }else if(year%100 === 0 && month===2){
+                dayCheck = day>28? false:true;
+            }else if(year%4 === 0 && month===2){
+                dayCheck = day>29? false:true;
             }else if(month===2 && day>28){
-                chList[2] =false;
-            }else{
-                chList[2] =true;
+                dayCheck =false;
             }
-            if(month>12){ // 13월 불가
-                chList[1] =false;
-            }else{
-                chList[1] =true;
-            }
-            if(year > 2019 || year<1920){ //2020년 이후,1919년 이전 출생자는 불가
-                chList[0] =false;
-            }else{
-                chList[0] =true;
-            }
-            if(chList[0]&&chList[1]&&chList[2]){ // 다 맞을때
+            if(dayCheck){ // 날짜 맞을때
                 setBirth({
                     year:String(year),
                     month:String(month),
                     day:String(day),
                     birthClass:"wrong"});
-            }else{ //하나라도 틀렸을때,
+            }else{ //날짜 틀렸을때 입력은 되나 실패 text뜸
                 setBirth({
                     year:String(year),
                     month:String(month),

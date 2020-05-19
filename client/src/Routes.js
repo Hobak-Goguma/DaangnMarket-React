@@ -4,7 +4,8 @@ import App from "./App";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import SearchResult from "./pages/SearchResult";
-import MyPage2ndLogin from "./pages/myPage/MyPage2ndLogin";
+import MyChange from "./pages/myPage/MyChange";
+import MyProduct from "./pages/myPage/MyProduct";
 import Article from "./pages/Article";
 
 export default function Routes() {
@@ -16,7 +17,8 @@ export default function Routes() {
         <Route exact path="/register" component={Register} />
         <Route exact path="/search" component={SearchResult} />
         <Route exact path="/articles:id" component={Article} />
-        <Route exact path="/my" component={MyPage2ndLogin} />
+        <Route exact path="/mychange" component={MyChange} />
+        <Route exact path="/MyProduct" component={MyProduct} />
       </Switch>
     </Router>
   );
