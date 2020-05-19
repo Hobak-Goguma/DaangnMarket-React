@@ -8,10 +8,10 @@ import {
 import App from "./App";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
+import MyChange from "./pages/myPage/MyChange";
+import MyProduct from "./pages/myPage/MyProduct";
 import SearchPage from "./pages/SearchPage";
-import MyPage2ndLogin from "./pages/myPage/MyPage2ndLogin";
 import Article from "./pages/Article";
-
 import { ThemeProvider } from "styled-components";
 import Theme from "./lib/themes/Theme";
 import Global from "./lib/themes/GlobalStyles";
@@ -22,11 +22,12 @@ export default function Routes() {
       <Router>
         <Switch>
           <Route exact path="/" component={App} />
+          <Route exact path="/mychange" component={MyChange} />
+          <Route exact path="/MyProduct" component={MyProduct} />
           <Route exact path="/login" component={LoginPage} />
           <Route exact path="/register" component={RegisterPage} />
           <Route path="/search" component={SearchPage} />
           <Route path="/articles" component={Article} />
-          <Route exact path="/my" component={MyPage2ndLogin} />
           <Redirect from="*" to="/" />
         </Switch>
         <Global />
