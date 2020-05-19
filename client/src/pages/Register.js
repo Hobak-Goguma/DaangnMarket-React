@@ -153,12 +153,12 @@ const Register = ({ history }) => {
       }).then((response) => {
         if (response.status === 200 || response.status === 201) {
           alert("회원가입 됨 ㅋ!");
+          alert("회원가입 되었습니다.");
+          history.push("/login");
         } else {
           alert("안된다 ㅜㅜ");
         }
       });
-      alert("회원가입 되었습니다.");
-      history.push("/");
     } else {
       alert("양식에 맞게 작성하였는지 다시한번 확인해 주세요");
       console.log(addrInput.current.value);

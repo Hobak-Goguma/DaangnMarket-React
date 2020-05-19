@@ -11,15 +11,24 @@ const SearchContainer = () => {
   const [cards, setCards] = useState([]);
   const [numA, setNumA] = useState(6);
   const [numB, setNumB] = useState(18);
+  const [fetched, setFetched] = useState(false);
 
   useEffect(() => {
     fetch(`${API}product/search?q=${window.location.href.split("=")[1]}`)
       .then((res) => res.json())
-      .then(async (res) => {
-        await setProducts(res);
-        await setCards([]);
+      .then((res) => {
+        setProducts(res);
+        setCards([]);
         console.log(res);
       });
+
+    let timer = setTimeout(() => {
+      setFetched(true);
+    }, 2000);
+
+    return () => {
+      clearTimeout(timer);
+    };
   }, []);
 
   const showMore = () => {
@@ -48,7 +57,7 @@ const SearchContainer = () => {
                   height: "300px",
                 }}
               >
-                물품이 없네요
+                {fetched ? "물품이 없네요" : "로딩중..."}
               </div>
             ) : (
               <Search products={products} sliceStart={0} sliceEnd={6} />
