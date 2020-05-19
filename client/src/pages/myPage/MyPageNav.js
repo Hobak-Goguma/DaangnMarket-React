@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-const MyNav = ({choose}) =>{
+const MyNav = ({choose,history}) =>{
     const MyNav = styled.ul`
         position:absolute;
         left:0;
@@ -13,6 +13,7 @@ const MyNav = ({choose}) =>{
             border:1px solid #ccc;
             border-top:0;
             background:#fff;
+            cursor:pointer;
             :first-child{
                 border-top:1px solid #ccc;
             }
@@ -34,18 +35,37 @@ const MyNav = ({choose}) =>{
             background:#dcdbde;
         }
     `;
-    const myMenu = ["채팅", "상품후기","내 동네 설정", "내 정보 수정","로그아웃"]
+    const click = (v) =>{
+        console.log(v.target.id);
+        const id = v.target.id;
+        switch(id) {
+            // case "채팅":
+                // history.push("/MyChat");
+            //     break;
+            case "내 상품":
+                history.push("/MyProduct");
+                break;
+
+            case "내 정보 수정":
+                history.push("/mychange");
+                break;
+
+            default:
+                break;
+        }
+    }
+    const myMenu = ["채팅", "내 상품","내 동네 설정", "내 정보 수정","로그아웃"]
     const menu = myMenu.map((v)=>{
         if(v===choose){
         return(
             <li key = {v} className="on">
-                <span>{v}<i className="fas fa-chevron-right"></i></span>
+                <span id = {v} onClick={click}>{v}<i className="fas fa-chevron-right"></i></span>
             </li>
         )}
         else{
             return(
                 <li key = {v}>
-                    <span>{v}<i className="fas fa-chevron-right"></i></span>
+                    <span id = {v}  onClick={click}>{v}<i className="fas fa-chevron-right"></i></span>
                 </li>
         );};
     })
