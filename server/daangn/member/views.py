@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from member.models import Member, Product
+from member.models import *
 from member.serializers import *
 from django.http import HttpResponse
 from django.utils import timezone
@@ -241,6 +241,55 @@ def product_category(request):
         #검색결과 있음.
         serializer = ProductSerializer(product, many=True)
         return Response(serializer.data)
+
+
+@api_view(['GET', 'POST'])
+def company_list(request):
+    """
+    업체리스트를 모두 보여주거나 새 업체리스트를 만듭니다.
+    """
+    if request.method == 'GET':
+        company = Company.objects.all()
+        serializer = CompanySerializer(company, many=True)
+        return Response(serializer.data)
+
+    elif request.method == 'POST':
+        serializer = CompanySerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def company_detail(request, pk):
+    """
+    특정 업체리스트를 조회, 수정, 삭제 합니다.
+    """
+    try:
+        company = Company.objects.get(pk=pk)
+    except Company.DoesNotExist:
+        content = {
+            "message" : "없는 업체 입니다.",
+            "result" : {}
+                }
+        return Response(content, status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = CompanySerializer(company)
+        return Response(serializer.data)
+
+    elif request.method == 'PUT':
+        serializer = CompanySerializer(company, data=request.data)
+        print(serializer)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'DELETE':
+        Company.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 

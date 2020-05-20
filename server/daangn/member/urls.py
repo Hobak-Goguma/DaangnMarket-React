@@ -14,6 +14,8 @@ urlpatterns = [
     path('product', views.product_list, name='prduct_list'),
     path('product/<pk>', views.product_detail, name='prduct_detail'),
     path('test', views.test, name='test'),
+    path('company', views.company_list, name='company_list'),
+    path('company/<pk>', views.company_detail, name='company_detail'),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
