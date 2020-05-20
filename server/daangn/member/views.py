@@ -49,7 +49,6 @@ def member_detail(request, pk):
 
     elif request.method == 'PUT':
         serializer = MemberReviseSerializer(member, data=request.data)
-        print(serializer)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -58,6 +57,27 @@ def member_detail(request, pk):
     elif request.method == 'DELETE':
         Member.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['PUT'])
+def member_touch(request, pk):
+    """
+    코드 조각 조회, 업데이트, 삭제
+    """
+    try:
+        member = Member.objects.get(pk=pk)
+    except Member.DoesNotExist:
+        content = {
+            "message" : "없는 사용자 입니다.",
+            "result" : {}
+                }
+        return Response(content, status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'PUT':
+        serializer = MemberTouchSerializer(member, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
 def member_search(request):
