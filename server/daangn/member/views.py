@@ -59,6 +59,25 @@ def member_detail(request, pk):
         Member.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+@api_view(['GET'])
+def member_search(request):
+    """
+    특정유저를 아이디로 검색합니다.
+    """
+    try:
+        User_id = request.GET['user_id']
+        member = Member.objects.get(user_id = User_id)
+    except Member.DoesNotExist:
+        content = {
+            "message" : "유저를 찾을 수 없습니다.",
+            "result" : {}
+                }
+        return Response(content, status=status.HTTP_404_NOT_FOUND)
+
+    serializer = MemberSerializer(member)
+    return Response(serializer.data)
+
+
 
 @api_view(['GET'])
 def member_overlap(request):
@@ -201,6 +220,29 @@ def product_search(request):
     serializer = ProductSerializer(product, many=True)
     return Response(serializer.data)
     # return HttpResponse(product)
+
+
+@api_view(['GET'])
+def product_category(request):
+    """
+    제목에 검색어가 포함된 물건들 리스트
+    """
+    Search = request.GET['q']
+    product = Product.objects.filter(category = Search)
+    
+    if not product:
+        #검색 결과 없음.
+        content = {
+            "message" : "잘못된 카테고리 입니다.",
+            "result" : {"입력한 검색어" : Search}
+                }
+        return Response(content, status=status.HTTP_404_NOT_FOUND)
+    else:
+        #검색결과 있음.
+        serializer = ProductSerializer(product, many=True)
+        return Response(serializer.data)
+
+
 
 @api_view(['GET'])
 def test(request):
