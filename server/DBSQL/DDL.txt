@@ -35,10 +35,10 @@ CREATE TABLE `daangn`.`product` (
 	`info`       VARCHAR(3000) NOT NULL COMMENT '제품 설명', -- 제품 설명
 	`category`   VARCHAR(15)   NULL     COMMENT '카테고리', -- 카테고리
 	`img`        VARCHAR(2000) NULL     COMMENT '제품 사진', -- 제품 사진
-	`views`      INT           NULL     COMMENT '조회수', -- 조회수
+	`views`      INT           NOT NULL DEFAULT 0 COMMENT '조회수', -- 조회수
 	`cdate`      DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성일', -- 생성일
 	`udate`      DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '수정일', -- 수정일
-	`sold_TF`    BOOLEAN       NOT NULL COMMENT '판매여부' -- 판매여부
+	`sold_TF`    BOOLEAN       NOT NULL DEFAULT 0 COMMENT '판매여부' -- 판매여부
 )
 COMMENT '제품';
 
