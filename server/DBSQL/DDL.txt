@@ -1,5 +1,5 @@
 -- 멤버
-CREATE TABLE `MY_SCHEMA`.`member` (
+CREATE TABLE `daangn`.`member` (
 	`id_member` INT          NOT NULL COMMENT '멤버 키', -- 멤버 키
 	`name`      VARCHAR(30)  NOT NULL COMMENT '이름', -- 이름
 	`user_id`   VARCHAR(30)  NOT NULL COMMENT '아이디', -- 아이디
@@ -17,17 +17,17 @@ CREATE TABLE `MY_SCHEMA`.`member` (
 COMMENT '멤버';
 
 -- 멤버
-ALTER TABLE `MY_SCHEMA`.`member`
+ALTER TABLE `daangn`.`member`
 	ADD CONSTRAINT `PK_member` -- 멤버 기본키
 		PRIMARY KEY (
 			`id_member` -- 멤버 키
 		);
 
-ALTER TABLE `MY_SCHEMA`.`member`
+ALTER TABLE `daangn`.`member`
 	MODIFY COLUMN `id_member` INT NOT NULL AUTO_INCREMENT COMMENT '멤버 키';
 
 -- 제품
-CREATE TABLE `MY_SCHEMA`.`product` (
+CREATE TABLE `daangn`.`product` (
 	`id_product` INT           NOT NULL COMMENT '제품키', -- 제품키
 	`id_member`  INT           NOT NULL COMMENT '멤버 키', -- 멤버 키
 	`name`       VARCHAR(100)  NOT NULL COMMENT '제품 이름', -- 제품 이름
@@ -43,17 +43,17 @@ CREATE TABLE `MY_SCHEMA`.`product` (
 COMMENT '제품';
 
 -- 제품
-ALTER TABLE `MY_SCHEMA`.`product`
+ALTER TABLE `daangn`.`product`
 	ADD CONSTRAINT `PK_product` -- 제품 기본키
 		PRIMARY KEY (
 			`id_product` -- 제품키
 		);
 
-ALTER TABLE `MY_SCHEMA`.`product`
+ALTER TABLE `daangn`.`product`
 	MODIFY COLUMN `id_product` INT NOT NULL AUTO_INCREMENT COMMENT '제품키';
 
 -- 메너온도
-CREATE TABLE `MY_SCHEMA`.`manner` (
+CREATE TABLE `daangn`.`manner` (
 	`id_manner` INT NOT NULL COMMENT '매너 키', -- 매너 키
 	`id_member` INT NOT NULL COMMENT '피평가자', -- 피평가자
 	`score`     INT NOT NULL COMMENT '점수' -- 점수
@@ -61,17 +61,17 @@ CREATE TABLE `MY_SCHEMA`.`manner` (
 COMMENT '메너온도';
 
 -- 메너온도
-ALTER TABLE `MY_SCHEMA`.`manner`
+ALTER TABLE `daangn`.`manner`
 	ADD CONSTRAINT `PK_manner` -- 메너온도 기본키
 		PRIMARY KEY (
 			`id_manner` -- 매너 키
 		);
 
-ALTER TABLE `MY_SCHEMA`.`manner`
+ALTER TABLE `daangn`.`manner`
 	MODIFY COLUMN `id_manner` INT NOT NULL AUTO_INCREMENT COMMENT '매너 키';
 
 -- 구매자후기
-CREATE TABLE `MY_SCHEMA`.`shopper_review` (
+CREATE TABLE `daangn`.`shopper_review` (
 	`id_review_shopper` INT         NOT NULL COMMENT '리뷰 키', -- 리뷰 키
 	`title`             VARCHAR(50) NOT NULL COMMENT '후기 제목', -- 후기 제목
 	`cdate`             DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성일', -- 생성일
@@ -81,17 +81,17 @@ CREATE TABLE `MY_SCHEMA`.`shopper_review` (
 COMMENT '구매자후기';
 
 -- 구매자후기
-ALTER TABLE `MY_SCHEMA`.`shopper_review`
+ALTER TABLE `daangn`.`shopper_review`
 	ADD CONSTRAINT `PK_shopper_review` -- 구매자후기 기본키
 		PRIMARY KEY (
 			`id_review_shopper` -- 리뷰 키
 		);
 
-ALTER TABLE `MY_SCHEMA`.`shopper_review`
+ALTER TABLE `daangn`.`shopper_review`
 	MODIFY COLUMN `id_review_shopper` INT NOT NULL AUTO_INCREMENT COMMENT '리뷰 키';
 
 -- 로그
-CREATE TABLE `MY_SCHEMA`.`log` (
+CREATE TABLE `daangn`.`log` (
 	`id_log`    INT         NOT NULL COMMENT '로그 키', -- 로그 키
 	`id_member` INT         NOT NULL COMMENT '멤버 키', -- 멤버 키
 	`search`    VARCHAR(60) NOT NULL COMMENT '검색 내용', -- 검색 내용
@@ -100,17 +100,17 @@ CREATE TABLE `MY_SCHEMA`.`log` (
 COMMENT '로그';
 
 -- 로그
-ALTER TABLE `MY_SCHEMA`.`log`
+ALTER TABLE `daangn`.`log`
 	ADD CONSTRAINT `PK_log` -- 로그 기본키
 		PRIMARY KEY (
 			`id_log` -- 로그 키
 		);
 
-ALTER TABLE `MY_SCHEMA`.`log`
+ALTER TABLE `daangn`.`log`
 	MODIFY COLUMN `id_log` INT NOT NULL AUTO_INCREMENT COMMENT '로그 키';
 
 -- 판매자후기
-CREATE TABLE `MY_SCHEMA`.`seller_review` (
+CREATE TABLE `daangn`.`seller_review` (
 	`id_review_seller` INT         NOT NULL COMMENT '리뷰 키', -- 리뷰 키
 	`title`            VARCHAR(50) NOT NULL COMMENT '후기 제목', -- 후기 제목
 	`cdate`            DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성일', -- 생성일
@@ -120,17 +120,17 @@ CREATE TABLE `MY_SCHEMA`.`seller_review` (
 COMMENT '판매자후기';
 
 -- 판매자후기
-ALTER TABLE `MY_SCHEMA`.`seller_review`
+ALTER TABLE `daangn`.`seller_review`
 	ADD CONSTRAINT `PK_seller_review` -- 판매자후기 기본키
 		PRIMARY KEY (
 			`id_review_seller` -- 리뷰 키
 		);
 
-ALTER TABLE `MY_SCHEMA`.`seller_review`
+ALTER TABLE `daangn`.`seller_review`
 	MODIFY COLUMN `id_review_seller` INT NOT NULL AUTO_INCREMENT COMMENT '리뷰 키';
 
 -- 실거래
-CREATE TABLE `MY_SCHEMA`.`real_deal` (
+CREATE TABLE `daangn`.`real_deal` (
 	`id_real_deal` INT      NOT NULL COMMENT '거래키', -- 거래키
 	`id_product`   INT      NOT NULL COMMENT '제품키', -- 제품키
 	`cdate`        DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성일' -- 생성일
@@ -138,17 +138,17 @@ CREATE TABLE `MY_SCHEMA`.`real_deal` (
 COMMENT '실거래';
 
 -- 실거래
-ALTER TABLE `MY_SCHEMA`.`real_deal`
+ALTER TABLE `daangn`.`real_deal`
 	ADD CONSTRAINT `PK_real_deal` -- 실거래 기본키
 		PRIMARY KEY (
 			`id_real_deal` -- 거래키
 		);
 
-ALTER TABLE `MY_SCHEMA`.`real_deal`
+ALTER TABLE `daangn`.`real_deal`
 	MODIFY COLUMN `id_real_deal` INT NOT NULL AUTO_INCREMENT COMMENT '거래키';
 
 -- 업체
-CREATE TABLE `MY_SCHEMA`.`company` (
+CREATE TABLE `daangn`.`company` (
 	`id_company` INT           NOT NULL COMMENT '업체 키', -- 업체 키
 	`id_member`  INT           NOT NULL COMMENT '멤버 키', -- 멤버 키
 	`name`       VARCHAR(50)   NOT NULL COMMENT '업체 이름', -- 업체 이름
@@ -163,17 +163,17 @@ CREATE TABLE `MY_SCHEMA`.`company` (
 COMMENT '업체';
 
 -- 업체
-ALTER TABLE `MY_SCHEMA`.`company`
+ALTER TABLE `daangn`.`company`
 	ADD CONSTRAINT `PK_company` -- 업체 기본키
 		PRIMARY KEY (
 			`id_company` -- 업체 키
 		);
 
-ALTER TABLE `MY_SCHEMA`.`company`
+ALTER TABLE `daangn`.`company`
 	MODIFY COLUMN `id_company` INT NOT NULL AUTO_INCREMENT COMMENT '업체 키';
 
 -- 찜목록
-CREATE TABLE `MY_SCHEMA`.`wishlist` (
+CREATE TABLE `daangn`.`wishlist` (
 	`id_wishlist` INT NOT NULL COMMENT '위시키', -- 위시키
 	`id_product`  INT NOT NULL COMMENT '제품키', -- 제품키
 	`id_member`   INT NOT NULL COMMENT '멤버 키' -- 멤버 키
@@ -181,24 +181,24 @@ CREATE TABLE `MY_SCHEMA`.`wishlist` (
 COMMENT '찜목록';
 
 -- 찜목록
-ALTER TABLE `MY_SCHEMA`.`wishlist`
+ALTER TABLE `daangn`.`wishlist`
 	ADD CONSTRAINT `PK_wishlist` -- 찜목록 기본키
 		PRIMARY KEY (
 			`id_wishlist` -- 위시키
 		);
 
-ALTER TABLE `MY_SCHEMA`.`wishlist`
+ALTER TABLE `daangn`.`wishlist`
 	MODIFY COLUMN `id_wishlist` INT NOT NULL AUTO_INCREMENT COMMENT '위시키';
 
 -- 매너온도_리뷰어
-CREATE TABLE `MY_SCHEMA`.`manner_reviewer` (
+CREATE TABLE `daangn`.`manner_reviewer` (
 	`id_manner` INT NOT NULL COMMENT '매너 키', -- 매너 키
 	`reviewer`  INT NOT NULL COMMENT '리뷰어' -- 리뷰어
 )
 COMMENT '매너온도_리뷰어';
 
 -- 평가
-CREATE TABLE `MY_SCHEMA`.`rate` (
+CREATE TABLE `daangn`.`rate` (
 	`id_rate` INT           NOT NULL COMMENT '평가 키', -- 평가 키
 	`field`   VARBINARY(8)  NOT NULL COMMENT '필드', -- 필드
 	`detail`  VARBINARY(50) NOT NULL COMMENT '상세평가', -- 상세평가
@@ -207,192 +207,192 @@ CREATE TABLE `MY_SCHEMA`.`rate` (
 COMMENT '평가';
 
 -- 평가
-ALTER TABLE `MY_SCHEMA`.`rate`
+ALTER TABLE `daangn`.`rate`
 	ADD CONSTRAINT `PK_rate` -- 평가 기본키
 		PRIMARY KEY (
 			`id_rate` -- 평가 키
 		);
 
 -- 판평관계
-CREATE TABLE `MY_SCHEMA`.`seller_rate` (
+CREATE TABLE `daangn`.`seller_rate` (
 	`id_review_seller` INT NOT NULL COMMENT '리뷰 키', -- 리뷰 키
 	`id_rate`          INT NOT NULL COMMENT '평가 키' -- 평가 키
 )
 COMMENT '판평관계';
 
 -- 구평관계
-CREATE TABLE `MY_SCHEMA`.`shopper_rate` (
+CREATE TABLE `daangn`.`shopper_rate` (
 	`id_review_shopper` INT NOT NULL COMMENT '리뷰 키', -- 리뷰 키
 	`id_rate`           INT NOT NULL COMMENT '평가 키' -- 평가 키
 )
 COMMENT '구평관계';
 
 -- 제품
-ALTER TABLE `MY_SCHEMA`.`product`
+ALTER TABLE `daangn`.`product`
 	ADD CONSTRAINT `FK_member_TO_product` -- 멤버 -> 제품
 		FOREIGN KEY (
 			`id_member` -- 멤버 키
 		)
-		REFERENCES `MY_SCHEMA`.`member` ( -- 멤버
+		REFERENCES `daangn`.`member` ( -- 멤버
 			`id_member` -- 멤버 키
 		);
 
 -- 메너온도
-ALTER TABLE `MY_SCHEMA`.`manner`
+ALTER TABLE `daangn`.`manner`
 	ADD CONSTRAINT `FK_member_TO_manner` -- 멤버 -> 메너온도
 		FOREIGN KEY (
 			`id_member` -- 피평가자
 		)
-		REFERENCES `MY_SCHEMA`.`member` ( -- 멤버
+		REFERENCES `daangn`.`member` ( -- 멤버
 			`id_member` -- 멤버 키
 		);
 
 -- 구매자후기
-ALTER TABLE `MY_SCHEMA`.`shopper_review`
+ALTER TABLE `daangn`.`shopper_review`
 	ADD CONSTRAINT `FK_member_TO_shopper_review` -- 멤버 -> 구매자후기
 		FOREIGN KEY (
 			`id_member` -- 작성자
 		)
-		REFERENCES `MY_SCHEMA`.`member` ( -- 멤버
+		REFERENCES `daangn`.`member` ( -- 멤버
 			`id_member` -- 멤버 키
 		);
 
 -- 구매자후기
-ALTER TABLE `MY_SCHEMA`.`shopper_review`
+ALTER TABLE `daangn`.`shopper_review`
 	ADD CONSTRAINT `FK_real_deal_TO_shopper_review` -- 실거래 -> 구매자후기
 		FOREIGN KEY (
 			`id_real_deal` -- 거래키
 		)
-		REFERENCES `MY_SCHEMA`.`real_deal` ( -- 실거래
+		REFERENCES `daangn`.`real_deal` ( -- 실거래
 			`id_real_deal` -- 거래키
 		);
 
 -- 로그
-ALTER TABLE `MY_SCHEMA`.`log`
+ALTER TABLE `daangn`.`log`
 	ADD CONSTRAINT `FK_member_TO_log` -- 멤버 -> 로그
 		FOREIGN KEY (
 			`id_member` -- 멤버 키
 		)
-		REFERENCES `MY_SCHEMA`.`member` ( -- 멤버
+		REFERENCES `daangn`.`member` ( -- 멤버
 			`id_member` -- 멤버 키
 		);
 
 -- 판매자후기
-ALTER TABLE `MY_SCHEMA`.`seller_review`
+ALTER TABLE `daangn`.`seller_review`
 	ADD CONSTRAINT `FK_member_TO_seller_review` -- 멤버 -> 판매자후기
 		FOREIGN KEY (
 			`id_member` -- 작성자
 		)
-		REFERENCES `MY_SCHEMA`.`member` ( -- 멤버
+		REFERENCES `daangn`.`member` ( -- 멤버
 			`id_member` -- 멤버 키
 		);
 
 -- 판매자후기
-ALTER TABLE `MY_SCHEMA`.`seller_review`
+ALTER TABLE `daangn`.`seller_review`
 	ADD CONSTRAINT `FK_real_deal_TO_seller_review` -- 실거래 -> 판매자후기
 		FOREIGN KEY (
 			`id_real_deal` -- 거래키
 		)
-		REFERENCES `MY_SCHEMA`.`real_deal` ( -- 실거래
+		REFERENCES `daangn`.`real_deal` ( -- 실거래
 			`id_real_deal` -- 거래키
 		);
 
 -- 실거래
-ALTER TABLE `MY_SCHEMA`.`real_deal`
+ALTER TABLE `daangn`.`real_deal`
 	ADD CONSTRAINT `FK_product_TO_real_deal` -- 제품 -> 실거래
 		FOREIGN KEY (
 			`id_product` -- 제품키
 		)
-		REFERENCES `MY_SCHEMA`.`product` ( -- 제품
+		REFERENCES `daangn`.`product` ( -- 제품
 			`id_product` -- 제품키
 		);
 
 -- 업체
-ALTER TABLE `MY_SCHEMA`.`company`
+ALTER TABLE `daangn`.`company`
 	ADD CONSTRAINT `FK_member_TO_company` -- 멤버 -> 업체
 		FOREIGN KEY (
 			`id_member` -- 멤버 키
 		)
-		REFERENCES `MY_SCHEMA`.`member` ( -- 멤버
+		REFERENCES `daangn`.`member` ( -- 멤버
 			`id_member` -- 멤버 키
 		);
 
 -- 찜목록
-ALTER TABLE `MY_SCHEMA`.`wishlist`
+ALTER TABLE `daangn`.`wishlist`
 	ADD CONSTRAINT `FK_product_TO_wishlist` -- 제품 -> 찜목록
 		FOREIGN KEY (
 			`id_product` -- 제품키
 		)
-		REFERENCES `MY_SCHEMA`.`product` ( -- 제품
+		REFERENCES `daangn`.`product` ( -- 제품
 			`id_product` -- 제품키
 		);
 
 -- 찜목록
-ALTER TABLE `MY_SCHEMA`.`wishlist`
+ALTER TABLE `daangn`.`wishlist`
 	ADD CONSTRAINT `FK_member_TO_wishlist` -- 멤버 -> 찜목록
 		FOREIGN KEY (
 			`id_member` -- 멤버 키
 		)
-		REFERENCES `MY_SCHEMA`.`member` ( -- 멤버
+		REFERENCES `daangn`.`member` ( -- 멤버
 			`id_member` -- 멤버 키
 		);
 
 -- 매너온도_리뷰어
-ALTER TABLE `MY_SCHEMA`.`manner_reviewer`
+ALTER TABLE `daangn`.`manner_reviewer`
 	ADD CONSTRAINT `FK_manner_TO_manner_reviewer` -- 메너온도 -> 매너온도_리뷰어
 		FOREIGN KEY (
 			`id_manner` -- 매너 키
 		)
-		REFERENCES `MY_SCHEMA`.`manner` ( -- 메너온도
+		REFERENCES `daangn`.`manner` ( -- 메너온도
 			`id_manner` -- 매너 키
 		);
 
 -- 매너온도_리뷰어
-ALTER TABLE `MY_SCHEMA`.`manner_reviewer`
+ALTER TABLE `daangn`.`manner_reviewer`
 	ADD CONSTRAINT `FK_member_TO_manner_reviewer` -- 멤버 -> 매너온도_리뷰어
 		FOREIGN KEY (
 			`reviewer` -- 리뷰어
 		)
-		REFERENCES `MY_SCHEMA`.`member` ( -- 멤버
+		REFERENCES `daangn`.`member` ( -- 멤버
 			`id_member` -- 멤버 키
 		);
 
 -- 판평관계
-ALTER TABLE `MY_SCHEMA`.`seller_rate`
+ALTER TABLE `daangn`.`seller_rate`
 	ADD CONSTRAINT `FK_seller_review_TO_seller_rate` -- 판매자후기 -> 판평관계
 		FOREIGN KEY (
 			`id_review_seller` -- 리뷰 키
 		)
-		REFERENCES `MY_SCHEMA`.`seller_review` ( -- 판매자후기
+		REFERENCES `daangn`.`seller_review` ( -- 판매자후기
 			`id_review_seller` -- 리뷰 키
 		);
 
 -- 판평관계
-ALTER TABLE `MY_SCHEMA`.`seller_rate`
+ALTER TABLE `daangn`.`seller_rate`
 	ADD CONSTRAINT `FK_rate_TO_seller_rate` -- 평가 -> 판평관계
 		FOREIGN KEY (
 			`id_rate` -- 평가 키
 		)
-		REFERENCES `MY_SCHEMA`.`rate` ( -- 평가
+		REFERENCES `daangn`.`rate` ( -- 평가
 			`id_rate` -- 평가 키
 		);
 
 -- 구평관계
-ALTER TABLE `MY_SCHEMA`.`shopper_rate`
+ALTER TABLE `daangn`.`shopper_rate`
 	ADD CONSTRAINT `FK_shopper_review_TO_shopper_rate` -- 구매자후기 -> 구평관계
 		FOREIGN KEY (
 			`id_review_shopper` -- 리뷰 키
 		)
-		REFERENCES `MY_SCHEMA`.`shopper_review` ( -- 구매자후기
+		REFERENCES `daangn`.`shopper_review` ( -- 구매자후기
 			`id_review_shopper` -- 리뷰 키
 		);
 
 -- 구평관계
-ALTER TABLE `MY_SCHEMA`.`shopper_rate`
+ALTER TABLE `daangn`.`shopper_rate`
 	ADD CONSTRAINT `FK_rate_TO_shopper_rate` -- 평가 -> 구평관계
 		FOREIGN KEY (
 			`id_rate` -- 평가 키
 		)
-		REFERENCES `MY_SCHEMA`.`rate` ( -- 평가
+		REFERENCES `daangn`.`rate` ( -- 평가
 			`id_rate` -- 평가 키
 		);
