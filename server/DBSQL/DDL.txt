@@ -152,7 +152,7 @@ CREATE TABLE `daangn`.`company` (
 	`id_company` INT           NOT NULL COMMENT '업체 키', -- 업체 키
 	`id_member`  INT           NOT NULL COMMENT '멤버 키', -- 멤버 키
 	`name`       VARCHAR(50)   NOT NULL COMMENT '업체 이름', -- 업체 이름
-	`addr`       VARCHAR(200)  NOT NULL COMMENT '업체 위치', -- 업체 위치
+	`addr`       Json  NOT NULL COMMENT '업체 위치', -- 업체 위치
 	`tel`        VARCHAR(20)   NULL     COMMENT '업체 번호', -- 업체 번호
 	`info`       VARCHAR(3000) NULL     COMMENT '업체 소개', -- 업체 소개
 	`category`   VARCHAR(15)   NULL     COMMENT '카테고리', -- 카테고리
