@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from member.models import Member, Product
+from member.models import *
 from member.serializers import *
 from django.http import HttpResponse
 from django.utils import timezone
@@ -48,8 +48,7 @@ def member_detail(request, pk):
         return Response(serializer.data)
 
     elif request.method == 'PUT':
-        serializer = MemberSerializer(member, data=request.data)
-        print(serializer)
+        serializer = MemberReviseSerializer(member, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -58,6 +57,46 @@ def member_detail(request, pk):
     elif request.method == 'DELETE':
         Member.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['PUT'])
+def member_touch(request, pk):
+    """
+    코드 조각 조회, 업데이트, 삭제
+    """
+    try:
+        member = Member.objects.get(pk=pk)
+    except Member.DoesNotExist:
+        content = {
+            "message" : "없는 사용자 입니다.",
+            "result" : {}
+                }
+        return Response(content, status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'PUT':
+        serializer = MemberTouchSerializer(member, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def member_search(request):
+    """
+    특정유저를 아이디로 검색합니다.
+    """
+    try:
+        User_id = request.GET['user_id']
+        member = Member.objects.get(user_id = User_id)
+    except Member.DoesNotExist:
+        content = {
+            "message" : "유저를 찾을 수 없습니다.",
+            "result" : {}
+                }
+        return Response(content, status=status.HTTP_404_NOT_FOUND)
+
+    serializer = MemberSerializer(member)
+    return Response(serializer.data)
+
 
 
 @api_view(['GET'])
@@ -201,6 +240,79 @@ def product_search(request):
     serializer = ProductSerializer(product, many=True)
     return Response(serializer.data)
     # return HttpResponse(product)
+
+
+@api_view(['GET'])
+def product_category(request):
+    """
+    제목에 검색어가 포함된 물건들 리스트
+    """
+    Search = request.GET['q']
+    product = Product.objects.filter(category = Search)
+    
+    if not product:
+        #검색 결과 없음.
+        content = {
+            "message" : "잘못된 카테고리 입니다.",
+            "result" : {"입력한 검색어" : Search}
+                }
+        return Response(content, status=status.HTTP_404_NOT_FOUND)
+    else:
+        #검색결과 있음.
+        serializer = ProductSerializer(product, many=True)
+        return Response(serializer.data)
+
+
+@api_view(['GET', 'POST'])
+def company_list(request):
+    """
+    업체리스트를 모두 보여주거나 새 업체리스트를 만듭니다.
+    """
+    if request.method == 'GET':
+        company = Company.objects.all()
+        serializer = CompanySerializer(company, many=True)
+        return Response(serializer.data)
+
+    elif request.method == 'POST':
+        serializer = CompanySerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def company_detail(request, pk):
+    """
+    특정 업체리스트를 조회, 수정, 삭제 합니다.
+    """
+    try:
+        company = Company.objects.get(pk=pk)
+    except Company.DoesNotExist:
+        content = {
+            "message" : "없는 업체 입니다.",
+            "result" : {}
+                }
+        return Response(content, status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = CompanySerializer(company)
+        return Response(serializer.data)
+
+    elif request.method == 'PUT':
+        serializer = CompanySerializer(company, data=request.data)
+        print(serializer)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'DELETE':
+        Company.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+
 
 @api_view(['GET'])
 def test(request):
