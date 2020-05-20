@@ -6,15 +6,19 @@ import Layout from "../components/Layout";
 import styled from "styled-components";
 import ArrowNext from "../components/Arrow/Next";
 import ArrowPrev from "../components/Arrow/Prev";
-import ArticleProfile from "../components/ArticleComp/ArticleProfile";
-import ArticleDescription from "../components/ArticleComp/ArticleDescription";
+import ArticleProfile from "../components/Article/ArticleProfile";
+import ArticleDescription from "../components/Article/ArticleDescription";
 
-const settings = {
+const dooo = {
   dots: true,
   infinite: true,
   speed: 600,
   slidesToShow: 1,
-  slidesToScroll: 1,
+  slidersToScroll: 1,
+};
+
+const settings = {
+  dooo,
   draggable: false,
   nextArrow: <ArrowNext />,
   prevArrow: <ArrowPrev />,
@@ -90,91 +94,6 @@ const Article = () => {
 export default Article;
 
 const StyledArticle = styled.article`
-  .modal {
-    position: fixed;
-    top: 0;
-    right: 0;
-    left: 0;
-    bottom: 0;
-    background: #000;
-    width: 100vw;
-    height: 100vh;
-    z-index: 9999;
-    margin: 0 auto;
-    background-color: #000;
-    .slider-wrap {
-      width: 768px;
-      height: 100vh;
-      display: flex;
-      margin: 0 auto;
-      align-items: center;
-      justify-content: center;
-    }
-  }
-
-  .modal-close {
-    cursor: pointer;
-    position: absolute;
-    top: 5%;
-    right: 20%;
-    color: #fff;
-    font-size: 4rem;
-  }
-
-  .slick-dots {
-    bottom: 10px;
-
-    li button:before {
-      content: " ";
-      background-color: #fff;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      display: block;
-      position: absolute;
-      bottom: 0;
-      opacity: 0.3;
-    }
-
-    li.slick-active button:before {
-      opacity: 0.8;
-    }
-  }
-
   margin-top: 120px;
   padding-bottom: 50px;
-  section.article-images {
-    position: relative;
-    width: 729px;
-    margin: 0 auto;
-
-    .image-wrap {
-      cursor: pointer;
-      border-radius: 8px;
-      position: relative;
-      width: 677px;
-      margin: 0 auto;
-      height: 500px;
-      outline: none;
-      overflow: hidden;
-
-      .overlay {
-        width: 100%;
-        height: 50px;
-        z-index: 100;
-        position: absolute;
-        bottom: 0;
-        filter: blur(5px);
-        background-image: linear-gradient(
-          rgba(0, 0, 0, 0.1),
-          rgba(0, 0, 0, 0.5)
-        );
-      }
-
-      img {
-        height: 100%;
-        width: auto;
-      }
-    }
-  }
 `;

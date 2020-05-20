@@ -18,7 +18,7 @@ const LoginContainer = ({ history }) => {
   const loginFetch = () => {
     window.sessionStorage.setItem("id", ID);
     // history.push("/");
-    fetch("http://7d95d78a.ngrok.io/member/login", {
+    fetch(`${API}/member/login`, {
       method: "POST",
       headers: {
         "Content-type": "application/json",

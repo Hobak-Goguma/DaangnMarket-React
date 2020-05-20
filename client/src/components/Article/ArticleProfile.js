@@ -5,20 +5,22 @@ import { Link } from "react-router-dom";
 const ArticleProfile = () => {
   return (
     <StyledArticleProfile>
-      <Link className="article-profile-link" to="/">
+      <Link className="article-profile-link">
         <div className="space-between">
-          <div style={{ display: "flex" }}>
-            <div className="article-profile-image">
-              <img
-                src="https://dnvefa72aowie.cloudfront.net/origin/profile/201808/2d18062dcc583f144bc91cd727a1746bc993d5462b0538a3779e00d1fdc8d734.jpg?q=82&s=640x640&t=crop"
-                alt="이대성강사"
-              />
+          <Link to={`/user`}>
+            <div style={{ display: "flex" }}>
+              <div className="article-profile-image">
+                <img
+                  src="https://dnvefa72aowie.cloudfront.net/origin/profile/201808/2d18062dcc583f144bc91cd727a1746bc993d5462b0538a3779e00d1fdc8d734.jpg?q=82&s=640x640&t=crop"
+                  alt="이대성강사"
+                />
+              </div>
+              <div className="article-profile-left">
+                <div className="nickname">이대성강사</div>
+                <div className="region-name">수성구 수성동1가</div>
+              </div>
             </div>
-            <div className="article-profile-left">
-              <div className="nickname">이대성강사</div>
-              <div className="region-name">수성구 수성동1가</div>
-            </div>
-          </div>
+          </Link>
           <div className="article-profile-right">
             <dl className="temperature-wrap">
               <dt>매너온도</dt>

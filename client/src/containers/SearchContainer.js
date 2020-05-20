@@ -34,7 +34,12 @@ const SearchContainer = () => {
   const showMore = () => {
     setCards([
       ...cards,
-      <Search products={products} sliceStart={numA} sliceEnd={numB} />,
+      <Search
+        products={products}
+        sliceStart={numA}
+        sliceEnd={numB}
+        key={cards}
+      />,
     ]);
     setNumA(numA + 12);
     setNumB(numB + 12);
