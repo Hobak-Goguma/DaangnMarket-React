@@ -7,6 +7,11 @@ class MemberSerializer(serializers.ModelSerializer):
         model = Member
         fields = ('pk', 'name', 'nick_name', 'user_id', 'user_pw', 'tel', 'birth', 'email', 'gender', 'add')
 
+class MemberReviseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Member
+        fields = ('pk', 'nick_name', 'user_pw', 'tel', 'birth', 'email', 'add')
+
 class ProductSerializer(serializers.ModelSerializer):
     # id_member_id = serializers.IntegerField(source='id_member')
     # member = serializers.ForeignKey(Member, models.CASCADE, related_name='member_id')

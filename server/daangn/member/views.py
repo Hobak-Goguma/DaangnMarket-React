@@ -48,7 +48,7 @@ def member_detail(request, pk):
         return Response(serializer.data)
 
     elif request.method == 'PUT':
-        serializer = MemberSerializer(member, data=request.data)
+        serializer = MemberReviseSerializer(member, data=request.data)
         print(serializer)
         if serializer.is_valid():
             serializer.save()
@@ -290,6 +290,7 @@ def company_detail(request, pk):
     elif request.method == 'DELETE':
         Company.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 
 
