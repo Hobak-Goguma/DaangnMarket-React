@@ -4,6 +4,7 @@ import styled from "styled-components";
 
 const TotalMenu = ({ logOut,login }) => {
   let localID="root";
+  // 로그인 기능 없이 사용하기
   // useEffect(() => {
   //   localID = window.sessionStorage.getItem("id");
   // }, []);
@@ -27,16 +28,18 @@ const TotalMenu = ({ logOut,login }) => {
               <li>화분</li>
             </ul>
           </li>
-          <li>의자</li>
-          <li>캠핑</li>
-          <li>노트북</li>
-          <li>냉장소</li>
-          <li>쇼파</li>
+          <li>
+            <Link to="/myinfo">
+              <div>
+                <span>내 정보 보기</span>
+              </div>
+            </Link>
+          </li>
+          <li>물품 등록</li>
+          <li>내 상품</li>
               <li>
-            <Link to={{pathname : "/mychange", state:{
-              localID :localID,
-            }}}>
-            <div>
+            <Link to="/mychange">
+              <div>
                 <span>내 정보 수정</span>
               </div>
             </Link>

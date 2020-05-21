@@ -10,6 +10,7 @@ import LoginPage from "./pages/LoginPage";
 import Register from "./pages/Register";
 import MyChange from "./pages/myPage/MyChange";
 import MyProduct from "./pages/myPage/MyProduct";
+import MyInfo from "./pages/myPage/MyInfo";
 import SearchPage from "./pages/SearchPage";
 import Article from "./pages/Article";
 import { ThemeProvider } from "styled-components";
@@ -24,10 +25,11 @@ export default function Routes() {
         <Route exact path="/" component={App} />
         <Route exact path="/register" component={Register} />
         <Route exact path="/mychange" component={MyChange} />
-        <Route exact path="/MyProduct" component={MyProduct} />
+        <Route exact path="/myproduct" component={MyProduct} />
           <Route exact path="/login" component={LoginPage} />
           <Route path="/search" component={SearchPage} />
           <Route path="/articles" component={Article} />
+          <Route path="/myinfo" component={MyInfo} />
           <Redirect from="*" to="/" />
         </Switch>
         <Global />
