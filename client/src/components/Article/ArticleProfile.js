@@ -5,9 +5,9 @@ import { Link } from "react-router-dom";
 const ArticleProfile = () => {
   return (
     <StyledArticleProfile>
-      <Link className="article-profile-link">
+      <div to="/#" className="article-profile-link">
         <div className="space-between">
-          <Link to={`/user`}>
+          <Link to="/user">
             <div style={{ display: "flex" }}>
               <div className="article-profile-image">
                 <img
@@ -32,7 +32,7 @@ const ArticleProfile = () => {
             <div className="face face-04"></div>
           </div>
         </div>
-      </Link>
+      </div>
     </StyledArticleProfile>
   );
 };
@@ -44,7 +44,6 @@ const StyledArticleProfile = styled.section`
   margin: 0 auto;
 
   .article-profile-link {
-    text-decoration: none;
     display: block;
     margin-top: 25px;
     padding-bottom: 23px;
