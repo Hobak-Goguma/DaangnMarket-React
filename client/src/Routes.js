@@ -29,7 +29,7 @@ export default function Routes() {
           <Route exact path="/login" component={LoginPage} />
           <Route exact path="/register" component={RegisterPage} />
           <Route path="/search" component={SearchPage} />
-          <Route path="/articles:id" component={ArticlePage} />
+          <Route path="/articles/:articles_id" component={ArticlePage} />
           <Route path="/user" component={OtherUserPage} />
           <Route path="/upload" component={UploadPage} />
           <Redirect from="*" to="/" />

@@ -1,22 +1,25 @@
 import React, { useEffect } from "react";
 import { withRouter } from "react-router-dom";
+import { API } from "../../lib/api";
 import styled from "styled-components";
 import ArticleSlider from "./ArticleSlider";
 import ArticleProfile from "./ArticleProfile";
 import ArticleDescription from "./ArticleDescription";
 import { useState } from "react";
 
-const Article = ({ isModal, setModal, location }) => {
+const Article = ({ isModal, setModal, location, match }) => {
   const [sliderData, setSliderData] = useState([]);
   const [detail, setDetail] = useState([]);
 
   useEffect(() => {
+    let id = match.params.articles_id;
+
     fetch("http://localhost:3000/data/sliderData.json")
       .then((res) => res.json())
       .then((res) => {
         setSliderData(res.sliderData1);
       });
-    fetch(`http://0c525d07.ngrok.io/product/${location.pathname.split(":")[1]}`)
+    fetch(`${API}product/${id}`)
       .then((res) => res.json())
       .then((res) => {
         setDetail(res);
