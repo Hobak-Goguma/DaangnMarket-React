@@ -22,6 +22,7 @@ def member_list(request):
         return Response(serializer.data)
 
     elif request.method == 'POST':
+        # 아이디에 대한 중복 확인 필요
         serializer = MemberSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -159,7 +160,11 @@ def member_login(request):
     #     return Response(status=status.HTTP_200_OK)
 
     if request.method == 'POST':
-        serializer = LoginSerializer(member)
+        
+        # serializer = LoginSerializer(member)
+        serializer = LoginSerializer(member, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
         return Response(serializer.data)
     
     else:

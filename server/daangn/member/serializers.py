@@ -1,11 +1,13 @@
 from django.forms import widgets
 from rest_framework import serializers
 from member.models import *
+# from member.serializers import *
 
 class MemberSerializer(serializers.ModelSerializer):
     class Meta:
         model = Member
-        fields = ('pk', 'name', 'nick_name', 'user_id', 'user_pw', 'tel', 'birth', 'email', 'gender', 'add')
+        fields = ('pk', 'name', 'nick_name', 'user_id', 'user_pw', 'tel', 'birth', 'email', 'gender')
+        read_only_fields = ('account_name')
         #fields = ('pk', 'name', 'nick_name', 'user_id', 'user_pw', 'tel', 'birth', 'email', 'gender', 'addr')
 
 class MemberReviseSerializer(serializers.ModelSerializer):
@@ -28,10 +30,10 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = ('pk', 'id_member', 'name', 'price', 'info', 'category', 'img')
 
 class LoginSerializer(serializers.ModelSerializer):
+    last_date = serializers.DateTimeField(default=timezone.now)
     class Meta:
         model = Member
-        fields = ('pk', 'user_id', 'name','nick_name', 'tel', 'add')
-        #fields = ('pk', 'user_id', 'name','nick_name', 'tel', 'addr')
+        fields = ('user_id', 'user_pw', 'last_date')
 
 class CompanySerializer(serializers.ModelSerializer):
     class Meta:
