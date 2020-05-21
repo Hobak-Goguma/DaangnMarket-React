@@ -1,60 +1,64 @@
 import React from "react";
 import styled from "styled-components";
+
+const Mynav = styled.ul`
+position:absolute;
+left:0;
+top:0px;
+width: 200px;
+li{
+    box-sizing:border-box;
+    width:100%;
+    line-height:50px;
+    border:1px solid #ccc;
+    border-top:0;
+    background:#fff;
+    cursor:pointer;
+    :first-child{
+        border-top:1px solid #ccc;
+    }
+    span{
+        display:block;
+        padding:5px 25px;
+        position:relative;
+        font-size:13px;
+        i{
+            display: block;
+            position:absolute;
+            right:25px;
+            top:50%;
+            transform:translateY(-50%);
+        }
+    }
+}
+li.on{
+    background:#dcdbde;
+}
+`;
 const MyNav = ({choose,history}) =>{
-    const MyNav = styled.ul`
-        position:absolute;
-        left:0;
-        top:0px;
-        width: 200px;
-        li{
-            box-sizing:border-box;
-            width:100%;
-            line-height:50px;
-            border:1px solid #ccc;
-            border-top:0;
-            background:#fff;
-            cursor:pointer;
-            :first-child{
-                border-top:1px solid #ccc;
-            }
-            span{
-                display:block;
-                padding:5px 25px;
-                position:relative;
-                font-size:13px;
-                i{
-                    display: block;
-                    position:absolute;
-                    right:25px;
-                    top:50%;
-                    transform:translateY(-50%);
-                }
-            }
-        }
-        li.on{
-            background:#dcdbde;
-        }
-    `;
     const click = (v) =>{
-        console.log(v.target.id);
         const id = v.target.id;
         switch(id) {
-            // case "채팅":
-                // history.push("/MyChat");
-            //     break;
+            case "내 정보 보기":
+                history.push("/myinfo");
+                break;
             case "내 상품":
-                history.push("/MyProduct");
+                history.push("/myproduct");
                 break;
 
             case "내 정보 수정":
                 history.push("/mychange");
                 break;
 
+            case "로그아웃":
+                window.sessionStorage.clear();
+                history.push("/");
+                break;
             default:
                 break;
         }
     }
-    const myMenu = ["채팅", "내 상품","내 동네 설정", "내 정보 수정","로그아웃"]
+    const myMenu = ["내 정보 보기", "내 상품", "내 정보 수정","로그아웃"]
     const menu = myMenu.map((v)=>{
         if(v===choose){
         return(
@@ -70,9 +74,9 @@ const MyNav = ({choose,history}) =>{
         );};
     })
     return( 
-        <MyNav>
+        <Mynav>
             {menu}
-        </MyNav>
+        </Mynav>
     );
 }
 

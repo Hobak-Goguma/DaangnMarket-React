@@ -27,20 +27,17 @@ const TotalMenu = ({ logOut, login, onClick }) => {
               <li onClick={() => onClick("화분")}>화분</li>
             </ul>
           </li>
-          <li>의자</li>
-          <li>캠핑</li>
-          <li>노트북</li>
-          <li>냉장소</li>
-          <li>쇼파</li>
           <li>
-            <Link
-              to={{
-                pathname: "/mychange",
-                state: {
-                  localID: localID,
-                },
-              }}
-            >
+            <Link to="/myinfo">
+              <div>
+                <span>내 정보 보기</span>
+              </div>
+            </Link>
+          </li>
+          <li>물품 등록</li>
+          <li>내 상품</li>
+              <li>
+            <Link to="/mychange">
               <div>
                 <span>내 정보 수정</span>
               </div>

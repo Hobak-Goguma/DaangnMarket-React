@@ -6,6 +6,9 @@ const InfoBox = styled.div`
     width:calc(100% - 250px);
     margin-left:250px;
     margin-top: 200px;
+    .blank{
+        height:calc(100vh - 200px);
+    }
     .title{
         position:relative;
         border-bottom : 3px solid #ff8a3d;
@@ -214,10 +217,21 @@ const InfoBox = styled.div`
 `;
 
 
-const MyInfoChng = ({ID}) =>{
-    const pw ="1234";//////더미 비밀번호
-    const [nowPwCh,setNowPwCh]=useState("wrong");
-    const [newPwCh,setNewPwCh]=useState({
+const MyInfoChng = ({ID,login,changeLogin,history}) =>{
+    let resUser;
+    const [user,setUser] = useState({
+        nick_name : "",
+        name :"",
+        tel:"",
+        gender:"",
+        email:"",
+        newPw:"",
+        login: false
+    })
+
+    const pw = login.pw;
+    const [nowPwCh,setNowPwCh]=useState("wrong"); // 비밀번호 중복체크를 위한 변수
+    const [newPwCh,setNewPwCh]=useState({  //비밀번호 유효성 체크를 위한 변수
         newPwVal:"",
         newPwClass:"wrong",
         newPwChClass: "wrong",
@@ -226,11 +240,6 @@ const MyInfoChng = ({ID}) =>{
         combinate:"",
         sameNum:"",
     });
-    const [newPhoneCh,setNewPhoneCh]= useState({ // 나중에 전화번호 바꾸는 이벤트 만들때 사용
-        phoneNum : "01066577514",
-        viewPhoneNum :"010-6657-7514"
-    });
-    const [gender,setGender] = useState("");//성별확인을 위한 변수(state)
     const [birth,setBirth] = useState({
         birthClass:"wrong",
         year:"",
@@ -244,6 +253,51 @@ const MyInfoChng = ({ID}) =>{
     });
 
 
+    useEffect(() => {
+        console.log("res")  
+        fetch("",{//http://0c525d07.ngrok.io/member/login
+            method:"POST",
+            headers:{
+                "Content-type": "application/json",
+            },
+            body:JSON.stringify({
+                "user_id":ID,
+                "user_pw":login.pw
+            })
+        }).then(async(response)=>{
+
+            resUser = {
+                addr: "인천광역시 남동구 구월동",
+                name: "root",
+                nick_name: "root",
+                pk: 1,
+                tel: "010-0000-0000",
+                user_id: "root",
+            }
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>통신시 변경해야될
+            // if(response.status===200||response.status===201){
+            //     res = await response.json();
+            //     const temp = JSON.stringify(res);
+            //     window.sessionStorage.setItem("user",temp);
+            //     resUser = JSON.parse(window.sessionStorage.getItem("user"));
+                setUser({
+                    pk:resUser.pk,
+                    nick_name : resUser.nick_name,
+                    name :resUser.name,
+                    tel:resUser.tel,
+                    gender:"",
+                    email:"",
+                    newPw:"",
+                    login: true
+                })
+            // }else{
+            //     alert("비밀번호가 맞지 않습니다.");
+            //     changeLogin({...login,login:false});
+            // }
+        })
+
+    },[]);
+    
     const change = (e) =>{
         const id = e.target.id;
         switch(id){ //기본정보 변경시 
@@ -358,14 +412,10 @@ const MyInfoChng = ({ID}) =>{
                         }
                     }
                     
-                    if(!CheckmonthString){
-                        birthCh("month",e.target.value||e.target.value==="");
+                    if(!CheckmonthString||e.target.value===""){
+                        birthCh("month",e.target.value);
                     }else{
                         e.target.value = birth.month;
-                    }
-                    if(birth.day.length===2&&birth.year.length===4&&birth.month.length===2){
-                        let month = Number(birth.month);
-                        
                     }
                 break;
                 case "birthDay":
@@ -386,7 +436,56 @@ const MyInfoChng = ({ID}) =>{
                         e.target.value = birth.day;
                     }
                 break;
-                
+
+
+
+                case "submit"://변경 버튼 눌렀을때 함수
+                    if( newPwCh.sameNum!=="true"|| newPwCh.differPw!=="true"|| newPwCh.moreEight!=="true"|| newPwCh.combinate!=="true"|| newPwCh.newPwClass!=="wrong"||newPwCh.newPwChClass!== "wrong"){
+                        alert("비밀번호에 문제가 있습니다.");
+                    }else if(birth.birthClass!=="wrong"){
+                        alert("생일 입력이 잘못되었습니다.");
+                    }else{
+                        //8자리 만들기 위하여
+                        let birthFetch = birth.year;
+                        if(Number(birth.month)<10){ 
+                            birthFetch += "0"+birth.month;
+                        }else{
+                            birthFetch += birth.month;
+                        }
+                        if(Number(birth.day)<10){
+                            birthFetch += "0"+birth.day;
+                        }else{
+                            birthFetch +=birth.day;
+                        }
+
+
+                        fetch(`www.daangn.site/memeber/${user.pk}`,{//수정용 api주소 수정용 fetch
+                            method:"PUT",
+                            headers:{
+                                "Content-type": "application/json",
+                            },
+                            body:JSON.stringify({
+                                    nick_name: user.nick_name,
+                                    user_pw: newPwCh.newPwVal,
+                                    tel: user.tel,
+                                    birth: birthFetch,
+                                    email: user.email,
+                                    addr: user.add,
+                            })
+                        }).then((response)=>{
+                            if(response.status===200){                                
+                                alert("정보수정이 완료되었습니다.");
+                                history.push("/");
+                            }else{
+                                alert("회원정보 수정이 되지 않았습니다. 다시한번 시도해주세요.");
+                            }
+                        });
+                    }
+
+                break;
+                case "secession": //탈퇴 버튼
+
+                break;
 
             default:
                 break;
@@ -440,89 +539,89 @@ const MyInfoChng = ({ID}) =>{
     }
 
 
-    return (<InfoBox>
-            <div className="title">
-                <span className="tit">기본정보</span>
-                <p className="necessary">*필수입력사항</p>
+    return (<InfoBox>{!user.login? (<div className="blank"></div>):(<>
+        <div className="title">
+            <span className="tit">기본정보</span>
+            <p className="necessary">*필수입력사항</p>
+        </div>
+        <div className="InfoBasic">
+            <div>아이디* <input type="text" className="readonly" value={ID} readOnly/></div>
+            <div className="mt15">현재 비밀번호 <input type="password" id="nowPw" onChange={change}/></div>
+            <div className={nowPwCh}>현재 비밀번호를 확인해주세요</div>
+            <div>새 비밀번호 
+                <input id="newPw" onChange={change} type="text"/>
             </div>
-            <div className="InfoBasic">
-                <div>아이디* <input type="text" className="readonly" value={ID} readOnly/></div>
-                <div className="mt15">현재 비밀번호 <input type="password" id="nowPw" onChange={change}/></div>
-                <div className={nowPwCh}>현재 비밀번호를 확인해주세요</div>
-                <div>새 비밀번호 
-                    <input id="newPw" onChange={change} type="text"/>
-                </div>
-                <div className={newPwCh.newPwClass}>
-                    <p className={newPwCh.differPw}>현재 비밀번호와 다르게 입력</p>
-                    <p className={newPwCh.moreEight}>8자 이상 입력</p>
-                    <p className={newPwCh.combinate}>영문/숫자/특수문자(공백 제외)만 허용하며, 3개 이상조합</p>
-                    <p className={newPwCh.sameNum}>동일한 숫자 3개 이상 연속 사용 불가</p>
-                </div>
-                <div>새 비밀번호 확인
-                    <input type="text" id="newPwCh" onChange={change}/>
-                </div>
-                <div className={newPwCh.newPwChClass}>동일한 비밀번호를 입력해주세요</div>
-                <div className="mt15">이름*<input type="text" /></div>
-                <div className="mt15">이메일*<input type="text"/><a href="javascript:">이메일 중복확인</a></div>
-                <div className="mt15">휴대폰*
-                    <input type="text" id="phoneNum" value={newPhoneCh.viewPhoneNum} onChange={change} readOnly/>
-                    <input type="hidden" value={newPhoneCh.phoneNum}/><a href="javascript:">다른 번호 인증</a></div>
-                <div><input type="text" readOnly/><a href="javascript:" className="disable">인증 번호 확인</a></div>
+            <div className={newPwCh.newPwClass}>
+                <p className={newPwCh.differPw}>현재 비밀번호와 다르게 입력</p>
+                <p className={newPwCh.moreEight}>8자 이상 입력</p>
+                <p className={newPwCh.combinate}>영문/숫자/특수문자(공백 제외)만 허용하며, 3개 이상조합</p>
+                <p className={newPwCh.sameNum}>동일한 숫자 3개 이상 연속 사용 불가</p>
             </div>
-            <div className="title">
-                <span className="tit">추가정보</span>
+            <div>새 비밀번호 확인
+                <input type="text" id="newPwCh" onChange={change}/>
             </div>
-            <div className="InfoMore">
-                <div className="gender">성별 
-                    <div className="male" onClick={()=>{
-                        setGender("MALE");
-                    }} id="genderMale"><Radio type="checkbox" name="gender" checked={gender==="MALE"} value="MALE"/>남자</div>
-                    <div className="female" onClick={()=>{
-                        setGender("FEMALE");
-                    }} id="genderFemale"><Radio type="checkbox" checked={gender==="FEMALE"} name="gender" value="FEMALE"/>여자</div>
-                </div>
-                <div className="mt15 birth">생년월일 
-                    <div>
-                        <div className="box"><input type="text" maxLength="4" id="birthYear" onChange={change}/></div><span>/</span>
-                        <div className="box"><input type="text" maxLength="2" id="birthMonth" onChange={change}/></div><span>/</span>
-                        <div className="box"><input type="text" maxLength="2" id="birthDay" onChange={change}/></div>
-                    </div>
-                </div>
-                <div className={birth.birthClass}>알맞은 생년월일을 입력해주세요</div>
-                <div className="agree mt15">선택약관 동의 <div><input type="checkbox" name="선택약관동의" id="agreeChoice"/>개인정보처리방침<strong className="choice">(선택)</strong><strong className="view">약관보기<i className="fas fa-chevron-right"></i></strong></div></div>
+            <div className={newPwCh.newPwChClass}>동일한 비밀번호를 입력해주세요</div>
+            <div className="mt15">이름*<input type="text" value={user.name} readOnly/></div>
+            <div className="mt15">이메일*<input type="text"/><a href="">이메일 중복확인</a></div>
+            <div className="mt15">휴대폰*
+                <input type="text" id="phoneNum" value={user.tel} onChange={change}/>
+                <input type="hidden" value={user.tel}/><a href="">다른 번호 인증</a></div>
+            <div><input type="text" readOnly/><a href="" className="disable">인증 번호 확인</a></div>
+        </div>
+        <div className="title">
+            <span className="tit">추가정보</span>
+        </div>
+        <div className="InfoMore">
+            <div className="gender">성별 
+                <div className="male" onClick={()=>{
+                    setUser({...user,gender:"MALE"});
+                }} id="genderMale"><Radio type="checkbox" name="gender" checked={user.gender==="MALE"} value="MALE"/>남자</div>
+                <div className="female" onClick={()=>{
+                    setUser({...user,gender:"FEMALE"});
+                }} id="genderFemale"><Radio type="checkbox" checked={user.gender==="FEMALE"} name="gender" value="FEMALE"/>여자</div>
             </div>
-            <div className="title">
-                <span className="tit">이용약관 동의*</span>
-                <p className="description">선택항목에 동의하지 않은 경우도 회원가입 및 일반적인 서비스를 이용할 수 있습니다.</p>
-            </div>
-            <div className="agreeUse">
-                <div className="agreeAll">
-                    <input type="checkbox"onClick={()=>{
-                        if(agreeCh.SMS && agreeCh.mail){
-                            setAgreeCh({SMS:false,mail:false});
-                        }else{
-                            setAgreeCh({SMS:true,mail:true});
-                        }
-                    }} checked={agreeCh.SMS&&agreeCh.mail} name="" id=""/>무료배송, 할인쿠폰 등 혜택/정보 수신<strong className="choice">(선택)</strong>
-                </div>
-                <div className="agreeChoice">
-                    <div>
-                        <input type="checkbox" name="" id="" onClick={()=>{
-                            setAgreeCh({...agreeCh,SMS:!agreeCh.SMS});
-                        }} checked={agreeCh.SMS}/>SMS
-                    </div>
-                    <div>
-                        <input type="checkbox" name="" id="" onClick={()=>{
-                            setAgreeCh({...agreeCh,mail:!agreeCh.mail});
-                        }} checked={agreeCh.mail}/>이메일
-                    </div>
+            <div className="mt15 birth">생년월일*
+                <div>
+                    <div className="box"><input type="text" maxLength="4" id="birthYear" onChange={change}/></div><span>/</span>
+                    <div className="box"><input type="text" maxLength="2" id="birthMonth" onChange={change}/></div><span>/</span>
+                    <div className="box"><input type="text" maxLength="2" id="birthDay" onChange={change}/></div>
                 </div>
             </div>
-            <div className="btnBox">
-                <a href="" className="secession">탈퇴하기</a>
-                <a href="" className="submit">회원정보수정</a>
+            <div className={birth.birthClass}>알맞은 생년월일을 입력해주세요</div>
+            <div className="agree mt15">선택약관 동의 <div><input type="checkbox" name="선택약관동의" id="agreeChoice"/>개인정보처리방침<strong className="choice">(선택)</strong><strong className="view">약관보기<i className="fas fa-chevron-right"></i></strong></div></div>
+        </div>
+        <div className="title">
+            <span className="tit">이용약관 동의*</span>
+            <p className="description">선택항목에 동의하지 않은 경우도 회원가입 및 일반적인 서비스를 이용할 수 있습니다.</p>
+        </div>
+        <div className="agreeUse">
+            <div className="agreeAll">
+                <input type="checkbox" onClick={()=>{
+                    if(agreeCh.SMS && agreeCh.mail){
+                        setAgreeCh({SMS:false,mail:false});
+                    }else{
+                        setAgreeCh({SMS:true,mail:true});
+                    }
+                }} checked={agreeCh.SMS&&agreeCh.mail} readOnly name=""/>무료배송, 할인쿠폰 등 혜택/정보 수신<strong className="choice">(선택)</strong>
             </div>
-    </InfoBox>);
+            <div className="agreeChoice">
+                <div>
+                    <input type="checkbox" name="" readOnly onClick={()=>{
+                        setAgreeCh({...agreeCh,SMS:!agreeCh.SMS});
+                    }} checked={agreeCh.SMS}/>SMS
+                </div>
+                <div>
+                    <input type="checkbox" readOnly name="" onClick={()=>{
+                        setAgreeCh({...agreeCh,mail:!agreeCh.mail});
+                    }} checked={agreeCh.mail}/>이메일
+                </div>
+            </div>
+        </div>
+        <div className="btnBox">
+            <a href="" className="secession"id="secession" onClick={change}>탈퇴하기</a>
+            <a href="" className="submit" id="submit" onClick={change}>회원정보수정</a>
+        </div></>)}
+</InfoBox>);
 }
 
 export default MyInfoChng;

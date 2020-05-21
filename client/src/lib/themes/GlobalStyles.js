@@ -26,14 +26,10 @@ export default createGlobalStyle`
   }
   a:hover {
     color: #4d4d4d;
-    text-decoration: underline;
   }
   a:active {
     color: #4d4d4d;
     text-decoration: none;
-  }
-  a:focus {
-    text-decoration: underline;
   }
   table a {
     font-size: 12px;
