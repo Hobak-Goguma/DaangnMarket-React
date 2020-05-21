@@ -149,9 +149,6 @@ const RegisterContainer = ({ history }) => {
           email: inputState.email,
           gender: inputState.gender,
           add: addrInput.current.value,
-          cdate: new Date(),
-          udate: new Date(),
-          last_date: new Date(),
         }),
       }).then((response) => {
         if (response.status === 200 || response.status === 201) {
@@ -159,6 +156,9 @@ const RegisterContainer = ({ history }) => {
           history.push("/login");
         } else {
           alert("안된다 ㅜㅜ");
+          if (!isIdDuplicate) {
+            alert("아이디 중복확인 하였는지 확인해주세요!");
+          }
         }
       });
     } else {

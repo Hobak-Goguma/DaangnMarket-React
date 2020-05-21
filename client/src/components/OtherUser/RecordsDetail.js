@@ -38,8 +38,8 @@ const RecordsDetail = () => {
       <div className="user-records">
         <div className="cards-wrap">
           {testMap.map((v, i) => (
-            <article className="card">
-              <Link class="card-link">
+            <article className="card" key={i}>
+              <Link className="card-link" to="#/">
                 <div className="card-photo">
                   <img
                     alt="입문용기타/슬림바디/얇은 통기타/aosen기타/핸드메이드 기타/앰프기타"
