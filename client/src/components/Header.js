@@ -114,6 +114,18 @@ const Header = (props) => {
     // localStorage.setItem("pw", "");
   };
 
+  const onClickCategory = (element) => {
+    if (props.location.pathname === "/search") {
+      fetch(`${API}product/search?q=${element}`)
+        .then((res) => res.json())
+        .then((res) => {
+          props.setProducts(res);
+          props.setCards([]);
+        });
+    }
+    props.history.push(`/search?q=${element}`);
+  };
+
   const searchKeyPress = () => {
     if (
       window.event.keyCode === 13 &&
@@ -124,7 +136,7 @@ const Header = (props) => {
         fetch(`${API}product/search?q=${keyword}`)
           .then((res) => res.json())
           .then((res) => {
-            props.setProdcuts(res);
+            props.setProducts(res);
             props.setCards([]);
           });
       }
@@ -140,7 +152,7 @@ const Header = (props) => {
           {
             // 로고 클릭시 메인으로 이동
           }
-          <img src="./img/logo.svg" alt="로고" />
+          <img src="/img/logo.svg" alt="로고" />
         </Link>
         <div className="inputBox">
           <input
@@ -153,7 +165,7 @@ const Header = (props) => {
             onChange={(e) => setKeyword(e.target.value)}
           />
           <label htmlFor="searchItem">
-            <img src="./img/search-icon.svg" alt="search" />
+            <img src="/img/search-icon.svg" alt="search" />
           </label>
         </div>
 
@@ -168,7 +180,7 @@ const Header = (props) => {
             </Link>
           </section>
         )}
-        <TotalMenu logOut={logOut} login={login} />
+        <TotalMenu logOut={logOut} login={login} onClick={onClickCategory} />
       </div>
     </Headers>
   );

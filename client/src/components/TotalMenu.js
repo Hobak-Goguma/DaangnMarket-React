@@ -2,9 +2,8 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-const TotalMenu = ({ logOut,login }) => {
-  let localID="root";
-  // 로그인 기능 없이 사용하기
+const TotalMenu = ({ logOut, login, onClick }) => {
+  let localID = "root";
   // useEffect(() => {
   //   localID = window.sessionStorage.getItem("id");
   // }, []);
@@ -19,13 +18,13 @@ const TotalMenu = ({ logOut,login }) => {
           <li className="category-lists">
             <div>카테고리</div>
             <ul className="dropdown2nd">
-              <li>의자</li>
-              <li>의자</li>
-              <li>캠핑</li>
-              <li>노트북</li>
-              <li>냉장소</li>
-              <li>쇼파</li>
-              <li>화분</li>
+              <li onClick={() => onClick("자전거")}>자전거</li>
+              <li onClick={() => onClick("의자")}>의자</li>
+              <li onClick={() => onClick("캠핑")}>캠핑</li>
+              <li onClick={() => onClick("노트북")}>노트북</li>
+              <li onClick={() => onClick("냉장고")}>냉장고</li>
+              <li onClick={() => onClick("쇼파")}>쇼파</li>
+              <li onClick={() => onClick("화분")}>화분</li>
             </ul>
           </li>
           <li>
@@ -43,21 +42,24 @@ const TotalMenu = ({ logOut,login }) => {
                 <span>내 정보 수정</span>
               </div>
             </Link>
-              </li>
-              {login?//로그인 여부에따라 로그인인지 회원가입인지 결정
-                <li onClick={logOut}>
-                  <Link to="/login">
-                    <div>
-                      <span>로그아웃</span>
-                    </div>
-                  </Link>
-                </li>:<li>
-                  <Link to="/register">
-                    <div>
-                      <span>회원가입</span>
-                    </div>
-                  </Link>
-                </li>}
+          </li>
+          {login ? ( //로그인 여부에따라 로그인인지 회원가입인지 결정
+            <li onClick={logOut}>
+              <Link to="/login">
+                <div>
+                  <span>로그아웃</span>
+                </div>
+              </Link>
+            </li>
+          ) : (
+            <li>
+              <Link to="/register">
+                <div>
+                  <span>회원가입</span>
+                </div>
+              </Link>
+            </li>
+          )}
         </ul>
       </li>
     </StyledTotalMenu>
@@ -125,15 +127,15 @@ const StyledTotalMenu = styled.ul`
     .dropdown {
       display: none;
       opacity: 0;
-      border: 1px solid rgba(0 , 0, 0,0.1);
+      border: 1px solid rgba(0, 0, 0, 0.1);
       min-width: 5rem;
       position: absolute;
       right: 0;
 
       li {
         transition: 0.2s;
-        height:50px;
-        line-height:50px;
+        height: 50px;
+        line-height: 50px;
         &:hover {
           background: #ffbe93;
         }

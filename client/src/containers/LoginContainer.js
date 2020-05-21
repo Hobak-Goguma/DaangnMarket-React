@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Login from "../components/Login";
+import { withRouter } from "react-router-dom";
 import { API } from "../lib/api";
 
 const LoginContainer = ({ history }) => {
@@ -17,7 +18,7 @@ const LoginContainer = ({ history }) => {
   const loginFetch = () => {
     window.sessionStorage.setItem("id", ID);
     // history.push("/");
-    fetch(`${API}member/login`, {
+    fetch(`${API}/member/login`, {
       method: "POST",
       headers: {
         "Content-type": "application/json",
@@ -26,15 +27,22 @@ const LoginContainer = ({ history }) => {
         user_id: ID,
         user_pw: PW,
       }),
-    }).then((response) => {
+    }).then(async (response) => {
       if (response.status === 200) {
         alert("정상 로그인 되었습니다");
+        const user = await response.json();
+        window.sessionStorage.setItem("user", JSON.stringify(user));
         history.push("/");
-        console.log(response);
+        const storage = JSON.parse(sessionStorage.getItem("user"));
+        console.log(storage.name);
       } else {
         alert("응, 틀렸어~");
       }
     });
+
+    // .then((response) => {
+    //   console.log(response);
+    // });
   };
   const goRegister = () => {
     history.push("/register");
@@ -49,4 +57,4 @@ const LoginContainer = ({ history }) => {
   );
 };
 
-export default LoginContainer;
+export default withRouter(LoginContainer);
