@@ -43,13 +43,13 @@ export const UploadWrapper = styled.div`
 
 export const File = styled.div`
   display: flex;
-  justify-content: center;
+  max-width: 100vw;
   flex-wrap: wrap;
 
   .sortable {
+    margin-bottom: 0;
     display: flex;
     flex-wrap: wrap;
-    margin-bottom: 10px;
   }
 
   .delete {
@@ -67,9 +67,9 @@ export const File = styled.div`
   img {
     margin-left: 10px;
     src: ${(props) => props.children.props};
-    width: 150px;
+    width: 130px;
     object-fit: cover;
-    height: 150px;
+    height: 130px;
     border: 1px solid #e8ecf3;
   }
 `;

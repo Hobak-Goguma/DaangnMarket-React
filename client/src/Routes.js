@@ -27,6 +27,7 @@ export default function Routes() {
           <Route exact path="/" component={App} />
           <Route exact path="/mychange" component={MyChange} />
           <Route exact path="/myproduct" component={MyProduct} />
+          <Route exact path="/myinfo" component={MyInfo} />
           <Route exact path="/login" component={LoginPage} />
           <Route exact path="/register" component={RegisterPage} />
           <Route path="/search" component={SearchPage} />
