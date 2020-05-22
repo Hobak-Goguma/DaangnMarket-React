@@ -41,7 +41,6 @@ class Manner(models.Model):
 
 
 class Member(models.Model):
-    
     id_member = models.AutoField(primary_key=True)
     name = models.CharField(max_length=30)
     nick_name = models.CharField(max_length=30)
@@ -56,10 +55,6 @@ class Member(models.Model):
     udate = models.DateTimeField(auto_now=False)
     last_date = models.DateTimeField(auto_now=False)
 
-    # def login(i):
-    #     LOGIN_YN = i
-    #     print(LOGIN_YN)
-    #     print(Member.last_date)
     class Meta:
         managed = False
         db_table = 'member'
