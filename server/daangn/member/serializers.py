@@ -6,21 +6,20 @@ from member.models import *
 class MemberSerializer(serializers.ModelSerializer):
     class Meta:
         model = Member
-        fields = ('pk', 'name', 'nick_name', 'user_id', 'user_pw', 'tel', 'birth', 'email', 'gender')
-        read_only_fields = ('account_name')
-        #fields = ('pk', 'name', 'nick_name', 'user_id', 'user_pw', 'tel', 'birth', 'email', 'gender', 'addr')
+        # fields = ('pk', 'name', 'nick_name', 'user_id', 'user_pw', 'tel', 'birth', 'email', 'gender')
+        fields = ('pk', 'name', 'nick_name', 'user_id', 'user_pw', 'tel', 'birth', 'email', 'gender', 'addr')
 
 class MemberReviseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Member
-        fields = ('pk', 'nick_name', 'user_pw', 'tel', 'birth', 'email', 'add')
-        #fields = ('pk', 'nick_name', 'user_pw', 'tel', 'birth', 'email', 'addr')
+        # fields = ('pk', 'nick_name', 'user_pw', 'tel', 'birth', 'email', 'add')
+        fields = ('pk', 'nick_name', 'user_pw', 'tel', 'birth', 'email', 'addr')
 
 class MemberTouchSerializer(serializers.ModelSerializer):
     class Meta:
         model = Member
-        fields = ('pk', 'nick_name', 'add')
-        #fields = ('pk', 'nick_name', 'addr', 'user_img')
+        # fields = ('pk', 'nick_name', 'add')
+        fields = ('pk', 'nick_name', 'addr', 'user_img')
         
 class ProductSerializer(serializers.ModelSerializer):
     # id_member_id = serializers.IntegerField(source='id_member')
