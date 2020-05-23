@@ -1,11 +1,12 @@
 from django.db import models
 from django.utils import timezone
 now = timezone.now()
+
 class Company(models.Model):
     id_company = models.AutoField(primary_key=True)
     id_member = models.ForeignKey('Member', models.DO_NOTHING, db_column='id_member')
     name = models.CharField(max_length=50)
-    add = models.CharField(max_length=200)
+    addr = models.TextField()
     tel = models.CharField(max_length=20, blank=True, null=True)
     info = models.CharField(max_length=3000, blank=True, null=True)
     category = models.CharField(max_length=15, blank=True, null=True)
@@ -22,6 +23,7 @@ class Log(models.Model):
     id_log = models.AutoField(primary_key=True)
     id_member = models.ForeignKey('Member', models.DO_NOTHING, db_column='id_member')
     search = models.CharField(max_length=60)
+    cdate = models.DateTimeField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -32,11 +34,18 @@ class Manner(models.Model):
     id_manner = models.AutoField(primary_key=True)
     id_member = models.ForeignKey('Member', models.DO_NOTHING, db_column='id_member')
     score = models.IntegerField()
-    reviewer = models.IntegerField()
 
     class Meta:
         managed = False
         db_table = 'manner'
+
+class MannerReviewer(models.Model):
+    id_manner = models.ForeignKey(Manner, models.DO_NOTHING, db_column='id_manner')
+    reviewer = models.ForeignKey('Member', models.DO_NOTHING, db_column='reviewer')
+
+    class Meta:
+        managed = False
+        db_table = 'manner_reviewer'
 
 
 class Member(models.Model):
@@ -49,10 +58,10 @@ class Member(models.Model):
     birth = models.DateField()
     email = models.CharField(max_length=30)
     gender = models.CharField(max_length=6)
-    add = models.CharField(max_length=200)
+    addr = models.TextField()
     cdate = models.DateTimeField(auto_now_add=True)
-    udate = models.DateTimeField(auto_now=True)
-    last_date = models.DateTimeField(auto_now=True)
+    udate = models.DateTimeField(auto_now=False)
+    last_date = models.DateTimeField(auto_now=False)
 
     class Meta:
         managed = False
@@ -67,19 +76,30 @@ class Product(models.Model):
     info = models.CharField(max_length=3000)
     category = models.CharField(max_length=15, blank=True, null=True)
     img = models.CharField(max_length=500, blank=True, null=True)
+    views = models.IntegerField()
     cdate = models.DateTimeField(auto_now_add=True)
     udate = models.DateTimeField(auto_now=True)
+    sold_tf = models.IntegerField(db_column='sold_TF')  # Field name made lowercase.
 
     class Meta:
         managed = False
         db_table = 'product'
 
 
+class Rate(models.Model):
+    id_rate = models.IntegerField(primary_key=True)
+    field = models.CharField(max_length=8)
+    detail = models.CharField(max_length=50)
+    score = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'rate'
+
+
 class RealDeal(models.Model):
     id_real_deal = models.AutoField(primary_key=True)
     id_product = models.ForeignKey(Product, models.DO_NOTHING, db_column='id_product')
-    id_seller = models.ForeignKey(Member, models.DO_NOTHING, db_column='id_seller')
-    id_shopper = models.IntegerField()
     cdate = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -87,10 +107,20 @@ class RealDeal(models.Model):
         db_table = 'real_deal'
 
 
+class SellerRate(models.Model):
+    id_review_seller = models.ForeignKey('SellerReview', models.DO_NOTHING, db_column='id_review_seller')
+    id_rate = models.ForeignKey(Rate, models.DO_NOTHING, db_column='id_rate')
+
+    class Meta:
+        managed = False
+        db_table = 'seller_rate'
+
+
 class SellerReview(models.Model):
     id_review = models.AutoField(primary_key=True)
     title = models.CharField(max_length=50)
     cdate = models.DateTimeField(auto_now_add=True)
+    id_member = models.ForeignKey(Member, models.DO_NOTHING, db_column='id_member')
     id_real_deal = models.ForeignKey(RealDeal, models.DO_NOTHING, db_column='id_real_deal')
 
     class Meta:
@@ -98,10 +128,21 @@ class SellerReview(models.Model):
         db_table = 'seller_review'
 
 
+class ShopperRate(models.Model):
+    id_review_shopper = models.ForeignKey('ShopperReview', models.DO_NOTHING, db_column='id_review_shopper')
+    id_rate = models.ForeignKey(Rate, models.DO_NOTHING, db_column='id_rate')
+
+    class Meta:
+        managed = False
+        db_table = 'shopper_rate'
+
+
+
 class ShopperReview(models.Model):
     id_review = models.AutoField(primary_key=True)
     title = models.CharField(max_length=50)
     cdate = models.DateTimeField(auto_now_add=True)
+    id_member = models.ForeignKey(Member, models.DO_NOTHING, db_column='id_member')
     id_real_deal = models.ForeignKey(RealDeal, models.DO_NOTHING, db_column='id_real_deal')
 
     class Meta:
