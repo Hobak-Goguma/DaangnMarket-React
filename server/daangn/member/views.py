@@ -155,12 +155,7 @@ def member_login(request):
     except Member.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    # if request.method == 'POST':
-    #     # serializer = LoginSerializer(member)
-    #     return Response(status=status.HTTP_200_OK)
-
     if request.method == 'POST':
-        
         # serializer = LoginSerializer(member)
         serializer = LoginSerializer(member, data=request.data)
         if serializer.is_valid():
@@ -169,14 +164,6 @@ def member_login(request):
     
     else:
         return Response(status=status.HTTP_400_BAD_REQUEST)
-
-    # user_pw = Data['user_pw']
-    # if Member.user_pw == user_pw:
-    #     if request.method == 'POST':
-    #         serializer = LoginSerializer(member)
-    #         return Response(serializer.data)
-    # else:
-    #     return HttpResponse('비밀번호가 틀렸습니다.')
 
 
 @api_view(['GET', 'POST'])
