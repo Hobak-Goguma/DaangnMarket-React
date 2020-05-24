@@ -45,11 +45,16 @@ export const File = styled.div`
   display: flex;
   max-width: 100vw;
   flex-wrap: wrap;
+  margin-bottom: 24px;
 
   .sortable {
     margin-bottom: 0;
     display: flex;
     flex-wrap: wrap;
+  }
+
+  .ghost-class {
+    opacity: 0;
   }
 
   .delete {

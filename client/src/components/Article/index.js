@@ -5,9 +5,10 @@ import styled from "styled-components";
 import ArticleSlider from "./ArticleSlider";
 import ArticleProfile from "./ArticleProfile";
 import ArticleDescription from "./ArticleDescription";
+import ArticleFooter from "./ArticleFooter";
 import { useState } from "react";
 
-const Article = ({ isModal, setModal, location, match }) => {
+const Article = ({ isModal, setModal, location, match, history }) => {
   const [sliderData, setSliderData] = useState([]);
   const [detail, setDetail] = useState([]);
 
@@ -26,6 +27,10 @@ const Article = ({ isModal, setModal, location, match }) => {
       });
   }, []);
 
+  const toggleClick = () => {
+    history.push("/wishlist");
+  };
+
   return (
     <ArticleWrapper>
       <ArticleSlider
@@ -35,6 +40,7 @@ const Article = ({ isModal, setModal, location, match }) => {
       />
       <ArticleProfile />
       <ArticleDescription detail={detail} />
+      <ArticleFooter detail={detail} toggleClick={toggleClick} />
     </ArticleWrapper>
   );
 };

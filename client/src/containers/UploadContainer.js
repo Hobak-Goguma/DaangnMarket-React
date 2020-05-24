@@ -9,12 +9,17 @@ const UploadContainer = ({ history }) => {
   const [imageData, setImageData] = useState([]);
   const [imageCount, setImageCount] = useState(imageData.length);
   const [isDropFinished, setIsDropFinished] = useState(false);
+  const [price, setPrice] = useState("");
 
   useEffect(() => {
     if (imageData.length <= 10) {
       setImageCount(imageData.length);
     }
   }, [imageData.length]);
+
+  const onPriceChange = (e) => {
+    setPrice(e.target.value.replace(/[^0-9]/, ""));
+  };
 
   const categoryOptions = [
     { value: 1, label: "가구/인테리어" },
@@ -83,6 +88,8 @@ const UploadContainer = ({ history }) => {
       dropFinished={isDropFinished}
       categoryOptions={categoryOptions}
       error={error}
+      onPriceChange={onPriceChange}
+      price={price}
       imageData={imageData}
       imageCount={imageCount}
       setImageData={setImageData}

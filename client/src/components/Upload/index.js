@@ -53,6 +53,7 @@ const Upload = ({
             list={imageData}
             setList={setImageData}
             animation={150}
+            ghostClass="ghost-class"
           >
             {dropFinished && renderImages().slice(0, 10)}
           </ReactSortable>
@@ -72,8 +73,8 @@ const Upload = ({
           <select
             className="form"
             style={{ width: 705 }}
-            // value={category || "default"}
-            // onChange={onCategoryChange}
+            value={category}
+            onChange={onCategoryChange}
           >
             <option value={"default"} disabled>
               카테고리를 선택해주세요.

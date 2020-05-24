@@ -15,6 +15,8 @@ import SearchPage from "./pages/SearchPage";
 import ArticlePage from "./pages/ArticlePage";
 import OtherUserPage from "./pages/OtherUserPage";
 import UploadPage from "./pages/UploadPage";
+
+// Style Wrapper
 import { ThemeProvider } from "styled-components";
 import Theme from "./lib/themes/Theme";
 import Global from "./lib/themes/GlobalStyles";
@@ -34,6 +36,7 @@ export default function Routes() {
           <Route path="/articles/:articles_id" component={ArticlePage} />
           <Route path="/user" component={OtherUserPage} />
           <Route path="/upload" component={UploadPage} />
+
           <Redirect from="*" to="/" />
         </Switch>
         <Global />
