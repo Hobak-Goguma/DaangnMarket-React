@@ -1,25 +1,43 @@
 from django.forms import widgets
 from rest_framework import serializers
-from member.models import Member, Product
-
+from member.models import *
 
 class MemberSerializer(serializers.ModelSerializer):
     class Meta:
         model = Member
-        fields = ('pk', 'name', 'nick_name', 'user_id', 'user_pw', 'tel', 'birth', 'email', 'gender', 'add', 'cdate', 'udate', 'last_date')
+        fields = ('pk', 'name', 'nick_name', 'user_id', 'user_pw', 'tel', 'birth', 'email', 'gender', 'add')
+        #fields = ('pk', 'name', 'nick_name', 'user_id', 'user_pw', 'tel', 'birth', 'email', 'gender', 'addr')
 
+class MemberReviseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Member
+        fields = ('pk', 'nick_name', 'user_pw', 'tel', 'birth', 'email', 'add')
+        #fields = ('pk', 'nick_name', 'user_pw', 'tel', 'birth', 'email', 'addr')
+
+class MemberTouchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Member
+        fields = ('pk', 'nick_name', 'add')
+        #fields = ('pk', 'nick_name', 'addr', 'user_img')
+        
 class ProductSerializer(serializers.ModelSerializer):
     # id_member_id = serializers.IntegerField(source='id_member')
     # member = serializers.ForeignKey(Member, models.CASCADE, related_name='member_id')
     class Meta:
         model = Product
-        fields = ('pk', 'id_member', 'name', 'price', 'info', 'category', 'img', 'cdate', 'udate')
+        fields = ('pk', 'id_member', 'name', 'price', 'info', 'category', 'img')
 
-# 로그인 시리얼라이저 ( 보내줘야 할 값이 있을 경우 )
-# class LoginSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Member
-#         fields = ('pk', 'user_id')
+class LoginSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Member
+        fields = ('pk', 'user_id', 'name','nick_name', 'tel', 'add')
+        #fields = ('pk', 'user_id', 'name','nick_name', 'tel', 'addr')
+
+class CompanySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Company
+        fields = ('pk', 'id_member', 'name', 'add', 'tel', 'info', 'category', 'img')
+        #fields = ('pk', 'id_member', 'name', 'addr', 'tel', 'info', 'category', 'img')
 
 
 # class MemberSerializer(serializers.Serializer):

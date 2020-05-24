@@ -1,6 +1,9 @@
 import React from "react";
 import { StyledRegister } from "./style";
-import { Checkbox, Radio } from "@material-ui/core";
+
+// MUI stuff
+import Checkbox from "@material-ui/core/Checkbox";
+import Radio from "@material-ui/core/Radio";
 
 const Register = ({
   goHome,

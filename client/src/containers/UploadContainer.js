@@ -1,12 +1,25 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Upload from "../components/Upload";
 import { withRouter } from "react-router-dom";
+import { API } from "../lib/api";
 
 const UploadContainer = ({ history }) => {
   const [typeError, setTypeError] = useState(null);
   const [error, setError] = useState(null);
   const [imageData, setImageData] = useState([]);
+  const [imageCount, setImageCount] = useState(imageData.length);
   const [isDropFinished, setIsDropFinished] = useState(false);
+  const [price, setPrice] = useState("");
+
+  useEffect(() => {
+    if (imageData.length <= 10) {
+      setImageCount(imageData.length);
+    }
+  }, [imageData.length]);
+
+  const onPriceChange = (e) => {
+    setPrice(e.target.value.replace(/[^0-9]/, ""));
+  };
 
   const categoryOptions = [
     { value: 1, label: "가구/인테리어" },
@@ -24,9 +37,38 @@ const UploadContainer = ({ history }) => {
     { value: 13, label: "기타 중고물품" },
   ];
 
+  const fetchProductData = (e) => {
+    // let realImage = imageData.reduce((result, item) => {
+    //   return `${result}${item}`;
+    // }, "");
+    e.preventDefault();
+    console.log(imageData[0][0]);
+    // const imageSlice = imageData[0].slice(0, 64);
+    // fetch(`${API}product`, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     id_member: 1,
+    //     name: "아이",
+    //     price: 6000,
+    //     info: "아니라는거 ",
+    //     category: "시계",
+    //     img: imageSlice,
+    //   }),
+    // }).then((res) => {
+    //   if (res.status === 200) {
+    //     alert("제품등록 완료");
+    //   } else {
+    //     alert("이상하네");
+    //   }
+    // });
+  };
+
   const onDrop = useCallback(async (files) => {
     setIsDropFinished(true);
-    files.map((file) => {
+    await files.map((file) => {
       const reader = new FileReader();
       reader.addEventListener("load", () => {
         setImageData((prevState) => [
@@ -46,8 +88,12 @@ const UploadContainer = ({ history }) => {
       dropFinished={isDropFinished}
       categoryOptions={categoryOptions}
       error={error}
+      onPriceChange={onPriceChange}
+      price={price}
       imageData={imageData}
+      imageCount={imageCount}
       setImageData={setImageData}
+      onSubmit={fetchProductData}
     />
   );
 };

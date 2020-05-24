@@ -16,14 +16,22 @@ const defaultSettings = {
 };
 
 const settings = {
-  defaultSettings,
+  dots: true,
+  infinite: true,
+  speed: 600,
+  slidesToShow: 1,
+  slidersToScroll: 1,
   draggable: false,
   nextArrow: <ArrowNext />,
   prevArrow: <ArrowPrev />,
 };
 
 const settingsNoArrow = {
-  defaultSettings,
+  dots: true,
+  infinite: true,
+  speed: 600,
+  slidesToShow: 1,
+  slidersToScroll: 1,
   nextArrow: <ArrowNext display="none" />,
   prevArrow: <ArrowPrev display="none" />,
 };
