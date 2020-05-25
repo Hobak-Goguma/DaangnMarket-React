@@ -1,12 +1,16 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import { withRouter } from "react-router-dom";
 
-const ArticleFooter = ({ detail, toggleClick }) => {
-  const [isHeart, setHeart] = useState(false);
+const ArticleFooter = ({ detail, history }) => {
+  // const [isHeart, setHeart] = useState(false);
+  let heart = useSelector((state) => state.heartReducer.heart);
+  const dispatch = useDispatch();
 
   const clickHeart = () => {
-    toggleClick(detail);
-    setHeart(!isHeart);
+    dispatch({ type: "HEART_CLICK" });
+    history.push("/");
   };
 
   const price = parseInt(detail.price).toLocaleString();
@@ -14,7 +18,7 @@ const ArticleFooter = ({ detail, toggleClick }) => {
     <ArticleFooterWrapper>
       <div>
         <i
-          className={`${isHeart ? "fas" : "far"} fa-heart`}
+          className={`${heart ? "fas" : "far"} fa-heart`}
           onClick={clickHeart}
         ></i>
         <div className="price-wrapper">
@@ -27,7 +31,7 @@ const ArticleFooter = ({ detail, toggleClick }) => {
   );
 };
 
-export default ArticleFooter;
+export default withRouter(ArticleFooter);
 
 const ArticleFooterWrapper = styled.div`
   position: fixed;
