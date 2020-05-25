@@ -16,7 +16,7 @@ const Container = styled.img`
   right: -6%;
   top: 45%;
   transform: translateY(-50%);
-  z-index: 100;
+  z-index: 25;
 
   width: 30px;
   height: 30px;

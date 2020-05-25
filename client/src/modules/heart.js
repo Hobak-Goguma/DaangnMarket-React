@@ -3,13 +3,16 @@ const initState = {
 };
 
 const heartReducer = (state = initState, action) => {
-  if (action.type === "HEART_CLICK") {
-    return { ...state, heart: true };
+  // if (action.type === "HEART_CLICK") {
+  //   return { heart: !state.heart };
+  // }
+  // return state;
+  switch (action.type) {
+    case "HEART_CLICK":
+      return { heart: !state.heart };
+    default:
+      return state;
   }
-  if (action.type === "HEART_UNCLICK") {
-    return { ...state, heart: false };
-  }
-  return state;
 };
 
 export default heartReducer;

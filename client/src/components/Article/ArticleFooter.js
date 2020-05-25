@@ -1,16 +1,15 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { withRouter } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 
 const ArticleFooter = ({ detail, history }) => {
-  // const [isHeart, setHeart] = useState(false);
+  const [isHeart, setHeart] = useState(false);
   let heart = useSelector((state) => state.heartReducer.heart);
   const dispatch = useDispatch();
 
   const clickHeart = () => {
     dispatch({ type: "HEART_CLICK" });
-    history.push("/");
   };
 
   const price = parseInt(detail.price).toLocaleString();

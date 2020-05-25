@@ -17,6 +17,14 @@ const WishlistContainer = () => {
     }
   }, []);
 
+  const clickP = () => {
+    if (heart) {
+      alert("hi");
+    } else {
+      alert("no");
+    }
+  };
+
   return (
     <div>
       <Wishlist />
