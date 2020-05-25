@@ -8,14 +8,23 @@ from django.http import HttpResponse
 from django.utils import timezone
 import json
 from django.http import JsonResponse
+from drf_yasg.utils import swagger_auto_schema
+
 
 now = timezone.now()
 
+# 'method' can be used to customize a single HTTP method of a view
+@swagger_auto_schema(method='get', responses={200:'OK'})
+# 'methods' can be used to apply the same modification to multiple methods
+@swagger_auto_schema(methods=['post'], request_body=MemberSerializer)
 @api_view(['GET', 'POST'])
 def member_list(request):
     """
-    코드 조각을 모두 보여주거나 새 코드 조각을 만듭니다.
+    모든 유저 조회, 유저 등록
+    ---
+    모든 유저의 정보를 보여주거나 새 유저 정보를 등록합니다.
     """
+    
     if request.method == 'GET':
         member = Member.objects.all()
         serializer = MemberSerializer(member, many=True)
