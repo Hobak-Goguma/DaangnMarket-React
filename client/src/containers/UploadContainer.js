@@ -41,8 +41,7 @@ const UploadContainer = ({ history }) => {
     // let realImage = imageData.reduce((result, item) => {
     //   return `${result}${item}`;
     // }, "");
-    e.preventDefault();
-    console.log(imageData[0][0]);
+    // e.preventDefault();
     // const imageSlice = imageData[0].slice(0, 64);
     // fetch(`${API}product`, {
     //   method: "POST",
@@ -64,11 +63,12 @@ const UploadContainer = ({ history }) => {
     //     alert("이상하네");
     //   }
     // });
+    // console.log(imageData[0][0]);
   };
 
   const onDrop = useCallback(async (files) => {
     setIsDropFinished(true);
-    await files.map((file) => {
+    files.map((file) => {
       const reader = new FileReader();
       reader.addEventListener("load", () => {
         setImageData((prevState) => [

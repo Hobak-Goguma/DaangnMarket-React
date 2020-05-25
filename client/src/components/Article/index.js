@@ -27,10 +27,6 @@ const Article = ({ isModal, setModal, location, match, history }) => {
       });
   }, []);
 
-  const toggleClick = () => {
-    history.push("/wishlist");
-  };
-
   return (
     <ArticleWrapper>
       <ArticleSlider
@@ -40,7 +36,7 @@ const Article = ({ isModal, setModal, location, match, history }) => {
       />
       <ArticleProfile />
       <ArticleDescription detail={detail} />
-      <ArticleFooter detail={detail} toggleClick={toggleClick} />
+      <ArticleFooter detail={detail} />
     </ArticleWrapper>
   );
 };
