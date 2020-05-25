@@ -19,13 +19,38 @@ const Info = styled.div`
     .infoBox{
         position: relative;
         box-sizing:border-box; 
-        margin: 50px 0;
+        margin: 50px 0 100px 0;
         border:1px solid #ccc;
         border-radius:10px;
         width:100%;
-        height:500px;
         padding:200px 30px 30px 30px ;
+        .infoChange{
+            width:calc(100% - 60px);
+            position:absolute;
+            top:40px;
+            left:30px;
+            font-size:25px;
+            a{
+                display:inline-block;
+                width:150px;
+            }
+            .modify{
+                cursor:pointer;
+                position:absolute;
+                right:0;
+                top:50%;
+                transform:translateY(-50%);
+            }
+        }
+        .btnFinish{
+            
+            width:100%;
+            text-align:center;
+        }
+        
         .profile{
+            background:url("/img/noname.jpg") no-repeat center;
+            background-size: cover;
             position:absolute;
             top:25px;
             right:60px;
@@ -35,12 +60,37 @@ const Info = styled.div`
             border-radius:50%;
         }
         .necessary{
+            width: calc(100% - 60px);
             position:absolute;
             top:30px;
             left:30px;
             a{
                 width: 100px;
                 display: inline-block;
+                cursor: auto;
+            }
+            .name{
+                margin-top:10px;
+                font-size:23px
+            }
+            .id{
+                margin-top:20px;
+                font-size:23px
+            }
+            .temperature{
+                margin-top :35px;
+                .temper{
+                    margin-top :13px;
+                    height:3px;
+                    width:calc(100% - 210px);
+                    border-radius:3px;
+                    border:1.1px solid #ccc;
+                    overflow:hidden;
+                    .manner{
+                        height:100%;
+                        background:blue;
+                    }
+                }
             }
         }
         .changeAble{
@@ -70,7 +120,7 @@ const Info = styled.div`
                 display: inline-block;
             }
             span{
-                font-size:25px;
+                font-size:21px;
                 display: inline-block;
             }
         }
@@ -88,6 +138,8 @@ const MyInfo = ({history}) =>{
         add: [],
         temper: 36.5,
     });
+    const [state, setState] = useState("info");
+
     useEffect(()=>{// 세션정보 이니셜라이징
         //통신시 첫 분기문만 없애면 됨
         if(window.sessionStorage.getItem("user")!==null&&window.sessionStorage.getItem("user")!==""){
@@ -117,16 +169,39 @@ const MyInfo = ({history}) =>{
             });
         }
     },[])
-
+    const click = (e)=>{
+        const targetId = e.target.id;
+        switch (targetId) {
+            case "nickname":
+                setState("nickname")
+                break;
+            case "phone":
+                setState("phone")
+                break;
+            case "addr":
+                setState("addr")
+                break;
+            default:
+                setState("info")
+                break;
+        }
+    }
 
 
     return (<MyLayout history={history} choose="내 정보 보기">
+        
         <Info>
+        
             <div className="title">
-                <span className="tit">내정보</span>
+                <span className="tit">{state==="info"? "내정보":
+                state==="nickname"? "별명 변경":
+                state==="phone"? "전화번호 변경":
+                state==="addr"? "주소 변경":setState("info")
+                }</span>
             </div>
-
             <div className="infoBox">
+                {state==="info"? 
+                <>
                 <div className="profile"></div> 
                 <div className="necessary">
                     <div className="name">
@@ -135,16 +210,20 @@ const MyInfo = ({history}) =>{
                     <div className="id">
                         <a href="">아이디</a> <span>{sessionInfo.user_id}</span>
                     </div>
+                    <div className="temperature">
+                        <a href="">매너온도</a>{sessionInfo.temper}도
+                        <div className="temper"><div className="manner" style={{width:`  ${sessionInfo.temper}%  `}}></div></div>
+                    </div>
                 </div>
-                <div className="nickName info changeAble">
+                <div className="nickName info changeAble" id="nickname" onClick={click}>
                     <a href="">닉네임</a> <span>{sessionInfo.nick_name}</span>
                     <div className="change">변경하기 <i className="fas fa-chevron-right"></i></div>
                 </div>
-                <div className="phone info changeAble">
+                <div className="phone info changeAble" id="phone"  onClick={click}>
                     <a href="">전화번호</a> <span>{sessionInfo.tel}</span>
                     <div className="change">변경하기 <i className="fas fa-chevron-right"></i></div>
                 </div>
-                <div className="phone info changeAble">
+                <div className="addr info changeAble" id="addr" onClick={click}>
                     <a href="">주소</a> <span>{sessionInfo.add[0]}</span>
                     {sessionInfo.add[1]&&sessionInfo.add[1]!==""?
                     <><a href=""></a> <span>{sessionInfo.add[1]}</span></>:
@@ -152,7 +231,18 @@ const MyInfo = ({history}) =>{
                     <div className="change">변경하기 <i className="fas fa-chevron-right"></i></div>
 
                 </div>
+        </>:
+        state==="nickname"?<>
+            <div className="infoChange">
+                <a href="">닉네임</a> {sessionInfo.nick_name} <div className="modify"><i className="fas fa-pen"></i></div>
             </div>
+            <div className="btnFinish"><button>변경 완료</button></div>
+        </>:
+        state==="phone"?<></>:
+        state==="addr"?<></>:
+        setState("info")}
+        
+        </div>
         </Info>
     </MyLayout>);
 }
