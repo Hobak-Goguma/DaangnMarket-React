@@ -1,8 +1,6 @@
 import { combineReducers } from "redux";
-import heartReducer from "./heart";
+import interest from "./interest";
 
-const rootReducer = combineReducers({
-  heartReducer,
+export default combineReducers({
+  interest,
 });
-
-export default rootReducer;

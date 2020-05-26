@@ -1,24 +1,19 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
 import styled from "styled-components";
-import { withRouter, Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
-const ArticleFooter = ({ detail, history }) => {
-  const [isHeart, setHeart] = useState(false);
-  let heart = useSelector((state) => state.heartReducer.heart);
+const ArticleFooter = ({ detail }) => {
+  const interest = useSelector((state) => state.interest.interest);
   const dispatch = useDispatch();
 
-  const clickHeart = () => {
-    dispatch({ type: "HEART_CLICK" });
-  };
-
   const price = parseInt(detail.price).toLocaleString();
+
   return (
     <ArticleFooterWrapper>
       <div>
         <i
-          className={`${heart ? "fas" : "far"} fa-heart`}
-          onClick={clickHeart}
+          className={`${interest ? "fas" : "far"} fa-heart`}
+          onClick={() => dispatch({ type: "LIKED" })}
         ></i>
         <div className="price-wrapper">
           <p className="price">{price}원</p>
@@ -30,7 +25,7 @@ const ArticleFooter = ({ detail, history }) => {
   );
 };
 
-export default withRouter(ArticleFooter);
+export default ArticleFooter;
 
 const ArticleFooterWrapper = styled.div`
   position: fixed;

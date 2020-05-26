@@ -1,34 +1,29 @@
 import React, { useEffect, useState } from "react";
 import Wishlist from "../components/Wishlist";
+import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const WishlistContainer = () => {
-  const heart = useSelector((state) => state.heartReducer.heart);
-  const [wishlist, setWishlist] = useState([]);
+  const interest = useSelector((state) => state.interest.interest);
+  const [wishlists, setWishlists] = useState([]);
 
-  useEffect(() => {
-    if (heart) {
-      fetch("http://www.daangn.site/product/10")
-        .then((res) => res.json())
-        .then((res) => {
-          setWishlist(res);
-          console.log(res);
-        });
-    }
-  }, []);
+  useEffect(() => {}, []);
 
-  const clickP = () => {
-    if (heart) {
-      alert("hi");
-    } else {
-      alert("no");
-    }
+  const fetchList = () => {
+    fetch(
+      `http://www.daangn.site/product/${localStorage.getItem("productId")}
+        `
+    )
+      .then((res) => res.json())
+      .then((res) => {
+        setWishlists([...wishlists, res]);
+      });
   };
 
   return (
     <div>
-      <Wishlist />
-      {wishlist.name}
+      <Wishlist wishlists={wishlists} />
+      <button onClick={fetchList}>Add</button>
     </div>
   );
 };

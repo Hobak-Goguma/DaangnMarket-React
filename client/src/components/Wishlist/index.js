@@ -1,13 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 // Mui
 
-const Wishlist = () => {
+const Wishlist = ({ listData, wishlists }) => {
   return (
     <WishlistWrapper>
       <div className="wishlist-container">
         <h2>관심목록</h2>
+        {wishlists.map((list) => (
+          <div>
+            <p>{list.name}</p>
+            <p>{list.info}</p>
+          </div>
+        ))}
       </div>
     </WishlistWrapper>
   );
