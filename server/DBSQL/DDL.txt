@@ -1,4 +1,4 @@
--- 멤버
+ -- 멤버
 CREATE TABLE `daangn`.`member` (
 	`id_member` INT          NOT NULL COMMENT '멤버 키', -- 멤버 키
 	`name`      VARCHAR(30)  NOT NULL COMMENT '이름', -- 이름
@@ -75,7 +75,6 @@ CREATE TABLE `daangn`.`shopper_review` (
 	`id_review_shopper` INT         NOT NULL COMMENT '리뷰 키', -- 리뷰 키
 	`title`             VARCHAR(50) NOT NULL COMMENT '후기 제목', -- 후기 제목
 	`cdate`             DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성일', -- 생성일
-	`id_member`         INT         NOT NULL COMMENT '작성자', -- 작성자
 	`id_real_deal`      INT         NOT NULL COMMENT '거래키' -- 거래키
 )
 COMMENT '구매자후기';
@@ -114,7 +113,6 @@ CREATE TABLE `daangn`.`seller_review` (
 	`id_review_seller` INT         NOT NULL COMMENT '리뷰 키', -- 리뷰 키
 	`title`            VARCHAR(50) NOT NULL COMMENT '후기 제목', -- 후기 제목
 	`cdate`            DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성일', -- 생성일
-	`id_member`        INT         NOT NULL COMMENT '작성자', -- 작성자
 	`id_real_deal`     INT         NOT NULL COMMENT '거래키' -- 거래키
 )
 COMMENT '판매자후기';
@@ -152,7 +150,7 @@ CREATE TABLE `daangn`.`company` (
 	`id_company` INT           NOT NULL COMMENT '업체 키', -- 업체 키
 	`id_member`  INT           NOT NULL COMMENT '멤버 키', -- 멤버 키
 	`name`       VARCHAR(50)   NOT NULL COMMENT '업체 이름', -- 업체 이름
-	`addr`       Json  NOT NULL COMMENT '업체 위치', -- 업체 위치
+	`addr`       JSON          NOT NULL COMMENT '업체 위치', -- 업체 위치
 	`tel`        VARCHAR(20)   NULL     COMMENT '업체 번호', -- 업체 번호
 	`info`       VARCHAR(3000) NULL     COMMENT '업체 소개', -- 업체 소개
 	`category`   VARCHAR(15)   NULL     COMMENT '카테고리', -- 카테고리
@@ -227,6 +225,20 @@ CREATE TABLE `daangn`.`shopper_rate` (
 )
 COMMENT '구평관계';
 
+-- 멤버판매자
+CREATE TABLE `daangn`.`member_seller` (
+	`id_member`    INT NOT NULL COMMENT '멤버 키', -- 멤버 키
+	`id_real_deal` INT NOT NULL COMMENT '거래키' -- 거래키
+)
+COMMENT '멤버판매자';
+
+-- 멤버구매자
+CREATE TABLE `daangn`.`member_shopper` (
+	`id_member`    INT NOT NULL COMMENT '멤버 키', -- 멤버 키
+	`id_real_deal` INT NOT NULL COMMENT '거래키' -- 거래키
+)
+COMMENT '멤버구매자';
+
 -- 제품
 ALTER TABLE `daangn`.`product`
 	ADD CONSTRAINT `FK_member_TO_product` -- 멤버 -> 제품
@@ -249,16 +261,6 @@ ALTER TABLE `daangn`.`manner`
 
 -- 구매자후기
 ALTER TABLE `daangn`.`shopper_review`
-	ADD CONSTRAINT `FK_member_TO_shopper_review` -- 멤버 -> 구매자후기
-		FOREIGN KEY (
-			`id_member` -- 작성자
-		)
-		REFERENCES `daangn`.`member` ( -- 멤버
-			`id_member` -- 멤버 키
-		);
-
--- 구매자후기
-ALTER TABLE `daangn`.`shopper_review`
 	ADD CONSTRAINT `FK_real_deal_TO_shopper_review` -- 실거래 -> 구매자후기
 		FOREIGN KEY (
 			`id_real_deal` -- 거래키
@@ -272,16 +274,6 @@ ALTER TABLE `daangn`.`log`
 	ADD CONSTRAINT `FK_member_TO_log` -- 멤버 -> 로그
 		FOREIGN KEY (
 			`id_member` -- 멤버 키
-		)
-		REFERENCES `daangn`.`member` ( -- 멤버
-			`id_member` -- 멤버 키
-		);
-
--- 판매자후기
-ALTER TABLE `daangn`.`seller_review`
-	ADD CONSTRAINT `FK_member_TO_seller_review` -- 멤버 -> 판매자후기
-		FOREIGN KEY (
-			`id_member` -- 작성자
 		)
 		REFERENCES `daangn`.`member` ( -- 멤버
 			`id_member` -- 멤버 키
@@ -395,4 +387,44 @@ ALTER TABLE `daangn`.`shopper_rate`
 		)
 		REFERENCES `daangn`.`rate` ( -- 평가
 			`id_rate` -- 평가 키
+		);
+
+-- 멤버판매자
+ALTER TABLE `daangn`.`member_seller`
+	ADD CONSTRAINT `FK_member_TO_member_seller` -- 멤버 -> 멤버판매자
+		FOREIGN KEY (
+			`id_member` -- 멤버 키
+		)
+		REFERENCES `daangn`.`member` ( -- 멤버
+			`id_member` -- 멤버 키
+		);
+
+-- 멤버판매자
+ALTER TABLE `daangn`.`member_seller`
+	ADD CONSTRAINT `FK_real_deal_TO_member_seller` -- 실거래 -> 멤버판매자
+		FOREIGN KEY (
+			`id_real_deal` -- 거래키
+		)
+		REFERENCES `daangn`.`real_deal` ( -- 실거래
+			`id_real_deal` -- 거래키
+		);
+
+-- 멤버구매자
+ALTER TABLE `daangn`.`member_shopper`
+	ADD CONSTRAINT `FK_member_TO_member_shopper` -- 멤버 -> 멤버구매자
+		FOREIGN KEY (
+			`id_member` -- 멤버 키
+		)
+		REFERENCES `daangn`.`member` ( -- 멤버
+			`id_member` -- 멤버 키
+		);
+
+-- 멤버구매자
+ALTER TABLE `daangn`.`member_shopper`
+	ADD CONSTRAINT `FK_real_deal_TO_member_shopper` -- 실거래 -> 멤버구매자
+		FOREIGN KEY (
+			`id_real_deal` -- 거래키
+		)
+		REFERENCES `daangn`.`real_deal` ( -- 실거래
+			`id_real_deal` -- 거래키
 		);
