@@ -1,19 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { useSelector, useDispatch } from "react-redux";
 
-const ArticleFooter = ({ detail }) => {
-  const interest = useSelector((state) => state.interest.interest);
-  const dispatch = useDispatch();
-
+const ArticleFooter = ({ detail, addProduct, history }) => {
+  const [heart, setHeart] = useState(false);
   const price = parseInt(detail.price).toLocaleString();
+
+  const clickHeart = () => {
+    setHeart(!heart);
+    let object = {};
+    object.id = localStorage.getItem("productId");
+    object.heart = !heart;
+    localStorage.setItem("itemLike", JSON.stringify(object));
+  };
 
   return (
     <ArticleFooterWrapper>
       <div>
         <i
-          className={`${interest ? "fas" : "far"} fa-heart`}
-          onClick={() => dispatch({ type: "LIKED" })}
+          className={`${heart ? "fas" : "far"} fa-heart`}
+          onClick={clickHeart}
         ></i>
         <div className="price-wrapper">
           <p className="price">{price}원</p>

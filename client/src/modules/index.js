@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
-import interest from "./interest";
+import wishlist from "./wishlist";
 
 export default combineReducers({
-  interest,
+  wishlist,
 });

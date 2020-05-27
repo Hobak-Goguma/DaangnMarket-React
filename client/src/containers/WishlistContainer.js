@@ -4,26 +4,30 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const WishlistContainer = () => {
-  const interest = useSelector((state) => state.interest.interest);
   const [wishlists, setWishlists] = useState([]);
 
-  useEffect(() => {}, []);
-
-  const fetchList = () => {
+  useEffect(() => {
     fetch(
       `http://www.daangn.site/product/${localStorage.getItem("productId")}
         `
     )
       .then((res) => res.json())
       .then((res) => {
-        setWishlists([...wishlists, res]);
+        let arr = [];
+        localStorage.setItem("productData", JSON.stringify(res));
+        let data = JSON.parse(localStorage.getItem("productData"));
+        arr.push(data);
+        localStorage.setItem("productData", JSON.stringify(arr));
+
+        if (JSON.parse(localStorage.getItem("itemLike")).heart) {
+          setWishlists(arr);
+        }
       });
-  };
+  }, []);
 
   return (
     <div>
       <Wishlist wishlists={wishlists} />
-      <button onClick={fetchList}>Add</button>
     </div>
   );
 };
