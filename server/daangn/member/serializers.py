@@ -14,8 +14,6 @@ class MemberReviseSerializer(serializers.ModelSerializer):
     udate = serializers.DateTimeField(default=timezone.now)
     class Meta:
         model = Member
-        # 추후 주소 수정 시 addr 넣어야 함. 현재는 udate 수정 확인을 위해 빼 놓았음
-        fields = ('pk', 'nick_name', 'user_pw', 'tel', 'birth', 'email', 'udate')
         fields = ('pk', 'user_pw', 'udate')
 
 
@@ -23,8 +21,7 @@ class MemberTouchSerializer(serializers.ModelSerializer):
     udate = serializers.DateTimeField(default=timezone.now)
     class Meta:
         model = Member
-        # fields = ('pk', 'nick_name', 'add')
-        fields = ('pk', 'nick_name', 'addr', 'user_img', 'udate')
+        fields = ('pk', 'nick_name', 'tel', 'birth', 'email' 'addr', 'user_img', 'udate')
         
 class ProductSerializer(serializers.ModelSerializer):
     # id_member_id = serializers.IntegerField(source='id_member')
