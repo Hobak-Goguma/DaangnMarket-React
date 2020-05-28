@@ -30,7 +30,6 @@ def member_list(request):
         return Response(serializer.data)
 
     elif request.method == 'POST':
-        # 아이디에 대한 중복 확인 필요
         serializer = MemberSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -160,6 +159,7 @@ def member_login(request):
         user_id = Data['user_id']
         user_pw = Data['user_pw']
         member = Member.objects.get(user_id = user_id, user_pw = user_pw)
+        
     except Member.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
