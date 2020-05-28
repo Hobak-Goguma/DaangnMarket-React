@@ -6,7 +6,7 @@ from member.models import *
 class MemberSerializer(serializers.ModelSerializer):
     class Meta:
         model = Member
-        # fields = ('pk', 'name', 'nick_name', 'user_id', 'user_pw', 'tel', 'birth', 'email', 'gender')
+        # fields = ('pk', 'name', 'nick_nazme', 'user_id', 'user_pw', 'tel', 'birth', 'email', 'gender')
         fields = ('pk', 'name', 'nick_name', 'user_id', 'user_pw', 'tel', 'birth', 'email', 'gender', 'addr', 'img')
 
 
@@ -16,6 +16,7 @@ class MemberReviseSerializer(serializers.ModelSerializer):
         model = Member
         # 추후 주소 수정 시 addr 넣어야 함. 현재는 udate 수정 확인을 위해 빼 놓았음
         fields = ('pk', 'nick_name', 'user_pw', 'tel', 'birth', 'email', 'udate')
+        fields = ('pk', 'user_pw', 'udate')
 
 
 class MemberTouchSerializer(serializers.ModelSerializer):
@@ -41,8 +42,7 @@ class LoginSerializer(serializers.ModelSerializer):
 class CompanySerializer(serializers.ModelSerializer):
     class Meta:
         model = Company
-        fields = ('pk', 'id_member', 'name', 'add', 'tel', 'info', 'category', 'img')
-        #fields = ('pk', 'id_member', 'name', 'addr', 'tel', 'info', 'category', 'img')
+        fields = ('pk', 'id_member', 'name', 'addr', 'tel', 'info', 'category', 'img')
 
 class WishlistSerializer(serializers.ModelSerializer):
     id_member = MemberSerializer(read_only=True)
@@ -50,6 +50,7 @@ class WishlistSerializer(serializers.ModelSerializer):
     class Meta:
         model = Wishlist
         fields = ('pk', 'id_product', 'id_member', 'cdate')
+
 
 # realdeal api 
 class RealDealSerializer(serializers.ModelSerializer):
