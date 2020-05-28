@@ -1,18 +1,8 @@
-const initState = {
-  heart: false,
-};
-
-const heartReducer = (state = initState, action) => {
-  // if (action.type === "HEART_CLICK") {
-  //   return { heart: !state.heart };
-  // }
-  // return state;
+export default function heart(state = false, action) {
   switch (action.type) {
     case "HEART_CLICK":
-      return { heart: !state.heart };
+      return !state;
     default:
       return state;
   }
-};
-
-export default heartReducer;
+}

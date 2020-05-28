@@ -5,10 +5,9 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import { Provider } from "react-redux";
 import Routes from "./Routes";
 import rootReducer from "./modules";
-import heartReducer from "./modules/heart";
 
 const store = createStore(rootReducer, composeWithDevTools());
-console.log(store.getState(heartReducer));
+
 render(
   <Provider store={store}>
     <Routes />

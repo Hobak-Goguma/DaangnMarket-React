@@ -1,8 +1,8 @@
 import { combineReducers } from "redux";
-import heartReducer from "./heart";
+import wishlist from "./wishlist";
+import heart from "./heart";
 
-const rootReducer = combineReducers({
-  heartReducer,
+export default combineReducers({
+  wishlist,
+  heart,
 });
-
-export default rootReducer;
