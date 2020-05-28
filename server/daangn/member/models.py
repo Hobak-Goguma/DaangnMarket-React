@@ -63,7 +63,7 @@ class Member(models.Model):
     cdate = models.DateTimeField(auto_now_add=True)
     udate = models.DateTimeField(auto_now=False)
     last_date = models.DateTimeField(auto_now=False)
-    img = models.CharField(max_length=100, blank=True, null=True)
+    img = models.CharField(max_length=500, blank=True, null=True)
 
     class Meta:
         managed = False
