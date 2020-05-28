@@ -7,7 +7,7 @@ class MemberSerializer(serializers.ModelSerializer):
     class Meta:
         model = Member
         # fields = ('pk', 'name', 'nick_name', 'user_id', 'user_pw', 'tel', 'birth', 'email', 'gender')
-        fields = ('pk', 'name', 'nick_name', 'user_id', 'user_pw', 'tel', 'birth', 'email', 'gender', 'addr')
+        fields = ('pk', 'name', 'nick_name', 'user_id', 'user_pw', 'tel', 'birth', 'email', 'gender', 'addr', 'img')
 
 
 class MemberReviseSerializer(serializers.ModelSerializer):
@@ -36,7 +36,7 @@ class LoginSerializer(serializers.ModelSerializer):
     last_date = serializers.DateTimeField(default=timezone.now)
     class Meta:
         model = Member
-        fields = ('user_id', 'user_pw', 'last_date')
+        fields = ('pk','user_id', 'user_pw', 'name', 'nick_name', 'tel', 'addr', 'last_date', 'img')
 
 class CompanySerializer(serializers.ModelSerializer):
     class Meta:
