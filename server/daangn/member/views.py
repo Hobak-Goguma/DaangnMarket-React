@@ -163,13 +163,16 @@ def member_login(request):
     except Member.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
+    # if request.method == 'POST':
+    #     serializer = LoginSerializer(member, data=request.data)
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #     return Response(serializer.data)
+
     if request.method == 'POST':
-        # serializer = LoginSerializer(member)
-        serializer = LoginSerializer(member, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
+        serializer = LoginSerializer(member)
         return Response(serializer.data)
-    
+
     else:
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
