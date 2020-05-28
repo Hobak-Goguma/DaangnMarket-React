@@ -9,12 +9,14 @@ class MemberSerializer(serializers.ModelSerializer):
         # fields = ('pk', 'name', 'nick_name', 'user_id', 'user_pw', 'tel', 'birth', 'email', 'gender')
         fields = ('pk', 'name', 'nick_name', 'user_id', 'user_pw', 'tel', 'birth', 'email', 'gender', 'addr')
 
+
 class MemberReviseSerializer(serializers.ModelSerializer):
     udate = serializers.DateTimeField(default=timezone.now)
     class Meta:
         model = Member
         # 추후 주소 수정 시 addr 넣어야 함. 현재는 udate 수정 확인을 위해 빼 놓았음
         fields = ('pk', 'nick_name', 'user_pw', 'tel', 'birth', 'email', 'udate')
+
 
 class MemberTouchSerializer(serializers.ModelSerializer):
     udate = serializers.DateTimeField(default=timezone.now)
@@ -41,6 +43,39 @@ class CompanySerializer(serializers.ModelSerializer):
         model = Company
         fields = ('pk', 'id_member', 'name', 'add', 'tel', 'info', 'category', 'img')
         #fields = ('pk', 'id_member', 'name', 'addr', 'tel', 'info', 'category', 'img')
+
+class WishlistSerializer(serializers.ModelSerializer):
+    id_member = MemberSerializer(read_only=True)
+    id_product = ProductSerializer(read_only=True)
+    class Meta:
+        model = Wishlist
+        fields = ('pk', 'id_product', 'id_member', 'cdate')
+
+# realdeal api 
+class RealDealSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Wishlist
+        fields = ('pk', 'id_product', 'cdate')
+
+class MemberSellerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Wishlist
+        fields = ('id_member', 'id_real_deal')
+
+class MemberShopperSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Wishlist
+        fields = ('id_member', 'id_real_deal')
+
+class SellerReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Wishlist
+        fields = ('pk', 'id_real_deal', 'title', 'cdate')
+
+class ShopperReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Wishlist
+        fields = ('pk', 'id_real_deal', 'title', 'cdate')
 
 
 # class MemberSerializer(serializers.Serializer):
