@@ -5,14 +5,16 @@ import styled from "styled-components";
 import ArticleSlider from "./ArticleSlider";
 import ArticleProfile from "./ArticleProfile";
 import ArticleDescription from "./ArticleDescription";
+import ArticleFooter from "./ArticleFooter";
 import { useState } from "react";
 
-const Article = ({ isModal, setModal, location, match }) => {
+const Article = ({ isModal, setModal, match }) => {
   const [sliderData, setSliderData] = useState([]);
   const [detail, setDetail] = useState([]);
 
+  let id = match.params.articles_id;
   useEffect(() => {
-    let id = match.params.articles_id;
+    window.localStorage.setItem("productId", id);
 
     fetch("http://localhost:3000/data/sliderData.json")
       .then((res) => res.json())
@@ -35,6 +37,7 @@ const Article = ({ isModal, setModal, location, match }) => {
       />
       <ArticleProfile />
       <ArticleDescription detail={detail} />
+      <ArticleFooter detail={detail} id={id} />
     </ArticleWrapper>
   );
 };

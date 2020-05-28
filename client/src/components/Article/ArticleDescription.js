@@ -2,19 +2,17 @@ import React from "react";
 import styled from "styled-components";
 
 const ArticleDescription = ({ detail }) => {
-  const price = parseInt(detail.price).toLocaleString();
-
   return (
     <StyledArticleDescription>
       <h1 className="article-title">{detail.name}</h1>
       <p className="article-category">
         {detail.category} ∙<time> 4일 전</time>
       </p>
-      <p className="article-price">{price}원</p>
+      {/* <p className="article-price">{price}원</p> */}
       <div className="article-detail">
         <p>{detail.info}</p>
       </div>
-      <p className="article-counts">채팅 8 ∙ 관심 5 ∙ 조회 547</p>
+      <p className="article-counts">조회 547</p>
     </StyledArticleDescription>
   );
 };

@@ -16,6 +16,9 @@ import ArticlePage from "./pages/ArticlePage";
 import OtherUserPage from "./pages/OtherUserPage";
 import Changelayout from "./pages/myPage/mychage/ChangeLayout";
 import UploadPage from "./pages/UploadPage";
+import WishlistPage from "./pages/WishlistPage";
+
+// Style Wrapper
 import { ThemeProvider } from "styled-components";
 import Theme from "./lib/themes/Theme";
 import Global from "./lib/themes/GlobalStyles";
@@ -36,6 +39,7 @@ export default function Routes() {
           <Route path="/user" component={OtherUserPage} />
           <Route path="/upload" component={UploadPage} />
           <Route path="/myinfochange" component={Changelayout} />
+          <Route path="/wishlist" component={WishlistPage} />
           <Redirect from="*" to="/" />
         </Switch>
         <Global />
