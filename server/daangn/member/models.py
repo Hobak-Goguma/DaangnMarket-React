@@ -143,7 +143,6 @@ class SellerReview(models.Model):
     title = models.CharField(max_length=50)
     cdate = models.DateTimeField(auto_now_add=True)
     
-
     class Meta:
         managed = False
         db_table = 'seller_review'
@@ -156,7 +155,6 @@ class ShopperRate(models.Model):
     class Meta:
         managed = False
         db_table = 'shopper_rate'
-
 
 
 class ShopperReview(models.Model):

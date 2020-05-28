@@ -17,6 +17,8 @@ urlpatterns = [
     path('test', views.test, name='test'),
     path('company', views.company_list, name='company_list'),
     path('company/<pk>', views.company_detail, name='company_detail'),
+    path('wishlist', views.wishlist_list, name='wishlist_list'),
+    path('wishlist/<pk>', views.wishlist_detail, name='wishlist_detail'),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
