@@ -46,8 +46,8 @@ const MyNav = ({choose,history}) =>{
                 history.push("/myproduct");
                 break;
 
-            case "내 정보 수정":
-                history.push("/mychange");
+            case "비밀번호 수정":
+                history.push("/mypwchange");
                 break;
 
             case "로그아웃":
@@ -58,7 +58,7 @@ const MyNav = ({choose,history}) =>{
                 break;
         }
     }
-    const myMenu = ["내 정보 보기", "내 상품", "내 정보 수정","로그아웃"]
+    const myMenu = ["내 정보 보기", "내 상품", "비밀번호 수정","로그아웃"]
     const menu = myMenu.map((v)=>{
         if(v===choose){
         return(

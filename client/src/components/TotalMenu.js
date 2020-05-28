@@ -43,9 +43,9 @@ const TotalMenu = ({ logOut, login, onClick }) => {
             </Link>
             </li>
               <li>
-            <Link to="/mychange">
+            <Link to="/mypwchange">
               <div>
-                <span>내 정보 수정</span>
+                <span>비밀번호 수정</span>
               </div>
             </Link>
           </li>
@@ -145,7 +145,7 @@ const StyledTotalMenu = styled.ul`
         &:hover {
           background: #ffbe93;
         }
-        width: 100px;
+        width: 120px;
         padding: 0 1rem;
         background: #fff;
       }

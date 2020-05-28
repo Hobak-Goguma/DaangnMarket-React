@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import MyLayout from "./MypageLayout";
+import { Link } from "react-router-dom";
 
 const Info = styled.div`
     width:calc(100% - 250px);
@@ -134,6 +135,9 @@ const MyInfo = ({history}) =>{
         user_id: "",
         name: "",
         nick_name:"",
+        birth:"",
+        email:"",
+        gender: "",
         tel: "",
         add: [],
         temper: 36.5,
@@ -148,7 +152,29 @@ const MyInfo = ({history}) =>{
                 history.push("/login");
             }else{
                 tempInfo = JSON.parse(window.sessionStorage.getItem("user"));
+                
+                fetch(`www.daangn.site/memeber/${sessionInfo.pk}`,{//수정용 api주소 수정용 fetch
+                    method:"GET",
+                    headers:{
+                        "Content-type": "application/json",
+                    },
+                    body:JSON.stringify({
+                            nick_name: sessionInfo.nick_name,
+                            tel: sessionInfo.tel,
+                            // birth: birthFetch,
+                            email: sessionInfo.email,
+                            addr: sessionInfo.add,
+                    })
+                }).then((response)=>{
+                    if(response.status===200){                                
+                        alert("비밀번호 수정이 완료되었습니다.");
+                        history.push("/");
+                    }else{
+                        alert("비밀번호 수정이 되지 않았습니다. 다시한번 시도해주세요.");
+                    }
+                });
                 setSessionInfo({
+                    ...sessionInfo,
                     pk: 1,
                     user_id: tempInfo.user_id,
                     name: tempInfo.name,
@@ -163,31 +189,25 @@ const MyInfo = ({history}) =>{
                 ,pk: 1,
                 user_id: "root",
                 name: "root",
+                gender: "MALE",
+                birth:"19200101",
+                email: "sunwoo@wonsang.ggum",
                 nick_name: "루트",
                 tel: "010-1234-1234",
                 add: ["서울특별시 영등포구 짜장동"]
             });
         }
     },[])
-    const click = (e)=>{
-        const targetId = e.target.id;
-        switch (targetId) {
-            case "nickname":
-                setState("nickname")
-                break;
-            case "phone":
-                setState("phone")
-                break;
-            case "addr":
-                setState("addr")
-                break;
-            default:
-                setState("info")
-                break;
+    let birthYear="",birthMonth="",birthDay="";
+    for(let i = 0 ; i < sessionInfo.birth.length; i++){
+        if(i<4){
+            birthYear+=sessionInfo.birth[i];
+        }else if(i < 6){
+            birthMonth+=sessionInfo.birth[i];
+        }else{
+            birthDay+=sessionInfo.birth[i];
         }
     }
-
-
     return (<MyLayout history={history} choose="내 정보 보기">
         
         <Info>
@@ -200,7 +220,6 @@ const MyInfo = ({history}) =>{
                 }</span>
             </div>
             <div className="infoBox">
-                {state==="info"? 
                 <>
                 <div className="profile"></div> 
                 <div className="necessary">
@@ -215,15 +234,36 @@ const MyInfo = ({history}) =>{
                         <div className="temper"><div className="manner" style={{width:`  ${sessionInfo.temper}%  `}}></div></div>
                     </div>
                 </div>
-                <div className="nickName info changeAble" id="nickname" onClick={click}>
-                    <a href="">닉네임</a> <span>{sessionInfo.nick_name}</span>
-                    <div className="change">변경하기 <i className="fas fa-chevron-right"></i></div>
-                </div>
-                <div className="phone info changeAble" id="phone"  onClick={click}>
+                <Link to={{
+                    pathname : `/myinfoChange`,
+                    state : {
+                        state : "nick_name",
+                        user : sessionInfo}
+                }}>
+                    <div className="nickName info changeAble">
+                        <a href="">닉네임</a> <span>{sessionInfo.nick_name}</span>
+                        <div className="change">변경하기 <i className="fas fa-chevron-right"></i></div>
+                    </div>
+                </Link>
+            
+                <Link to={{
+                    pathname : `/myinfoChange`,
+                    state : {
+                        state : "tel",
+                        user : sessionInfo}
+                }}>
+                <div className="phone info changeAble">
                     <a href="">전화번호</a> <span>{sessionInfo.tel}</span>
                     <div className="change">변경하기 <i className="fas fa-chevron-right"></i></div>
                 </div>
-                <div className="addr info changeAble" id="addr" onClick={click}>
+                </Link>
+                <Link to={{
+                    pathname : `/myinfoChange`,
+                    state : {
+                        state : "addr",
+                        user : sessionInfo}
+                }}>
+                <div className="addr info changeAble">
                     <a href="">주소</a> <span>{sessionInfo.add[0]}</span>
                     {sessionInfo.add[1]&&sessionInfo.add[1]!==""?
                     <><a href=""></a> <span>{sessionInfo.add[1]}</span></>:
@@ -231,16 +271,38 @@ const MyInfo = ({history}) =>{
                     <div className="change">변경하기 <i className="fas fa-chevron-right"></i></div>
 
                 </div>
-        </>:
-        state==="nickname"?<>
-            <div className="infoChange">
-                <a href="">닉네임</a> {sessionInfo.nick_name} <div className="modify"><i className="fas fa-pen"></i></div>
-            </div>
-            <div className="btnFinish"><button>변경 완료</button></div>
-        </>:
-        state==="phone"?<></>:
-        state==="addr"?<></>:
-        setState("info")}
+                </Link>
+                <Link to={{
+                    pathname : `/myinfoChange`,
+                    state : {
+                        state : "gender",
+                        user : sessionInfo}
+                }}>
+                <div className="addr info changeAble">
+                    <a href="">성별</a>
+                    {sessionInfo.gender&&sessionInfo.gender!==""?
+                     <span>{sessionInfo.gender==="MALE"? "남성":"여성"}</span>:
+                    <></>}
+                    <div className="change">변경하기 <i className="fas fa-chevron-right"></i></div>
+
+                </div>
+                </Link>
+                <Link to={{
+                    pathname : `/myinfoChange`,
+                    state : {
+                        state : "birth",
+                        user : sessionInfo}
+                }}>
+                <div className="addr info changeAble">
+                    <a href="">생년월일</a>
+                    {sessionInfo.gender&&sessionInfo.gender!==""?
+                     <span>{birthYear}년 {birthMonth}월 {birthDay}일</span>:
+                    <></>}
+                    <div className="change">변경하기 <i className="fas fa-chevron-right"></i></div>
+
+                </div>
+                </Link>
+        </>
         
         </div>
         </Info>

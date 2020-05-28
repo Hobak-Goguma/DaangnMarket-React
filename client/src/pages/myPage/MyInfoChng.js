@@ -1,6 +1,9 @@
 import React,{useState, useEffect} from "react";
 import styled from "styled-components";
-import { Radio } from "@material-ui/core";
+import {API} from "../../lib/api"
+
+
+// import { Radio } from "@material-ui/core";
 
 const InfoBox = styled.div`
     width:calc(100% - 250px);
@@ -220,6 +223,7 @@ const InfoBox = styled.div`
 const MyInfoChng = ({ID,login,changeLogin,history}) =>{
     let resUser;
     const [user,setUser] = useState({
+        pk:0,
         nick_name : "",
         name :"",
         tel:"",
@@ -240,21 +244,20 @@ const MyInfoChng = ({ID,login,changeLogin,history}) =>{
         combinate:"",
         sameNum:"",
     });
-    const [birth,setBirth] = useState({
-        birthClass:"wrong",
-        year:"",
-        month :"",
-        day: ""
-    });//생일 체크를 위한 변수
+    // const [birth,setBirth] = useState({
+    //     birthClass:"wrong",
+    //     year:"",
+    //     month :"",
+    //     day: ""
+    // });//생일 체크를 위한 변수
 
-    const [agreeCh,setAgreeCh] = useState({ //약관 체크를 위한 state
-        SMS:false,
-        mail:false
-    });
+    // const [agreeCh,setAgreeCh] = useState({ //약관 체크를 위한 state
+    //     SMS:false,
+    //     mail:false
+    // });
 
 
     useEffect(() => {
-        console.log("res")  
         fetch("",{//http://0c525d07.ngrok.io/member/login
             method:"POST",
             headers:{
@@ -382,84 +385,86 @@ const MyInfoChng = ({ID,login,changeLogin,history}) =>{
                 });
                 break;
 
-                case "birthYear": 
-                //문자입력을 방지
-                    let CheckString = false;
+                // case "birthYear": 
+                // //문자입력을 방지
+                //     let CheckString = false;
 
-                    for(let i = 0 ; i<e.target.value.length; i++){
-                        let temp = e.target.value.charCodeAt([i]) ;
-                        if(temp<48||temp>57){
-                            CheckString = true;
-                            break;
-                        }
-                    }
+                //     for(let i = 0 ; i<e.target.value.length; i++){
+                //         let temp = e.target.value.charCodeAt([i]) ;
+                //         if(temp<48||temp>57){
+                //             CheckString = true;
+                //             break;
+                //         }
+                //     }
                     
-                    if(!CheckString){
-                        birthCh("year",e.target.value||e.target.value==="");
-                    }else{
-                        e.target.value = birth.year;
-                    }
-                    break;
-                case "birthMonth":
-                //문자입력을 방지
-                    let CheckmonthString = false;
+                //     if(!CheckString){
+                //         birthCh("year",e.target.value||e.target.value==="");
+                //     }else{
+                //         e.target.value = birth.year;
+                //     }
+                //     break;
+                // case "birthMonth":
+                // //문자입력을 방지
+                //     let CheckmonthString = false;
 
-                    for(let i = 0 ; i<e.target.value.length; i++){
-                        let temp = e.target.value.charCodeAt([i]) ;
-                        if(temp<48||temp>57){
-                            CheckmonthString = true;
-                            break;
-                        }
-                    }
+                //     for(let i = 0 ; i<e.target.value.length; i++){
+                //         let temp = e.target.value.charCodeAt([i]) ;
+                //         if(temp<48||temp>57){
+                //             CheckmonthString = true;
+                //             break;
+                //         }
+                //     }
                     
-                    if(!CheckmonthString||e.target.value===""){
-                        birthCh("month",e.target.value);
-                    }else{
-                        e.target.value = birth.month;
-                    }
-                break;
-                case "birthDay":
-                //문자입력을 방지
-                    let CheckdayString = false;
+                //     if(!CheckmonthString||e.target.value===""){
+                //         birthCh("month",e.target.value);
+                //     }else{
+                //         e.target.value = birth.month;
+                //     }
+                // break;
+                // case "birthDay":
+                // //문자입력을 방지
+                //     let CheckdayString = false;
 
-                    for(let i = 0 ; i<e.target.value.length; i++){
-                        let temp = e.target.value.charCodeAt([i]) ;
-                        if(temp<48||temp>57){
-                            CheckdayString = true;
-                            break;
-                        }
-                    }
+                //     for(let i = 0 ; i<e.target.value.length; i++){
+                //         let temp = e.target.value.charCodeAt([i]) ;
+                //         if(temp<48||temp>57){
+                //             CheckdayString = true;
+                //             break;
+                //         }
+                //     }
                     
-                    if(!CheckdayString||e.target.value===""){
-                        birthCh("day",e.target.value);
-                    }else{
-                        e.target.value = birth.day;
-                    }
-                break;
+                //     if(!CheckdayString||e.target.value===""){
+                //         birthCh("day",e.target.value);
+                //     }else{
+                //         e.target.value = birth.day;
+                //     }
+                // break;
 
 
 
                 case "submit"://변경 버튼 눌렀을때 함수
                     if( newPwCh.sameNum!=="true"|| newPwCh.differPw!=="true"|| newPwCh.moreEight!=="true"|| newPwCh.combinate!=="true"|| newPwCh.newPwClass!=="wrong"||newPwCh.newPwChClass!== "wrong"){
                         alert("비밀번호에 문제가 있습니다.");
-                    }else if(birth.birthClass!=="wrong"){
-                        alert("생일 입력이 잘못되었습니다.");
-                    }else{
+                    }
+                    // else if(birth.birthClass!=="wrong"){
+                    //     alert("생일 입력이 잘못되었습니다.");
+                    // }
+                    else{
                         //8자리 만들기 위하여
-                        let birthFetch = birth.year;
-                        if(Number(birth.month)<10){ 
-                            birthFetch += "0"+birth.month;
-                        }else{
-                            birthFetch += birth.month;
-                        }
-                        if(Number(birth.day)<10){
-                            birthFetch += "0"+birth.day;
-                        }else{
-                            birthFetch +=birth.day;
-                        }
+                        // let birthFetch = birth.year;
+                        // if(Number(birth.month)<10){ 
+                        //     birthFetch += "0"+birth.month;
+                        // }else{
+                        //     birthFetch += birth.month;
+                        // }
+                        // if(Number(birth.day)<10){
+                        //     birthFetch += "0"+birth.day;
+                        // }else{
+                        //     birthFetch +=birth.day;
+                        // }
 
 
-                        fetch(`www.daangn.site/memeber/${user.pk}`,{//수정용 api주소 수정용 fetch
+                        fetch(`${API}memeber/${user.pk}`,{//수정용 api주소 수정용 fetch
                             method:"PUT",
                             headers:{
                                 "Content-type": "application/json",
@@ -468,23 +473,40 @@ const MyInfoChng = ({ID,login,changeLogin,history}) =>{
                                     nick_name: user.nick_name,
                                     user_pw: newPwCh.newPwVal,
                                     tel: user.tel,
-                                    birth: birthFetch,
+                                    // birth: birthFetch,
                                     email: user.email,
                                     addr: user.add,
                             })
                         }).then((response)=>{
                             if(response.status===200){                                
-                                alert("정보수정이 완료되었습니다.");
+                                alert("비밀번호 수정이 완료되었습니다.");
                                 history.push("/");
                             }else{
-                                alert("회원정보 수정이 되지 않았습니다. 다시한번 시도해주세요.");
+                                alert("비밀번호 수정이 되지 않았습니다. 다시한번 시도해주세요.");
                             }
                         });
                     }
 
                 break;
                 case "secession": //탈퇴 버튼
-
+                console.log(`${API}memeber/${user.pk}`,user.pk);
+                    if(window.confirm("정말 탈퇴하시겠습니까?")===true){
+                        console.log(user.pk);
+                        fetch(`${API}memeber/${user.pk}`,{
+                            method:"DELETE",
+                            headers:{
+                                "Content-type": "application/json",
+                            }
+                        }).then(async(response)=>{
+                            console.log(await response);
+                            if(await response.status===204){                                
+                                alert("해당 계정이 탈퇴되었습니다.");
+                                history.push("/");
+                            }else{
+                                alert("해당 계정이 탈퇴되지 않았습니다. 다시한번 시도해주세요.");
+                            }
+                        });
+                    }
                 break;
 
             default:
@@ -492,51 +514,51 @@ const MyInfoChng = ({ID,login,changeLogin,history}) =>{
         }
     }
 
-    const birthCh = (type,value)=>{ // 생일 체크를 위한 함수
+    // const birthCh = (type,value)=>{ // 생일 체크를 위한 함수
 
-        let year= type==="year"? value===""? "":Number(value):Number(birth.year); //연도 입력
-        let month= type==="month"? value===""? "":Number(value):Number(birth.month); // 월 입력
-        let day= type==="day"? value===""? "":Number(value):Number(birth.day); //일 입력
-        let dayCheck = true; // [year,month,day]
-        if(day>0&&day<32&&year>1918&&year<2021&&month>0&&month<13){//연도 달 체크는 여기서
-            if(month===1||month===3||month===5||month===7||month===8||month===10||month===12){ //윤달 및 달별 일자 체크
-                if(day>31){
-                    dayCheck =false;
-                }
-            }else if(month===4||month===6||month===9||month===11){
-                if(day>30){
-                    dayCheck =false;
-                }
-            }else if(year%400 === 0 && month===2){ //윤달 체크
-                dayCheck = day>29? false:true;
-            }else if(year%100 === 0 && month===2){
-                dayCheck = day>28? false:true;
-            }else if(year%4 === 0 && month===2){
-                dayCheck = day>29? false:true;
-            }else if(month===2 && day>28){
-                dayCheck =false;
-            }
-            if(dayCheck){ // 날짜 맞을때
-                setBirth({
-                    year:String(year),
-                    month:String(month),
-                    day:String(day),
-                    birthClass:"wrong"});
-            }else{ //날짜 틀렸을때 입력은 되나 실패 text뜸
-                setBirth({
-                    year:String(year),
-                    month:String(month),
-                    day:String(day),
-                    birthClass:"wrong visible"});
-            }
-        }else{// 형식에 맞지 않을때
-            setBirth({
-                year:String(year),
-                month:String(month),
-                day:String(day),
-                birthClass:"wrong visible"});
-        }
-    }
+    //     let year= type==="year"? value===""? "":Number(value):Number(birth.year); //연도 입력
+    //     let month= type==="month"? value===""? "":Number(value):Number(birth.month); // 월 입력
+    //     let day= type==="day"? value===""? "":Number(value):Number(birth.day); //일 입력
+    //     let dayCheck = true; // [year,month,day]
+    //     if(day>0&&day<32&&year>1918&&year<2021&&month>0&&month<13){//연도 달 체크는 여기서
+    //         if(month===1||month===3||month===5||month===7||month===8||month===10||month===12){ //윤달 및 달별 일자 체크
+    //             if(day>31){
+    //                 dayCheck =false;
+    //             }
+    //         }else if(month===4||month===6||month===9||month===11){
+    //             if(day>30){
+    //                 dayCheck =false;
+    //             }
+    //         }else if(year%400 === 0 && month===2){ //윤달 체크
+    //             dayCheck = day>29? false:true;
+    //         }else if(year%100 === 0 && month===2){
+    //             dayCheck = day>28? false:true;
+    //         }else if(year%4 === 0 && month===2){
+    //             dayCheck = day>29? false:true;
+    //         }else if(month===2 && day>28){
+    //             dayCheck =false;
+    //         }
+    //         if(dayCheck){ // 날짜 맞을때
+    //             setBirth({
+    //                 year:String(year),
+    //                 month:String(month),
+    //                 day:String(day),
+    //                 birthClass:"wrong"});
+    //         }else{ //날짜 틀렸을때 입력은 되나 실패 text뜸
+    //             setBirth({
+    //                 year:String(year),
+    //                 month:String(month),
+    //                 day:String(day),
+    //                 birthClass:"wrong visible"});
+    //         }
+    //     }else{// 형식에 맞지 않을때
+    //         setBirth({
+    //             year:String(year),
+    //             month:String(month),
+    //             day:String(day),
+    //             birthClass:"wrong visible"});
+    //     }
+    // }
 
 
     return (<InfoBox>{!user.login? (<div className="blank"></div>):(<>
@@ -549,7 +571,7 @@ const MyInfoChng = ({ID,login,changeLogin,history}) =>{
             <div className="mt15">현재 비밀번호 <input type="password" id="nowPw" onChange={change}/></div>
             <div className={nowPwCh}>현재 비밀번호를 확인해주세요</div>
             <div>새 비밀번호 
-                <input id="newPw" onChange={change} type="text"/>
+                <input id="newPw" onChange={change} type="password"/>
             </div>
             <div className={newPwCh.newPwClass}>
                 <p className={newPwCh.differPw}>현재 비밀번호와 다르게 입력</p>
@@ -558,10 +580,11 @@ const MyInfoChng = ({ID,login,changeLogin,history}) =>{
                 <p className={newPwCh.sameNum}>동일한 숫자 3개 이상 연속 사용 불가</p>
             </div>
             <div>새 비밀번호 확인
-                <input type="text" id="newPwCh" onChange={change}/>
+                <input type="password" id="newPwCh" onChange={change}/>
             </div>
             <div className={newPwCh.newPwChClass}>동일한 비밀번호를 입력해주세요</div>
-            <div className="mt15">이름*<input type="text" value={user.name} readOnly/></div>
+        </div>
+            {/* <div className="mt15">이름*<input type="text" value={user.name} readOnly/></div>
             <div className="mt15">이메일*<input type="text"/><a href="">이메일 중복확인</a></div>
             <div className="mt15">휴대폰*
                 <input type="text" id="phoneNum" value={user.tel} onChange={change}/>
@@ -616,7 +639,7 @@ const MyInfoChng = ({ID,login,changeLogin,history}) =>{
                     }} checked={agreeCh.mail}/>이메일
                 </div>
             </div>
-        </div>
+        </div> */}
         <div className="btnBox">
             <a href="" className="secession"id="secession" onClick={change}>탈퇴하기</a>
             <a href="" className="submit" id="submit" onClick={change}>회원정보수정</a>
