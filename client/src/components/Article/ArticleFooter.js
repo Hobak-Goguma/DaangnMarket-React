@@ -1,16 +1,24 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { connect } from "react-redux";
+import { addProduct } from "../../modules/action/wishlist";
+import { Link } from "react-router-dom";
+import { API } from "../../lib/api";
 
-const ArticleFooter = ({ detail, addProduct, history }) => {
+const ArticleFooter = ({ detail, addProduct, id }) => {
   const [heart, setHeart] = useState(false);
   const price = parseInt(detail.price).toLocaleString();
 
-  const clickHeart = () => {
-    setHeart(!heart);
-    let object = {};
-    object.id = localStorage.getItem("productId");
-    object.heart = !heart;
-    localStorage.setItem("itemLike", JSON.stringify(object));
+  const clickHeart = (id) => {
+    fetch(`${API}product/${id}`)
+      .then((res) => res.json())
+      .then((res) => {
+        if (!heart) {
+          addProduct(res);
+        }
+      });
+
+    console.log(!heart);
   };
 
   return (
@@ -18,19 +26,25 @@ const ArticleFooter = ({ detail, addProduct, history }) => {
       <div>
         <i
           className={`${heart ? "fas" : "far"} fa-heart`}
-          onClick={clickHeart}
+          onClick={() => {
+            clickHeart(id);
+            setHeart(!heart);
+          }}
         ></i>
         <div className="price-wrapper">
           <p className="price">{price}원</p>
           <p className="price-offer">가격제안 불가</p>
         </div>
       </div>
+      <div>
+        <Link to="/wishlist">찜목록 보기</Link>
+      </div>
       <button>채팅으로 거래하기</button>
     </ArticleFooterWrapper>
   );
 };
 
-export default ArticleFooter;
+export default connect(null, { addProduct })(ArticleFooter);
 
 const ArticleFooterWrapper = styled.div`
   position: fixed;

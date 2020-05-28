@@ -12,8 +12,8 @@ const Article = ({ isModal, setModal, match }) => {
   const [sliderData, setSliderData] = useState([]);
   const [detail, setDetail] = useState([]);
 
+  let id = match.params.articles_id;
   useEffect(() => {
-    let id = match.params.articles_id;
     window.localStorage.setItem("productId", id);
 
     fetch("http://localhost:3000/data/sliderData.json")
@@ -37,7 +37,7 @@ const Article = ({ isModal, setModal, match }) => {
       />
       <ArticleProfile />
       <ArticleDescription detail={detail} />
-      <ArticleFooter detail={detail} />
+      <ArticleFooter detail={detail} id={id} />
     </ArticleWrapper>
   );
 };
