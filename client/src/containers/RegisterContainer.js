@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { API } from "../lib/api";
+import api from "../lib/api";
 import { withRouter } from "react-router-dom";
 import Register from "../components/Register";
 
@@ -56,7 +56,8 @@ const RegisterContainer = ({ history }) => {
   };
 
   const fetchIdDuplication = () => {
-    fetch(`${API}member/overlap?user_id=${inputState.id}`)
+    api
+      .get(`member/overlap?user_id=${inputState.id}`)
       .then((res) => {
         if (res.status === 200) {
           alert("중복확인이 완료되었습니다.");
@@ -134,12 +135,8 @@ const RegisterContainer = ({ history }) => {
       checkbox.checkedB &&
       checkbox.checkedG
     ) {
-      fetch(`${API}member`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
+      api
+        .post("/member", {
           name: inputState.name,
           nick_name: inputState.id,
           user_id: inputState.id,
@@ -148,19 +145,19 @@ const RegisterContainer = ({ history }) => {
           birth: inputState.birth.replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3"),
           email: inputState.email,
           gender: inputState.gender,
-          add: addrInput.current.value,
-        }),
-      }).then((response) => {
-        if (response.status === 200 || response.status === 201) {
-          alert("회원가입 되었습니다.");
-          history.push("/login");
-        } else {
-          alert("안된다 ㅜㅜ");
-          if (!isIdDuplicate) {
-            alert("아이디 중복확인 하였는지 확인해주세요!");
+          addr: addrInput.current.value,
+        })
+        .then((res) => {
+          if (res.status === 200 || res.status === 201) {
+            alert("회원가입 되었습니다.");
+            history.push("/login");
+          } else {
+            alert("안된다 ㅜㅜ");
+            if (!isIdDuplicate) {
+              alert("아이디 중복확인 하였는지 확인해주세요!");
+            }
           }
-        }
-      });
+        });
     } else {
       alert("양식에 맞게 작성하였는지 다시한번 확인해 주세요");
     }

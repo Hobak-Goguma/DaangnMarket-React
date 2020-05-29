@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { API } from "../lib/api";
-import Layout from "../components/Layout";
+import api from "../lib/api";
+import Layout from "../components/common/Layout";
 import Search from "../components/Search";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
@@ -14,14 +14,12 @@ const SearchContainer = () => {
   const [fetched, setFetched] = useState(false);
 
   useEffect(() => {
-    fetch(`${API}product/search?q=${window.location.href.split("=")[1]}`)
-      .then((res) => res.json())
+    api
+      .get(`/product/search?q=${window.location.href.split("=")[1]}`)
       .then((res) => {
-        setProducts(res);
+        setProducts(res.data);
         setCards([]);
-        console.log(res);
       });
-
     let timer = setTimeout(() => {
       setFetched(true);
     }, 2000);

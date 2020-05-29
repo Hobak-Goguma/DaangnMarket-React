@@ -1,5 +1,5 @@
 import React from "react";
-import Layout from "../components/Layout";
+import Layout from "../components/common/Layout";
 import SearchContainer from "../containers/SearchContainer";
 
 const SearchPage = () => {
