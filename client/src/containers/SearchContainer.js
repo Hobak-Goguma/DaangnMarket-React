@@ -8,9 +8,7 @@ import { withRouter } from "react-router-dom";
 
 const SearchContainer = () => {
   const [products, setProducts] = useState([]);
-  const [cards, setCards] = useState([]);
-  const [numA, setNumA] = useState(6);
-  const [numB, setNumB] = useState(18);
+  const [numB, setNumB] = useState(6);
   const [fetched, setFetched] = useState(false);
 
   useEffect(() => {
@@ -18,7 +16,6 @@ const SearchContainer = () => {
       .get(`/product/search?q=${window.location.href.split("=")[1]}`)
       .then((res) => {
         setProducts(res.data);
-        setCards([]);
       });
     let timer = setTimeout(() => {
       setFetched(true);
@@ -30,21 +27,12 @@ const SearchContainer = () => {
   }, []);
 
   const showMore = () => {
-    setCards([
-      ...cards,
-      <Search
-        products={products}
-        sliceStart={numA}
-        sliceEnd={numB}
-        key={cards}
-      />,
-    ]);
-    setNumA(numA + 12);
+    console.log(products.length);
     setNumB(numB + 12);
   };
 
   return (
-    <Layout setProducts={setProducts} setCards={setCards}>
+    <Layout setProducts={setProducts} setNumB={setNumB}>
       <SearchContainerWrapper>
         <div className="result-container">
           <div className="articles-wrap">
@@ -63,13 +51,14 @@ const SearchContainer = () => {
                 {fetched ? "물품이 없네요" : "로딩중..."}
               </div>
             ) : (
-              <Search products={products} sliceStart={0} sliceEnd={6} />
+              <Search products={products} sliceStart={0} sliceEnd={numB} />
             )}
-            {cards}
           </div>
-          <div className="more-btn" onClick={showMore}>
-            <span>더보기</span>
-          </div>
+          {products.length > numB ? (
+            <div className="more-btn" onClick={showMore}>
+              <span>더보기</span>
+            </div>
+          ) : null}
         </div>
       </SearchContainerWrapper>
     </Layout>
