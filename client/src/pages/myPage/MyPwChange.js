@@ -3,8 +3,8 @@ import MyLayout from "./MypageLayout";
 import MyPage2ndLogin from "./MyPage2ndLogin";
 import MyInfoChng from "./MyInfoChng";
 
-const MyChange = ({history}) =>{
-    let choose = "내 정보 수정";
+const MyPwChange = ({history}) =>{
+    let choose = "비밀번호 수정";
     const [ID,setID]= useState("");
     useEffect(()=>{
         if(window.sessionStorage.getItem("user")!==null&&window.sessionStorage.getItem("user")!==""){// 통신시 분기문 제거
@@ -32,4 +32,4 @@ const MyChange = ({history}) =>{
     </MyLayout>);
 }
 
-export default MyChange;
+export default MyPwChange;

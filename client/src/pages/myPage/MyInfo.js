@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import MyLayout from "./MypageLayout";
+import { Link } from "react-router-dom";
 
 const Info = styled.div`
     width:calc(100% - 250px);
@@ -19,13 +20,38 @@ const Info = styled.div`
     .infoBox{
         position: relative;
         box-sizing:border-box; 
-        margin: 50px 0;
+        margin: 50px 0 100px 0;
         border:1px solid #ccc;
         border-radius:10px;
         width:100%;
-        height:500px;
         padding:200px 30px 30px 30px ;
+        .infoChange{
+            width:calc(100% - 60px);
+            position:absolute;
+            top:40px;
+            left:30px;
+            font-size:25px;
+            a{
+                display:inline-block;
+                width:150px;
+            }
+            .modify{
+                cursor:pointer;
+                position:absolute;
+                right:0;
+                top:50%;
+                transform:translateY(-50%);
+            }
+        }
+        .btnFinish{
+            
+            width:100%;
+            text-align:center;
+        }
+        
         .profile{
+            background:url("/img/noname.jpg") no-repeat center;
+            background-size: cover;
             position:absolute;
             top:25px;
             right:60px;
@@ -35,12 +61,37 @@ const Info = styled.div`
             border-radius:50%;
         }
         .necessary{
+            width: calc(100% - 60px);
             position:absolute;
             top:30px;
             left:30px;
             a{
                 width: 100px;
                 display: inline-block;
+                cursor: auto;
+            }
+            .name{
+                margin-top:10px;
+                font-size:23px
+            }
+            .id{
+                margin-top:20px;
+                font-size:23px
+            }
+            .temperature{
+                margin-top :35px;
+                .temper{
+                    margin-top :13px;
+                    height:3px;
+                    width:calc(100% - 210px);
+                    border-radius:3px;
+                    border:1.1px solid #ccc;
+                    overflow:hidden;
+                    .manner{
+                        height:100%;
+                        background:blue;
+                    }
+                }
             }
         }
         .changeAble{
@@ -70,7 +121,7 @@ const Info = styled.div`
                 display: inline-block;
             }
             span{
-                font-size:25px;
+                font-size:21px;
                 display: inline-block;
             }
         }
@@ -84,10 +135,15 @@ const MyInfo = ({history}) =>{
         user_id: "",
         name: "",
         nick_name:"",
+        birth:"",
+        email:"",
+        gender: "",
         tel: "",
         add: [],
         temper: 36.5,
     });
+    const [state, setState] = useState("info");
+
     useEffect(()=>{// 세션정보 이니셜라이징
         //통신시 첫 분기문만 없애면 됨
         if(window.sessionStorage.getItem("user")!==null&&window.sessionStorage.getItem("user")!==""){
@@ -96,7 +152,29 @@ const MyInfo = ({history}) =>{
                 history.push("/login");
             }else{
                 tempInfo = JSON.parse(window.sessionStorage.getItem("user"));
+                
+                fetch(`www.daangn.site/memeber/${sessionInfo.pk}`,{//수정용 api주소 수정용 fetch
+                    method:"GET",
+                    headers:{
+                        "Content-type": "application/json",
+                    },
+                    body:JSON.stringify({
+                            nick_name: sessionInfo.nick_name,
+                            tel: sessionInfo.tel,
+                            // birth: birthFetch,
+                            email: sessionInfo.email,
+                            addr: sessionInfo.add,
+                    })
+                }).then((response)=>{
+                    if(response.status===200){                                
+                        alert("비밀번호 수정이 완료되었습니다.");
+                        history.push("/");
+                    }else{
+                        alert("비밀번호 수정이 되지 않았습니다. 다시한번 시도해주세요.");
+                    }
+                });
                 setSessionInfo({
+                    ...sessionInfo,
                     pk: 1,
                     user_id: tempInfo.user_id,
                     name: tempInfo.name,
@@ -111,22 +189,38 @@ const MyInfo = ({history}) =>{
                 ,pk: 1,
                 user_id: "root",
                 name: "root",
+                gender: "MALE",
+                birth:"19200101",
+                email: "sunwoo@wonsang.ggum",
                 nick_name: "루트",
                 tel: "010-1234-1234",
                 add: ["서울특별시 영등포구 짜장동"]
             });
         }
     },[])
-
-
-
+    let birthYear="",birthMonth="",birthDay="";
+    for(let i = 0 ; i < sessionInfo.birth.length; i++){
+        if(i<4){
+            birthYear+=sessionInfo.birth[i];
+        }else if(i < 6){
+            birthMonth+=sessionInfo.birth[i];
+        }else{
+            birthDay+=sessionInfo.birth[i];
+        }
+    }
     return (<MyLayout history={history} choose="내 정보 보기">
+        
         <Info>
+        
             <div className="title">
-                <span className="tit">내정보</span>
+                <span className="tit">{state==="info"? "내정보":
+                state==="nickname"? "별명 변경":
+                state==="phone"? "전화번호 변경":
+                state==="addr"? "주소 변경":setState("info")
+                }</span>
             </div>
-
             <div className="infoBox">
+                <>
                 <div className="profile"></div> 
                 <div className="necessary">
                     <div className="name">
@@ -135,16 +229,41 @@ const MyInfo = ({history}) =>{
                     <div className="id">
                         <a href="">아이디</a> <span>{sessionInfo.user_id}</span>
                     </div>
+                    <div className="temperature">
+                        <a href="">매너온도</a>{sessionInfo.temper}도
+                        <div className="temper"><div className="manner" style={{width:`  ${sessionInfo.temper}%  `}}></div></div>
+                    </div>
                 </div>
-                <div className="nickName info changeAble">
-                    <a href="">닉네임</a> <span>{sessionInfo.nick_name}</span>
-                    <div className="change">변경하기 <i className="fas fa-chevron-right"></i></div>
-                </div>
+                <Link to={{
+                    pathname : `/myinfoChange`,
+                    state : {
+                        state : "nick_name",
+                        user : sessionInfo}
+                }}>
+                    <div className="nickName info changeAble">
+                        <a href="">닉네임</a> <span>{sessionInfo.nick_name}</span>
+                        <div className="change">변경하기 <i className="fas fa-chevron-right"></i></div>
+                    </div>
+                </Link>
+            
+                <Link to={{
+                    pathname : `/myinfoChange`,
+                    state : {
+                        state : "tel",
+                        user : sessionInfo}
+                }}>
                 <div className="phone info changeAble">
                     <a href="">전화번호</a> <span>{sessionInfo.tel}</span>
                     <div className="change">변경하기 <i className="fas fa-chevron-right"></i></div>
                 </div>
-                <div className="phone info changeAble">
+                </Link>
+                <Link to={{
+                    pathname : `/myinfoChange`,
+                    state : {
+                        state : "addr",
+                        user : sessionInfo}
+                }}>
+                <div className="addr info changeAble">
                     <a href="">주소</a> <span>{sessionInfo.add[0]}</span>
                     {sessionInfo.add[1]&&sessionInfo.add[1]!==""?
                     <><a href=""></a> <span>{sessionInfo.add[1]}</span></>:
@@ -152,7 +271,40 @@ const MyInfo = ({history}) =>{
                     <div className="change">변경하기 <i className="fas fa-chevron-right"></i></div>
 
                 </div>
-            </div>
+                </Link>
+                <Link to={{
+                    pathname : `/myinfoChange`,
+                    state : {
+                        state : "gender",
+                        user : sessionInfo}
+                }}>
+                <div className="addr info changeAble">
+                    <a href="">성별</a>
+                    {sessionInfo.gender&&sessionInfo.gender!==""?
+                     <span>{sessionInfo.gender==="MALE"? "남성":"여성"}</span>:
+                    <></>}
+                    <div className="change">변경하기 <i className="fas fa-chevron-right"></i></div>
+
+                </div>
+                </Link>
+                <Link to={{
+                    pathname : `/myinfoChange`,
+                    state : {
+                        state : "birth",
+                        user : sessionInfo}
+                }}>
+                <div className="addr info changeAble">
+                    <a href="">생년월일</a>
+                    {sessionInfo.gender&&sessionInfo.gender!==""?
+                     <span>{birthYear}년 {birthMonth}월 {birthDay}일</span>:
+                    <></>}
+                    <div className="change">변경하기 <i className="fas fa-chevron-right"></i></div>
+
+                </div>
+                </Link>
+        </>
+        
+        </div>
         </Info>
     </MyLayout>);
 }
