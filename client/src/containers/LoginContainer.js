@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Login from "../components/Login";
 import { withRouter } from "react-router-dom";
-import { API } from "../lib/api";
+import api from "../lib/api";
 
 const LoginContainer = ({ history }) => {
   const [ID, setID] = useState("");
@@ -18,7 +18,7 @@ const LoginContainer = ({ history }) => {
   const loginFetch = () => {
     window.sessionStorage.setItem("id", ID);
     // history.push("/");
-    fetch(`${API}/member/login`, {
+    fetch(`${api}/member/login`, {
       method: "POST",
       headers: {
         "Content-type": "application/json",

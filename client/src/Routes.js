@@ -5,7 +5,7 @@ import {
   Switch,
   Redirect,
 } from "react-router-dom";
-import App from "./App";
+import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import MyPwChange from "./pages/myPage/MyPwChange";
@@ -28,9 +28,15 @@ export default function Routes() {
     <ThemeProvider theme={Theme}>
       <Router>
         <Switch>
+<<<<<<< HEAD
+          <Route exact path="/" component={HomePage} />
+          <Route exact path="/mychange" component={MyChange} />
+          <Route exact path="/myproduct" component={MyProduct} />
+=======
           <Route exact path="/" component={App} />
           <Route exact path="/mypwchange" component={MyPwChange} />
           <Route path="/myproduct" component={MyProduct} />
+>>>>>>> f924ed473c701a380fe222c33bba05f647b7e729
           <Route exact path="/myinfo" component={MyInfo} />
           <Route exact path="/login" component={LoginPage} />
           <Route exact path="/register" component={RegisterPage} />

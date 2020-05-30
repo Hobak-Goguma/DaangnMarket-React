@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
-import { API } from "../lib/api";
+import api from "../../lib/api";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import MyDrop from "./MyDropMenu";
-import TotalMenu from "./TotalMenu";
+import MyDrop from "../MyDropMenu";
+import TotalMenu from "../TotalMenu";
 
 const Headers = styled.header`
   width: 100%;
@@ -116,12 +116,10 @@ const Header = (props) => {
 
   const onClickCategory = (element) => {
     if (props.location.pathname === "/search") {
-      fetch(`${API}product/search?q=${element}`)
-        .then((res) => res.json())
-        .then((res) => {
-          props.setProducts(res);
-          props.setCards([]);
-        });
+      api.get("/product/search?q=${element}").then((res) => {
+        props.setProducts(res.data);
+        props.setNumB(6);
+      });
     }
     props.history.push(`/search?q=${element}`);
   };
@@ -133,14 +131,11 @@ const Header = (props) => {
       !/[`!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~]/.test(keyword)
     ) {
       if (props.location.pathname === "/search") {
-        fetch(`${API}product/search?q=${keyword}`)
-          .then((res) => res.json())
-          .then((res) => {
-            props.setProducts(res);
-            props.setCards([]);
-          });
+        api.get(`product/search?q=${keyword}`).then((res) => {
+          props.setProducts(res.data);
+          props.setNumB(6);
+        });
       }
-
       props.history.push(`/search?q=${keyword}`);
     }
   };

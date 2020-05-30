@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { withRouter } from "react-router-dom";
-import { API } from "../../lib/api";
+import api from "../../lib/api";
 import styled from "styled-components";
 import ArticleSlider from "./ArticleSlider";
 import ArticleProfile from "./ArticleProfile";
@@ -15,17 +15,17 @@ const Article = ({ isModal, setModal, match }) => {
   let id = match.params.articles_id;
   useEffect(() => {
     window.localStorage.setItem("productId", id);
-
     fetch("http://localhost:3000/data/sliderData.json")
       .then((res) => res.json())
       .then((res) => {
         setSliderData(res.sliderData1);
       });
-    fetch(`${API}product/${id}`)
-      .then((res) => res.json())
-      .then((res) => {
-        setDetail(res);
-      });
+    // fetch(`${api}/product/${id}`)
+    //   .then((res) => res.json())
+    //   .then((res) => {
+    //     setDetail(res);
+    //   });
+    api.get(`/product/${id}`).then((res) => setDetail(res.data));
   }, []);
 
   return (

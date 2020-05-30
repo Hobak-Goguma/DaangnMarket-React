@@ -1,1 +1,7 @@
-export const API = `http://www.daangn.site/`;
+import axios from "axios";
+
+const api = axios.create({
+  baseURL: "http://www.daangn.site",
+});
+
+export default api;

@@ -1,19 +1,10 @@
 import React from "react";
-
 import Slider from "react-slick";
-import ArrowNext from "../Arrow/Next";
-import ArrowPrev from "../Arrow/Prev";
+import ArrowNext from "../common/Arrow/Next";
+import ArrowPrev from "../common/Arrow/Prev";
 import styled from "styled-components";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
-const defaultSettings = {
-  dots: true,
-  infinite: true,
-  speed: 600,
-  slidesToShow: 1,
-  slidersToScroll: 1,
-};
 
 const settings = {
   dots: true,

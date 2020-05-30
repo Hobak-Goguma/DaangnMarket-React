@@ -3,20 +3,18 @@ import styled from "styled-components";
 import { connect } from "react-redux";
 import { addProduct } from "../../modules/action/wishlist";
 import { Link } from "react-router-dom";
-import { API } from "../../lib/api";
+import api from "../../lib/api";
 
 const ArticleFooter = ({ detail, addProduct, id }) => {
   const [heart, setHeart] = useState(false);
   const price = parseInt(detail.price).toLocaleString();
 
   const clickHeart = (id) => {
-    fetch(`${API}product/${id}`)
-      .then((res) => res.json())
-      .then((res) => {
-        if (!heart) {
-          addProduct(res);
-        }
-      });
+    api.get(`/product/${id}`).then((res) => {
+      if (!heart) {
+        addProduct(res.data);
+      }
+    });
 
     console.log(!heart);
   };
