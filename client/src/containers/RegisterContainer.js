@@ -141,7 +141,7 @@ const RegisterContainer = ({ history }) => {
         },
         body: JSON.stringify({
           name: inputState.name,
-          nick_name: inputState.id,
+          nick_name: inputState.name,
           user_id: inputState.id,
           user_pw: inputState.pw,
           tel: inputState.phone.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3"),

@@ -8,12 +8,13 @@ import {
 import App from "./App";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
-import MyChange from "./pages/myPage/MyChange";
+import MyPwChange from "./pages/myPage/MyPwChange";
 import MyProduct from "./pages/myPage/MyProduct";
 import MyInfo from "./pages/myPage/MyInfo";
 import SearchPage from "./pages/SearchPage";
 import ArticlePage from "./pages/ArticlePage";
 import OtherUserPage from "./pages/OtherUserPage";
+import Changelayout from "./pages/myPage/mychage/ChangeLayout";
 import UploadPage from "./pages/UploadPage";
 import WishlistPage from "./pages/WishlistPage";
 
@@ -28,8 +29,8 @@ export default function Routes() {
       <Router>
         <Switch>
           <Route exact path="/" component={App} />
-          <Route exact path="/mychange" component={MyChange} />
-          <Route exact path="/myproduct" component={MyProduct} />
+          <Route exact path="/mypwchange" component={MyPwChange} />
+          <Route path="/myproduct" component={MyProduct} />
           <Route exact path="/myinfo" component={MyInfo} />
           <Route exact path="/login" component={LoginPage} />
           <Route exact path="/register" component={RegisterPage} />
@@ -37,6 +38,7 @@ export default function Routes() {
           <Route path="/articles/:articles_id" component={ArticlePage} />
           <Route path="/user" component={OtherUserPage} />
           <Route path="/upload" component={UploadPage} />
+          <Route path="/myinfochange" component={Changelayout} />
           <Route path="/wishlist" component={WishlistPage} />
           <Redirect from="*" to="/" />
         </Switch>

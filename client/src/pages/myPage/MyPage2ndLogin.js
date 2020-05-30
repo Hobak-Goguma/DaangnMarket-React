@@ -58,8 +58,10 @@ const MyPage2ndLogin = ({ID,changeLogin}) =>{
     const change = (e)=>{
         checkPw=e.target.value;
     }
-    const click = ()=>{
-        changeLogin(checkPw,true);
+    const click = (e)=>{
+        if(e.type==="click" || (e.type==="keydown" && e.key === "Enter")){
+            changeLogin(checkPw,true);
+        }
     }
 return(
     <Login>
@@ -69,7 +71,7 @@ return(
             <p>아이디</p>
             <p className="id">{ID}</p> 
             <p className="pw">비밀번호</p>
-            <input type="password" id="pw" onChange={change}/>
+            <input type="password" id="pw" onChange={change} onKeyDown = {click}/>
         </div>
         <button onClick={click}>확인</button>
 

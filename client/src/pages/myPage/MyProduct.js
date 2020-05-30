@@ -87,7 +87,7 @@ const MyProduct = ({history}) =>{
         </MyBuyProd>
         <MyCollectProd>
             <div className="title">
-                <span className="tit">내 구매상품</span>
+                <span className="tit">찜한 상품</span>
             </div>
             <section className="productList">
 
