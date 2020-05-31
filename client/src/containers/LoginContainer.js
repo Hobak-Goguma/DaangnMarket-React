@@ -18,7 +18,7 @@ const LoginContainer = ({ history }) => {
   const loginFetch = () => {
     window.sessionStorage.setItem("id", ID);
     // history.push("/");
-    fetch(`${api}/member/login`, {
+    fetch(`http://www.daangn.site/member/login`, {
       method: "POST",
       headers: {
         "Content-type": "application/json",

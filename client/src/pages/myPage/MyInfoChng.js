@@ -1,6 +1,6 @@
 import React,{useState, useEffect} from "react";
 import styled from "styled-components";
-import {API} from "../../lib/api";
+import api from "../../lib/api";
 // import { Radio } from "@material-ui/core";
 
 const InfoBox = styled.div`
@@ -256,8 +256,7 @@ const MyInfoChng = ({ID,login,changeLogin,history}) =>{
 
 
     useEffect(() => {
-        console.log("res")  
-        fetch("",{//http://0c525d07.ngrok.io/member/login
+        fetch(`http://www.daangn.site/member/login`,{//http://0c525d07.ngrok.io/member/login
             method:"POST",
             headers:{
                 "Content-type": "application/json",
@@ -267,35 +266,26 @@ const MyInfoChng = ({ID,login,changeLogin,history}) =>{
                 "user_pw":login.pw
             })
         }).then(async(response)=>{
-
-            resUser = {
-                addr: "인천광역시 남동구 구월동",
-                name: "root",
-                nick_name: "root",
-                pk: 1,
-                tel: "010-0000-0000",
-                user_id: "root",
-            }
-//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>통신시 변경해야될
-            // if(response.status===200||response.status===201){
-            //     res = await response.json();
-            //     const temp = JSON.stringify(res);
-            //     window.sessionStorage.setItem("user",temp);
-            //     resUser = JSON.parse(window.sessionStorage.getItem("user"));
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>통신시 변경해야될
+            if(response.status===200||response.status===201){
+                const res = await response.json();
+                const temp = JSON.stringify(res);
+                window.sessionStorage.setItem("user",temp);
+                resUser = JSON.parse(window.sessionStorage.getItem("user"));
                 setUser({
-                    pk:resUser.pk,
-                    nick_name : resUser.nick_name,
-                    name :resUser.name,
-                    tel:resUser.tel,
+                    pk:res.pk,
+                    nick_name : res.nick_name,
+                    name :res.name,
+                    tel:res.tel,
                     gender:"",
                     email:"",
                     newPw:"",
                     login: true
                 })
-            // }else{
-            //     alert("비밀번호가 맞지 않습니다.");
-            //     changeLogin({...login,login:false});
-            // }
+            }else{
+                alert("비밀번호가 맞지 않습니다.");
+                changeLogin({pw:login.pw,login:false});
+            }
         })
 
     },[]);
@@ -463,7 +453,7 @@ const MyInfoChng = ({ID,login,changeLogin,history}) =>{
                     //     }
 
 
-                        fetch(`${API}memeber/${user.pk}`,{//수정용 api주소 수정용 fetch
+                        fetch(`${api}memeber/${user.pk}`,{//수정용 api주소 수정용 fetch
                             method:"PUT",
                             headers:{
                                 "Content-type": "application/json",
@@ -477,6 +467,7 @@ const MyInfoChng = ({ID,login,changeLogin,history}) =>{
                                     addr: user.add,
                             })
                         }).then((response)=>{
+
                             if(response.status===200){                                
                                 alert("비밀번호 수정이 완료되었습니다.");
                                 history.push("/");
@@ -488,16 +479,10 @@ const MyInfoChng = ({ID,login,changeLogin,history}) =>{
 
                 break;
                 case "secession": //탈퇴 버튼
-                console.log(`${API}memeber/${user.pk}`,user.pk);
                 if(window.confirm("정말 탈퇴하시겠습니까?")===true){
-                    console.log(user.pk);
-                    fetch(`${API}memeber/${user.pk}`,{
+                    fetch(`http://www.daangn.site/member/5`,{
                         method:"DELETE",
-                        headers:{
-                            "Content-type": "application/json",
-                        }
-                    }).then(async(response)=>{
-                        console.log(await response);
+                    }).then(async response=>{
                         if(await response.status===204){                                
                             alert("해당 계정이 탈퇴되었습니다.");
                             history.push("/");
