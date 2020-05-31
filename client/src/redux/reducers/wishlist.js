@@ -1,19 +1,17 @@
-import api from "../lib/api";
+import api from "../../common/api";
 
-
-const initialstate =[];
-
+const initialstate = [];
 
 export default function wishlist(state = initialstate, action) {
   switch (action.type) {
     case "FETCH_WISHLIST":
       let wishlist;
-      if(state.length===0){
+      if (state.length === 0) {
         fetch(`${api}/wishlist${action.payload}`, {
           method: "GET",
           headers: {
             "Content-type": "application/json",
-          }
+          },
         }).then(async (response) => {
           if (response.status === 200) {
             wishlist = await response.json();
@@ -21,7 +19,7 @@ export default function wishlist(state = initialstate, action) {
             return [...wishlist];
           } else {
             wishlist = [];
-            return   [...wishlist];
+            return [...wishlist];
           }
         });
       }

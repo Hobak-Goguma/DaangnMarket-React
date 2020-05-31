@@ -5,7 +5,7 @@ import { addProduct } from "../../modules/action/wishlist";
 import { Link } from "react-router-dom";
 import api from "../../lib/api";
 
-const ArticleFooter = ({ detail, addProduct, id }) => {
+const Footer = ({ detail, addProduct, id }) => {
   const [heart, setHeart] = useState(false);
   const price = parseInt(detail.price).toLocaleString();
 
@@ -42,7 +42,7 @@ const ArticleFooter = ({ detail, addProduct, id }) => {
   );
 };
 
-export default connect(null, { addProduct })(ArticleFooter);
+export default connect(null, { addProduct })(Footer);
 
 const ArticleFooterWrapper = styled.div`
   position: fixed;

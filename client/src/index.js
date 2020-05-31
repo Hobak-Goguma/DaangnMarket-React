@@ -4,7 +4,7 @@ import { createStore } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { Provider } from "react-redux";
 import Routes from "./Routes";
-import rootReducer from "./modules";
+import rootReducer from "./redux";
 
 const store = createStore(rootReducer, composeWithDevTools());
 

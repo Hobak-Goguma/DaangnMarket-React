@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const ArticleDescription = ({ detail }) => {
+const Description = ({ detail }) => {
   return (
     <StyledArticleDescription>
       <h1 className="article-title">{detail.name}</h1>
@@ -17,7 +17,7 @@ const ArticleDescription = ({ detail }) => {
   );
 };
 
-export default ArticleDescription;
+export default Description;
 
 const StyledArticleDescription = styled.section`
   padding: 32px 0;

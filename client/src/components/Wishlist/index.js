@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { setNewList } from "../../modules/action/wishlist";
+import { setNewList } from "../../redux/actions/wishlist";
 import styled from "styled-components";
 import { withRouter, Link } from "react-router-dom";
 import dayjs from "dayjs";

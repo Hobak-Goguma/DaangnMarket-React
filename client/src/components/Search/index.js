@@ -7,7 +7,7 @@ const Search = ({ products, sliceStart, sliceEnd }) => {
     <>
       {products.slice(sliceStart, sliceEnd).map((p, i) => (
         <SearchWrapper key={i}>
-          <Link to={`/articles/${p.pk}`}>
+          <Link to={`/products/${p.pk}`}>
             <div className="card-photo">
               <img src="./img/4단선반.jpg" alt="사진임둥" />
             </div>

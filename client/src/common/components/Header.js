@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
-import api from "../../lib/api";
+import api from "../api";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import MyDrop from "../MyDropMenu";
-import TotalMenu from "../TotalMenu";
+import MyDrop from "../../components/MyDropMenu";
+import TotalMenu from "../../components/TotalMenu";
 
 const Headers = styled.header`
   width: 100%;
