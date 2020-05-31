@@ -10,7 +10,7 @@ class Company(models.Model):
     tel = models.CharField(max_length=20, blank=True, null=True)
     info = models.CharField(max_length=3000, blank=True, null=True)
     category = models.CharField(max_length=15, blank=True, null=True)
-    img = models.CharField(max_length=500, blank=True, null=True)
+    img = models.CharField(max_length=2000, blank=True, null=True)
     cdate = models.DateTimeField(auto_now_add=True)
     udate = models.DateTimeField(auto_now=True)
 
@@ -34,6 +34,7 @@ class Manner(models.Model):
     id_manner = models.AutoField(primary_key=True)
     id_member = models.ForeignKey('Member', models.DO_NOTHING, db_column='id_member')
     score = models.IntegerField()
+    cdate = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         managed = False
@@ -60,12 +61,32 @@ class Member(models.Model):
     gender = models.CharField(max_length=6)
     addr = models.TextField()
     cdate = models.DateTimeField(auto_now_add=True)
-    udate = models.DateTimeField(auto_now=False)
-    last_date = models.DateTimeField(auto_now=False)
+    udate = models.DateTimeField(auto_now=False, null=True)
+    last_date = models.DateTimeField(auto_now=False, null=True)
+    img = models.CharField(max_length=500, blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'member'
+
+
+class MemberSeller(models.Model):
+    id_member = models.ForeignKey(Member, models.DO_NOTHING, db_column='id_member')
+    id_real_deal = models.ForeignKey('RealDeal', models.DO_NOTHING, db_column='id_real_deal')
+
+    class Meta:
+        managed = False
+        db_table = 'member_seller'
+
+
+class MemberShopper(models.Model):
+    id_member = models.ForeignKey(Member, models.DO_NOTHING, db_column='id_member')
+    id_real_deal = models.ForeignKey('RealDeal', models.DO_NOTHING, db_column='id_real_deal')
+
+    class Meta:
+        managed = False
+        db_table = 'member_shopper'
+
 
 
 class Product(models.Model):
@@ -75,8 +96,8 @@ class Product(models.Model):
     price = models.IntegerField()
     info = models.CharField(max_length=3000)
     category = models.CharField(max_length=15, blank=True, null=True)
-    img = models.CharField(max_length=500, blank=True, null=True)
-    views = models.IntegerField()
+    img = models.CharField(max_length=2000, blank=True, null=True)
+    views = models.IntegerField(default=0)
     cdate = models.DateTimeField(auto_now_add=True)
     udate = models.DateTimeField(auto_now=True)
     sold_tf = models.IntegerField(db_column='sold_TF')  # Field name made lowercase.
@@ -117,12 +138,11 @@ class SellerRate(models.Model):
 
 
 class SellerReview(models.Model):
-    id_review = models.AutoField(primary_key=True)
+    id_review_seller = models.AutoField(primary_key=True)
+    id_real_deal = models.ForeignKey(RealDeal, models.DO_NOTHING, db_column='id_real_deal')
     title = models.CharField(max_length=50)
     cdate = models.DateTimeField(auto_now_add=True)
-    id_member = models.ForeignKey(Member, models.DO_NOTHING, db_column='id_member')
-    id_real_deal = models.ForeignKey(RealDeal, models.DO_NOTHING, db_column='id_real_deal')
-
+    
     class Meta:
         managed = False
         db_table = 'seller_review'
@@ -137,13 +157,11 @@ class ShopperRate(models.Model):
         db_table = 'shopper_rate'
 
 
-
 class ShopperReview(models.Model):
-    id_review = models.AutoField(primary_key=True)
+    id_review_shopper = models.AutoField(primary_key=True)
+    id_real_deal = models.ForeignKey(RealDeal, models.DO_NOTHING, db_column='id_real_deal')
     title = models.CharField(max_length=50)
     cdate = models.DateTimeField(auto_now_add=True)
-    id_member = models.ForeignKey(Member, models.DO_NOTHING, db_column='id_member')
-    id_real_deal = models.ForeignKey(RealDeal, models.DO_NOTHING, db_column='id_real_deal')
 
     class Meta:
         managed = False
@@ -154,6 +172,7 @@ class Wishlist(models.Model):
     id_wishlist = models.AutoField(primary_key=True)
     id_product = models.ForeignKey(Product, models.DO_NOTHING, db_column='id_product')
     id_member = models.ForeignKey(Member, models.DO_NOTHING, db_column='id_member')
+    cdate = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         managed = False

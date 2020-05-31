@@ -10,7 +10,6 @@ import json
 from django.http import JsonResponse
 from drf_yasg.utils import swagger_auto_schema
 
-
 now = timezone.now()
 
 # 'method' can be used to customize a single HTTP method of a view
@@ -31,7 +30,6 @@ def member_list(request):
         return Response(serializer.data)
 
     elif request.method == 'POST':
-        # 아이디에 대한 중복 확인 필요
         serializer = MemberSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -65,7 +63,7 @@ def member_detail(request, pk):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == 'DELETE':
-        Member.delete()
+        member.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['PUT'])
@@ -161,31 +159,22 @@ def member_login(request):
         user_id = Data['user_id']
         user_pw = Data['user_pw']
         member = Member.objects.get(user_id = user_id, user_pw = user_pw)
+
     except Member.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     # if request.method == 'POST':
-    #     # serializer = LoginSerializer(member)
-    #     return Response(status=status.HTTP_200_OK)
+    #     serializer = LoginSerializer(member, data=request.data)
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #     return Response(serializer.data)
 
     if request.method == 'POST':
-        
-        # serializer = LoginSerializer(member)
-        serializer = LoginSerializer(member, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
+        serializer = LoginSerializer(member)
         return Response(serializer.data)
-    
+
     else:
         return Response(status=status.HTTP_400_BAD_REQUEST)
-
-    # user_pw = Data['user_pw']
-    # if Member.user_pw == user_pw:
-    #     if request.method == 'POST':
-    #         serializer = LoginSerializer(member)
-    #         return Response(serializer.data)
-    # else:
-    #     return HttpResponse('비밀번호가 틀렸습니다.')
 
 
 @api_view(['GET', 'POST'])
@@ -326,7 +315,45 @@ def company_detail(request, pk):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+@api_view(['GET', 'POST'])
+def wishlist_list(request):
+    """
+    찜리스트를 모두 보여주거나 새 찜을 추가합니다.
+    """
+    if request.method == 'GET':
+        wishlist = Wishlist.objects.all()
+        serializer = WishlistSerializer(wishlist, many=True)
+        return Response(serializer.data)
 
+    elif request.method == 'POST':
+        serializer = WishlistSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET', 'DELETE'])
+def wishlist_detail(request, pk):
+    """
+    특정 유저의 찜리스트를 조회, 삭제 합니다.
+    """
+    try:
+        wishlist = Wishlist.objects.filter(id_member = pk)
+    except Wishlist.DoesNotExist:
+        content = {
+            "message" : "찜한 상품이 없습니다.",
+            "result" : {}
+                }
+        return Response(content, status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = WishlistSerializer(wishlist, many=True)
+        return Response(serializer.data)
+
+    elif request.method == 'DELETE':
+        wishlist.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['GET'])
 def test(request):
