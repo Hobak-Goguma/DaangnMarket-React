@@ -1,3 +1,9 @@
+export const checkProduct = (pk) => {
+  return {
+    type: "FETCH_WISHLIST",
+    payload: pk,
+  };
+};
 export const addProduct = (product) => {
   return {
     type: "ADD_PRODUCT",
