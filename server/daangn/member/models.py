@@ -61,9 +61,9 @@ class Member(models.Model):
     gender = models.CharField(max_length=6)
     addr = models.TextField()
     cdate = models.DateTimeField(auto_now_add=True)
-    udate = models.DateTimeField(auto_now=False)
-    last_date = models.DateTimeField(auto_now=False)
-    img = models.CharField(max_length=100, blank=True, null=True)
+    udate = models.DateTimeField(auto_now=False, null=True)
+    last_date = models.DateTimeField(auto_now=False, null=True)
+    img = models.CharField(max_length=500, blank=True, null=True)
 
     class Meta:
         managed = False

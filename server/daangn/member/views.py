@@ -30,7 +30,6 @@ def member_list(request):
         return Response(serializer.data)
 
     elif request.method == 'POST':
-        # 아이디에 대한 중복 확인 필요
         serializer = MemberSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -64,7 +63,7 @@ def member_detail(request, pk):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == 'DELETE':
-        Member.delete()
+        member.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['PUT'])
@@ -160,31 +159,22 @@ def member_login(request):
         user_id = Data['user_id']
         user_pw = Data['user_pw']
         member = Member.objects.get(user_id = user_id, user_pw = user_pw)
+
     except Member.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     # if request.method == 'POST':
-    #     # serializer = LoginSerializer(member)
-    #     return Response(status=status.HTTP_200_OK)
+    #     serializer = LoginSerializer(member, data=request.data)
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #     return Response(serializer.data)
 
     if request.method == 'POST':
-        
-        # serializer = LoginSerializer(member)
-        serializer = LoginSerializer(member, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
+        serializer = LoginSerializer(member)
         return Response(serializer.data)
-    
+
     else:
         return Response(status=status.HTTP_400_BAD_REQUEST)
-
-    # user_pw = Data['user_pw']
-    # if Member.user_pw == user_pw:
-    #     if request.method == 'POST':
-    #         serializer = LoginSerializer(member)
-    #         return Response(serializer.data)
-    # else:
-    #     return HttpResponse('비밀번호가 틀렸습니다.')
 
 
 @api_view(['GET', 'POST'])
