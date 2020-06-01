@@ -1,7 +1,7 @@
 import React from "react";
 import MyNav from "./MyPageNav";
-import Header from "../../components/common/Header";
-import Footer from "../../components/common/Footer";
+import Header from "../common/components/Header";
+import Footer from "../common/components/Footer";
 
 const MyLayout = ({ children, choose, history }) => {
   return (

@@ -1,8 +1,8 @@
 import React from "react";
 import Container from "./container";
 
-const productDetail = () => {
+const productDetailPage = () => {
   return <Container />;
 };
 
-export default productDetail;
+export default productDetailPage;

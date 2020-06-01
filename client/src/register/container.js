@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
-import api from "../lib/api";
+import api from "../common/api";
 import { withRouter } from "react-router-dom";
-import Register from "../components/Register";
+import Register from "./components";
 
 const RegisterContainer = ({ history }) => {
   // Regex stuff

@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
-import { addProduct } from "../../modules/action/wishlist";
-import { Link } from "react-router-dom";
-import api from "../../lib/api";
+import { addProduct } from "../../redux/actions/wishlist";
+import api from "../../common/api";
 
 const Footer = ({ detail, addProduct, id }) => {
   const [heart, setHeart] = useState(false);
@@ -11,12 +10,10 @@ const Footer = ({ detail, addProduct, id }) => {
 
   const clickHeart = (id) => {
     api.get(`/product/${id}`).then((res) => {
-      if (!heart) {
+      if (heart !== true) {
         addProduct(res.data);
       }
     });
-
-    console.log(!heart);
   };
 
   return (
@@ -33,9 +30,6 @@ const Footer = ({ detail, addProduct, id }) => {
           <p className="price">{price}원</p>
           <p className="price-offer">가격제안 불가</p>
         </div>
-      </div>
-      <div>
-        <Link to="/wishlist">찜목록 보기</Link>
       </div>
       <button>채팅으로 거래하기</button>
     </ArticleFooterWrapper>

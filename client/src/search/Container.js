@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import api from "../lib/api";
-import Layout from "../components/common/Layout";
-import Search from "../components/Search";
+import api from "../common/api";
+import Layout from "../common/components/Layout";
+import Search from "./components";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 // Hold Redux implementation

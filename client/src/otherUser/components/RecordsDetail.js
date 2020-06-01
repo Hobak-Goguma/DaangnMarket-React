@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import Tabs from "../common/Tab/Tabs";
-import Tab from "../common/Tab/Tab";
+import Tabs from "./Tab/Tabs";
+import Tab from "./Tab/Tab";
 
 const testMap = [
   {

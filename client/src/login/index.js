@@ -1,8 +1,8 @@
 import React from "react";
 import Layout from "../common/components/Layout";
-import Container from "./container";
+import Container from "./Container";
 
-const Login = () => {
+const LoginPage = () => {
   return (
     <Layout>
       <Container />
@@ -10,4 +10,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginPage;

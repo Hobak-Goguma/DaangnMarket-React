@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Article from "../components/Article";
+import ProductDetail from "./components";
 import Layout from "../common/components/Layout";
 
 const ProductDetailContainer = () => {
@@ -9,7 +9,7 @@ const ProductDetailContainer = () => {
       overflow={isModal ? "hidden" : "unset"}
       height={isModal ? "100vh" : "unset"}
     >
-      <Article isModal={isModal} setModal={setModal} />
+      <ProductDetail isModal={isModal} setModal={setModal} />
     </Layout>
   );
 };

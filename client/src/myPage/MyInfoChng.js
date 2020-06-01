@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import api from "../../common/api";
+import api from "../common/api";
 // import { Radio } from "@material-ui/core";
 
 const InfoBox = styled.div`

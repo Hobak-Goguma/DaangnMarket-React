@@ -1,5 +1,5 @@
 import React from "react";
-import { StyledRegister } from "../style";
+import { StyledRegister } from "./style";
 
 // MUI stuff
 import Checkbox from "@material-ui/core/Checkbox";

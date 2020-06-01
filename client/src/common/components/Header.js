@@ -3,8 +3,8 @@ import { withRouter } from "react-router-dom";
 import api from "../api";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import MyDrop from "../../components/MyDropMenu";
-import TotalMenu from "../../components/TotalMenu";
+import MyDrop from "./MyDropMenu";
+import TotalMenu from "./TotalMenu";
 
 const Headers = styled.header`
   width: 100%;
@@ -116,7 +116,7 @@ const Header = (props) => {
 
   const onClickCategory = (element) => {
     if (props.location.pathname === "/search") {
-      api.get("/product/search?q=${element}").then((res) => {
+      api.get(`/product/search?q=${element}`).then((res) => {
         props.setProducts(res.data);
         props.setNumB(6);
       });

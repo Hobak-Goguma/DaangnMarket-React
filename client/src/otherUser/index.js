@@ -1,13 +1,13 @@
 import React from "react";
 import Layout from "../common/components/Layout";
-import Container from "./Container";
+import OtherUser from "./components";
 
-const RegisterPage = () => {
+const OtherUserPage = () => {
   return (
     <Layout>
-      <Container />
+      <OtherUser />
     </Layout>
   );
 };
 
-export default RegisterPage;
+export default OtherUserPage;

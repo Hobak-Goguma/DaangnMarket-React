@@ -1,7 +1,7 @@
 import React from "react";
 import Slider from "react-slick";
-import ArrowNext from "./arrows";
-import ArrowPrev from "./arrows/Arrow/Prev";
+import ArrowNext from "./arrows/Next";
+import ArrowPrev from "./arrows/Prev";
 import styled from "styled-components";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";

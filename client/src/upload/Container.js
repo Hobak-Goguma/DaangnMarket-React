@@ -1,11 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
-import Upload from "../components/Upload";
+import Upload from "./components";
 import { withRouter } from "react-router-dom";
-import { API } from "../lib/api";
 
 const UploadContainer = ({ history }) => {
-  const [typeError, setTypeError] = useState(null);
-  const [error, setError] = useState(null);
   const [imageData, setImageData] = useState([]);
   const [imageCount, setImageCount] = useState(imageData.length);
   const [isDropFinished, setIsDropFinished] = useState(false);
@@ -83,11 +80,9 @@ const UploadContainer = ({ history }) => {
 
   return (
     <Upload
-      typeError={typeError}
       onDrop={onDrop}
       dropFinished={isDropFinished}
       categoryOptions={categoryOptions}
-      error={error}
       onPriceChange={onPriceChange}
       price={price}
       imageData={imageData}

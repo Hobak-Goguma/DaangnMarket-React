@@ -1,19 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import { setNewList } from "../../redux/actions/wishlist";
 import styled from "styled-components";
-import { withRouter, Link } from "react-router-dom";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 
-const Wishlist = ({ wishlist, history, setNewList }) => {
+const Wishlist = ({ wishlist }) => {
   dayjs.extend(relativeTime);
+  const [wishData, setWishData] = useState(wishlist);
+
+  const handleDelete = (idx) => {
+    const temp = [...wishData];
+    temp.splice(idx, 1);
+    setWishData(temp);
+  };
 
   return (
     <WishlistWrapper>
-      <h2>관심목록</h2>
       <div className="list-container">
-        {wishlist.map((list, i) => (
+        {wishData.map((list, i) => (
           <div key={i} className="interest">
             <div className="thumb">
               <img
@@ -29,21 +34,15 @@ const Wishlist = ({ wishlist, history, setNewList }) => {
               <p className="list-price">
                 {parseInt(list.price).toLocaleString()}원
               </p>
+              <i
+                className="fas fa-heart"
+                style={{ color: " #ff8a3d", marginTop: 15, cursor: "pointer" }}
+                onClick={() => handleDelete(i)}
+              />
             </div>
           </div>
         ))}
       </div>
-      <p
-        onClick={() => history.goBack()}
-        style={{
-          position: "absolute",
-          top: 100,
-          left: 10,
-          cursor: "pointer",
-        }}
-      >
-        뒤로가기
-      </p>
     </WishlistWrapper>
   );
 };
@@ -54,16 +53,9 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { setNewList })(withRouter(Wishlist));
+export default connect(mapStateToProps, { setNewList })(Wishlist);
 
 const WishlistWrapper = styled.div`
-  padding-top: 10rem;
-  height: 60vh;
-
-  h2 {
-    font-size: 1.8rem;
-    text-align: center;
-  }
   .list-container {
     padding: 10px;
     max-width: 800px;
