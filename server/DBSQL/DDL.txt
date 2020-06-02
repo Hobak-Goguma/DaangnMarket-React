@@ -1,4 +1,4 @@
- -- 멤버
+-- 멤버
 CREATE TABLE `daangn`.`member` (
 	`id_member` INT          NOT NULL COMMENT '멤버 키', -- 멤버 키
 	`name`      VARCHAR(30)  NOT NULL COMMENT '이름', -- 이름
@@ -9,10 +9,10 @@ CREATE TABLE `daangn`.`member` (
 	`birth`     DATE         NOT NULL COMMENT '생년월일', -- 생년월일
 	`email`     VARCHAR(30)  NOT NULL COMMENT '이메일', -- 이메일
 	`gender`    VARCHAR(6)   NOT NULL COMMENT '성별', -- 성별
-	`addr`      Json         NOT NULL COMMENT '주소', -- 주소
 	`cdate`     DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성일', -- 생성일
 	`udate`     DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '수정일', -- 수정일
-	`last_date` DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '최후접속' -- 최후접속
+	`last_date` DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '최후접속', -- 최후접속
+	`img`       VARCHAR(60)  NULL     COMMENT '프로필 사진' -- 프로필 사진
 )
 COMMENT '멤버';
 
@@ -36,9 +36,10 @@ CREATE TABLE `daangn`.`product` (
 	`category`   VARCHAR(15)   NULL     COMMENT '카테고리', -- 카테고리
 	`img`        VARCHAR(2000) NULL     COMMENT '제품 사진', -- 제품 사진
 	`views`      INT           NOT NULL DEFAULT 0 COMMENT '조회수', -- 조회수
+	`sold_TF`    BOOLEAN       NOT NULL DEFAULT 0 COMMENT '판매여부', -- 판매여부
+	`addr`       VARCHAR(200)  NOT NULL COMMENT '제품주소', -- 제품주소
 	`cdate`      DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성일', -- 생성일
-	`udate`      DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '수정일', -- 수정일
-	`sold_TF`    BOOLEAN       NOT NULL DEFAULT 0 COMMENT '판매여부' -- 판매여부
+	`udate`      DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '수정일' -- 수정일
 )
 COMMENT '제품';
 
@@ -54,9 +55,11 @@ ALTER TABLE `daangn`.`product`
 
 -- 메너온도
 CREATE TABLE `daangn`.`manner` (
-	`id_manner` INT NOT NULL COMMENT '매너 키', -- 매너 키
-	`id_member` INT NOT NULL COMMENT '피평가자', -- 피평가자
-	`score`     INT NOT NULL COMMENT '점수' -- 점수
+	`id_manner` INT      NOT NULL COMMENT '매너 키', -- 매너 키
+	`id_member` INT      NOT NULL COMMENT '피평가자', -- 피평가자
+	`score`     INT      NOT NULL COMMENT '점수', -- 점수
+	`cdate`     DATETIME NOT NULL COMMENT '생성일', -- 생성일
+	`udate`     DATETIME NOT NULL COMMENT '수정일' -- 수정일
 )
 COMMENT '메너온도';
 
@@ -73,9 +76,9 @@ ALTER TABLE `daangn`.`manner`
 -- 구매자후기
 CREATE TABLE `daangn`.`shopper_review` (
 	`id_review_shopper` INT         NOT NULL COMMENT '리뷰 키', -- 리뷰 키
+	`id_real_deal`      INT         NOT NULL COMMENT '거래키', -- 거래키
 	`title`             VARCHAR(50) NOT NULL COMMENT '후기 제목', -- 후기 제목
-	`cdate`             DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성일', -- 생성일
-	`id_real_deal`      INT         NOT NULL COMMENT '거래키' -- 거래키
+	`cdate`             DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성일' -- 생성일
 )
 COMMENT '구매자후기';
 
@@ -111,9 +114,9 @@ ALTER TABLE `daangn`.`log`
 -- 판매자후기
 CREATE TABLE `daangn`.`seller_review` (
 	`id_review_seller` INT         NOT NULL COMMENT '리뷰 키', -- 리뷰 키
+	`id_real_deal`     INT         NOT NULL COMMENT '거래키', -- 거래키
 	`title`            VARCHAR(50) NOT NULL COMMENT '후기 제목', -- 후기 제목
-	`cdate`            DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성일', -- 생성일
-	`id_real_deal`     INT         NOT NULL COMMENT '거래키' -- 거래키
+	`cdate`            DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성일' -- 생성일
 )
 COMMENT '판매자후기';
 
@@ -150,7 +153,7 @@ CREATE TABLE `daangn`.`company` (
 	`id_company` INT           NOT NULL COMMENT '업체 키', -- 업체 키
 	`id_member`  INT           NOT NULL COMMENT '멤버 키', -- 멤버 키
 	`name`       VARCHAR(50)   NOT NULL COMMENT '업체 이름', -- 업체 이름
-	`addr`       JSON          NOT NULL COMMENT '업체 위치', -- 업체 위치
+	`addr`       VARCHAR(200)  NOT NULL COMMENT '업체 위치', -- 업체 위치
 	`tel`        VARCHAR(20)   NULL     COMMENT '업체 번호', -- 업체 번호
 	`info`       VARCHAR(3000) NULL     COMMENT '업체 소개', -- 업체 소개
 	`category`   VARCHAR(15)   NULL     COMMENT '카테고리', -- 카테고리
@@ -172,9 +175,10 @@ ALTER TABLE `daangn`.`company`
 
 -- 찜목록
 CREATE TABLE `daangn`.`wishlist` (
-	`id_wishlist` INT NOT NULL COMMENT '위시키', -- 위시키
-	`id_product`  INT NOT NULL COMMENT '제품키', -- 제품키
-	`id_member`   INT NOT NULL COMMENT '멤버 키' -- 멤버 키
+	`id_wishlist` INT      NOT NULL COMMENT '위시키', -- 위시키
+	`id_product`  INT      NOT NULL COMMENT '제품키', -- 제품키
+	`id_member`   INT      NOT NULL COMMENT '멤버 키', -- 멤버 키
+	`cdate`       DATETIME NOT NULL COMMENT '생성일' -- 생성일
 )
 COMMENT '찜목록';
 
@@ -197,10 +201,10 @@ COMMENT '매너온도_리뷰어';
 
 -- 평가
 CREATE TABLE `daangn`.`rate` (
-	`id_rate` INT           NOT NULL COMMENT '평가 키', -- 평가 키
-	`field`   VARBINARY(8)  NOT NULL COMMENT '필드', -- 필드
-	`detail`  VARBINARY(50) NOT NULL COMMENT '상세평가', -- 상세평가
-	`score`   INT           NOT NULL COMMENT '점수' -- 점수
+	`id_rate` INT         NOT NULL COMMENT '평가 키', -- 평가 키
+	`field`   VARCHAR(8)  NOT NULL COMMENT '필드', -- 필드
+	`detail`  VARCHAR(50) NOT NULL COMMENT '상세평가', -- 상세평가
+	`score`   INT         NOT NULL COMMENT '점수' -- 점수
 )
 COMMENT '평가';
 
@@ -210,6 +214,9 @@ ALTER TABLE `daangn`.`rate`
 		PRIMARY KEY (
 			`id_rate` -- 평가 키
 		);
+
+ALTER TABLE `daangn`.`rate`
+	MODIFY COLUMN `id_rate` INT NOT NULL AUTO_INCREMENT COMMENT '평가 키';
 
 -- 판평관계
 CREATE TABLE `daangn`.`seller_rate` (
@@ -238,6 +245,74 @@ CREATE TABLE `daangn`.`member_shopper` (
 	`id_real_deal` INT NOT NULL COMMENT '거래키' -- 거래키
 )
 COMMENT '멤버구매자';
+
+-- 매너온도로그
+CREATE TABLE `daangn`.`manner_log` (
+	`id_manner_log` INT      NOT NULL COMMENT '새 컬럼', -- 새 컬럼
+	`id_manner`     INT      NOT NULL COMMENT '매너 키', -- 매너 키
+	`score`         INT      NOT NULL COMMENT '점수', -- 점수
+	`cdate`         DATETIME NOT NULL COMMENT '생성일' -- 생성일
+)
+COMMENT '매너온도로그';
+
+-- 매너온도로그
+ALTER TABLE `daangn`.`manner_log`
+	ADD CONSTRAINT `PK_manner_log` -- 매너온도로그 기본키
+		PRIMARY KEY (
+			`id_manner_log` -- 새 컬럼
+		);
+
+-- 주소
+CREATE TABLE `daangn`.`memberaddr` (
+	`id_amemberddr` INT          NOT NULL COMMENT '주소키', -- 주소키
+	`id_member`     INT          NOT NULL COMMENT '멤버 키', -- 멤버 키
+	`addr`          VARCHAR(200) NOT NULL COMMENT '주소' -- 주소
+)
+COMMENT '주소';
+
+-- 주소
+ALTER TABLE `daangn`.`memberaddr`
+	ADD CONSTRAINT `PK_memberaddr` -- 주소 기본키
+		PRIMARY KEY (
+			`id_amemberddr` -- 주소키
+		);
+
+ALTER TABLE `daangn`.`memberaddr`
+	MODIFY COLUMN `id_amemberddr` INT NOT NULL AUTO_INCREMENT COMMENT '주소키';
+
+-- 위치
+CREATE TABLE `daangn`.`location` (
+	`dong`      VARCHAR(20) NOT NULL COMMENT '동', -- 동
+	`latitude`  NUMERIC     NULL     COMMENT '위도', -- 위도
+	`longitude` NUMERIC     NULL     COMMENT '경도' -- 경도
+)
+COMMENT '위치';
+
+-- 위치
+ALTER TABLE `daangn`.`location`
+	ADD CONSTRAINT `PK_location` -- 위치 기본키
+		PRIMARY KEY (
+			`dong` -- 동
+		);
+
+-- 근처동네
+CREATE TABLE `daangn`.`nearby_location` (
+	`id_nearby`   INT         NOT NULL COMMENT '동네업체키', -- 동네업체키
+	`dong`        VARCHAR(20) NULL     COMMENT '동', -- 동
+	`nearby_dong` VARCHAR(20) NULL     COMMENT '근처동', -- 근처동
+	`distance`    INT         NULL     COMMENT '거리' -- 거리
+)
+COMMENT '근처동네';
+
+-- 근처동네
+ALTER TABLE `daangn`.`nearby_location`
+	ADD CONSTRAINT `PK_nearby_location` -- 근처동네 기본키
+		PRIMARY KEY (
+			`id_nearby` -- 동네업체키
+		);
+
+ALTER TABLE `daangn`.`nearby_location`
+	MODIFY COLUMN `id_nearby` INT NOT NULL AUTO_INCREMENT COMMENT '동네업체키';
 
 -- 제품
 ALTER TABLE `daangn`.`product`
@@ -427,4 +502,34 @@ ALTER TABLE `daangn`.`member_shopper`
 		)
 		REFERENCES `daangn`.`real_deal` ( -- 실거래
 			`id_real_deal` -- 거래키
+		);
+
+-- 매너온도로그
+ALTER TABLE `daangn`.`manner_log`
+	ADD CONSTRAINT `FK_manner_TO_manner_log` -- 메너온도 -> 매너온도로그
+		FOREIGN KEY (
+			`id_manner` -- 매너 키
+		)
+		REFERENCES `daangn`.`manner` ( -- 메너온도
+			`id_manner` -- 매너 키
+		);
+
+-- 주소
+ALTER TABLE `daangn`.`memberaddr`
+	ADD CONSTRAINT `FK_member_TO_memberaddr` -- 멤버 -> 주소
+		FOREIGN KEY (
+			`id_member` -- 멤버 키
+		)
+		REFERENCES `daangn`.`member` ( -- 멤버
+			`id_member` -- 멤버 키
+		);
+
+-- 근처동네
+ALTER TABLE `daangn`.`nearby_location`
+	ADD CONSTRAINT `FK_location_TO_nearby_location` -- 위치 -> 근처동네
+		FOREIGN KEY (
+			`dong` -- 동
+		)
+		REFERENCES `daangn`.`location` ( -- 위치
+			`dong` -- 동
 		);
