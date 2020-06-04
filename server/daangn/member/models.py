@@ -103,7 +103,7 @@ class Member(models.Model):
         db_table = 'member'
 
 
-    class Memberaddr(models.Model):
+class Memberaddr(models.Model):
     id_memberaddr = models.AutoField(primary_key=True)
     id_member = models.ForeignKey(Member, models.DO_NOTHING, db_column='id_member')
     addr = models.CharField(max_length=200)
