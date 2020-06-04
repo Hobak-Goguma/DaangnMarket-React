@@ -58,12 +58,14 @@ export const File = styled.div`
   }
 
   .delete {
+    height:20px;
+    width:20px;
     position: absolute;
-    top: -12px;
-    right: -7px;
+    top: -7px;
+    right: -8px;
     font-size: 1rem;
-    padding: 5px 8px;
     cursor: pointer;
+    text-align:center;
     border-radius: 50%;
     color: #fff;
     background: rgba(0, 0, 0, 0.5);
