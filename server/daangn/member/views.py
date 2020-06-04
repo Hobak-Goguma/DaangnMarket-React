@@ -352,7 +352,10 @@ def wishlist_detail(request, pk):
         return Response(serializer.data)
 
     elif request.method == 'DELETE':
-        wishlist.delete()
+        q = request.data.dict()
+        qid_product = q['id_product']
+        wishlist_delete = Wishlist.objects.filter(id_member = pk).filter(id_product = qid_product)
+        wishlist_delete.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['GET'])
@@ -361,3 +364,136 @@ def test(request):
     테스트용 api
     """
     return Response(status=status.HTTP_200_OK)
+
+@api_view(['GET', 'POST'])
+def realdeal_list(request):
+    """
+    실거래리스트를 모두 보여주거나 새 실거래를 추가합니다.
+    """
+    if request.method == 'GET':
+        # realdeal 테이블에 실거래키가 같은 memberseller, membershopper 테이블 조인, 
+        # 실거래키, 제품키, 구매자, 판매자 조회
+        realdeal = RealDeal.objects.raw("""SELECT R.id_real_deal, R.id_product, MS.id_member AS seller, MP.id_member AS shopper FROM daangn.real_deal AS R 
+                                            JOIN daangn.member_seller AS MS ON R.id_real_deal = MS.id_real_deal 
+                                            JOIN daangn.member_shopper AS MP ON R.id_real_deal = MP.id_real_deal""")
+        serializer = RealDealSerializer(realdeal, many=True)
+        return Response(serializer.data)
+
+    elif request.method == 'POST':
+        serializer = RealDealSerializer(data=request.data)
+        if serializer.is_valid():
+            #실거래 등록
+            serializer.save()
+            q = request.data.dict()
+            #제품 테이블 판매여부 수정
+            product = Product.objects.get(pk=int(q['id_product']))
+            product.sold_tf = 1
+            product.save()
+            #판매자, 구매자 등록
+            seller = int(q['seller'])
+            shopper = int(q['shopper'])
+            realdeal = int(serializer.data['pk'])
+            temp_seller = Member.objects.get(id_member=seller)
+            temp_shopper = Member.objects.get(id_member=shopper)
+            temp_real = RealDeal.objects.get(id_real_deal = realdeal)
+            MemberSeller.objects.create(id_member = temp_seller, id_real_deal = temp_real)
+            MemberShopper.objects.create(id_member = temp_shopper, id_real_deal = temp_real)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def realdeal_detail(request, pk):
+    """
+    특정 제품의 실거래를 보여줍니다.
+    """
+    try:
+        realdeal = RealDeal.objects.filter(id_product = pk)
+    except RealDeal.DoesNotExist:
+        content = {
+            "message" : "거래되지 않은 상품 없습니다.",
+            "result" : {}
+                }
+        return Response(content, status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        # realdeal 테이블에 실거래키가 memberseller, membershopper 테이블 조인
+        #그 중 제품키와 pk 가 같은 row의 실거래키, 제품키, 구매자, 판매자 조회
+        realdeal = RealDeal.objects.raw("""SELECT R.id_real_deal, R.id_product, MS.id_member AS seller, MP.id_member AS shopper FROM daangn.real_deal AS R 
+                                            JOIN daangn.member_seller AS MS ON R.id_real_deal = MS.id_real_deal 
+                                            JOIN daangn.member_shopper AS MP ON R.id_real_deal = MP.id_real_deal 
+                                            WHERE R.id_product ="""+pk)
+        serializer = RealDealSerializer(realdeal, many=True)
+        return Response(serializer.data)
+
+
+@api_view(['POST'])
+def seller_review(request):
+    """
+    판매자의 리뷰를 봅니다(판매자 -> 구매자)
+    """
+    if request.method == 'GET':
+        sellerreview = SellerReview.objects.all()
+        serializer = SellerReviewSerializer(sellerreview, many=True)
+        return Response(serializer.data)
+
+    elif request.method == 'POST':
+        serializer = SellerReviewSerializer(data=request.data)
+        q = request.data.dict()
+        if serializer.is_valid():
+            #판매자리뷰 저장
+            serializer.save()
+            q = request.data.dict()
+            #세부평가 저장
+            rate = q['rate'].split(',')
+            pk = int(serializer.data['pk'])
+            temp_seller_review = SellerReview.objects.get(id_review_seller = pk)
+            for i in rate:
+                temp_rate = Rate.objects.get(id_rate=i)
+                SellerRate.objects.create(id_review_seller = temp_seller_review, id_rate =temp_rate)
+
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+def shopper_review(request):
+    """
+    구매자의 리뷰를 봅니다(구매자 -> 판매자)
+    """
+    if request.method == 'GET':
+        shopperreview = ShopperReview.objects.all()
+        serializer = ShopperReviewSerializer(shopperreview, many=True)
+        return Response(serializer.data)
+
+    elif request.method == 'POST':
+        serializer = ShopperReviewSerializer(data=request.data)
+        q = request.data.dict()
+        if serializer.is_valid():
+            #판매자리뷰 저장
+            serializer.save()
+            q = request.data.dict()
+            #세부평가 저장
+            rate = q['rate'].split(',')
+            pk = int(serializer.data['pk'])
+            temp_shopper_review = ShopperReview.objects.get(id_review_shopper = pk)
+            for i in rate:
+                temp_rate = Rate.objects.get(id_rate=i)
+                ShopperRate.objects.create(id_review_shopper = temp_shopper_review, id_rate =temp_rate)
+
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+#특정 실거래의 구매자 리뷰
+def shopper_review_list(id_real_deal) :
+    shopperreview = ShopperReview.objects.filter(id_real_deal = id_real_deal)
+    serializer = ShopperReviewSerializer(shopperreview, many=True)
+    return serializer.data
+
+
+#특정 실거래의 구매자 리뷰
+def seller_review_list(id_real_deal) :
+    sellerreview = ShopperReview.objects.filter(id_real_deal = id_real_deal)
+    serializer = ShopperReviewSerializer(sellerreview, many=True)
+    return serializer.data
