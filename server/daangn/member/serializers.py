@@ -52,29 +52,48 @@ class WishlistSerializer(serializers.ModelSerializer):
 
 
 # realdeal api 
-class RealDealSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Wishlist
-        fields = ('pk', 'id_product', 'cdate')
-
 class MemberSellerSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Wishlist
+        id_member = MemberSerializer(read_only= True)
+        model = MemberSeller
         fields = ('id_member', 'id_real_deal')
+
 
 class MemberShopperSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Wishlist
+        model = MemberShopper
         fields = ('id_member', 'id_real_deal')
+
+        
+class RealDealSerializer(serializers.ModelSerializer):
+    seller = serializers.IntegerField(read_only=True)
+    shopper = serializers.IntegerField(read_only=True)
+    class Meta:
+        model = RealDeal
+        fields = ('pk', 'id_product','seller', 'shopper', 'cdate')
+
+
+class SellerRateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SellerRate
+        fields = ('id_review_seller', 'id_rate')
+
+
+class ShopperRateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ShopperRate
+        fields = ('id_review_shopper', 'id_rate')
+
 
 class SellerReviewSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Wishlist
+        model = SellerReview
         fields = ('pk', 'id_real_deal', 'title', 'cdate')
+
 
 class ShopperReviewSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Wishlist
+        model = ShopperReview
         fields = ('pk', 'id_real_deal', 'title', 'cdate')
 
 
