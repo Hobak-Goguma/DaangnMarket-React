@@ -6,8 +6,8 @@ from member.models import *
 class MemberSerializer(serializers.ModelSerializer):
     class Meta:
         model = Member
-        # fields = ('pk', 'name', 'nick_nazme', 'user_id', 'user_pw', 'tel', 'birth', 'email', 'gender')
-        fields = ('pk', 'name', 'nick_name', 'user_id', 'user_pw', 'tel', 'birth', 'email', 'gender', 'addr', 'img')
+        fields = ('pk', 'name', 'nick_name', 'user_id', 'user_pw', 'tel', 'birth', 'email', 'gender')
+        # fields = ('pk', 'name', 'nick_name', 'user_id', 'user_pw', 'tel', 'birth', 'email', 'gender', 'addr', 'img')
 
 
 class MemberReviseSerializer(serializers.ModelSerializer):

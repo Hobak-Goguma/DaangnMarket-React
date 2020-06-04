@@ -103,8 +103,8 @@ class Member(models.Model):
         db_table = 'member'
 
 
-    class Memberaddr(models.Model):
-    id_amemberddr = models.AutoField(primary_key=True)
+class Memberaddr(models.Model):
+    id_memberaddr = models.AutoField(primary_key=True)
     id_member = models.ForeignKey(Member, models.DO_NOTHING, db_column='id_member')
     addr = models.CharField(max_length=200)
 
@@ -142,7 +142,7 @@ class Product(models.Model):
     img = models.CharField(max_length=2000, blank=True, null=True)
     views = models.IntegerField(default=0)
     sold_tf = models.IntegerField(db_column='sold_TF')  # Field name made lowercase.
-    addr = models.CharField(max_length=200)
+    # addr = models.CharField(max_length=200)
     cdate = models.DateTimeField(auto_now_add=True)
     udate = models.DateTimeField(auto_now=True)
 

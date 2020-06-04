@@ -356,6 +356,23 @@ def wishlist_detail(request, pk):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['GET'])
+def selling_product_list(request, id_member):
+    """
+    특정 유저의 판매 상품 리스트를 조회합니다.
+    """
+    try:
+        product = Product.objects.filter(id_member = id_member)
+    except Product.DoesNotExist:
+        content = {
+            "message" : "판매 상품이 없습니다.",
+            "result" : {}
+        }
+        return Response(content, status=status.HTTP_404_NOT_FOUND)
+    
+    serializer = ProductSerializer(product, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
 def test(request):
     """
     테스트용 api
