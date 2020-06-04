@@ -213,10 +213,12 @@ const MyInfo = ({history}) =>{
         <Info>
         
             <div className="title">
-                <span className="tit">{state==="info"? "내정보":
-                state==="nickname"? "별명 변경":
-                state==="phone"? "전화번호 변경":
-                state==="addr"? "주소 변경":setState("info")
+                <span className="tit">{
+                    state==="info"? "내정보":
+                    state==="nickname"? "별명 변경":
+                    state==="phone"? "전화번호 변경":
+                    state==="addr"? "주소 변경":
+                    setState("info")
                 }</span>
             </div>
             <div className="infoBox">

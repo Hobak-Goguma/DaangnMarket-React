@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import MyLayout from "../MypageLayout";
+import MyLayout from "../../MypageLayout";
 
 const ChangeLayout = styled.div`
   width: calc(100% - 250px);
@@ -23,6 +23,28 @@ const Changelayout = ({ location, history }) => {
   let { state: temp } = location;
   const { state, user } = temp;
   let classname, changeValue;
+
+  switch (state) {
+    case "nick_name":
+      classname = "닉네임";
+      changeValue = user.nick_name;
+      break;
+
+    case "nick_name":
+      classname = "닉네임";
+      changeValue = user.nick_name;
+      break;
+  
+    default:
+      break;
+  }
+
+
+
+
+
+
+
   if (state === "nick_name") {
     classname = "닉네임";
     changeValue = user.nick_name;

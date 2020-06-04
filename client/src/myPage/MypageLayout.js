@@ -1,5 +1,5 @@
 import React from "react";
-import MyNav from "./MyPageNav";
+import MyNav from "./components/MyPageNav";
 import Header from "../common/components/Header";
 import Footer from "../common/components/Footer";
 
