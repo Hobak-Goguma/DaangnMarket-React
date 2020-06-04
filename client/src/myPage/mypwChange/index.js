@@ -1,7 +1,7 @@
 import React, { useState,useCallback, useEffect } from "react";
 import MyLayout from "../MypageLayout";
-import MyPage2ndLogin from "./MyPage2ndLogin";
-import MyInfoChng from "./MyInfoChng";
+import MyPage2ndLogin from "./components/MyPage2ndLogin";
+import MyInfoChng from "./components/MyInfoChng";
 
 const MyPwChange = ({history}) =>{
     let choose = "비밀번호 수정";

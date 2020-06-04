@@ -1,8 +1,8 @@
 import React from "react";
-import Container from "./Container";
+import ProductDetailContainer from "./Container";
 
 const productDetailPage = () => {
-  return <Container />;
+  return <ProductDetailContainer />;
 };
 
 export default productDetailPage;

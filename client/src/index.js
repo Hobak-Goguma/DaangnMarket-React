@@ -10,7 +10,7 @@ const store = createStore(rootReducer, composeWithDevTools());
 
 render(
   <Provider store={store}>
-    {()=><Routes />}
+    <Routes />
   </Provider>,
   document.getElementById("root")
 );

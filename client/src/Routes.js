@@ -8,13 +8,13 @@ import {
 import HomePage from "./home";
 import LoginPage from "./login";
 import RegisterPage from "./register";
-import MyPwChange from "./myPage/MyPwChange";
-import MyProduct from "./myPage/MyProduct";
-import MyInfo from "./myPage/MyInfo";
+import MyPwChange from "./myPage/mypwChange";
+import MyProduct from "./myPage/myproduct";
+import MyInfo from "./myPage/myInfo";
+import Changelayout from "./myPage/myInfo/components/Changelayout";
 import SearchPage from "./search";
 import ProductDetailPage from "./productDetail";
 import OtherUserPage from "./otherUser";
-import Changelayout from "./myPage/myChange/Changelayout";
 import UploadPage from "./upload";
 
 // Style Wrapper

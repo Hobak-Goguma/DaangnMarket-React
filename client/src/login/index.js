@@ -1,11 +1,11 @@
 import React from "react";
 import Layout from "../common/components/Layout";
-import Container from "./Container";
+import LoginContainer from "./Container";
 
 const LoginPage = () => {
   return (
     <Layout>
-      <Container />
+      <LoginContainer />
     </Layout>
   );
 };
