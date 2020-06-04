@@ -29,10 +29,10 @@ export default function Routes() {
         <Switch>
           <Route exact path="/" component={HomePage} />
           <Route exact path="/mypwchange" component={MyPwChange} />
-          <Route exact path="/myproduct" component={MyProduct} />
           <Route exact path="/myinfo" component={MyInfo} />
           <Route exact path="/login" component={LoginPage} />
           <Route exact path="/register" component={RegisterPage} />
+          <Route path="/myproduct" component={MyProduct} />
           <Route path="/search" component={SearchPage} />
           <Route path="/myinfochange" component={Changelayout} />
           <Route path="/products/:product_id" component={ProductDetailPage} />
