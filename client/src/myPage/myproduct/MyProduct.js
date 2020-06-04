@@ -1,5 +1,5 @@
 import React from "react";
-import MyLayout from "./MypageLayout";
+import MyLayout from "../MypageLayout";
 import styled from "styled-components";
 
 // Wishlist component
