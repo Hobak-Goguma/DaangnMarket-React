@@ -1,5 +1,5 @@
 import React, { useState,useCallback, useEffect } from "react";
-import MyLayout from "./MypageLayout";
+import MyLayout from "../MypageLayout";
 import MyPage2ndLogin from "./MyPage2ndLogin";
 import MyInfoChng from "./MyInfoChng";
 

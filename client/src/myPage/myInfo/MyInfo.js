@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import MyLayout from "./MypageLayout";
+import MyLayout from "../MypageLayout";
 import { Link } from "react-router-dom";
 
 const Info = styled.div`
