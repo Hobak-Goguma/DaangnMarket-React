@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import { addProduct } from "../../redux/actions/wishlist";
@@ -8,11 +8,12 @@ const Footer = ({ detail, addProduct, id }) => {
   const [heart, setHeart] = useState(false);
   const price = parseInt(detail.price).toLocaleString();
 
+  // useEffect(() => {}, [heart]);
+
   const clickHeart = (id) => {
+    window.sessionStorage.setItem("heart", JSON.stringify(!heart));
     api.get(`/product/${id}`).then((res) => {
-      if (heart !== true) {
-        addProduct(res.data);
-      }
+      addProduct(res.data);
     });
   };
 
