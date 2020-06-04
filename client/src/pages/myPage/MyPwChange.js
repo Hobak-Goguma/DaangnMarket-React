@@ -10,7 +10,7 @@ const MyPwChange = ({history}) =>{
         if(window.sessionStorage.getItem("user")!==null&&window.sessionStorage.getItem("user")!==""){// 통신시 분기문 제거
             if(window.sessionStorage.getItem("user")===null||window.sessionStorage.getItem("user")===""){
                 alert("로그인이 필요한 서비스입니다.");
-                history.push("/");
+                history.push("/login");
             }
             setID (JSON.parse(window.sessionStorage.getItem("user")).user_id);
         }else{

@@ -266,7 +266,6 @@ const MyInfoChng = ({ID,login,changeLogin,history}) =>{
                 "user_pw":login.pw
             })
         }).then(async(response)=>{
-// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>통신시 변경해야될
             if(response.status===200||response.status===201){
                 const res = await response.json();
                 const temp = JSON.stringify(res);
@@ -480,7 +479,7 @@ const MyInfoChng = ({ID,login,changeLogin,history}) =>{
                 break;
                 case "secession": //탈퇴 버튼
                 if(window.confirm("정말 탈퇴하시겠습니까?")===true){
-                    fetch(`http://www.daangn.site/member/5`,{
+                    fetch(`http://www.daangn.site/member/${user.pk}`,{
                         method:"DELETE",
                     }).then(async response=>{
                         if(await response.status===204){                                
