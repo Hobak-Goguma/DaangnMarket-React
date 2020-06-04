@@ -5,23 +5,22 @@ import {
   Switch,
   Redirect,
 } from "react-router-dom";
-import HomePage from "./pages/HomePage";
-import LoginPage from "./pages/LoginPage";
-import RegisterPage from "./pages/RegisterPage";
-import MyPwChange from "./pages/myPage/MyPwChange";
-import MyProduct from "./pages/myPage/MyProduct";
-import MyInfo from "./pages/myPage/MyInfo";
-import SearchPage from "./pages/SearchPage";
-import ArticlePage from "./pages/ArticlePage";
-import OtherUserPage from "./pages/OtherUserPage";
-import Changelayout from "./pages/myPage/mychage/ChangeLayout";
-import UploadPage from "./pages/UploadPage";
-import WishlistPage from "./pages/WishlistPage";
+import HomePage from "./home";
+import LoginPage from "./login";
+import RegisterPage from "./register";
+import MyPwChange from "./myPage/MyPwChange";
+import MyProduct from "./myPage/MyProduct";
+import MyInfo from "./myPage/MyInfo";
+import SearchPage from "./search";
+import ProductDetailPage from "./productDetail";
+import OtherUserPage from "./otherUser";
+import Changelayout from "./myPage/myChange/Changelayout";
+import UploadPage from "./upload";
 
 // Style Wrapper
 import { ThemeProvider } from "styled-components";
-import Theme from "./lib/themes/Theme";
-import Global from "./lib/themes/GlobalStyles";
+import Theme from "./common/themes/Theme";
+import Global from "./common/themes/GlobalStyles";
 
 export default function Routes() {
   return (
@@ -35,11 +34,11 @@ export default function Routes() {
           <Route exact path="/login" component={LoginPage} />
           <Route exact path="/register" component={RegisterPage} />
           <Route path="/search" component={SearchPage} />
-          <Route path="/articles/:articles_id" component={ArticlePage} />
+          <Route path="/myinfochange" component={Changelayout} />
+          <Route path="/products/:product_id" component={ProductDetailPage} />
           <Route path="/user" component={OtherUserPage} />
           <Route path="/upload" component={UploadPage} />
-          <Route path="/myinfochange" component={Changelayout} />
-          <Route path="/wishlist" component={WishlistPage} />
+
           <Redirect from="*" to="/" />
         </Switch>
         <Global />
