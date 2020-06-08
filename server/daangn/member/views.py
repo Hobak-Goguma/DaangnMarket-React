@@ -524,6 +524,18 @@ def shopper_review(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@api_view(['GET'])
+def product_view(request, product_id):
+    """
+    제품 조회수 증가
+    """
+    if request.method == 'GET':
+        product = Product.objects.get(pk=product_id)
+        product.views += 1
+        product.save()
+    return Response("Success")
+
+
 #특정 실거래의 구매자 리뷰
 def shopper_review_list(id_real_deal) :
     shopperreview = ShopperReview.objects.filter(id_real_deal = id_real_deal)

@@ -204,7 +204,7 @@ CREATE TABLE `daangn`.`rate` (
 	`id_rate` INT         NOT NULL COMMENT '평가 키', -- 평가 키
 	`field`   VARCHAR(8)  NOT NULL COMMENT '필드', -- 필드
 	`detail`  VARCHAR(50) NOT NULL COMMENT '상세평가', -- 상세평가
-	`score`   INT         NOT NULL COMMENT '점수' -- 점수
+	`score`   FLOAT         NOT NULL COMMENT '점수' -- 점수
 )
 COMMENT '평가';
 
@@ -264,7 +264,7 @@ ALTER TABLE `daangn`.`manner_log`
 
 -- 주소
 CREATE TABLE `daangn`.`memberaddr` (
-	`id_amemberddr` INT          NOT NULL COMMENT '주소키', -- 주소키
+	`id_memberaddr` INT          NOT NULL COMMENT '주소키', -- 주소키
 	`id_member`     INT          NOT NULL COMMENT '멤버 키', -- 멤버 키
 	`addr`          VARCHAR(200) NOT NULL COMMENT '주소' -- 주소
 )
@@ -274,11 +274,11 @@ COMMENT '주소';
 ALTER TABLE `daangn`.`memberaddr`
 	ADD CONSTRAINT `PK_memberaddr` -- 주소 기본키
 		PRIMARY KEY (
-			`id_amemberddr` -- 주소키
+			`id_memberaddr` -- 주소키
 		);
 
 ALTER TABLE `daangn`.`memberaddr`
-	MODIFY COLUMN `id_amemberddr` INT NOT NULL AUTO_INCREMENT COMMENT '주소키';
+	MODIFY COLUMN `id_memberaddr` INT NOT NULL AUTO_INCREMENT COMMENT '주소키';
 
 -- 위치
 CREATE TABLE `daangn`.`location` (
