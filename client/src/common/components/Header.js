@@ -100,9 +100,9 @@ const Header = (props) => {
     id = window.sessionStorage.getItem("id");
     if (id) {
       setLogin(true);
+      console.log("wonsang")
     } else {
       setLogin(false);
-      window.sessionStorage.clear();
     }
   }, []);
 
