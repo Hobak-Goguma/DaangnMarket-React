@@ -19,6 +19,12 @@ urlpatterns = [
     path('company/<pk>', views.company_detail, name='company_detail'),
     path('wishlist', views.wishlist_list, name='wishlist_list'),
     path('wishlist/<pk>', views.wishlist_detail, name='wishlist_detail'),
+    path('product/selling/<id_member>', views.selling_product_list, name='selling_product_list'),
+    path('realdeal', views.realdeal_list, name='realdeal_list'),
+    path('realdeal/<pk>', views.realdeal_detail, name='realdeal_detail'),
+    path('sellerreview', views.seller_review, name='seller_review_list'),
+    path('shopperreview', views.shopper_review, name='shopper_review_list'),
+    path('productview/<product_id>', views.product_view, name='product_view')
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

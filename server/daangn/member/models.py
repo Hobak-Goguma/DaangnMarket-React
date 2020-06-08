@@ -6,7 +6,7 @@ class Company(models.Model):
     id_company = models.AutoField(primary_key=True)
     id_member = models.ForeignKey('Member', models.DO_NOTHING, db_column='id_member')
     name = models.CharField(max_length=50)
-    addr = models.TextField()
+    addr = models.CharField(max_length=200)
     tel = models.CharField(max_length=20, blank=True, null=True)
     info = models.CharField(max_length=3000, blank=True, null=True)
     category = models.CharField(max_length=15, blank=True, null=True)
@@ -17,6 +17,27 @@ class Company(models.Model):
     class Meta:
         managed = False
         db_table = 'company'
+
+
+class Location(models.Model):
+    dong = models.CharField(primary_key=True, max_length=20)
+    latitude = models.DecimalField(max_digits=10, decimal_places=0, blank=True, null=True)
+    longitude = models.DecimalField(max_digits=10, decimal_places=0, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'location'
+
+
+class NearbyLocation(models.Model):
+    id_nearby = models.AutoField(primary_key=True)
+    dong = models.ForeignKey(Location, models.DO_NOTHING, db_column='dong', blank=True, null=True)
+    nearby_dong = models.CharField(max_length=20, blank=True, null=True)
+    distance = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'nearby_location'
 
 
 class Log(models.Model):
@@ -34,11 +55,24 @@ class Manner(models.Model):
     id_manner = models.AutoField(primary_key=True)
     id_member = models.ForeignKey('Member', models.DO_NOTHING, db_column='id_member')
     score = models.IntegerField()
-    cdate = models.DateTimeField(auto_now_add=True)
+    cdate = models.DateTimeField()
+    udate = models.DateTimeField()
 
     class Meta:
         managed = False
         db_table = 'manner'
+
+
+class MannerLog(models.Model):
+    id_manner_log = models.IntegerField(primary_key=True)
+    id_manner = models.ForeignKey(Manner, models.DO_NOTHING, db_column='id_manner')
+    score = models.IntegerField()
+    cdate = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'manner_log'
+
 
 class MannerReviewer(models.Model):
     id_manner = models.ForeignKey(Manner, models.DO_NOTHING, db_column='id_manner')
@@ -52,14 +86,13 @@ class MannerReviewer(models.Model):
 class Member(models.Model):
     id_member = models.AutoField(primary_key=True)
     name = models.CharField(max_length=30)
-    nick_name = models.CharField(max_length=30)
     user_id = models.CharField(max_length=30)
     user_pw = models.CharField(max_length=55)
+    nick_name = models.CharField(max_length=30)
     tel = models.CharField(max_length=20)
     birth = models.DateField()
     email = models.CharField(max_length=30)
     gender = models.CharField(max_length=6)
-    addr = models.TextField()
     cdate = models.DateTimeField(auto_now_add=True)
     udate = models.DateTimeField(auto_now=False, null=True)
     last_date = models.DateTimeField(auto_now=False, null=True)
@@ -68,6 +101,16 @@ class Member(models.Model):
     class Meta:
         managed = False
         db_table = 'member'
+
+
+class Memberaddr(models.Model):
+    id_memberaddr = models.AutoField(primary_key=True)
+    id_member = models.ForeignKey(Member, models.DO_NOTHING, db_column='id_member')
+    addr = models.CharField(max_length=200)
+
+    class Meta:
+        managed = False
+        db_table = 'memberaddr'
 
 
 class MemberSeller(models.Model):
@@ -98,9 +141,10 @@ class Product(models.Model):
     category = models.CharField(max_length=15, blank=True, null=True)
     img = models.CharField(max_length=2000, blank=True, null=True)
     views = models.IntegerField(default=0)
+    sold_tf = models.IntegerField(db_column='sold_TF')  # Field name made lowercase.
+    # addr = models.CharField(max_length=200)
     cdate = models.DateTimeField(auto_now_add=True)
     udate = models.DateTimeField(auto_now=True)
-    sold_tf = models.IntegerField(db_column='sold_TF')  # Field name made lowercase.
 
     class Meta:
         managed = False
