@@ -1,3 +1,4 @@
+-- 2020.06.10
 -- 멤버
 CREATE TABLE `daangn`.`member` (
 	`id_member` INT          NOT NULL COMMENT '멤버 키', -- 멤버 키
@@ -57,7 +58,7 @@ ALTER TABLE `daangn`.`product`
 CREATE TABLE `daangn`.`manner` (
 	`id_manner` INT      NOT NULL COMMENT '매너 키', -- 매너 키
 	`id_member` INT      NOT NULL COMMENT '피평가자', -- 피평가자
-	`score`     INT      NOT NULL COMMENT '점수', -- 점수
+	`score`     FLOAT    NOT NULL COMMENT '점수', -- 점수
 	`cdate`     DATETIME NOT NULL COMMENT '생성일', -- 생성일
 	`udate`     DATETIME NOT NULL COMMENT '수정일' -- 수정일
 )
@@ -194,8 +195,8 @@ ALTER TABLE `daangn`.`wishlist`
 
 -- 매너온도_리뷰어
 CREATE TABLE `daangn`.`manner_reviewer` (
-	`id_manner` INT NOT NULL COMMENT '매너 키', -- 매너 키
-	`reviewer`  INT NOT NULL COMMENT '리뷰어' -- 리뷰어
+	`id_manner_log` INT NULL     COMMENT '매너로그키', -- 매너로그키
+	`reviewer`      INT NOT NULL COMMENT '리뷰어' -- 리뷰어
 )
 COMMENT '매너온도_리뷰어';
 
@@ -204,7 +205,7 @@ CREATE TABLE `daangn`.`rate` (
 	`id_rate` INT         NOT NULL COMMENT '평가 키', -- 평가 키
 	`field`   VARCHAR(8)  NOT NULL COMMENT '필드', -- 필드
 	`detail`  VARCHAR(50) NOT NULL COMMENT '상세평가', -- 상세평가
-	`score`   FLOAT         NOT NULL COMMENT '점수' -- 점수
+	`score`   FLOAT       NOT NULL COMMENT '점수' -- 점수
 )
 COMMENT '평가';
 
@@ -248,9 +249,9 @@ COMMENT '멤버구매자';
 
 -- 매너온도로그
 CREATE TABLE `daangn`.`manner_log` (
-	`id_manner_log` INT      NOT NULL COMMENT '새 컬럼', -- 새 컬럼
+	`id_manner_log` INT      NOT NULL COMMENT '매너로그키', -- 매너로그키
 	`id_manner`     INT      NOT NULL COMMENT '매너 키', -- 매너 키
-	`score`         INT      NOT NULL COMMENT '점수', -- 점수
+	`score`         FLOAT    NOT NULL COMMENT '점수', -- 점수
 	`cdate`         DATETIME NOT NULL COMMENT '생성일' -- 생성일
 )
 COMMENT '매너온도로그';
@@ -259,7 +260,7 @@ COMMENT '매너온도로그';
 ALTER TABLE `daangn`.`manner_log`
 	ADD CONSTRAINT `PK_manner_log` -- 매너온도로그 기본키
 		PRIMARY KEY (
-			`id_manner_log` -- 새 컬럼
+			`id_manner_log` -- 매너로그키
 		);
 
 -- 주소
@@ -279,40 +280,6 @@ ALTER TABLE `daangn`.`memberaddr`
 
 ALTER TABLE `daangn`.`memberaddr`
 	MODIFY COLUMN `id_memberaddr` INT NOT NULL AUTO_INCREMENT COMMENT '주소키';
-
--- 위치
-CREATE TABLE `daangn`.`location` (
-	`dong`      VARCHAR(20) NOT NULL COMMENT '동', -- 동
-	`latitude`  NUMERIC     NULL     COMMENT '위도', -- 위도
-	`longitude` NUMERIC     NULL     COMMENT '경도' -- 경도
-)
-COMMENT '위치';
-
--- 위치
-ALTER TABLE `daangn`.`location`
-	ADD CONSTRAINT `PK_location` -- 위치 기본키
-		PRIMARY KEY (
-			`dong` -- 동
-		);
-
--- 근처동네
-CREATE TABLE `daangn`.`nearby_location` (
-	`id_nearby`   INT         NOT NULL COMMENT '동네업체키', -- 동네업체키
-	`dong`        VARCHAR(20) NULL     COMMENT '동', -- 동
-	`nearby_dong` VARCHAR(20) NULL     COMMENT '근처동', -- 근처동
-	`distance`    INT         NULL     COMMENT '거리' -- 거리
-)
-COMMENT '근처동네';
-
--- 근처동네
-ALTER TABLE `daangn`.`nearby_location`
-	ADD CONSTRAINT `PK_nearby_location` -- 근처동네 기본키
-		PRIMARY KEY (
-			`id_nearby` -- 동네업체키
-		);
-
-ALTER TABLE `daangn`.`nearby_location`
-	MODIFY COLUMN `id_nearby` INT NOT NULL AUTO_INCREMENT COMMENT '동네업체키';
 
 -- 제품
 ALTER TABLE `daangn`.`product`
@@ -406,22 +373,22 @@ ALTER TABLE `daangn`.`wishlist`
 
 -- 매너온도_리뷰어
 ALTER TABLE `daangn`.`manner_reviewer`
-	ADD CONSTRAINT `FK_manner_TO_manner_reviewer` -- 메너온도 -> 매너온도_리뷰어
-		FOREIGN KEY (
-			`id_manner` -- 매너 키
-		)
-		REFERENCES `daangn`.`manner` ( -- 메너온도
-			`id_manner` -- 매너 키
-		);
-
--- 매너온도_리뷰어
-ALTER TABLE `daangn`.`manner_reviewer`
 	ADD CONSTRAINT `FK_member_TO_manner_reviewer` -- 멤버 -> 매너온도_리뷰어
 		FOREIGN KEY (
 			`reviewer` -- 리뷰어
 		)
 		REFERENCES `daangn`.`member` ( -- 멤버
 			`id_member` -- 멤버 키
+		);
+
+-- 매너온도_리뷰어
+ALTER TABLE `daangn`.`manner_reviewer`
+	ADD CONSTRAINT `FK_manner_log_TO_manner_reviewer` -- 매너온도로그 -> 매너온도_리뷰어
+		FOREIGN KEY (
+			`id_manner_log` -- 매너로그키
+		)
+		REFERENCES `daangn`.`manner_log` ( -- 매너온도로그
+			`id_manner_log` -- 매너로그키
 		);
 
 -- 판평관계
@@ -522,14 +489,4 @@ ALTER TABLE `daangn`.`memberaddr`
 		)
 		REFERENCES `daangn`.`member` ( -- 멤버
 			`id_member` -- 멤버 키
-		);
-
--- 근처동네
-ALTER TABLE `daangn`.`nearby_location`
-	ADD CONSTRAINT `FK_location_TO_nearby_location` -- 위치 -> 근처동네
-		FOREIGN KEY (
-			`dong` -- 동
-		)
-		REFERENCES `daangn`.`location` ( -- 위치
-			`dong` -- 동
 		);

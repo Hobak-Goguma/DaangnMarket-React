@@ -1,0 +1,42 @@
+-- 2020.6.10 
+-- 위치
+CREATE TABLE `LOCATION` (
+	`dong`      VARCHAR(20) NOT NULL COMMENT '동이름', -- 동이름
+	`latitude`  NUMERIC     NOT NULL COMMENT 'latitude', -- latitude
+	`longitude` NUMERIC     NOT NULL COMMENT 'longitude' -- longitude
+)
+COMMENT '위치';
+
+-- 위치
+ALTER TABLE `LOCATION`
+	ADD CONSTRAINT `PK_LOCATION` -- 위치 기본키
+		PRIMARY KEY (
+			`dong` -- 동이름
+		);
+
+-- 근처동네들
+CREATE TABLE `NEARBY_LOCATION` (
+	`dong`        VARCHAR(20) NOT NULL COMMENT '동이름', -- 동이름
+	`nearby_dong` VARCHAR(20) NOT NULL COMMENT '근처동이름', -- 근처동이름
+	`distance`    INT         NOT NULL COMMENT '거리' -- 거리
+)
+COMMENT '근처동네들';
+
+-- 근처동네들
+ALTER TABLE `NEARBY_LOCATION`
+	ADD CONSTRAINT `PK_NEARBY_LOCATION` -- 근처동네들 기본키
+		PRIMARY KEY (
+			`dong`,        -- 동이름
+			`nearby_dong`, -- 근처동이름
+			`distance`     -- 거리
+		);
+
+-- 근처동네들
+ALTER TABLE `NEARBY_LOCATION`
+	ADD CONSTRAINT `FK_LOCATION_TO_NEARBY_LOCATION` -- 위치 -> 근처동네들
+		FOREIGN KEY (
+			`dong` -- 동이름
+		)
+		REFERENCES `LOCATION` ( -- 위치
+			`dong` -- 동이름
+		);
