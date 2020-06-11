@@ -30,7 +30,15 @@ class ProductSerializer(serializers.ModelSerializer):
     # member = serializers.ForeignKey(Member, models.CASCADE, related_name='member_id')
     class Meta:
         model = Product
-        fields = ('pk', 'id_member', 'name', 'price', 'info', 'category', 'img')
+        fields = ('pk', 'id_member', 'name', 'price', 'info', 'category', 'img', 'views', 'sold_tf', 'addr')
+
+
+class ProductTouchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = ('pk', 'id_member', 'name', 'price', 'info', 'category', 'img', 'views', 'sold_tf', 'addr')
+        read_only_fields = ['id_member', 'views', 'sold_tf']
+
 
 class LoginSerializer(serializers.ModelSerializer):
     last_date = serializers.DateTimeField(default=timezone.now)
@@ -43,13 +51,18 @@ class CompanySerializer(serializers.ModelSerializer):
         model = Company
         fields = ('pk', 'id_member', 'name', 'addr', 'tel', 'info', 'category', 'img')
 
+
+class CompanyTouchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Company
+        fields = ('pk', 'id_member', 'name', 'addr', 'tel', 'info', 'category', 'img')
+        read_only_fields = ['id_member']
+
+
 class WishlistSerializer(serializers.ModelSerializer):
-    id_member = MemberSerializer(read_only=True)
-    id_product = ProductSerializer(read_only=True)
     class Meta:
         model = Wishlist
         fields = ('pk', 'id_product', 'id_member', 'cdate')
-
 
 # realdeal api 
 class MemberSellerSerializer(serializers.ModelSerializer):
