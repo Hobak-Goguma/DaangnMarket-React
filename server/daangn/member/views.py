@@ -64,7 +64,8 @@ def member_detail(request, pk):
 
     elif request.method == 'DELETE':
         member.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        content = "pk :" + pk + " 삭제 완료" 
+        return Response(content ,status=status.HTTP_204_NO_CONTENT)
 
 
 @api_view(['PUT'])
@@ -364,24 +365,24 @@ def wishlist_detail(request, pk):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-@api_view(['GET'])
-def location_search(request):
-    '''
-    사용자의 위치에 따른 product 검색
-    '''
-    # GET방식으로 데이터 address, distance 그리고 검색어를 보냄.
-    addr = request.GET['addr']
-    dis = request.GET['dis']
-    Search = request.GET['q']
+# @api_view(['GET'])
+# def location_search(request):
+#     '''
+#     사용자의 위치에 따른 product 검색
+#     '''
+#     # GET방식으로 데이터 address, distance 그리고 검색어를 보냄.
+#     addr = request.GET['addr']
+#     dis = request.GET['dis']
+#     Search = request.GET['q']
 
-    # request 한 정보들 토대로 nearby_locations 에서 거리에 따른 인접동을 가져오고,
-    # 그 동들 위치에 해당하는 물품을을 화면에 뿌려준다. 단, 제목에 검색에가 포함되어야 함. 
-    location = nearby_locations.objects.filter(dong = addr, distance = dis)
-    product = Product.objects.filter(addr = nearby_locations.nearby_dong and addr = nearby_locations.dong, name__contains = Search )
+#     # request 한 정보들 토대로 nearby_locations 에서 거리에 따른 인접동을 가져오고,
+#     # 그 동들 위치에 해당하는 물품을을 화면에 뿌려준다. 단, 제목에 검색에가 포함되어야 함. 
+#     location = nearby_locations.objects.filter(dong = addr, distance = dis)
+#     product = Product.objects.filter(addr = nearby_locations.nearby_dong and addr = nearby_locations.dong, name__contains = Search )
 
-    # 성공적으로 가져왔다면 뿌린다.
-    serializer = ProductSerializer(product, many=True)
-    return Response(serializer.data)
+#     # 성공적으로 가져왔다면 뿌린다.
+#     serializer = ProductSerializer(product, many=True)
+#     return Response(serializer.data)
 
 
 @api_view(['GET'])
