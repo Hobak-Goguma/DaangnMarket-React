@@ -45,6 +45,7 @@ const Footer = () => {
 export default Footer;
 
 const StyledFooter = styled.footer`
+  position:relative;
   padding: 40px 0 67px 0;
   background-color: #495057;
   color: #dee2e6;
