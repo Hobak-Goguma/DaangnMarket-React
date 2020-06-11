@@ -1,5 +1,7 @@
+
+-- 2020.6.10 
 -- 위치
-CREATE TABLE `location` (
+CREATE TABLE `LOCATION` (
 	`dong`      VARCHAR(20) NOT NULL COMMENT '동이름', -- 동이름
 	`latitude`  NUMERIC     NOT NULL COMMENT 'latitude', -- latitude
 	`longitude` NUMERIC     NOT NULL COMMENT 'longitude' -- longitude
@@ -7,14 +9,17 @@ CREATE TABLE `location` (
 COMMENT '위치';
 
 -- 위치
-ALTER TABLE `location`
-	ADD CONSTRAINT `PK_location` -- 위치 기본키
+
+ALTER TABLE `LOCATION`
+	ADD CONSTRAINT `PK_LOCATION` -- 위치 기본키
+
 		PRIMARY KEY (
 			`dong` -- 동이름
 		);
 
 -- 근처동네들
-CREATE TABLE `nearby_locations` (
+
+CREATE TABLE `NEARBY_LOCATION` (
 	`dong`        VARCHAR(20) NOT NULL COMMENT '동이름', -- 동이름
 	`nearby_dong` VARCHAR(20) NOT NULL COMMENT '근처동이름', -- 근처동이름
 	`distance`    INT         NOT NULL COMMENT '거리' -- 거리
@@ -22,8 +27,10 @@ CREATE TABLE `nearby_locations` (
 COMMENT '근처동네들';
 
 -- 근처동네들
-ALTER TABLE `nearby_locations`
-	ADD CONSTRAINT `PK_nearby_locations` -- 근처동네들 기본키
+
+ALTER TABLE `NEARBY_LOCATION`
+	ADD CONSTRAINT `PK_NEARBY_LOCATION` -- 근처동네들 기본키
+
 		PRIMARY KEY (
 			`dong`,        -- 동이름
 			`nearby_dong`, -- 근처동이름
@@ -31,11 +38,13 @@ ALTER TABLE `nearby_locations`
 		);
 
 -- 근처동네들
-ALTER TABLE `nearby_locations`
-	ADD CONSTRAINT `FK_location_TO_nearby_locations` -- 위치 -> 근처동네들
+
+ALTER TABLE `NEARBY_LOCATION`
+	ADD CONSTRAINT `FK_LOCATION_TO_NEARBY_LOCATION` -- 위치 -> 근처동네들
 		FOREIGN KEY (
 			`dong` -- 동이름
 		)
-		REFERENCES `location` ( -- 위치
+		REFERENCES `LOCATION` ( -- 위치
+
 			`dong` -- 동이름
 		);
