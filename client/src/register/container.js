@@ -61,6 +61,7 @@ const RegisterContainer = ({ history }) => {
     api
       .get(`member/overlap?user_id=${inputState.id}`)
       .then((res) => {
+        console.log(res);
         if (res.status === 200) {
           alert("중복확인이 완료되었습니다.");
           setIdDuplicate(true);
@@ -72,6 +73,7 @@ const RegisterContainer = ({ history }) => {
       // console.log 에 status error 안띄우기
       .catch((err) => {
         const mute = err;
+        alert("중복된 아이디가 있습니다.");
       });
   };
 

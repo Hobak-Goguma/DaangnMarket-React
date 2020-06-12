@@ -31,7 +31,8 @@ const LoginContainer = ({ history }) => {
         } else {
           alert("응 틀렸어~");
         }
-      });
+      })
+      .catch();
   };
   const goRegister = () => {
     history.push("/register");

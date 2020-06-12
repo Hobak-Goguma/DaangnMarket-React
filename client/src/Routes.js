@@ -38,7 +38,6 @@ export default function Routes() {
           <Route path="/products/:product_id" component={ProductDetailPage} />
           <Route path="/user" component={OtherUserPage} />
           <Route path="/upload" component={UploadPage} />
-
           <Redirect from="*" to="/" />
         </Switch>
         <Global />
