@@ -8,7 +8,7 @@ class MemberSerializer(serializers.ModelSerializer):
     last_date = serializers.DateTimeField(default=timezone.now)
     class Meta:
         model = Member
-        fields = ('pk', 'name', 'nick_name', 'user_id', 'user_pw', 'tel', 'birth', 'email', 'gender',  'img', 'udate' ,'last_date')
+        fields = ('id_member', 'name', 'nick_name', 'user_id', 'user_pw', 'tel', 'birth', 'email', 'gender',  'img', 'udate' ,'last_date')
 
 
 class MemberReviseSerializer(serializers.ModelSerializer):
@@ -20,11 +20,10 @@ class MemberReviseSerializer(serializers.ModelSerializer):
 
 class MemberTouchSerializer(serializers.ModelSerializer):
     udate = serializers.DateTimeField(default=timezone.now)
-    addr = serializers.JSONField()
-
+    
     class Meta:
         model = Member
-        fields = ('pk', 'nick_name', 'tel', 'birth', 'email', 'addr', 'img', 'udate')
+        fields = ('pk', 'nick_name', 'tel', 'birth', 'email', 'img', 'gender', 'udate')
         
 class ProductSerializer(serializers.ModelSerializer):
     # id_member_id = serializers.IntegerField(source='id_member')
@@ -109,6 +108,14 @@ class ShopperReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = ShopperReview
         fields = ('pk', 'id_real_deal', 'title', 'cdate')
+
+
+class memberAddrSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Memberaddr
+        fields = ('id_member', 'addr')
+        # read_only_fields = ['user_id']
 
 
 # class MemberSerializer(serializers.Serializer):
