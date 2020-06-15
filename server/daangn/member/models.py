@@ -21,30 +21,30 @@ class Company(models.Model):
 
 class Location(models.Model):
     dong = models.CharField(primary_key=True, max_length=20)
-    latitude = models.DecimalField(max_digits=10, decimal_places=0, blank=True, null=True)
-    longitude = models.DecimalField(max_digits=10, decimal_places=0, blank=True, null=True)
+    latitude = models.DecimalField(max_digits=10, decimal_places=0)
+    longitude = models.DecimalField(max_digits=10, decimal_places=0)
 
     class Meta:
         managed = False
         db_table = 'location'
 
 
-class NearbyLocation(models.Model):
-    id_nearby = models.AutoField(primary_key=True)
-    dong = models.ForeignKey(Location, models.DO_NOTHING, db_column='dong', blank=True, null=True)
-    nearby_dong = models.CharField(max_length=20, blank=True, null=True)
-    distance = models.IntegerField(blank=True, null=True)
+class NearbyLocations(models.Model):
+    dong = models.ForeignKey(Location, models.DO_NOTHING, db_column='dong', primary_key=True)
+    nearby_dong = models.CharField(max_length=20)
+    distance = models.IntegerField()
 
     class Meta:
         managed = False
-        db_table = 'nearby_location'
+        db_table = 'nearby_locations'
+        unique_together = (('dong', 'nearby_dong', 'distance'),)
 
 
 class Log(models.Model):
     id_log = models.AutoField(primary_key=True)
     id_member = models.ForeignKey('Member', models.DO_NOTHING, db_column='id_member')
     search = models.CharField(max_length=60)
-    cdate = models.DateTimeField(blank=True, null=True)
+    cdate = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         managed = False
@@ -54,9 +54,9 @@ class Log(models.Model):
 class Manner(models.Model):
     id_manner = models.AutoField(primary_key=True)
     id_member = models.ForeignKey('Member', models.DO_NOTHING, db_column='id_member')
-    score = models.IntegerField()
-    cdate = models.DateTimeField()
-    udate = models.DateTimeField()
+    score = models.FloatField()
+    cdate = models.DateTimeField(auto_now_add=True)
+    udate = models.DateTimeField(auto_now=True)
 
     class Meta:
         managed = False
@@ -66,8 +66,8 @@ class Manner(models.Model):
 class MannerLog(models.Model):
     id_manner_log = models.IntegerField(primary_key=True)
     id_manner = models.ForeignKey(Manner, models.DO_NOTHING, db_column='id_manner')
-    score = models.IntegerField()
-    cdate = models.DateTimeField()
+    score = models.FloatField()
+    cdate = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         managed = False
@@ -75,7 +75,7 @@ class MannerLog(models.Model):
 
 
 class MannerReviewer(models.Model):
-    id_manner = models.ForeignKey(Manner, models.DO_NOTHING, db_column='id_manner')
+    id_manner_log = models.ForeignKey(MannerLog, models.DO_NOTHING, db_column='id_manner_log', blank=True, null=True)
     reviewer = models.ForeignKey('Member', models.DO_NOTHING, db_column='reviewer')
 
     class Meta:
@@ -141,8 +141,8 @@ class Product(models.Model):
     category = models.CharField(max_length=15, blank=True, null=True)
     img = models.CharField(max_length=2000, blank=True, null=True)
     views = models.IntegerField(default=0)
-    sold_tf = models.IntegerField(db_column='sold_TF')  # Field name made lowercase.
-    # addr = models.CharField(max_length=200)
+    sold_tf = models.IntegerField(db_column='sold_TF', default=0)  # Field name made lowercase.
+    addr = models.CharField(max_length=200)
     cdate = models.DateTimeField(auto_now_add=True)
     udate = models.DateTimeField(auto_now=True)
 
@@ -155,7 +155,7 @@ class Rate(models.Model):
     id_rate = models.IntegerField(primary_key=True)
     field = models.CharField(max_length=8)
     detail = models.CharField(max_length=50)
-    score = models.IntegerField()
+    score = models.FloatField()
 
     class Meta:
         managed = False
