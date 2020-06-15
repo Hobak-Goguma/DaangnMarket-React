@@ -75,6 +75,7 @@ def member_detail(request, pk):
 def member_touch(request, pk):
     """
     코드 조각 조회, 업데이트, 삭제
+    Modifiable List : nick_name, tel, email, birth, img, gender
     """
     try:
         member = Member.objects.get(pk=pk)
