@@ -229,8 +229,13 @@ def product_detail(request, pk):
 
     elif request.method == 'DELETE':
         product.delete()
-        content = "pk :" + pk + " 삭제 완료" 
+        content = {
+            "message" : "pk :" + pk + " 삭제 완료",
+            "result" : {}
+                }
+        content = "" 
         return Response(content, status=status.HTTP_204_NO_CONTENT)
+
 
     
 @api_view(['GET'])
@@ -317,7 +322,10 @@ def company_detail(request, pk):
 
     elif request.method == 'DELETE':
         company.delete()
-        content = "pk :" + pk + " 삭제 완료" 
+        content = {
+            "message" : "pk :" + pk + " 삭제 완료",
+            "result" : {}
+        }
         return Response(content, status=status.HTTP_204_NO_CONTENT)
 
 
@@ -365,6 +373,7 @@ def wishlist_detail(request, pk):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+
 # @api_view(['GET'])
 # def location_search(request):
 #     '''
@@ -374,6 +383,7 @@ def wishlist_detail(request, pk):
 #     addr = request.GET['addr']
 #     dis = request.GET['dis']
 #     Search = request.GET['q']
+
 
 #     # request 한 정보들 토대로 nearby_locations 에서 거리에 따른 인접동을 가져오고,
 #     # 그 동들 위치에 해당하는 물품을을 화면에 뿌려준다. 단, 제목에 검색에가 포함되어야 함. 
