@@ -256,38 +256,27 @@ const MyInfoChng = ({ ID, login, changeLogin, history }) => {
   // });
 
   useEffect(() => {
-    fetch(`http://www.daangn.site/member/login`, {
-      //http://0c525d07.ngrok.io/member/login
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify({
-        user_id: ID,
-        user_pw: login.pw,
-      }),
-    }).then(async (response) => {
-      // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>통신시 변경해야될
-      if (response.status === 200 || response.status === 201) {
-        const res = await response.json();
-        const temp = JSON.stringify(res);
-        window.sessionStorage.setItem("user", temp);
-        resUser = JSON.parse(window.sessionStorage.getItem("user"));
-        setUser({
-          pk: res.pk,
-          nick_name: res.nick_name,
-          name: res.name,
-          tel: res.tel,
-          gender: "",
-          email: "",
-          newPw: "",
-          login: true,
-        });
-      } else {
-        alert("비밀번호가 맞지 않습니다.");
-        changeLogin({ pw: login.pw, login: false });
-      }
-    });
+    api
+      .post("member/login",{user_id: ID, user_pw: pw })
+      .then(async (res)=>{
+        if(res.status === 200){
+          const resUser = await res.data;
+          console.log(res.data);
+          setUser({
+            pk: resUser.pk,
+            nick_name: resUser.nick_name,
+            name: resUser.name,
+            tel: resUser.tel,
+            login: resUser,
+            ...user
+          });
+        }else{
+          alert("비밀번호가 맞지 않습니다.");
+          history.push("/mypwchange");
+        }
+      }).catch();
+
+
   }, []);
 
   const change = (e) => {
@@ -504,16 +493,16 @@ const MyInfoChng = ({ ID, login, changeLogin, history }) => {
         break;
       case "secession": //탈퇴 버튼
         if (window.confirm("정말 탈퇴하시겠습니까?") === true) {
-          fetch(`http://www.daangn.site/member/5`, {
-            method: "DELETE",
-          }).then(async (response) => {
-            if ((await response.status) === 204) {
-              alert("해당 계정이 탈퇴되었습니다.");
-              history.push("/");
-            } else {
-              alert("해당 계정이 탈퇴되지 않았습니다. 다시한번 시도해주세요.");
-            }
-          });
+          api
+            .delete(`member/${user.pk}`)
+            .then(async (res)=>{
+              if(res.status === 204){
+                alert("해당 계정이 탈퇴되었습니다.")
+                history.push("/");
+              }else{                
+                alert("해당 계정이 탈퇴되지 않았습니다. 다시한번 시도해주세요.");
+              }
+            }).catch();
         }
         break;
 

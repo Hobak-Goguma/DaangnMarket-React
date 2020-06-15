@@ -21,15 +21,16 @@ const LoginContainer = ({ history }) => {
       .then(async (res) => {
         if (res.status === 200) {
           alert("정상 로그인 되었습니다");
-          const user = await res.json();
-          window.sessionStorage.setItem("user", JSON.stringify(user));
+          const  user = await res.data;
+          sessionStorage.setItem("user", JSON.stringify(user));
           history.push("/");
           const storage = JSON.parse(sessionStorage.getItem("user"));
           console.log(storage.name);
         } else {
           alert("응 틀렸어~");
         }
-      });
+      })
+      .catch();
   };
   const goRegister = () => {
     history.push("/register");

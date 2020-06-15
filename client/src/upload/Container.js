@@ -64,20 +64,25 @@ const UploadContainer = ({ history }) => {
   };
 
   const onDrop = useCallback(async (files) => {
+  
     setIsDropFinished(true);
     files.map((file) => {
       const reader = new FileReader();
-      reader.addEventListener("load", () => {
-        setImageData((prevState) => [
+      reader.addEventListener("load", (v) => {
+        console.log("yogiyo",v);
+        setImageData((prevState) =>{
+        console.log("vkdlf",prevState)
+        console.log(imageData);
+          return([
           ...prevState,
           imageData.concat(reader.result),
-        ]);
+        ])
+      });
       });
       reader.readAsDataURL(file);
       return file;
     });
   }, []);
-
   return (
     <Upload
       onDrop={onDrop}

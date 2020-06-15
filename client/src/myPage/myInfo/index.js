@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import MyLayout from "../MypageLayout";
 import { Link } from "react-router-dom";
+import Modyfy from "./infoChange/components/Modify";
 
 const Info = styled.div`
     width:calc(100% - 250px);
@@ -142,6 +143,7 @@ const MyInfo = ({history}) =>{
         add: [],
         temper: 36.5,
     });
+    const [modifyon,setModifyOn] = useState(false);
     const [state, setState] = useState("info");
 
     useEffect(()=>{// 세션정보 이니셜라이징
@@ -153,35 +155,35 @@ const MyInfo = ({history}) =>{
             }else{
                 tempInfo = JSON.parse(window.sessionStorage.getItem("user"));
                 
-                fetch(`www.daangn.site/memeber/${sessionInfo.pk}`,{//수정용 api주소 수정용 fetch
-                    method:"GET",
-                    headers:{
-                        "Content-type": "application/json",
-                    },
-                    body:JSON.stringify({
-                            nick_name: sessionInfo.nick_name,
-                            tel: sessionInfo.tel,
-                            // birth: birthFetch,
-                            email: sessionInfo.email,
-                            addr: sessionInfo.add,
-                    })
-                }).then((response)=>{
-                    if(response.status===200){                                
-                        alert("비밀번호 수정이 완료되었습니다.");
-                        history.push("/");
-                    }else{
-                        alert("비밀번호 수정이 되지 않았습니다. 다시한번 시도해주세요.");
-                    }
-                });
-                setSessionInfo({
-                    ...sessionInfo,
-                    pk: 1,
-                    user_id: tempInfo.user_id,
-                    name: tempInfo.name,
-                    nick_name: tempInfo.nick_name,
-                    tel: tempInfo.tel,
-                    add: [].concat(tempInfo.add)
-                });
+                // fetch(`www.daangn.site/memeber/${sessionInfo.pk}`,{//수정용 api주소 수정용 fetch
+                //     method:"GET",
+                //     headers:{
+                //         "Content-type": "application/json",
+                //     },
+                //     body:JSON.stringify({
+                //             nick_name: sessionInfo.nick_name,
+                //             tel: sessionInfo.tel,
+                //             // birth: birthFetch,
+                //             email: sessionInfo.email,
+                //             addr: sessionInfo.add,
+                //     })
+                // }).then((response)=>{
+                //     if(response.status===200){                                
+                //         alert("비밀번호 수정이 완료되었습니다.");
+                //         history.push("/");
+                //     }else{
+                //         alert("비밀번호 수정이 되지 않았습니다. 다시한번 시도해주세요.");
+                //     }
+                // });
+                // setSessionInfo({
+                //     ...sessionInfo,
+                //     pk: 1,
+                //     user_id: tempInfo.user_id,
+                //     name: tempInfo.name,
+                //     nick_name: tempInfo.nick_name,
+                //     tel: tempInfo.tel,
+                //     add: [].concat(tempInfo.add)
+                // });
             }
         }else{
             setSessionInfo({
@@ -208,107 +210,111 @@ const MyInfo = ({history}) =>{
             birthDay+=sessionInfo.birth[i];
         }
     }
-    return (<MyLayout history={history} choose="내 정보 보기">
-        
-        <Info>
-        
-            <div className="title">
-                <span className="tit">{
-                    state==="info"? "내정보":
-                    state==="nickname"? "별명 변경":
-                    state==="phone"? "전화번호 변경":
-                    state==="addr"? "주소 변경":
-                    setState("info")
-                }</span>
-            </div>
-            <div className="infoBox">
-                <>
-                <div className="profile"></div> 
-                <div className="necessary">
-                    <div className="name">
-                        <a href="">이름</a> <span>{sessionInfo.name}</span>
-                    </div>
-                    <div className="id">
-                        <a href="">아이디</a> <span>{sessionInfo.user_id}</span>
-                    </div>
-                    <div className="temperature">
-                        <a href="">매너온도</a>{sessionInfo.temper}도
-                        <div className="temper"><div className="manner" style={{width:`  ${sessionInfo.temper}%  `}}></div></div>
-                    </div>
+    return (
+    <>
+        <MyLayout history={history} choose="내 정보 보기">
+            
+            <Info>
+            
+                <div className="title">
+                    <span className="tit">{
+                        state==="info"? "내정보":
+                        state==="nickname"? "별명 변경":
+                        state==="phone"? "전화번호 변경":
+                        state==="addr"? "주소 변경":
+                        setState("info")
+                    }</span>
                 </div>
-                <Link to={{
-                    pathname : `/myinfoChange`,
-                    state : {
-                        state : "nick_name",
-                        user : sessionInfo}
-                }}>
-                    <div className="nickName info changeAble">
-                        <a href="">닉네임</a> <span>{sessionInfo.nick_name}</span>
+                <div className="infoBox">
+                    <>
+                    <div className="profile"></div> 
+                    <div className="necessary">
+                        <div className="name">
+                            <a href="">이름</a> <span>{sessionInfo.name}</span>
+                        </div>
+                        <div className="id">
+                            <a href="">아이디</a> <span>{sessionInfo.user_id}</span>
+                        </div>
+                        <div className="temperature">
+                            <a href="">매너온도</a>{sessionInfo.temper}도
+                            <div className="temper"><div className="manner" style={{width:`  ${sessionInfo.temper}%  `}}></div></div>
+                        </div>
+                    </div>
+                    <Link to={{
+                        pathname : `/myinfoChange`,
+                        state : {
+                            state : "nick_name",
+                            user : sessionInfo}
+                    }}>
+                        <div className="nickName info changeAble">
+                            <a href="">닉네임</a> <span>{sessionInfo.nick_name}</span>
+                            <div className="change">변경하기 <i className="fas fa-chevron-right"></i></div>
+                        </div>
+                    </Link>
+                
+                    <Link to={{
+                        pathname : `/myinfoChange`,
+                        state : {
+                            state : "tel",
+                            user : sessionInfo}
+                    }}>
+                    <div className="phone info changeAble">
+                        <a href="">전화번호</a> <span>{sessionInfo.tel}</span>
                         <div className="change">변경하기 <i className="fas fa-chevron-right"></i></div>
                     </div>
-                </Link>
+                    </Link>
+                    <Link to={{
+                        pathname : `/myi\nfoChange`,
+                        state : {
+                            state : "addr",
+                            user : sessionInfo}
+                    }}>
+                    <div className="addr info changeAble">
+                        <a href="">주소</a> <span>{sessionInfo.add[0]}</span>
+                        {sessionInfo.add[1]&&sessionInfo.add[1]!==""?
+                        <><a href=""></a> <span>{sessionInfo.add[1]}</span></>:
+                        <></>}
+                        <div className="change">변경하기 <i className="fas fa-chevron-right"></i></div>
+
+                    </div>
+                    </Link>
+                    <Link to={{
+                        pathname : `/myinfoChange`,
+                        state : {
+                            state : "gender",
+                            user : sessionInfo}
+                    }}>
+                    <div className="addr info changeAble">
+                        <a href="">성별</a>
+                        {sessionInfo.gender&&sessionInfo.gender!==""?
+                        <span>{sessionInfo.gender==="MALE"? "남성":"여성"}</span>:
+                        <></>}
+                        <div className="change">변경하기 <i className="fas fa-chevron-right"></i></div>
+
+                    </div>
+                    </Link>
+                    <Link to={{
+                        pathname : `/myinfoChange`,
+                        state : {
+                            state : "birth",
+                            user : sessionInfo}
+                    }}>
+                    <div className="addr info changeAble">
+                        <a href="">생년월일</a>
+                        {sessionInfo.gender&&sessionInfo.gender!==""?
+                        <span>{birthYear}년 {birthMonth}월 {birthDay}일</span>:
+                        <></>}
+                        <div className="change">변경하기 <i className="fas fa-chevron-right"></i></div>
+
+                    </div>
+                    </Link>
+            </>
             
-                <Link to={{
-                    pathname : `/myinfoChange`,
-                    state : {
-                        state : "tel",
-                        user : sessionInfo}
-                }}>
-                <div className="phone info changeAble">
-                    <a href="">전화번호</a> <span>{sessionInfo.tel}</span>
-                    <div className="change">변경하기 <i className="fas fa-chevron-right"></i></div>
-                </div>
-                </Link>
-                <Link to={{
-                    pathname : `/myinfoChange`,
-                    state : {
-                        state : "addr",
-                        user : sessionInfo}
-                }}>
-                <div className="addr info changeAble">
-                    <a href="">주소</a> <span>{sessionInfo.add[0]}</span>
-                    {sessionInfo.add[1]&&sessionInfo.add[1]!==""?
-                    <><a href=""></a> <span>{sessionInfo.add[1]}</span></>:
-                    <></>}
-                    <div className="change">변경하기 <i className="fas fa-chevron-right"></i></div>
-
-                </div>
-                </Link>
-                <Link to={{
-                    pathname : `/myinfoChange`,
-                    state : {
-                        state : "gender",
-                        user : sessionInfo}
-                }}>
-                <div className="addr info changeAble">
-                    <a href="">성별</a>
-                    {sessionInfo.gender&&sessionInfo.gender!==""?
-                     <span>{sessionInfo.gender==="MALE"? "남성":"여성"}</span>:
-                    <></>}
-                    <div className="change">변경하기 <i className="fas fa-chevron-right"></i></div>
-
-                </div>
-                </Link>
-                <Link to={{
-                    pathname : `/myinfoChange`,
-                    state : {
-                        state : "birth",
-                        user : sessionInfo}
-                }}>
-                <div className="addr info changeAble">
-                    <a href="">생년월일</a>
-                    {sessionInfo.gender&&sessionInfo.gender!==""?
-                     <span>{birthYear}년 {birthMonth}월 {birthDay}일</span>:
-                    <></>}
-                    <div className="change">변경하기 <i className="fas fa-chevron-right"></i></div>
-
-                </div>
-                </Link>
-        </>
-        
-        </div>
-        </Info>
-    </MyLayout>);
+            </div>
+            </Info>
+        </MyLayout>
+        {modifyon?<Modyfy></Modyfy>:<></>}
+    </>);
 }
 
 export default MyInfo;

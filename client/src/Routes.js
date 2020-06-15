@@ -11,7 +11,7 @@ import RegisterPage from "./register";
 import MyPwChange from "./myPage/mypwChange";
 import MyProduct from "./myPage/myproduct";
 import MyInfo from "./myPage/myInfo";
-import Changelayout from "./myPage/myInfo/components/Changelayout";
+import Changelayout from "./myPage/myInfo/infoChange/index";
 import SearchPage from "./search";
 import ProductDetailPage from "./productDetail";
 import OtherUserPage from "./otherUser";
@@ -38,7 +38,6 @@ export default function Routes() {
           <Route path="/products/:product_id" component={ProductDetailPage} />
           <Route path="/user" component={OtherUserPage} />
           <Route path="/upload" component={UploadPage} />
-
           <Redirect from="*" to="/" />
         </Switch>
         <Global />
