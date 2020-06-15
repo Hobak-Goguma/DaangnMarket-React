@@ -64,7 +64,10 @@ def member_detail(request, pk):
 
     elif request.method == 'DELETE':
         member.delete()
-        content = "pk :" + pk + " 삭제 완료" 
+        content = {
+            "message" : "pk :" + pk + " 삭제 완료",
+            "result" : {}
+                }
         return Response(content ,status=status.HTTP_204_NO_CONTENT)
 
 
