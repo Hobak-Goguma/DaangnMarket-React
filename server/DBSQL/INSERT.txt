@@ -1,3 +1,4 @@
+-- 2020.6.10 
 INSERT INTO `member` VALUES (1,'root','root','1234','루트','010-1234-1234','1234-12-03','root@root.com','male','2020-05-01 16:24:15','2020-05-01 16:24:15','2020-05-01 16:24:15', Null),(2,'조원상','sang','1234','원','010-2312-2312','1994-03-30','sang@sang.com','male','2020-05-04 20:57:49','2020-05-04 20:57:49','2020-05-04 20:57:49', Null),(3,'이선우','woo','1234','선','010-2312-2123','2002-09-21','woo@woo.com','male','2020-05-04 20:57:49','2020-05-04 20:57:49','2020-05-04 20:57:49', Null),(4,'설영환','hwan','1234','환','010-2222-1111','1988-01-01','hwan@hwan.com','male','2020-05-04 20:57:49','2020-05-04 20:57:49','2020-05-04 20:57:49', Null),(5,'조원영 ','young','1234','원','010-2321-4532','1999-02-02','young@young.com','male','2020-05-04 20:57:49','2020-05-04 20:57:49','2020-05-04 20:57:49', Null),(6,'박경원','박경원','1234','경','010-1234-1234','1234-12-03','won@won.com','male','2020-05-01 16:24:15','2020-05-01 16:24:15','2020-05-01 16:24:15', Null);
 
 
@@ -890,3 +891,32 @@ insert into company (`id_member`, `name`, `addr`, `tel` ,`info`, `category`, `im
 당근보고 오셨다말씀 하심 네고 있습니다!
 많이들 놀러오세요!
 증평알뜰시장 입구에 자리잡았어요~~~','시계','DaangnMarket/server/daangn/api/static/api/img/원남의사진1384.jpg |||DaangnMarket/server/daangn/api/static/api/img/원남의사진2385.jpg |||DaangnMarket/server/daangn/api/static/api/img/원남의사진3386.jpg |||DaangnMarket/server/daangn/api/static/api/img/원남의사진4387.jpg |||');
+
+
+INSERT INTO `daangn`.`rate` (`id_rate`, `field`, `detail`, `score`) VALUES ('1', '별로에요', '이 분과는 다시 거래하고 싶지 않아요.', '-1');
+INSERT INTO `daangn`.`rate` (`id_rate`, `field`, `detail`, `score`) VALUES ('2', '별로에요', '거래 시간과 장소를 정한 후 거래직전에 취소했어요.', '-0.7');
+INSERT INTO `daangn`.`rate` (`id_rate`, `field`, `detail`, `score`) VALUES ('3', '별로에요', '무조건 택배거래만 하려고 해요.', '-0.4');
+INSERT INTO `daangn`.`rate` (`id_rate`, `field`, `detail`, `score`) VALUES ('4', '별로에요', '상품 가치없는 제품을 팔아요.', '-0.5');
+INSERT INTO `daangn`.`rate` (`id_rate`, `field`, `detail`, `score`) VALUES ('5', '별로에요', '차에서 내리지도 않고 창문만 열고 거래 하려고 해요.', '-0.3');
+INSERT INTO `daangn`.`rate` (`id_rate`, `field`, `detail`, `score`) VALUES ('6', '별로에요', '시간 약속을 안지켜요.', '-0.5');
+INSERT INTO `daangn`.`rate` (`id_rate`, `field`, `detail`, `score`) VALUES ('7', '별로에요', '구매 가격보다 더 비싸게 판매해요.', '-0.6');
+INSERT INTO `daangn`.`rate` (`id_rate`, `field`, `detail`, `score`) VALUES ('8', '별로에요', '상품 상태가 설명과 달라요.', '-0.7');
+INSERT INTO `daangn`.`rate` (`id_rate`, `field`, `detail`, `score`) VALUES ('9', '별로에요', '무리하게 가격을 깎아요.', '-0.5');
+INSERT INTO `daangn`.`rate` (`id_rate`, `field`, `detail`, `score`) VALUES ('10', '별로에요', '불친절해요.', '-0.2');
+INSERT INTO `daangn`.`rate` (`id_rate`, `field`, `detail`, `score`) VALUES ('11', '별로에요', '예약만 해놓고 거래 시간을 명확하게 알려주지 않아요.', '-0.4');
+INSERT INTO `daangn`.`rate` (`id_rate`, `field`, `detail`, `score`) VALUES ('12', '좋아요', '친절하고 매너가 좋아요.', '0.2');
+INSERT INTO `daangn`.`rate` (`id_rate`, `field`, `detail`, `score`) VALUES ('13', '좋아요', '응답이 빨라요.', '0.3');
+INSERT INTO `daangn`.`rate` (`id_rate`, `field`, `detail`, `score`) VALUES ('14', '좋아요', '시간 약속을 잘 지켜요.', '0.4');
+INSERT INTO `daangn`.`rate` (`id_rate`, `field`, `detail`, `score`) VALUES ('15', '좋아요', '좋은 상품을 저렴하게 판매해요.', '0.4');
+INSERT INTO `daangn`.`rate` (`id_rate`, `field`, `detail`, `score`) VALUES ('16', '좋아요', '무료로 나눠주셨어요.', '0.4');
+INSERT INTO `daangn`.`rate` (`id_rate`, `field`, `detail`, `score`) VALUES ('17', '좋아요', '상품 설명이 자세해요.', '0.2');
+INSERT INTO `daangn`.`rate` (`id_rate`, `field`, `detail`, `score`) VALUES ('18', '좋아요', '상품 상태가 설명한 것과 같아요.', '0.3');
+INSERT INTO `daangn`.`rate` (`id_rate`, `field`, `detail`, `score`) VALUES ('19', '좋아요', '제가 있는 곳까지 오셨어요.', '0.4');
+INSERT INTO `daangn`.`rate` (`id_rate`, `field`, `detail`, `score`) VALUES ('20', '최고에요', '친절하고 매너가 좋아요.', '0.3');
+INSERT INTO `daangn`.`rate` (`id_rate`, `field`, `detail`, `score`) VALUES ('21', '최고에요', '응답이 빨라요.', '0.4');
+INSERT INTO `daangn`.`rate` (`id_rate`, `field`, `detail`, `score`) VALUES ('22', '최고에요', '시간 약속을 잘 지켜요.', '0.6');
+INSERT INTO `daangn`.`rate` (`id_rate`, `field`, `detail`, `score`) VALUES ('23', '최고에요', '좋은 상품을 저렴하게 판매해요.', '0.6');
+INSERT INTO `daangn`.`rate` (`id_rate`, `field`, `detail`, `score`) VALUES ('24', '최고에요', '무료로 나눠주셨어요.', '0.7');
+INSERT INTO `daangn`.`rate` (`id_rate`, `field`, `detail`, `score`) VALUES ('25', '최고에요', '상품 설명이 자세해요.', '0.3');
+INSERT INTO `daangn`.`rate` (`id_rate`, `field`, `detail`, `score`) VALUES ('26', '최고에요', '상품 상태가 설명한 것과 같아요.', '0.5');
+INSERT INTO `daangn`.`rate` (`id_rate`, `field`, `detail`, `score`) VALUES ('27', '최고에요', '제가 있는 곳까지 오셨어요.', '0.7');

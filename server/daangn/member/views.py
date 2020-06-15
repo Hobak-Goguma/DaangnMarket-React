@@ -64,7 +64,9 @@ def member_detail(request, pk):
 
     elif request.method == 'DELETE':
         member.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        content = "pk :" + pk + " 삭제 완료" 
+        return Response(content ,status=status.HTTP_204_NO_CONTENT)
+
 
 @api_view(['PUT'])
 def member_touch(request, pk):
@@ -86,6 +88,7 @@ def member_touch(request, pk):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['GET'])
 def member_search(request):
@@ -128,6 +131,7 @@ def member_overlap(request):
                 }
     return Response(content, status=status.HTTP_409_CONFLICT)
 
+
 @api_view(['GET'])
 def nick_name_overlap(request):
     """
@@ -148,6 +152,7 @@ def nick_name_overlap(request):
             "result" : {}
                 }
     return Response(content, status=status.HTTP_409_CONFLICT)
+
 
 @api_view(['POST'])
 def member_login(request):
@@ -216,15 +221,16 @@ def product_detail(request, pk):
         return Response(serializer.data)
 
     elif request.method == 'PUT':
-        serializer = ProductSerializer(product, data=request.data)
+        serializer = ProductTouchSerializer(product, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == 'DELETE':
-        Product.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        product.delete()
+        content = "pk :" + pk + " 삭제 완료" 
+        return Response(content, status=status.HTTP_204_NO_CONTENT)
 
     
 @api_view(['GET'])
@@ -303,16 +309,16 @@ def company_detail(request, pk):
         return Response(serializer.data)
 
     elif request.method == 'PUT':
-        serializer = CompanySerializer(company, data=request.data)
-        print(serializer)
+        serializer = CompanyTouchSerializer(company, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == 'DELETE':
-        Company.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        company.delete()
+        content = "pk :" + pk + " 삭제 완료" 
+        return Response(content, status=status.HTTP_204_NO_CONTENT)
 
 
 @api_view(['GET', 'POST'])
@@ -358,6 +364,27 @@ def wishlist_detail(request, pk):
         wishlist_delete.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
+# @api_view(['GET'])
+# def location_search(request):
+#     '''
+#     사용자의 위치에 따른 product 검색
+#     '''
+#     # GET방식으로 데이터 address, distance 그리고 검색어를 보냄.
+#     addr = request.GET['addr']
+#     dis = request.GET['dis']
+#     Search = request.GET['q']
+
+#     # request 한 정보들 토대로 nearby_locations 에서 거리에 따른 인접동을 가져오고,
+#     # 그 동들 위치에 해당하는 물품을을 화면에 뿌려준다. 단, 제목에 검색에가 포함되어야 함. 
+#     location = nearby_locations.objects.filter(dong = addr, distance = dis)
+#     product = Product.objects.filter(addr = nearby_locations.nearby_dong and addr = nearby_locations.dong, name__contains = Search )
+
+#     # 성공적으로 가져왔다면 뿌린다.
+#     serializer = ProductSerializer(product, many=True)
+#     return Response(serializer.data)
+
+
 @api_view(['GET'])
 def selling_product_list(request, id_member):
     """
@@ -375,12 +402,14 @@ def selling_product_list(request, id_member):
     serializer = ProductSerializer(product, many=True)
     return Response(serializer.data)
 
+
 @api_view(['GET'])
 def test(request):
     """
     테스트용 api
     """
     return Response(status=status.HTTP_200_OK)
+
 
 @api_view(['GET', 'POST'])
 def realdeal_list(request):
@@ -418,6 +447,7 @@ def realdeal_list(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['GET'])
 def realdeal_detail(request, pk):
