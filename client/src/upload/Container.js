@@ -66,8 +66,6 @@ const UploadContainer = ({ history }) => {
   const onDrop = useCallback(async (files) => {
   
     setIsDropFinished(true);
-    console.log(isDropFinished)
-    console.log(files);
     files.map((file) => {
       const reader = new FileReader();
       reader.addEventListener("load", (v) => {

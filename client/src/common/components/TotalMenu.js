@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const TotalMenu = ({ logOut, login, onClick }) => {
-  let localID = "root";
+  let localID;
   // useEffect(() => {
   //   localID = window.sessionStorage.getItem("id");
   // }, []);
@@ -86,6 +86,7 @@ const StyledTotalMenu = styled.ul`
   z-index: 1000;
   top: 50%;
   transform: translateY(-50%);
+  background: #fff;
 
   li.totalLists {
     cursor: pointer;
@@ -143,6 +144,7 @@ const StyledTotalMenu = styled.ul`
       min-width: 5rem;
       position: absolute;
       right: 0;
+      background: #fff;
 
       li {
         transition: 0.2s;
@@ -153,8 +155,12 @@ const StyledTotalMenu = styled.ul`
         }
         width: 120px;
         padding: 0 1rem;
-        background: #fff;
       }
+          a{
+            display:block;
+            width:100%;
+            height:100%;
+          }
       .category-lists {
         .dropdown2nd {
           display: none;
@@ -164,6 +170,7 @@ const StyledTotalMenu = styled.ul`
           position: absolute;
           top: 0;
           right: 100%;
+          background: #fff;
         }
         &:hover > .dropdown2nd {
           display: block;

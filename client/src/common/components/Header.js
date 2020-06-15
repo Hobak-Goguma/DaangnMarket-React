@@ -91,16 +91,15 @@ const Headers = styled.header`
   }
 `;
 
-let id;
+let user;
 const Header = (props) => {
   const [login, setLogin] = useState(false);
   const [keyword, setKeyword] = useState("");
 
   useEffect(() => {
-    id = window.sessionStorage.getItem("id");
-    if (id) {
+    user = JSON.parse(window.sessionStorage.getItem("user"));
+    if (user) {
       setLogin(true);
-      console.log("wonsang")
     } else {
       setLogin(false);
     }
@@ -165,7 +164,7 @@ const Header = (props) => {
         </div>
 
         {login ? ( //로그인 여부확인
-          <MyDrop localID={id}></MyDrop>
+          <MyDrop localID={user.user_id}></MyDrop>
         ) : (
           <section className="log">
             <Link to="/login">
