@@ -38,12 +38,12 @@ def member_list(request):
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
-def member_detail(request, pk):
+def member_detail(request, id_member):
     """
     코드 조각 조회, 업데이트, 삭제
     """
     try:
-        member = Member.objects.get(pk=pk)
+        member = Member.objects.get(pk=id_member)
     except Member.DoesNotExist:
         content = {
             "message" : "없는 사용자 입니다.",
@@ -64,17 +64,76 @@ def member_detail(request, pk):
 
     elif request.method == 'DELETE':
         member.delete()
-        content = "pk :" + pk + " 삭제 완료" 
+        content = {
+            "message" : "pk :" + pk + " 삭제 완료",
+            "result" : {}
+                }
         return Response(content ,status=status.HTTP_204_NO_CONTENT)
 
 
-@api_view(['PUT'])
-def member_touch(request, pk):
+
+@api_view(['POST'])
+def member_addr_create(request):
     """
-    코드 조각 조회, 업데이트, 삭제
+    멤버 주소 생성
+    """
+    if request.method == 'POST':
+        qid_member = json.loads(request.body)['id_member']
+        if Memberaddr.objects.filter(id_member = qid_member).count() < 2 :
+            serializer = memberAddrSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        elif Memberaddr.objects.filter(id_member = qid_member).count() >= 3 : 
+            content = {
+            "message" : "허용된 주소의 갯수는 2개입니다.",
+            "result" : {}
+                }
+            return Response(content, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+def member_addr(request, id_member):
+    """
+    멤버 주소 조회 수정, 삭제
     """
     try:
-        member = Member.objects.get(pk=pk)
+        memberAddr = Memberaddr.objects.filter(id_member=id_member)
+    except Memberaddr.DoesNotExist:
+        content = {
+            "message" : "없는 사용자 입니다.",
+            "result" : {}
+                }
+        return Response(content, status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = memberAddrSerializer(memberAddr, many=True)
+        return Response(serializer.data)
+
+    elif request.method == 'PUT':
+        serializer = MemberReviseSerializer(member, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    # elif request.method == 'DELETE':
+    #     member.delete()
+    #     content = {
+    #         "message" : "pk :" + pk + " 삭제 완료",
+    #         "result" : {}
+    #             }
+    #     return Response(content ,status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['PUT'])
+def member_touch(request, id_member):
+    """
+    코드 조각 조회, 업데이트, 삭제
+    Modifiable List : nick_name, tel, email, birth, img, gender
+    """
+    try:
+        member = Member.objects.get(pk=id_member)
     except Member.DoesNotExist:
         content = {
             "message" : "없는 사용자 입니다.",
@@ -201,12 +260,12 @@ def product_list(request):
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
-def product_detail(request, pk):
+def product_detail(request, id_product):
     """
     코드 조각 조회, 업데이트, 삭제
     """
     try:
-        product = Product.objects.get(pk=pk)
+        product = Product.objects.get(pk=id_product)
     except Product.DoesNotExist:
         content = {
             "message" : "없는 물품리스트 입니다.",
@@ -232,8 +291,13 @@ def product_detail(request, pk):
 
     elif request.method == 'DELETE':
         product.delete()
-        content = "pk :" + pk + " 삭제 완료" 
+        content = {
+            "message" : "pk :" + pk + " 삭제 완료",
+            "result" : {}
+                }
+        content = "" 
         return Response(content, status=status.HTTP_204_NO_CONTENT)
+
 
     
 @api_view(['GET'])
@@ -294,12 +358,12 @@ def company_list(request):
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
-def company_detail(request, pk):
+def company_detail(request, id_company):
     """
     특정 업체리스트를 조회, 수정, 삭제 합니다.
     """
     try:
-        company = Company.objects.get(pk=pk)
+        company = Company.objects.get(pk=id_company)
     except Company.DoesNotExist:
         content = {
             "message" : "없는 업체 입니다.",
@@ -320,7 +384,10 @@ def company_detail(request, pk):
 
     elif request.method == 'DELETE':
         company.delete()
-        content = "pk :" + pk + " 삭제 완료" 
+        content = {
+            "message" : "pk :" + pk + " 삭제 완료",
+            "result" : {}
+        }
         return Response(content, status=status.HTTP_204_NO_CONTENT)
 
 
@@ -343,12 +410,12 @@ def wishlist_list(request):
 
 
 @api_view(['GET', 'DELETE'])
-def wishlist_detail(request, pk):
+def wishlist_detail(request, id_member):
     """
     특정 유저의 찜리스트를 조회, 삭제 합니다.
     """
     try:
-        wishlist = Wishlist.objects.filter(id_member = pk)
+        wishlist = Wishlist.objects.filter(id_member = id_member)
     except Wishlist.DoesNotExist:
         content = {
             "message" : "찜한 상품이 없습니다.",
@@ -368,6 +435,7 @@ def wishlist_detail(request, pk):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+
 # @api_view(['GET'])
 # def location_search(request):
 #     '''
@@ -377,6 +445,7 @@ def wishlist_detail(request, pk):
 #     addr = request.GET['addr']
 #     dis = request.GET['dis']
 #     Search = request.GET['q']
+
 
 #     # request 한 정보들 토대로 nearby_locations 에서 거리에 따른 인접동을 가져오고,
 #     # 그 동들 위치에 해당하는 물품을을 화면에 뿌려준다. 단, 제목에 검색에가 포함되어야 함. 
@@ -459,12 +528,12 @@ def realdeal_list(request):
 
 
 @api_view(['GET'])
-def realdeal_detail(request, pk):
+def realdeal_detail(request, id_product):
     """
     특정 제품의 실거래를 보여줍니다.
     """
     try:
-        realdeal = RealDeal.objects.filter(id_product = pk)
+        realdeal = RealDeal.objects.filter(id_product = id_product)
     except RealDeal.DoesNotExist:
         content = {
             "message" : "거래되지 않은 상품 없습니다.",
