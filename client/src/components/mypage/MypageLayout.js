@@ -1,18 +1,15 @@
 import React from "react";
-import MyNav from "./components/MyPageNav";
-import Header from "../common/components/Header";
-import Footer from "../common/components/Footer";
+import MyNav from "./MyPageNav";
+import Layout from "../../common/components/Layout";
 
 const MyLayout = ({ children, choose, history }) => {
   return (
-    <>
-      <Header />
+    <Layout>
       <div className="container">
         <MyNav choose={choose} history={history} />
         {children}
       </div>
-      <Footer />
-    </>
+    </Layout>
   );
 };
 

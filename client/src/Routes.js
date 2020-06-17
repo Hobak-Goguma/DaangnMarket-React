@@ -5,17 +5,16 @@ import {
   Switch,
   Redirect,
 } from "react-router-dom";
-import HomePage from "./home";
-import LoginPage from "./login";
-import RegisterPage from "./register";
-import MyPwChange from "./myPage/mypwChange";
-import MyProduct from "./myPage/myproduct";
-import MyInfo from "./myPage/myInfo";
-import Changelayout from "./myPage/myInfo/infoChange/index";
-import SearchPage from "./search";
-import ProductDetailPage from "./productDetail";
-import OtherUserPage from "./otherUser";
-import UploadPage from "./upload";
+import HomePage from "./pages/HomePage";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import MyProduct from "./pages/MyProductPage";
+import MyInfo from "./pages/MyInfoPage";
+import Changelayout from "./pages/MyInfoChangePage";
+import SearchPage from "./pages/SearchPage";
+import ProductDetailPage from "./pages/ProductPage";
+import OtherUserPage from "./pages/OtherUserPage";
+import UploadPage from "./pages/UploadPage";
 
 // Style Wrapper
 import { ThemeProvider } from "styled-components";
@@ -28,7 +27,6 @@ export default function Routes() {
       <Router>
         <Switch>
           <Route exact path="/" component={HomePage} />
-          <Route exact path="/mypwchange" component={MyPwChange} />
           <Route exact path="/myinfo" component={MyInfo} />
           <Route exact path="/login" component={LoginPage} />
           <Route exact path="/register" component={RegisterPage} />

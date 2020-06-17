@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Login from "./components";
+import Login from "../components/login/Login";
 import { withRouter } from "react-router-dom";
 import api from "../common/api";
 

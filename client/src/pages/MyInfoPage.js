@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import MyLayout from "../MypageLayout";
+import MyLayout from "../components/mypage/MypageLayout";
 import { Link } from "react-router-dom";
-import Modyfy from "./infoChange/components/Modify";
+import Modyfy from "../components/myinfochange/Modify";
 
 const Info = styled.div`
     width:calc(100% - 250px);
