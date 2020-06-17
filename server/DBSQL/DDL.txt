@@ -1,4 +1,4 @@
--- 2020.06.10
+-- 2020.06.16
 -- 멤버
 CREATE TABLE `daangn`.`member` (
 	`id_member` INT          NOT NULL COMMENT '멤버 키', -- 멤버 키
@@ -98,7 +98,7 @@ CREATE TABLE `daangn`.`log` (
 	`id_log`    INT         NOT NULL COMMENT '로그 키', -- 로그 키
 	`id_member` INT         NOT NULL COMMENT '멤버 키', -- 멤버 키
 	`search`    VARCHAR(60) NOT NULL COMMENT '검색 내용', -- 검색 내용
-	`cdate`     DATETIME    NULL     COMMENT '생성일' -- 생성일
+	`cdate`     DATETIME    NOT NULL COMMENT '생성일' -- 생성일
 )
 COMMENT '로그';
 
@@ -195,7 +195,7 @@ ALTER TABLE `daangn`.`wishlist`
 
 -- 매너온도_리뷰어
 CREATE TABLE `daangn`.`manner_reviewer` (
-	`id_manner_log` INT NULL     COMMENT '매너로그키', -- 매너로그키
+	`id_manner_log` INT NOT NULL COMMENT '매너로그키', -- 매너로그키
 	`reviewer`      INT NOT NULL COMMENT '리뷰어' -- 리뷰어
 )
 COMMENT '매너온도_리뷰어';
@@ -265,9 +265,9 @@ ALTER TABLE `daangn`.`manner_log`
 
 -- 주소
 CREATE TABLE `daangn`.`memberaddr` (
-	`id_memberaddr` INT          NOT NULL COMMENT '주소키', -- 주소키
-	`id_member`     INT          NOT NULL COMMENT '멤버 키', -- 멤버 키
-	`addr`          VARCHAR(200) NOT NULL COMMENT '주소' -- 주소
+	`id_member_addr` INT          NOT NULL COMMENT '주소키', -- 주소키
+	`id_member`      INT          NOT NULL COMMENT '멤버 키', -- 멤버 키
+	`addr`           VARCHAR(200) NOT NULL COMMENT '주소' -- 주소
 )
 COMMENT '주소';
 
@@ -275,11 +275,11 @@ COMMENT '주소';
 ALTER TABLE `daangn`.`memberaddr`
 	ADD CONSTRAINT `PK_memberaddr` -- 주소 기본키
 		PRIMARY KEY (
-			`id_memberaddr` -- 주소키
+			`id_member_addr` -- 주소키
 		);
 
 ALTER TABLE `daangn`.`memberaddr`
-	MODIFY COLUMN `id_memberaddr` INT NOT NULL AUTO_INCREMENT COMMENT '주소키';
+	MODIFY COLUMN `id_member_addr` INT NOT NULL AUTO_INCREMENT COMMENT '주소키';
 
 -- 제품
 ALTER TABLE `daangn`.`product`

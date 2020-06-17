@@ -276,6 +276,9 @@ def product_detail(request, id_product):
     #     return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
+        product.views += 1
+        product.save()
+        product = Product.objects.get(pk=pk)
         serializer = ProductSerializer(product)
         return Response(serializer.data)
 
@@ -495,27 +498,33 @@ def realdeal_list(request):
         return Response(serializer.data)
 
     elif request.method == 'POST':
-        serializer = RealDealSerializer(data=request.data)
-        if serializer.is_valid():
-            #실거래 등록
-            serializer.save()
-            q = request.data.dict()
-            #제품 테이블 판매여부 수정
-            product = Product.objects.get(pk=int(q['id_product']))
-            product.sold_tf = 1
-            product.save()
-            #판매자, 구매자 등록
-            seller = int(q['seller'])
-            shopper = int(q['shopper'])
-            realdeal = int(serializer.data['pk'])
-            temp_seller = Member.objects.get(id_member=seller)
-            temp_shopper = Member.objects.get(id_member=shopper)
-            temp_real = RealDeal.objects.get(id_real_deal = realdeal)
-            MemberSeller.objects.create(id_member = temp_seller, id_real_deal = temp_real)
-            MemberShopper.objects.create(id_member = temp_shopper, id_real_deal = temp_real)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        Data = json.loads(request.body)
+        #request 검사
+        #필수 항목 부족 
+        if not(Data.get('seller') and Data.get('id_product') and Data.get('shopper')) :
+            content = "필수값이 없습니다 [필요한 필드 : id_product, seller(판매자), shopper(구매자)]"
+            return Response(content, status=status.HTTP_400_BAD_REQUEST)
+        #모든 항목 충족
+        elif Data.get('seller') and Data.get('seller') and Data.get('seller'):
+            serializer = RealDealSerializer(data=request.data)
+            if serializer.is_valid():
+                #실거래 등록
+                serializer.save()
+                #제품 테이블 판매여부 수정
+                product = Product.objects.get(pk=int(Data['id_product']))
+                product.sold_tf = 1
+                product.save()
+                #판매자, 구매자 등록
+                seller = int(Data['seller'])
+                shopper = int(Data['shopper'])
+                realdeal = int(serializer.data['pk'])
+                temp_seller = Member.objects.get(id_member=seller)
+                temp_shopper = Member.objects.get(id_member=shopper)
+                temp_real = RealDeal.objects.get(id_real_deal = realdeal)
+                MemberSeller.objects.create(id_member = temp_seller, id_real_deal = temp_real)
+                MemberShopper.objects.create(id_member = temp_shopper, id_real_deal = temp_real)
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])
@@ -599,18 +608,6 @@ def shopper_review(request):
 
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(['GET'])
-def product_view(request, product_id):
-    """
-    제품 조회수 증가
-    """
-    if request.method == 'GET':
-        product = Product.objects.get(pk=product_id)
-        product.views += 1
-        product.save()
-    return Response("Success")
 
 
 #특정 실거래의 구매자 리뷰

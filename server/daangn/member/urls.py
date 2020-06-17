@@ -26,7 +26,6 @@ urlpatterns = [
     path('realdeal/<id_product>', views.realdeal_detail, name='realdeal_detail'),
     path('sellerreview', views.seller_review, name='seller_review_list'),
     path('shopperreview', views.shopper_review, name='shopper_review_list'),
-    path('productview/<product_id>', views.product_view, name='product_view')
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

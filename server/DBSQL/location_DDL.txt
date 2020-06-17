@@ -1,25 +1,25 @@
-
--- 2020.6.10 
+-- 2020.06.16
 -- 위치
-CREATE TABLE `location` (
+CREATE TABLE `daangn`.`location` (
 	`dong`      VARCHAR(20) NOT NULL COMMENT '동이름', -- 동이름
-	`latitude`  NUMERIC     NOT NULL COMMENT 'latitude', -- latitude
-	`longitude` NUMERIC     NOT NULL COMMENT 'longitude' -- longitude
+	`gu`        VARCHAR(20) NOT NULL COMMENT '구이름', -- 구이름
+	`latitude`  DOUBLE      NOT NULL COMMENT '위도', -- 위도
+	`longitude` DOUBLE      NOT NULL COMMENT '경도' -- 경도
 )
 COMMENT '위치';
 
 -- 위치
-
-ALTER TABLE `location`
+ALTER TABLE `daangn`.`location`
 	ADD CONSTRAINT `PK_location` -- 위치 기본키
-
 		PRIMARY KEY (
 			`dong` -- 동이름
 		);
 
--- 근처동네들
+ALTER TABLE `daangn`.`location`
+	MODIFY COLUMN `dong` VARCHAR(20) NOT NULL AUTO_INCREMENT COMMENT '동이름';
 
-CREATE TABLE `nearby_location` (
+-- 근처동네들
+CREATE TABLE `daangn`.`nearby_locations` (
 	`dong`        VARCHAR(20) NOT NULL COMMENT '동이름', -- 동이름
 	`nearby_dong` VARCHAR(20) NOT NULL COMMENT '근처동이름', -- 근처동이름
 	`distance`    INT         NOT NULL COMMENT '거리' -- 거리
@@ -27,10 +27,8 @@ CREATE TABLE `nearby_location` (
 COMMENT '근처동네들';
 
 -- 근처동네들
-
-ALTER TABLE `nearby_location`
-	ADD CONSTRAINT `PK_nearby_location` -- 근처동네들 기본키
-
+ALTER TABLE `daangn`.`nearby_locations`
+	ADD CONSTRAINT `PK_nearby_locations` -- 근처동네들 기본키
 		PRIMARY KEY (
 			`dong`,        -- 동이름
 			`nearby_dong`, -- 근처동이름
@@ -38,13 +36,11 @@ ALTER TABLE `nearby_location`
 		);
 
 -- 근처동네들
-
-ALTER TABLE `nearby_location`
-	ADD CONSTRAINT `FK_location_TO_nearby_location` -- 위치 -> 근처동네들
+ALTER TABLE `daangn`.`nearby_locations`
+	ADD CONSTRAINT `FK_location_TO_nearby_locations` -- 위치 -> 근처동네들
 		FOREIGN KEY (
 			`dong` -- 동이름
 		)
-		REFERENCES `location` ( -- 위치
-
+		REFERENCES `daangn`.`location` ( -- 위치
 			`dong` -- 동이름
 		);

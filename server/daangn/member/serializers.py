@@ -20,10 +20,10 @@ class MemberReviseSerializer(serializers.ModelSerializer):
 
 class MemberTouchSerializer(serializers.ModelSerializer):
     udate = serializers.DateTimeField(default=timezone.now)
-    
     class Meta:
         model = Member
         fields = ('id_member', 'nick_name', 'tel', 'birth', 'email', 'img', 'gender', 'udate')
+
         
 class ProductSerializer(serializers.ModelSerializer):
     # id_member_id = serializers.IntegerField(source='id_member')
@@ -45,6 +45,7 @@ class LoginSerializer(serializers.ModelSerializer):
     class Meta:
         model = Member
         fields = ('id_member','user_id', 'user_pw', 'name', 'nick_name', 'tel', 'last_date', 'img')
+
 
 class CompanySerializer(serializers.ModelSerializer):
     class Meta:
