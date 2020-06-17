@@ -430,7 +430,7 @@ def wishlist_detail(request, id_member):
     elif request.method == 'DELETE':
         q = request.data.dict()
         qid_product = q['id_product']
-        wishlist_delete = Wishlist.objects.filter(id_member = pk).filter(id_product = qid_product)
+        wishlist_delete = Wishlist.objects.filter(id_member = id_member).filter(id_product = qid_product)
         wishlist_delete.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -511,13 +511,13 @@ def realdeal_list(request):
                 #실거래 등록
                 serializer.save()
                 #제품 테이블 판매여부 수정
-                product = Product.objects.get(pk=int(Data['id_product']))
+                product = Product.objects.get(id_product=int(Data['id_product']))
                 product.sold_tf = 1
                 product.save()
                 #판매자, 구매자 등록
                 seller = int(Data['seller'])
                 shopper = int(Data['shopper'])
-                realdeal = int(serializer.data['pk'])
+                realdeal = int(serializer.data['id_real_deal'])
                 temp_seller = Member.objects.get(id_member=seller)
                 temp_shopper = Member.objects.get(id_member=shopper)
                 temp_real = RealDeal.objects.get(id_real_deal = realdeal)
@@ -547,7 +547,7 @@ def realdeal_detail(request, id_product):
         realdeal = RealDeal.objects.raw("""SELECT R.id_real_deal, R.id_product, MS.id_member AS seller, MP.id_member AS shopper FROM daangn.real_deal AS R 
                                             JOIN daangn.member_seller AS MS ON R.id_real_deal = MS.id_real_deal 
                                             JOIN daangn.member_shopper AS MP ON R.id_real_deal = MP.id_real_deal 
-                                            WHERE R.id_product ="""+pk)
+                                            WHERE R.id_product ="""+id_product)
         serializer = RealDealSerializer(realdeal, many=True)
         return Response(serializer.data)
 
@@ -571,7 +571,7 @@ def seller_review(request):
             q = request.data.dict()
             #세부평가 저장
             rate = q['rate'].split(',')
-            pk = int(serializer.data['pk'])
+            pk = int(serializer.data['id_review_seller'])
             temp_seller_review = SellerReview.objects.get(id_review_seller = pk)
             for i in rate:
                 temp_rate = Rate.objects.get(id_rate=i)
@@ -600,7 +600,7 @@ def shopper_review(request):
             q = request.data.dict()
             #세부평가 저장
             rate = q['rate'].split(',')
-            pk = int(serializer.data['pk'])
+            pk = int(serializer.data['id_review_shopper'])
             temp_shopper_review = ShopperReview.objects.get(id_review_shopper = pk)
             for i in rate:
                 temp_rate = Rate.objects.get(id_rate=i)
