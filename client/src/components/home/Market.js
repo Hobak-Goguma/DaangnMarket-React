@@ -25,15 +25,17 @@ margin-top:150px;
         }
     }
     section{
-        margin: 0 auto;
+        margin: 0 auto 150px;
         text-align:center;
-        >div{
+        display: flex;
+        flex-wrap: wrap;
+        > div{
             position:relative;
-            display: inline-block;
-            width: 20%;
-            height:317px;
+            flex-grow: 1;
+            width: calc(25% - 34px);
+            height:280px;
             border:1px solid #ddd;
-            margin: 0 50px 50px 0;
+            margin: 34px 34px 0 0;
             border-radius:20px;
             overflow:hidden;
             &:hover{
@@ -45,6 +47,9 @@ margin-top:150px;
         }   
         
         .item{
+            &:nth-child(-n + 4){
+                margin-top:0;
+            }
             &:nth-child(4n){
                 margin-right:0;
             }
@@ -56,39 +61,47 @@ margin-top:150px;
                     width:100%;
                 }
             }
-            .discription{
-                margin:20px;
-                position:relative;
-                h1{
-                    margin-top:20px;
-                    font-size:18px;
-                    margin-top:7px;
-                    white-space : nowrap; 
-                    text-overflow : ellipsis;
-                    overflow:hidden;
-                }   
-                p{ 
+            .text-group {
+                width: 100%;
+                padding: 20px 16px 0;
+                box-sizing: border-box;
+                .description{
+                    width: 100%;
+                    padding-bottom: 12px;
+                    position:relative;
+                    box-sizing: border-box;
+                    h1{
+                        margin: 0 0 8px;
+                        font-size:18px;
+                        text-align: left;
+                        font-weight: bold;
+                        white-space : nowrap; 
+                        text-overflow : ellipsis;
+                        overflow:hidden;
+                    }   
+                    p{ 
+                        text-align:left;
+                        font-size:15px;
+                        margin-top:7px;
+                        white-space : nowrap; 
+                        text-overflow : ellipsis;
+                        overflow:hidden;
+                    }
+                    .price{
+                        color:#FF8A3D;
+                    }
+                }
+                .like{
+                    width: 100%;
+                    height:35px;
+                    border-top:1px solid #ddd;
                     text-align:left;
-                    font-size:15px;
-                    margin-top:7px;
-                    white-space : nowrap; 
-                    text-overflow : ellipsis;
-                    overflow:hidden;
-                }
-                .price{
-                    color:#FF8A3D;
-                }
-            }
-            .like{
-                margin:-5px 10px 5px 10px;
-                height:35px;
-                border-top:1px solid #ddd;
-                text-align:left;
-                span{
-                    display:block;
-                    margin-top:12px;
-                    font-size:13px;
-                    color:#bbb;
+                    span{
+                        display:block;
+                        margin-top:12px;
+                        font-size:13px;
+                        color:#bbb;
+                    }
                 }
             }
         }
@@ -98,6 +111,7 @@ margin-top:150px;
             padding: 88px 0;
             div{
                 font-size:20px;
+                line-height: 1.43;
                 margin: 22px 20px 0 20px;
             }
         }
@@ -183,17 +197,19 @@ const Market = () =>{
         return(
         <div className="item" key = {v.name}>
             <div className="img">
-                <img src={v.thumb} alt={v.name}/> 
+                <img src={v.thumb} alt={v.name}/>
             </div>
-            <div className="discription">    
-                <h1>{v.name}</h1>
-                <p>{v.location}</p>
-                <p className="price">{v.cost!==0? 
-                cost+"원"
-                :"무료"}</p>
-            </div>
-            <div className="like">
-                <span>{`관심 ${v.like} ∙ 채팅 ${v.chat}`}</span>
+            <div className="text-group">
+                <div className="description">
+                    <h1>{v.name}</h1>
+                    <p>{v.location}</p>
+                    <p className="price">{v.cost!==0?
+                        cost+"원"
+                        :"무료"}</p>
+                </div>
+                <div className="like">
+                    <span>{`관심 ${v.like} ∙ 채팅 ${v.chat}`}</span>
+                </div>
             </div>
         </div>);
     });

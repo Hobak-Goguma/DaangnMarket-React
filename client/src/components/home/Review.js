@@ -69,6 +69,7 @@ const Review =() =>{
                 position:relative;
                 margin : 0 ${(980 - 300*3)/2}px 0 0;
                 font-size:17px;
+                line-height: 1.43;
                 &:nth-child(3n+1){
                     margin-right:0;
                 }
@@ -87,7 +88,7 @@ const Review =() =>{
             }
         }
     `;
-        
+
     const revSection = reviews.map((v)=>{
         return(<div key={v.idx} className="review">
             <div className="icon"></div>

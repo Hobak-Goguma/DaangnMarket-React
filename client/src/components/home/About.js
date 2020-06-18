@@ -32,8 +32,12 @@ import styled from "styled-components";
                         margin-right:0;
                     }
                     h1{
-                        margin-top:30px;
+                        margin: 30px 0 12px;
                         font-size:20px;
+                    }
+                    p {
+                      line-height: 1.43;
+                      word-break: keep-all;
                     }
 
                 }
@@ -73,7 +77,7 @@ const About =() =>{
         des:`거래 후에는 서로에게
         감사인사를 보내보세요.`
     }];
-    
+
     const Deses = descriptions.map((v)=>{
         const Image = styled.div`
             width:230px;

@@ -147,14 +147,15 @@ const StyledTotalMenu = styled.ul`
       background: #fff;
 
       li {
+        width: 140px;
         transition: 0.2s;
         height: 50px;
         line-height: 50px;
         &:hover {
           background: #ffbe93;
         }
-        width: 120px;
         padding: 0 1rem;
+        box-sizing: border-box;
       }
           a{
             display:block;

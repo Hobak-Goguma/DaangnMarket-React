@@ -22,14 +22,14 @@ const Mains = styled.section`
                 display:block;
                 position:absolute;
                 bottom:0;
-                left:0px;
+                left:0;
             }
             ul{
                 display: block;
                 width: 200px;
                 position: absolute;
                 bottom: 50px;
-                right: 0px;
+                right: 0;
                 .keyword{
                     height:50px; 
                     border-bottom : 1px solid #ccc;
@@ -45,6 +45,10 @@ const Mains = styled.section`
                     a{width:100%;}
                     div{
                         display:inline-block;
+                        strong {
+                        font-weight: bold;
+                        margin-right: 4px;
+                        }
                     }
                     .upDown{
                         width:50px;
@@ -52,6 +56,10 @@ const Mains = styled.section`
                         position:absolute;
                         top:0;
                         right:0;
+                        font-size: 12px;
+                        i {
+                        margin-right: 4px;
+                        }
                     }
                 }
                 .up{color:red;}
@@ -61,7 +69,7 @@ const Mains = styled.section`
     `;
 
 const Main = () =>{
-    
+
         // map으로 순위 매기기
         const rank = [{
             name:"자전거",
@@ -70,7 +78,7 @@ const Main = () =>{
         },{
             name:"의자",
             nowRank : 2,
-            prevRank :4 
+            prevRank :4
         },{
             name:"캠핑",
             nowRank : 3,
@@ -113,13 +121,13 @@ const Main = () =>{
             prevRank: 15
         }];
         const ranks = rank.slice(0,7);
-        const Ranking = ranks.map((v)=>{ 
+        const Ranking = ranks.map((v)=>{
 
             if(v.nowRank < 8){ // 7위까지만 넣기위해
             return (
             <li key = {v.name}><a href="#">
-                <div><strong>{v.nowRank} </strong>{v.name}</div> 
-                <div className="upDown">
+                <div><strong>{v.nowRank} </strong>{v.name}</div>
+                <div className={v.nowRank === v.prevRank ? `upDown` : v.nowRank < v.prevRank ? `upDown up` : `upDown down`}>
                     {v.nowRank===v.prevRank? `-`:
                         v.nowRank<v.prevRank? (
                         <><i className="fas fa-caret-up up"></i>{" "+Math.abs(v.nowRank-v.prevRank)}</>
