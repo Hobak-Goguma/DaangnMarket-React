@@ -4,6 +4,9 @@ import MyLayout from "../components/mypage/MypageLayout";
 import Gender from "../components/myinfochange/Gender";
 import Birth from "../components/myinfochange/Birth";
 import Modify from "../components/myinfochange/Modify";
+import Password from "../components/myinfochange/Password";
+import Tel from "../components/myinfochange/Tel";
+import Nickname from "../components/myinfochange/NickName";
 
 const ChangeLayout = styled.div`
   width: calc(100% - 250px);
@@ -78,11 +81,11 @@ const Changelayout = ({ location, history }) => {
         });
         break;
     
-      case "addr":
+      case "pw":
         setClass({
           ...chClass,
-          key : "주소",
-          value : user.addr
+          key : "비밀번호",
+          value : ""
         });
         break;
       
@@ -153,9 +156,9 @@ const Changelayout = ({ location, history }) => {
           <div className="infoChange">
             <div className="infoTit">{chClass.key}변경</div>
             
-          {state==="nick_name"? <></>:
-          state==="tel"? <></>:
-          state==="addr"? <></>:
+          {state==="nick_name"? <Nickname changeValue={chClass.value} change={changeClassValue}></Nickname>:
+          state==="tel"? <Tel changeValue={chClass.value} change={changeClassValue}></Tel>:
+          state==="pw"? <Password changeValue={chClass.value} change={changeClassValue}></Password>:
           state==="gender"? <Gender changeValue={chClass.value} change={changeClassValue}></Gender>:
           state==="birth"? <Birth changeValue={chClass.value} change={changeClassValue}></Birth>:
           history.goBack()

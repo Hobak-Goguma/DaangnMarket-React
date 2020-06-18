@@ -45,11 +45,9 @@ const MyNav = ({choose,history}) =>{
             case "내 상품":
                 history.push("/myproduct");
                 break;
-
-            case "비밀번호 수정":
-                history.push("/mypwchange");
+            case "주소 변경":
+                history.push("/address");
                 break;
-
             case "로그아웃":
                 window.sessionStorage.clear();
                 history.push("/");
@@ -58,7 +56,7 @@ const MyNav = ({choose,history}) =>{
                 break;
         }
     }
-    const myMenu = ["내 정보 보기", "내 상품", "비밀번호 수정","로그아웃"]
+    const myMenu = ["내 정보 보기", "내 상품", "주소 변경","로그아웃"]
     const menu = myMenu.map((v)=>{
         if(v===choose){
         return(
@@ -71,7 +69,8 @@ const MyNav = ({choose,history}) =>{
                 <li key = {v}>
                     <span id = {v}  onClick={click}>{v}<i className="fas fa-chevron-right"></i></span>
                 </li>
-        );};
+        );
+    };
     })
     return( 
         <Mynav>
