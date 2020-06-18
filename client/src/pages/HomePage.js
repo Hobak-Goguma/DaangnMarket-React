@@ -1,9 +1,9 @@
 import React from "react";
 import Layout from "../common/components/Layout";
-import Main from "./components/Main";
-import Market from "./components/Market";
-import About from "./components/About";
-import Review from "./components/Review";
+import Main from "../components/home/Main";
+import Market from "../components/home/Market";
+import About from "../components/home/About";
+import Review from "../components/home/Review";
 
 const HomePage = () => {
   return (

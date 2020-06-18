@@ -1,9 +1,9 @@
 import React, { useState , useCallback } from "react";
 import styled from "styled-components";
-import MyLayout from "../../MypageLayout";
-import Gender from "./components/Gender";
-import Birth from "./components/Birth";
-import Modify from "./components/Modify";
+import MyLayout from "../components/mypage/MypageLayout";
+import Gender from "../components/myinfochange/Gender";
+import Birth from "../components/myinfochange/Birth";
+import Modify from "../components/myinfochange/Modify";
 
 const ChangeLayout = styled.div`
   width: calc(100% - 250px);

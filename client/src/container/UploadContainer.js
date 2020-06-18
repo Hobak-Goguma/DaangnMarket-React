@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import Upload from "./components";
+import Upload from "../components/upload/index";
 import { withRouter } from "react-router-dom";
 
 const UploadContainer = ({ history }) => {

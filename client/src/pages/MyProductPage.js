@@ -1,9 +1,9 @@
 import React from "react";
-import MyLayout from "../MypageLayout";
+import MyLayout from "../components/mypage/MypageLayout";
 import styled from "styled-components";
 
 // Wishlist component
-import Wishlist from "./wishlist/index";
+import Wishlist from "../components/myproduct/index";
 
 const MyProd = styled.div`
   width: calc(100% - 250px);

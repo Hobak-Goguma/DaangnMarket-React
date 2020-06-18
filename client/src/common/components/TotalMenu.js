@@ -35,6 +35,13 @@ const TotalMenu = ({ logOut, login, onClick }) => {
             </Link>
           </li>
           <li>
+            <Link to="/mypwchange">
+              <div>
+                <span>주소 변경</span>
+              </div>
+            </Link>
+          </li>
+          <li>
             <Link to="/upload">
               <div>
                 <span>물품 등록</span>
@@ -45,13 +52,6 @@ const TotalMenu = ({ logOut, login, onClick }) => {
             <Link to="/myproduct">
               <div>
                 <span>내 상품</span>
-              </div>
-            </Link>
-          </li>
-          <li>
-            <Link to="/mypwchange">
-              <div>
-                <span>비밀번호 수정</span>
               </div>
             </Link>
           </li>

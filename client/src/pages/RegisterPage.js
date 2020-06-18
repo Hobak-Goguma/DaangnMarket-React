@@ -1,6 +1,6 @@
 import React from "react";
 import Layout from "../common/components/Layout";
-import RegisterContainer from "./Container";
+import RegisterContainer from "../container/RegisterContainer";
 
 const RegisterPage = () => {
   return (
