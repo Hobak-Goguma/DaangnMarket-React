@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ProductDetail from "../productDetail/components";
+import ProductDetail from "../components/product";
 import Layout from "../common/components/Layout";
 
 const ProductDetailContainer = () => {
