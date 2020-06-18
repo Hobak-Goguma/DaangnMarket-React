@@ -8,36 +8,35 @@ class MemberSerializer(serializers.ModelSerializer):
     last_date = serializers.DateTimeField(default=timezone.now)
     class Meta:
         model = Member
-        fields = ('pk', 'name', 'nick_name', 'user_id', 'user_pw', 'tel', 'birth', 'email', 'gender',  'img', 'udate' ,'last_date')
+        fields = ('id_member', 'name', 'nick_name', 'user_id', 'user_pw', 'tel', 'birth', 'email', 'gender',  'img', 'udate' ,'last_date')
 
 
 class MemberReviseSerializer(serializers.ModelSerializer):
     udate = serializers.DateTimeField(default=timezone.now)
     class Meta:
         model = Member
-        fields = ('pk', 'user_pw', 'udate')
+        fields = ('id_member', 'user_pw', 'udate')
 
 
 class MemberTouchSerializer(serializers.ModelSerializer):
     udate = serializers.DateTimeField(default=timezone.now)
-    addr = serializers.JSONField()
-
     class Meta:
         model = Member
-        fields = ('pk', 'nick_name', 'tel', 'birth', 'email', 'addr', 'img', 'udate')
+        fields = ('id_member', 'nick_name', 'tel', 'birth', 'email', 'img', 'gender', 'udate')
+
         
 class ProductSerializer(serializers.ModelSerializer):
     # id_member_id = serializers.IntegerField(source='id_member')
     # member = serializers.ForeignKey(Member, models.CASCADE, related_name='member_id')
     class Meta:
         model = Product
-        fields = ('pk', 'id_member', 'name', 'price', 'info', 'category', 'img', 'views', 'sold_tf', 'addr')
+        fields = ('id_product', 'id_member', 'name', 'price', 'info', 'category', 'img', 'views', 'sold_tf', 'addr')
 
 
 class ProductTouchSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ('pk', 'id_member', 'name', 'price', 'info', 'category', 'img', 'views', 'sold_tf', 'addr')
+        fields = ('id_product', 'id_member', 'name', 'price', 'info', 'category', 'img', 'views', 'sold_tf', 'addr')
         read_only_fields = ['id_member', 'views', 'sold_tf']
 
 
@@ -45,25 +44,26 @@ class LoginSerializer(serializers.ModelSerializer):
     last_date = serializers.DateTimeField(default=timezone.now)
     class Meta:
         model = Member
-        fields = ('pk','user_id', 'user_pw', 'name', 'nick_name', 'tel', 'last_date', 'img')
+        fields = ('id_member','user_id', 'user_pw', 'name', 'nick_name', 'tel', 'last_date', 'img')
+
 
 class CompanySerializer(serializers.ModelSerializer):
     class Meta:
         model = Company
-        fields = ('pk', 'id_member', 'name', 'addr', 'tel', 'info', 'category', 'img')
+        fields = ('id_company', 'id_member', 'name', 'addr', 'tel', 'info', 'category', 'img')
 
 
 class CompanyTouchSerializer(serializers.ModelSerializer):
     class Meta:
         model = Company
-        fields = ('pk', 'id_member', 'name', 'addr', 'tel', 'info', 'category', 'img')
+        fields = ('id_company', 'id_member', 'name', 'addr', 'tel', 'info', 'category', 'img')
         read_only_fields = ['id_member']
 
 
 class WishlistSerializer(serializers.ModelSerializer):
     class Meta:
         model = Wishlist
-        fields = ('pk', 'id_product', 'id_member', 'cdate')
+        fields = ('id_wishlist', 'id_product', 'id_member', 'cdate')
 
 # realdeal api 
 class MemberSellerSerializer(serializers.ModelSerializer):
@@ -84,7 +84,7 @@ class RealDealSerializer(serializers.ModelSerializer):
     shopper = serializers.IntegerField(read_only=True)
     class Meta:
         model = RealDeal
-        fields = ('pk', 'id_product','seller', 'shopper', 'cdate')
+        fields = ('id_real_deal', 'id_product','seller', 'shopper', 'cdate')
 
 
 class SellerRateSerializer(serializers.ModelSerializer):
@@ -102,13 +102,21 @@ class ShopperRateSerializer(serializers.ModelSerializer):
 class SellerReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = SellerReview
-        fields = ('pk', 'id_real_deal', 'title', 'cdate')
+        fields = ('id_review_seller', 'id_real_deal', 'title', 'cdate')
 
 
 class ShopperReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = ShopperReview
-        fields = ('pk', 'id_real_deal', 'title', 'cdate')
+        fields = ('id_review_shopper', 'id_real_deal', 'title', 'cdate')
+
+
+class memberAddrSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Memberaddr
+        fields = ('id_member', 'addr')
+        # read_only_fields = ['user_id']
 
 
 # class MemberSerializer(serializers.Serializer):

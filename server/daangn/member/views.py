@@ -38,12 +38,12 @@ def member_list(request):
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
-def member_detail(request, pk):
+def member_detail(request, id_member):
     """
     코드 조각 조회, 업데이트, 삭제
     """
     try:
-        member = Member.objects.get(pk=pk)
+        member = Member.objects.get(pk=id_member)
     except Member.DoesNotExist:
         content = {
             "message" : "없는 사용자 입니다.",
@@ -64,17 +64,76 @@ def member_detail(request, pk):
 
     elif request.method == 'DELETE':
         member.delete()
-        content = "pk :" + pk + " 삭제 완료" 
+        content = {
+            "message" : "pk :" + pk + " 삭제 완료",
+            "result" : {}
+                }
         return Response(content ,status=status.HTTP_204_NO_CONTENT)
 
 
-@api_view(['PUT'])
-def member_touch(request, pk):
+
+@api_view(['POST'])
+def member_addr_create(request):
     """
-    코드 조각 조회, 업데이트, 삭제
+    멤버 주소 생성
+    """
+    if request.method == 'POST':
+        qid_member = json.loads(request.body)['id_member']
+        if Memberaddr.objects.filter(id_member = qid_member).count() < 2 :
+            serializer = memberAddrSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        elif Memberaddr.objects.filter(id_member = qid_member).count() >= 3 : 
+            content = {
+            "message" : "허용된 주소의 갯수는 2개입니다.",
+            "result" : {}
+                }
+            return Response(content, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+def member_addr(request, id_member):
+    """
+    멤버 주소 조회 수정, 삭제
     """
     try:
-        member = Member.objects.get(pk=pk)
+        memberAddr = Memberaddr.objects.filter(id_member=id_member)
+    except Memberaddr.DoesNotExist:
+        content = {
+            "message" : "없는 사용자 입니다.",
+            "result" : {}
+                }
+        return Response(content, status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = memberAddrSerializer(memberAddr, many=True)
+        return Response(serializer.data)
+
+    elif request.method == 'PUT':
+        serializer = MemberReviseSerializer(member, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    # elif request.method == 'DELETE':
+    #     member.delete()
+    #     content = {
+    #         "message" : "pk :" + pk + " 삭제 완료",
+    #         "result" : {}
+    #             }
+    #     return Response(content ,status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['PUT'])
+def member_touch(request, id_member):
+    """
+    코드 조각 조회, 업데이트, 삭제
+    Modifiable List : nick_name, tel, email, birth, img, gender
+    """
+    try:
+        member = Member.objects.get(pk=id_member)
     except Member.DoesNotExist:
         content = {
             "message" : "없는 사용자 입니다.",
@@ -201,12 +260,12 @@ def product_list(request):
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
-def product_detail(request, pk):
+def product_detail(request, id_product):
     """
     코드 조각 조회, 업데이트, 삭제
     """
     try:
-        product = Product.objects.get(pk=pk)
+        product = Product.objects.get(pk=id_product)
     except Product.DoesNotExist:
         content = {
             "message" : "없는 물품리스트 입니다.",
@@ -217,6 +276,9 @@ def product_detail(request, pk):
     #     return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
+        product.views += 1
+        product.save()
+        product = Product.objects.get(pk=pk)
         serializer = ProductSerializer(product)
         return Response(serializer.data)
 
@@ -296,12 +358,12 @@ def company_list(request):
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
-def company_detail(request, pk):
+def company_detail(request, id_company):
     """
     특정 업체리스트를 조회, 수정, 삭제 합니다.
     """
     try:
-        company = Company.objects.get(pk=pk)
+        company = Company.objects.get(pk=id_company)
     except Company.DoesNotExist:
         content = {
             "message" : "없는 업체 입니다.",
@@ -348,12 +410,12 @@ def wishlist_list(request):
 
 
 @api_view(['GET', 'DELETE'])
-def wishlist_detail(request, pk):
+def wishlist_detail(request, id_member):
     """
     특정 유저의 찜리스트를 조회, 삭제 합니다.
     """
     try:
-        wishlist = Wishlist.objects.filter(id_member = pk)
+        wishlist = Wishlist.objects.filter(id_member = id_member)
     except Wishlist.DoesNotExist:
         content = {
             "message" : "찜한 상품이 없습니다.",
@@ -368,7 +430,7 @@ def wishlist_detail(request, pk):
     elif request.method == 'DELETE':
         q = request.data.dict()
         qid_product = q['id_product']
-        wishlist_delete = Wishlist.objects.filter(id_member = pk).filter(id_product = qid_product)
+        wishlist_delete = Wishlist.objects.filter(id_member = id_member).filter(id_product = qid_product)
         wishlist_delete.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -436,36 +498,42 @@ def realdeal_list(request):
         return Response(serializer.data)
 
     elif request.method == 'POST':
-        serializer = RealDealSerializer(data=request.data)
-        if serializer.is_valid():
-            #실거래 등록
-            serializer.save()
-            q = request.data.dict()
-            #제품 테이블 판매여부 수정
-            product = Product.objects.get(pk=int(q['id_product']))
-            product.sold_tf = 1
-            product.save()
-            #판매자, 구매자 등록
-            seller = int(q['seller'])
-            shopper = int(q['shopper'])
-            realdeal = int(serializer.data['pk'])
-            temp_seller = Member.objects.get(id_member=seller)
-            temp_shopper = Member.objects.get(id_member=shopper)
-            temp_real = RealDeal.objects.get(id_real_deal = realdeal)
-            MemberSeller.objects.create(id_member = temp_seller, id_real_deal = temp_real)
-            MemberShopper.objects.create(id_member = temp_shopper, id_real_deal = temp_real)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        Data = json.loads(request.body)
+        #request 검사
+        #필수 항목 부족 
+        if not(Data.get('seller') and Data.get('id_product') and Data.get('shopper')) :
+            content = "필수값이 없습니다 [필요한 필드 : id_product, seller(판매자), shopper(구매자)]"
+            return Response(content, status=status.HTTP_400_BAD_REQUEST)
+        #모든 항목 충족
+        elif Data.get('seller') and Data.get('seller') and Data.get('seller'):
+            serializer = RealDealSerializer(data=request.data)
+            if serializer.is_valid():
+                #실거래 등록
+                serializer.save()
+                #제품 테이블 판매여부 수정
+                product = Product.objects.get(id_product=int(Data['id_product']))
+                product.sold_tf = 1
+                product.save()
+                #판매자, 구매자 등록
+                seller = int(Data['seller'])
+                shopper = int(Data['shopper'])
+                realdeal = int(serializer.data['id_real_deal'])
+                temp_seller = Member.objects.get(id_member=seller)
+                temp_shopper = Member.objects.get(id_member=shopper)
+                temp_real = RealDeal.objects.get(id_real_deal = realdeal)
+                MemberSeller.objects.create(id_member = temp_seller, id_real_deal = temp_real)
+                MemberShopper.objects.create(id_member = temp_shopper, id_real_deal = temp_real)
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])
-def realdeal_detail(request, pk):
+def realdeal_detail(request, id_product):
     """
     특정 제품의 실거래를 보여줍니다.
     """
     try:
-        realdeal = RealDeal.objects.filter(id_product = pk)
+        realdeal = RealDeal.objects.filter(id_product = id_product)
     except RealDeal.DoesNotExist:
         content = {
             "message" : "거래되지 않은 상품 없습니다.",
@@ -479,7 +547,7 @@ def realdeal_detail(request, pk):
         realdeal = RealDeal.objects.raw("""SELECT R.id_real_deal, R.id_product, MS.id_member AS seller, MP.id_member AS shopper FROM daangn.real_deal AS R 
                                             JOIN daangn.member_seller AS MS ON R.id_real_deal = MS.id_real_deal 
                                             JOIN daangn.member_shopper AS MP ON R.id_real_deal = MP.id_real_deal 
-                                            WHERE R.id_product ="""+pk)
+                                            WHERE R.id_product ="""+id_product)
         serializer = RealDealSerializer(realdeal, many=True)
         return Response(serializer.data)
 
@@ -503,7 +571,7 @@ def seller_review(request):
             q = request.data.dict()
             #세부평가 저장
             rate = q['rate'].split(',')
-            pk = int(serializer.data['pk'])
+            pk = int(serializer.data['id_review_seller'])
             temp_seller_review = SellerReview.objects.get(id_review_seller = pk)
             for i in rate:
                 temp_rate = Rate.objects.get(id_rate=i)
@@ -532,7 +600,7 @@ def shopper_review(request):
             q = request.data.dict()
             #세부평가 저장
             rate = q['rate'].split(',')
-            pk = int(serializer.data['pk'])
+            pk = int(serializer.data['id_review_shopper'])
             temp_shopper_review = ShopperReview.objects.get(id_review_shopper = pk)
             for i in rate:
                 temp_rate = Rate.objects.get(id_rate=i)
@@ -540,18 +608,6 @@ def shopper_review(request):
 
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(['GET'])
-def product_view(request, product_id):
-    """
-    제품 조회수 증가
-    """
-    if request.method == 'GET':
-        product = Product.objects.get(pk=product_id)
-        product.views += 1
-        product.save()
-    return Response("Success")
 
 
 #특정 실거래의 구매자 리뷰
