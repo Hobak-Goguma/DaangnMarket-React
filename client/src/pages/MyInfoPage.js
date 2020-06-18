@@ -221,7 +221,7 @@ const MyInfo = ({history}) =>{
                         state==="info"? "내정보":
                         state==="nickname"? "별명 변경":
                         state==="phone"? "전화번호 변경":
-                        state==="addr"? "주소 변경":
+                        state==="pw"? "비밀번호 변경":
                         setState("info")
                     }</span>
                 </div>
@@ -244,14 +244,13 @@ const MyInfo = ({history}) =>{
                         pathname : `/myinfoChange`,
                         state : {
                             state : "nick_name",
-                            user : sessionInfo}
+                            user : sessionInfo}  
                     }}>
                         <div className="nickName info changeAble">
                             <a href="">닉네임</a> <span>{sessionInfo.nick_name}</span>
                             <div className="change">변경하기 <i className="fas fa-chevron-right"></i></div>
                         </div>
                     </Link>
-                
                     <Link to={{
                         pathname : `/myinfoChange`,
                         state : {
@@ -261,21 +260,6 @@ const MyInfo = ({history}) =>{
                     <div className="phone info changeAble">
                         <a href="">전화번호</a> <span>{sessionInfo.tel}</span>
                         <div className="change">변경하기 <i className="fas fa-chevron-right"></i></div>
-                    </div>
-                    </Link>
-                    <Link to={{
-                        pathname : `/myi\nfoChange`,
-                        state : {
-                            state : "addr",
-                            user : sessionInfo}
-                    }}>
-                    <div className="addr info changeAble">
-                        <a href="">주소</a> <span>{sessionInfo.add[0]}</span>
-                        {sessionInfo.add[1]&&sessionInfo.add[1]!==""?
-                        <><a href=""></a> <span>{sessionInfo.add[1]}</span></>:
-                        <></>}
-                        <div className="change">변경하기 <i className="fas fa-chevron-right"></i></div>
-
                     </div>
                     </Link>
                     <Link to={{
@@ -308,6 +292,18 @@ const MyInfo = ({history}) =>{
 
                     </div>
                     </Link>
+                
+                <Link to={{
+                    pathname : `/myinfoChange`,
+                    state : {
+                        state : "pw",
+                        user : sessionInfo}
+                }}>
+                    <div className="nickName info changeAble">
+                        <a href="">비밀번호</a> 
+                        <div className="change">변경하기 <i className="fas fa-chevron-right"></i></div>
+                    </div>
+                </Link>
             </>
             
             </div>
