@@ -403,10 +403,29 @@ def wishlist_list(request):
 
     elif request.method == 'POST':
         serializer = WishlistSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        q = request.data.dict()
+        try:
+            # 자신이 등록한 상품인지 확인한다.
+            product = Product.objects.get(id_product=q['id_product'], id_member=q['id_member'])
+        except Product.DoesNotExist:
+            # 이미 내가 등록한 찜리스트에 있는지 확인한다.
+            try:
+                wishlist = Wishlist.objects.get(id_product=q['id_product'], id_member=q['id_member'])
+            except Wishlist.DoesNotExist:
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response(serializer.data, status=status.HTTP_201_CREATED)
+            content = {
+                "message" : "이미 찜리스트에 등록된 상품입니다.",
+                "result" : {}
+                    }
+            return Response(content, status=status.HTTP_400_BAD_REQUEST)
+        content = {
+            "message" : "멤버 본인이 등록한 상품입니다.",
+            "result" : {}
+                }
+        return Response(content, status=status.HTTP_400_BAD_REQUEST)
+        
 
 
 @api_view(['GET', 'DELETE'])
@@ -462,14 +481,10 @@ def selling_product_list(request, id_member):
     """
     특정 유저의 판매 상품 리스트를 조회합니다.
     """
-    try:
-        product = Product.objects.filter(id_member = id_member)
-    except Product.DoesNotExist:
-        content = {
-            "message" : "판매 상품이 없습니다.",
-            "result" : {}
-        }
-        return Response(content, status=status.HTTP_404_NOT_FOUND)
+    # objects.get은 단건을 조회하기 위한 용도이고, 없을 경우 DoesNotExist에러를 발생시킨다.
+    # objects.filter는 여러 건의 객체를 조회하기 위한 용도이고, 없을 경우 빈 queryset을 리턴한다.
+    # 즉, filter를 할 때 DoesNotExist Exception을 체크하는 것은 의미가 없다.
+    product = Product.objects.filter(id_member = id_member)
     
     serializer = ProductSerializer(product, many=True)
     return Response(serializer.data)

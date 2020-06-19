@@ -214,8 +214,8 @@ class ShopperReview(models.Model):
 
 class Wishlist(models.Model):
     id_wishlist = models.AutoField(primary_key=True)
-    id_product = models.ForeignKey(Product, models.DO_NOTHING, db_column='id_product')
-    id_member = models.ForeignKey(Member, models.DO_NOTHING, db_column='id_member')
+    id_product = models.ForeignKey(Product, models.PROTECT, db_column='id_product')
+    id_member = models.ForeignKey(Member, models.PROTECT, db_column='id_member')
     cdate = models.DateTimeField(auto_now_add=True)
 
     class Meta:
