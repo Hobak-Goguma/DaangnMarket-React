@@ -10,8 +10,6 @@ import json
 from django.http import JsonResponse
 from drf_yasg.utils import swagger_auto_schema
 
-now = timezone.now()
-
 # 'method' can be used to customize a single HTTP method of a view
 @swagger_auto_schema(method='get', responses={200:'OK'})
 # 'methods' can be used to apply the same modification to multiple methods
@@ -85,7 +83,7 @@ def member_addr_create(request):
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-        elif Memberaddr.objects.filter(id_member = qid_member).count() >= 3 : 
+        elif Memberaddr.objects.filter(id_member = qid_member).count() >= 2 : 
             content = {
             "message" : "허용된 주소의 갯수는 2개입니다.",
             "result" : {}
@@ -93,7 +91,7 @@ def member_addr_create(request):
             return Response(content, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['GET'])
+@api_view(['GET','PUT', 'DELETE'])
 def member_addr(request, id_member):
     """
     멤버 주소 조회 수정, 삭제
@@ -112,19 +110,19 @@ def member_addr(request, id_member):
         return Response(serializer.data)
 
     elif request.method == 'PUT':
-        serializer = MemberReviseSerializer(member, data=request.data)
+        serializer = memberAddrSerializer(memberAddr, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    # elif request.method == 'DELETE':
-    #     member.delete()
-    #     content = {
-    #         "message" : "pk :" + pk + " 삭제 완료",
-    #         "result" : {}
-    #             }
-    #     return Response(content ,status=status.HTTP_204_NO_CONTENT)
+    elif request.method == 'DELETE':
+        memberAddr.delete()
+        content = {
+            "message" : "pk :" + pk + " 삭제 완료",
+            "result" : {}
+                }
+        return Response(content ,status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['PUT'])
 def member_touch(request, id_member):
