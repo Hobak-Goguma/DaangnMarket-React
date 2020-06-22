@@ -43,8 +43,20 @@ margin-top:150px;
                 -moz-box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.2);
                 top: -2px;
             }
-        }   
-        
+              
+            &:nth-child(4n){
+                margin-right:0;
+            }
+        } 
+        .more{
+            box-sizing:border-box;
+            margin-right:0;
+            padding: 88px 0;
+            div{
+                font-size:20px;
+                margin: 22px 20px 0 20px;
+            }
+        }
     }
 }
 `;
