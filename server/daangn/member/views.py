@@ -81,25 +81,24 @@ def member_addr_create(request):
     #     member = Member.objects.get(user_id = user_id, user_pw = user_pw)
 
     if request.method == 'POST':
-        Data = json.loads(request.body)
-        id_member = Data['id_member']
-        addr = Data['addr']
-        if Memberaddr.objects.filter(id_member = id_member).count() < 2 :
-            data = request.body.decode('utf-8')
-            qaddr = json.loads(data)['addr']
-    
+        data = request.body.decode('utf-8')
+        received_json_data = json.loads(data)
+        id_member = received_json_data['id_member']
+        addr = received_json_data['addr']
+        Person = Memberaddr.objects.filter(id_member = id_member)
+        if Person.count() < 2 :
             try:
-                overlap = Memberaddr.objects.filter(id_member = id_member, addr = addr)
+                overlap = Person.get(addr = addr)
                 content = {
                 "message" : "중복된 주소가 있습니다.",
-                "result" : {overlap}
+                "result" : {"id_member = " + str(id_member) : addr}
                 }
             except Memberaddr.DoesNotExist:
                 serializer = memberAddrSerializer(data=request.data)
                 if serializer.is_valid():
                     serializer.save()
                     return Response(serializer.data, status=status.HTTP_201_CREATED)
-            return Response(overlap, status=status.HTTP_409_CONFLICT)
+            return Response(content, status=status.HTTP_409_CONFLICT)
                     # return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
@@ -137,10 +136,11 @@ def member_addr(request, id_member):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == 'DELETE':
-        q = request.data.dict()
-        qaddr = q['addr']
-        memberAddr_delete = Memberaddr.objects.filter(id_member = id_member).filter(addr = qaddr)
-        memberAddr_delete.delete()
+        # q = request.data.dict()
+        # qaddr = q['addr']
+        # memberAddr_delete = Memberaddr.objects.filter(id_member = id_member).filter(addr = qaddr)
+        # memberAddr_delete.delete()
+        memberAddr.delete()
         content = {
             "message" : "pk :" + pk + " 삭제 완료",
             "result" : {}
