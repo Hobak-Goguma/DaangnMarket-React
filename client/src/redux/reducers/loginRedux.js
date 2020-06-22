@@ -40,6 +40,7 @@ const login = (state = initialState, action) => {
           return { ...state };
         }
       });
+      break;
     case LOGOUT:
       return { ...state };
     default:

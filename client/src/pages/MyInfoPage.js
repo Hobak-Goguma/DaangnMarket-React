@@ -130,7 +130,7 @@ const Info = styled.div`
 `;
 
 const MyInfo = ({history}) =>{
-    let tempInfo;
+    // let tempInfo;
     const [sessionInfo,setSessionInfo] = useState({
         pk: 0,
         user_id: "",
@@ -143,7 +143,7 @@ const MyInfo = ({history}) =>{
         add: [],
         temper: 36.5,
     });
-    const [modifyon,setModifyOn] = useState(false);
+    const [modifyon] = useState(false);
     const [state, setState] = useState("info");
 
     useEffect(()=>{// 세션정보 이니셜라이징
@@ -153,8 +153,8 @@ const MyInfo = ({history}) =>{
                 alert("로그인이 필요한 서비스입니다.");
                 history.push("/login");
             }else{
-                tempInfo = JSON.parse(window.sessionStorage.getItem("user"));
-                
+                // tempInfo = JSON.parse(window.sessionStorage.getItem("user"));
+
                 // fetch(`www.daangn.site/memeber/${sessionInfo.pk}`,{//수정용 api주소 수정용 fetch
                 //     method:"GET",
                 //     headers:{
@@ -168,7 +168,7 @@ const MyInfo = ({history}) =>{
                 //             addr: sessionInfo.add,
                 //     })
                 // }).then((response)=>{
-                //     if(response.status===200){                                
+                //     if(response.status===200){
                 //         alert("비밀번호 수정이 완료되었습니다.");
                 //         history.push("/");
                 //     }else{
@@ -213,21 +213,21 @@ const MyInfo = ({history}) =>{
     return (
     <>
         <MyLayout history={history} choose="내 정보 보기">
-            
+
             <Info>
-            
+
                 <div className="title">
                     <span className="tit">{
                         state==="info"? "내정보":
                         state==="nickname"? "별명 변경":
                         state==="phone"? "전화번호 변경":
-                        state==="pw"? "비밀번호 변경":
+                        state==="addr"? "주소 변경":
                         setState("info")
                     }</span>
                 </div>
                 <div className="infoBox">
                     <>
-                    <div className="profile"></div> 
+                    <div className="profile"></div>
                     <div className="necessary">
                         <div className="name">
                             <a href="">이름</a> <span>{sessionInfo.name}</span>
@@ -244,13 +244,14 @@ const MyInfo = ({history}) =>{
                         pathname : `/myinfoChange`,
                         state : {
                             state : "nick_name",
-                            user : sessionInfo}  
+                            user : sessionInfo}
                     }}>
                         <div className="nickName info changeAble">
                             <a href="">닉네임</a> <span>{sessionInfo.nick_name}</span>
                             <div className="change">변경하기 <i className="fas fa-chevron-right"></i></div>
                         </div>
                     </Link>
+
                     <Link to={{
                         pathname : `/myinfoChange`,
                         state : {
@@ -260,6 +261,21 @@ const MyInfo = ({history}) =>{
                     <div className="phone info changeAble">
                         <a href="">전화번호</a> <span>{sessionInfo.tel}</span>
                         <div className="change">변경하기 <i className="fas fa-chevron-right"></i></div>
+                    </div>
+                    </Link>
+                    <Link to={{
+                        pathname : `/myi\nfoChange`,
+                        state : {
+                            state : "addr",
+                            user : sessionInfo}
+                    }}>
+                    <div className="addr info changeAble">
+                        <a href="">주소</a> <span>{sessionInfo.add[0]}</span>
+                        {sessionInfo.add[1]&&sessionInfo.add[1]!==""?
+                        <><a href=""></a> <span>{sessionInfo.add[1]}</span></>:
+                        <></>}
+                        <div className="change">변경하기 <i className="fas fa-chevron-right"></i></div>
+
                     </div>
                     </Link>
                     <Link to={{
@@ -292,20 +308,8 @@ const MyInfo = ({history}) =>{
 
                     </div>
                     </Link>
-                
-                <Link to={{
-                    pathname : `/myinfoChange`,
-                    state : {
-                        state : "pw",
-                        user : sessionInfo}
-                }}>
-                    <div className="nickName info changeAble">
-                        <a href="">비밀번호</a> 
-                        <div className="change">변경하기 <i className="fas fa-chevron-right"></i></div>
-                    </div>
-                </Link>
             </>
-            
+
             </div>
             </Info>
         </MyLayout>

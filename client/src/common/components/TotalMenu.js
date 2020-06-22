@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const TotalMenu = ({ logOut, login, onClick }) => {
-  let localID;
+  // let localID;
   // useEffect(() => {
   //   localID = window.sessionStorage.getItem("id");
   // }, []);

@@ -4,9 +4,6 @@ import MyLayout from "../components/mypage/MypageLayout";
 import Gender from "../components/myinfochange/Gender";
 import Birth from "../components/myinfochange/Birth";
 import Modify from "../components/myinfochange/Modify";
-import Password from "../components/myinfochange/Password";
-import Tel from "../components/myinfochange/Tel";
-import Nickname from "../components/myinfochange/NickName";
 
 const ChangeLayout = styled.div`
   width: calc(100% - 250px);
@@ -62,7 +59,6 @@ const Changelayout = ({ location, history }) => {
     key : "",
     value : ""
   });
-  let classname, changeValue;
   if(chClass.key === ""){
     switch (state) {
       case "nick_name":
@@ -80,15 +76,15 @@ const Changelayout = ({ location, history }) => {
           value : user.tel
         });
         break;
-    
-      case "pw":
+
+      case "addr":
         setClass({
           ...chClass,
-          key : "비밀번호",
-          value : ""
+          key : "주소",
+          value : user.addr
         });
         break;
-      
+
       case "gender":
         setClass({
           ...chClass,
@@ -96,7 +92,7 @@ const Changelayout = ({ location, history }) => {
           value : user.gender
         });
         break;
-    
+
       case "birth":
         setClass({
           ...chClass,
@@ -104,37 +100,37 @@ const Changelayout = ({ location, history }) => {
           value : user.birth
         });
         break;
-        
+
       default:
         history.goBack();
         break;
     }
-  } 
+  }
   const changeModifyOn = useCallback( () =>{
     setClass({
       ...chClass,
       modifyon:true
-    });    
+    });
     console.log(chClass);
   },[chClass]);
-  const changeModifyOff = useCallback( () =>{
-    setClass({
-      ...chClass,
-      modifyon:false
-    });    
-  },[chClass]);
+  // const changeModifyOff = useCallback( () =>{
+  //   setClass({
+  //     ...chClass,
+  //     modifyon:false
+  //   });
+  // },[chClass]);
   const changeClassValue = useCallback( (value) =>{
     setClass({
       ...chClass,
       value:value
-    });    
+    });
   },[chClass]);
 
 
 
 
   /*
-  
+
     ,pk: 1,
     user_id: "root",
     name: "root",
@@ -144,7 +140,7 @@ const Changelayout = ({ location, history }) => {
     nick_name: "루트",
     tel: "010-1234-1234",
     add: ["서울특별시 영등포구 짜장동"]
-  
+
   */
   return (
     <>
@@ -155,10 +151,10 @@ const Changelayout = ({ location, history }) => {
           </div>
           <div className="infoChange">
             <div className="infoTit">{chClass.key}변경</div>
-            
-          {state==="nick_name"? <Nickname changeValue={chClass.value} change={changeClassValue}></Nickname>:
-          state==="tel"? <Tel changeValue={chClass.value} change={changeClassValue}></Tel>:
-          state==="pw"? <Password changeValue={chClass.value} change={changeClassValue}></Password>:
+
+          {state==="nick_name"? <></>:
+          state==="tel"? <></>:
+          state==="addr"? <></>:
           state==="gender"? <Gender changeValue={chClass.value} change={changeClassValue}></Gender>:
           state==="birth"? <Birth changeValue={chClass.value} change={changeClassValue}></Birth>:
           history.goBack()

@@ -72,7 +72,7 @@ const RegisterContainer = ({ history }) => {
       })
       // console.log 에 status error 안띄우기
       .catch((err) => {
-        const mute = err;
+        console.error(err);
         alert("중복된 아이디가 있습니다.");
       });
   };

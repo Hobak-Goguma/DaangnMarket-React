@@ -1,10 +1,9 @@
-import React,{useState} from 'react';
+import React from 'react';
 import styled from "styled-components";
-import { Link } from "react-router-dom";
 
-const MyDrop = ({localID}) =>{
-    
-  const LoginTrue = styled.section`
+const MyDrop = ({localID}) => {
+
+	const LoginTrue = styled.section`
         right: 172px;
       font-size:10px;
       margin:0;
@@ -33,17 +32,16 @@ const MyDrop = ({localID}) =>{
       }
       
   `;
-    return(<LoginTrue>
-    <ul className="myMenu">
-        <li className="welcome">
-            <span>웰컴</span>
-        </li>
-        <li className = "mouseOver">
-            <span className="dropdown">{localID}님</span>
-        </li>
-    </ul>
-  </LoginTrue>);
+	return (<LoginTrue>
+		<ul className="myMenu">
+			<li className="welcome">
+				<span>웰컴</span>
+			</li>
+			<li className="mouseOver">
+				<span className="dropdown">{localID}님</span>
+			</li>
+		</ul>
+	</LoginTrue>);
 }
-
 
 export default MyDrop;
