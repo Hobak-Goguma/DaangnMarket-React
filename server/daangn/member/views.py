@@ -115,7 +115,7 @@ def member_addr(request, id_member):
     멤버 주소 조회 수정, 삭제
     """
     try:
-        memberAddr = Memberaddr.objects.filter(id_member=id_member)
+        memberAddr = Memberaddr.objects.get(id_member=id_member)
     except Memberaddr.DoesNotExist:
         content = {
             "message" : "없는 사용자 입니다.",
