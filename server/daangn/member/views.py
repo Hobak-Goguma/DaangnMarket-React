@@ -75,15 +75,35 @@ def member_addr_create(request):
     """
     멤버 주소 생성
     """
-    if request.method == 'POST':
-        qid_member = json.loads(request.body)['id_member']
-        if Memberaddr.objects.filter(id_member = qid_member).count() < 2 :
-            serializer = memberAddrSerializer(data=request.data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
+    #  Data = json.loads(request.body)
+    #     user_id = Data['user_id']
+    #     user_pw = Data['user_pw']
+    #     member = Member.objects.get(user_id = user_id, user_pw = user_pw)
 
-        elif Memberaddr.objects.filter(id_member = qid_member).count() >= 2 : 
+    if request.method == 'POST':
+        Data = json.loads(request.body)
+        id_member = Data['id_member']
+        addr = Data['addr']
+        if Memberaddr.objects.filter(id_member = id_member).count() < 2 :
+            data = request.body.decode('utf-8')
+            qaddr = json.loads(data)['addr']
+    
+            try:
+                overlap = Memberaddr.objects.filter(id_member = id_member, addr = addr)
+                content = {
+                "message" : "중복된 주소가 있습니다.",
+                "result" : {overlap}
+                }
+            except Memberaddr.DoesNotExist:
+                serializer = memberAddrSerializer(data=request.data)
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(overlap, status=status.HTTP_409_CONFLICT)
+                    # return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+        elif Memberaddr.objects.filter(id_member = id_member).count() >= 2 : 
             content = {
             "message" : "허용된 주소의 갯수는 2개입니다.",
             "result" : {}
@@ -117,11 +137,20 @@ def member_addr(request, id_member):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == 'DELETE':
-        memberAddr.delete()
+        q = request.data.dict()
+        qaddr = q['addr']
+        memberAddr_delete = Memberaddr.objects.filter(id_member = id_member).filter(addr = qaddr)
+        memberAddr_delete.delete()
         content = {
             "message" : "pk :" + pk + " 삭제 완료",
             "result" : {}
                 }
+        '''
+        q = request.data.dict()
+        qid_product = q['id_product']
+        wishlist_delete = Wishlist.objects.filter(id_member = id_member).filter(id_product = qid_product)
+        wishlist_delete.delete()
+        '''
         return Response(content ,status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['PUT'])
