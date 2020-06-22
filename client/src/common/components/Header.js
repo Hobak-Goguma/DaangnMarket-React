@@ -8,9 +8,12 @@ import TotalMenu from "./TotalMenu";
 
 const Headers = styled.header`
   width: 100%;
+  height: 6em;
   box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.1);
   top: 0;
   position: fixed;
+  padding: 4px 0;
+  box-sizing: border-box;
   background-color: #fff;
   z-index: 100;
   .container {
@@ -26,19 +29,21 @@ const Headers = styled.header`
     .inputBox {
       margin: 20px 0 20px 20px;
       width: 470px;
-      height: 20px;
+      height: 46px;
       position: relative;
-      padding: 12px;
+      padding: 0;
       border: 1px solid #ff8a3d;
       border-radius: 5px;
       input {
         outline: none;
-        position: absolute;
-        top: 13px;
-        left: 10px;
         width: 440px;
+        padding-left: 24px;
+        padding-right: 10px;
         font-size: 17px;
+        line-height: 46px;
         border: 0;
+        box-sizing: border-box;
+        background-color: transparent;
       }
       label {
         position: absolute;
@@ -47,7 +52,7 @@ const Headers = styled.header`
         img {
           padding: 0;
           width: 26px;
-          margin-top: 0px;
+          margin-top: 0;
         }
       }
     }
@@ -71,6 +76,7 @@ const Headers = styled.header`
           position: relative;
           margin: 0;
           top: 2px;
+          transition: all 300ms;
           &:hover {
             background-color: #ff8a3d;
             color: white;
