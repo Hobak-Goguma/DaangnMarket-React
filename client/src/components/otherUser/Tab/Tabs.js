@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Tab from "./Tab";
 
 const Tabs = ({ selected, children }) => {
   const [select, setSelect] = useState(selected || 0);

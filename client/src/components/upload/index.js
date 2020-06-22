@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React from "react";
 import { UploadWrapper, File, UploadBtn, ErrorMessage } from "./style";
 import Dropzone from "./Dropzone";
 import { ReactSortable } from "react-sortablejs";
