@@ -102,7 +102,7 @@ def member_addr_create(request):
                     # return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-        elif Memberaddr.objects.filter(id_member = id_member).count() >= 2 : 
+        elif Person.count() >= 2 : 
             content = {
             "message" : "허용된 주소의 갯수는 2개입니다.",
             "result" : {}
@@ -136,23 +136,22 @@ def member_addr(request, id_member):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == 'DELETE':
-        # q = request.data.dict()
-        # qaddr = q['addr']
-        # memberAddr_delete = Memberaddr.objects.filter(id_member = id_member).filter(addr = qaddr)
-        # memberAddr_delete.delete()
-        memberAddr.delete()
+        # 파라미터 get방식
+        # Addr = request.GET['addr']
+
+        # 제이슨 방식
+        data = request.body.decode('utf-8')
+        received_json_data = json.loads(data)
+        Addr = received_json_data['addr']
+        q = memberAddr.get(addr = Addr)
+        q.delete()
         content = {
-            "message" : "pk :" + pk + " 삭제 완료",
-            "result" : {}
+            "message" : "삭제 완료",
+            "result" : {"addr" : Addr}
                 }
-        '''
-        q = request.data.dict()
-        qid_product = q['id_product']
-        wishlist_delete = Wishlist.objects.filter(id_member = id_member).filter(id_product = qid_product)
-        wishlist_delete.delete()
-        '''
         return Response(content ,status=status.HTTP_204_NO_CONTENT)
 
+        
 @api_view(['PUT'])
 def member_touch(request, id_member):
     """
