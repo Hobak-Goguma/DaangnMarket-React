@@ -1,16 +1,51 @@
-import { createGlobalStyle } from "styled-components";
+import {createGlobalStyle} from "styled-components";
 import reset from "styled-reset";
 
 export default createGlobalStyle`
   ${reset};
   @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600,700');
+  
+  
+@font-face {
+    font-family: 'NotoSansKR';
+    font-style: normal;
+    font-weight: 300;
+    src: local('Noto Sans Light'), local('NotoSans-Light'), url(/fonts/NotoSans-Light.eot);
+    src: url(/fonts/NotoSans-Light.eot?#iefix) format('embedded-opentype'),
+            url(/fonts/NotoSansKR-Light.woff2) format('woff2'),
+            url(/fonts/NotoSansKR-Light.woff) format('woff'),
+            url(/fonts/NotoSansKR-Light.otf) format('opentype')
+}
+
+@font-face {
+    font-family: 'NotoSansKR';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Noto Sans Regular'), local('NotoSans-Regular'), url(/fonts/NotoSans-Regular.eot);
+    src: url(/fonts/NotoSans-Regular.eot?#iefix) format('embedded-opentype'),
+            url(/fonts/NotoSansKR-Regular.woff2) format('woff2'),
+            url(/fonts/NotoSansKR-Regular.woff) format('woff'),
+            url(/fonts/NotoSansKR-Regular.otf) format('opentype')
+}
+
+@font-face {
+    font-family: 'NotoSansKR';
+    font-style: normal;
+    font-weight: bold;
+    src: local('Noto Sans Bold'), local('NotoSans-Bold'), url(/fonts/NotoSans-Bold.eot);
+    src: url(/fonts/NotoSans-Bold.eot?#iefix) format('embedded-opentype'),
+            url(/fonts/NotoSansKR-Bold.woff2) format('woff2'),
+            url(/fonts/NotoSansKR-Bold.woff) format('woff'),
+            url(/fonts/NotoSansKR-Bold.otf) format('opentype')
+}
+
   * {
     margin: 0;
     padding: 0;
   }
   body {
     background-color: ${(props) => props.theme.bgColor};
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'NotoSansKR', sans-serif;
   }
   label,
   .btn {
@@ -79,5 +114,8 @@ export default createGlobalStyle`
   }
   a {
     text-decoration: none;
+  }
+  input {
+    font-family: 'NotoSansKR', sans-serif;
   }
 `;
