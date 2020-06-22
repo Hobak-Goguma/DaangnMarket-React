@@ -21,7 +21,6 @@ def member_list(request):
     ---
     모든 유저의 정보를 보여주거나 새 유저 정보를 등록합니다.
     """
-    
     if request.method == 'GET':
         member = Member.objects.all()
         serializer = MemberSerializer(member, many=True)
@@ -110,7 +109,7 @@ def member_addr_create(request):
             return Response(content, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['GET','PUT', 'DELETE'])
+@api_view(['GET', 'DELETE'])
 def member_addr(request, id_member):
     """
     멤버 주소 조회 수정, 삭제
@@ -128,13 +127,6 @@ def member_addr(request, id_member):
         serializer = memberAddrSerializer(memberAddr, many=True)
         return Response(serializer.data)
 
-    elif request.method == 'PUT':
-        serializer = memberAddrSerializer(memberAddr, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
     elif request.method == 'DELETE':
         # 파라미터 get방식
         # Addr = request.GET['addr']
@@ -151,7 +143,7 @@ def member_addr(request, id_member):
                 }
         return Response(content ,status=status.HTTP_204_NO_CONTENT)
 
-        
+
 @api_view(['PUT'])
 def member_touch(request, id_member):
     """
