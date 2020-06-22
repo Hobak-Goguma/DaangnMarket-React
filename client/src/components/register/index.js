@@ -10,8 +10,6 @@ const Register = ({
   handleInputState,
   inputState,
   fetchIdDuplication,
-  handlePostCode,
-  visible,
   handleAllCheck,
   handleCheckbox,
   checkbox,
@@ -21,7 +19,6 @@ const Register = ({
   regexEmail,
   regexBirth,
   regexKor,
-  addrInput,
 }) => {
   return (
     <StyledRegister>
@@ -333,22 +330,8 @@ const Register = ({
                   </tbody>
                 </table>
 
+                
                 {/* <table>
-                  <tbody>
-                    <tr>
-                      <td className="give-number col1"></td>
-                      <td className="give-number col2">
-                        <div className="col2-2">
-                          <input className="typing" disabled />
-                          <div className="normal-button-white colbutton">
-                            인증번호 확인
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table> */}
-                <table>
                   <tbody>
                     <tr>
                       <td className="address2 col1">주소*</td>
@@ -368,9 +351,9 @@ const Register = ({
                       </td>
                     </tr>
                   </tbody>
-                </table>
+                </table> */}
 
-                <table
+                {/* <table
                   style={visible ? { display: "block" } : { display: "none" }}
                 >
                   <tbody>
@@ -390,7 +373,7 @@ const Register = ({
                       </td>
                     </tr>
                   </tbody>
-                </table>
+                </table> */}
 
                 <table>
                   <tbody>

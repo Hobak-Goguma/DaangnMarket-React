@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import List from "./list";
 
 
 const Section = styled.section`
@@ -44,63 +45,6 @@ margin-top:150px;
             }
         }   
         
-        .item{
-            &:nth-child(4n){
-                margin-right:0;
-            }
-            .img{
-                width:100%;
-                height:50%;
-                overflow:hidden;
-                img{
-                    width:100%;
-                }
-            }
-            .discription{
-                margin:20px;
-                position:relative;
-                h1{
-                    margin-top:20px;
-                    font-size:18px;
-                    margin-top:7px;
-                    white-space : nowrap; 
-                    text-overflow : ellipsis;
-                    overflow:hidden;
-                }   
-                p{ 
-                    text-align:left;
-                    font-size:15px;
-                    margin-top:7px;
-                    white-space : nowrap; 
-                    text-overflow : ellipsis;
-                    overflow:hidden;
-                }
-                .price{
-                    color:#FF8A3D;
-                }
-            }
-            .like{
-                margin:-5px 10px 5px 10px;
-                height:35px;
-                border-top:1px solid #ddd;
-                text-align:left;
-                span{
-                    display:block;
-                    margin-top:12px;
-                    font-size:13px;
-                    color:#bbb;
-                }
-            }
-        }
-        .more{
-            box-sizing:border-box;
-            margin-right:0;
-            padding: 88px 0;
-            div{
-                font-size:20px;
-                margin: 22px 20px 0 20px;
-            }
-        }
     }
 }
 `;
@@ -170,33 +114,7 @@ const Market = () =>{
         like: 3,
         chat: 11
     },]
-    const Items = items.map(v=>{
-        let cost = "";
-        const costString=String(v.cost);
-        for(let i = 0 ; i <costString.length;i++){ // 3자리마다 , 넣기위하여
-            cost += costString[i];
-            if((costString.length-1-i)%3===0 &&costString.length-1 !== i){
-                cost+=",";
-            }
-        }
-
-        return(
-        <div className="item" key = {v.name}>
-            <div className="img">
-                <img src={v.thumb} alt={v.name}/> 
-            </div>
-            <div className="discription">    
-                <h1>{v.name}</h1>
-                <p>{v.location}</p>
-                <p className="price">{v.cost!==0? 
-                cost+"원"
-                :"무료"}</p>
-            </div>
-            <div className="like">
-                <span>{`관심 ${v.like} ∙ 채팅 ${v.chat}`}</span>
-            </div>
-        </div>);
-    });
+    const Items = items.map(v=><List>{v}</List>);
 
 
     return(

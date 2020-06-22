@@ -12,9 +12,7 @@ const RegisterContainer = ({ history }) => {
   const regexPhone = /^\d{3}\d{3,4}\d{4}$/;
   const regexKor = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
 
-  const [visible, setVisible] = useState(false);
   const [isIdDuplicate, setIdDuplicate] = useState(false);
-  const addrInput = useRef("");
 
   const [inputState, setInputState] = useState({
     id: "",
@@ -76,27 +74,6 @@ const RegisterContainer = ({ history }) => {
         alert("중복된 아이디가 있습니다.");
       });
   };
-
-  const handlePostCode = () => {
-    setVisible(true);
-
-    new window.daum.Postcode({
-      oncomplete: function (data) {
-        let addr = "";
-
-        if (data.userSelectedType === "R") {
-          addr = data.sido + " " + data.sigungu + " " + data.bname;
-        } else {
-          addr = data.sido + " " + data.sigungu + " " + data.bname;
-        }
-
-        addrInput.current.value = addr;
-      },
-    }).open({
-      popupName: "postcodePopup",
-    });
-  };
-
   const handleCheckbox = (e) => {
     setCheckbox({
       ...checkbox,
@@ -149,7 +126,6 @@ const RegisterContainer = ({ history }) => {
           birth: inputState.birth.replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3"),
           email: inputState.email,
           gender: inputState.gender,
-          addr: addrInput.current.value,
         })
         .then((res) => {
           if (res.status === 200 || res.status === 201) {
@@ -168,13 +144,10 @@ const RegisterContainer = ({ history }) => {
   };
   return (
     <Register
-      addrInput={addrInput}
       goHome={goHome}
       handleInputState={handleInputState}
       inputState={inputState}
       fetchIdDuplication={fetchIdDuplication}
-      handlePostCode={handlePostCode}
-      visible={visible}
       handleAllCheck={handleAllCheck}
       handleCheckbox={handleCheckbox}
       checkbox={checkbox}
