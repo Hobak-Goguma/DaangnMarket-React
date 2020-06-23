@@ -124,7 +124,6 @@ const Header = (props) => {
 		if (props.location.pathname === "/search") {
 			api.get(`/product/search?q=${element}`).then((res) => {
 				props.setProducts(res.data);
-				props.setNumB(6);
 			});
 		}
 		props.history.push(`/search?q=${element}`);
@@ -139,7 +138,6 @@ const Header = (props) => {
 			if (props.location.pathname === "/search") {
 				api.get(`product/search?q=${keyword}`).then((res) => {
 					props.setProducts(res.data);
-					props.setNumB(6);
 				});
 			}
 			props.history.push(`/search?q=${keyword}`);

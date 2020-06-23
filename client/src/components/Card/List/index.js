@@ -32,24 +32,26 @@ const Section = styled.section`
 						margin: 22px 20px 0 20px;
 				}
 		}
-}
 `;
 
 const CardList = (props) => {
 	const Items = props.list.map(v => {
 		return (
-			<CardItem item={v}/>);
+			<CardItem item={v} key={v.pk}/>);
 	});
 
 	return (
 		<Section>
-					{Items}
-					<div className="more">
-						<img
-							src="https://d1unjqcospf8gs.cloudfront.net/assets/home/base/mobile/icon-add-dcfb7aac98f18d19ca4c27e9dc29c63cf73861f3b10e0a42c06163d2658d0691.svg"
-							alt="더보기"/>
-						<div>당근마켓<br/>인기매물 더보기</div>
-					</div>
+			{Items}
+			{props.more ?
+			<div className="more">
+				<img
+					src="https://d1unjqcospf8gs.cloudfront.net/assets/home/base/mobile/icon-add-dcfb7aac98f18d19ca4c27e9dc29c63cf73861f3b10e0a42c06163d2658d0691.svg"
+					alt="더보기"/>
+				<div>당근마켓<br/>인기매물 더보기</div>
+			</div>
+			: ''}
+
 		</Section>);
 };
 
