@@ -10,8 +10,6 @@ import json
 from django.http import JsonResponse
 from drf_yasg.utils import swagger_auto_schema
 
-now = timezone.now()
-
 # 'method' can be used to customize a single HTTP method of a view
 @swagger_auto_schema(method='get', responses={200:'OK'})
 # 'methods' can be used to apply the same modification to multiple methods
@@ -23,7 +21,6 @@ def member_list(request):
     ---
     모든 유저의 정보를 보여주거나 새 유저 정보를 등록합니다.
     """
-    
     if request.method == 'GET':
         member = Member.objects.all()
         serializer = MemberSerializer(member, many=True)
@@ -77,15 +74,34 @@ def member_addr_create(request):
     """
     멤버 주소 생성
     """
-    if request.method == 'POST':
-        qid_member = json.loads(request.body)['id_member']
-        if Memberaddr.objects.filter(id_member = qid_member).count() < 2 :
-            serializer = memberAddrSerializer(data=request.data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
+    #  Data = json.loads(request.body)
+    #     user_id = Data['user_id']
+    #     user_pw = Data['user_pw']
+    #     member = Member.objects.get(user_id = user_id, user_pw = user_pw)
 
-        elif Memberaddr.objects.filter(id_member = qid_member).count() >= 3 : 
+    if request.method == 'POST':
+        data = request.body.decode('utf-8')
+        received_json_data = json.loads(data)
+        id_member = received_json_data['id_member']
+        addr = received_json_data['addr']
+        Person = Memberaddr.objects.filter(id_member = id_member)
+        if Person.count() < 2 :
+            try:
+                overlap = Person.get(addr = addr)
+                content = {
+                "message" : "중복된 주소가 있습니다.",
+                "result" : {"id_member = " + str(id_member) : addr}
+                }
+            except Memberaddr.DoesNotExist:
+                serializer = memberAddrSerializer(data=request.data)
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(content, status=status.HTTP_409_CONFLICT)
+                    # return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+        elif Person.count() >= 2 : 
             content = {
             "message" : "허용된 주소의 갯수는 2개입니다.",
             "result" : {}
@@ -93,13 +109,13 @@ def member_addr_create(request):
             return Response(content, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['GET'])
+@api_view(['GET', 'DELETE'])
 def member_addr(request, id_member):
     """
     멤버 주소 조회 수정, 삭제
     """
     try:
-        memberAddr = Memberaddr.objects.filter(id_member=id_member)
+        memberAddr = Memberaddr.objects.get(id_member=id_member)
     except Memberaddr.DoesNotExist:
         content = {
             "message" : "없는 사용자 입니다.",
@@ -111,20 +127,22 @@ def member_addr(request, id_member):
         serializer = memberAddrSerializer(memberAddr, many=True)
         return Response(serializer.data)
 
-    elif request.method == 'PUT':
-        serializer = MemberReviseSerializer(member, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == 'DELETE':
+        # 파라미터 get방식
+        # Addr = request.GET['addr']
 
-    # elif request.method == 'DELETE':
-    #     member.delete()
-    #     content = {
-    #         "message" : "pk :" + pk + " 삭제 완료",
-    #         "result" : {}
-    #             }
-    #     return Response(content ,status=status.HTTP_204_NO_CONTENT)
+        # 제이슨 방식
+        data = request.body.decode('utf-8')
+        received_json_data = json.loads(data)
+        Addr = received_json_data['addr']
+        q = memberAddr.get(addr = Addr)
+        q.delete()
+        content = {
+            "message" : "삭제 완료",
+            "result" : {"addr" : Addr}
+                }
+        return Response(content ,status=status.HTTP_204_NO_CONTENT)
+
 
 @api_view(['PUT'])
 def member_touch(request, id_member):
