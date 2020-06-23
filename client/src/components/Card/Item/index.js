@@ -55,14 +55,17 @@ const CardItemArticle = styled.div`
           }   
           p{ 
               text-align:left;
-              font-size:15px;
-              margin-top:7px;
+              color: #868e96;
+              font-size: 14px;
+              margin: 6px 0 10px;
               white-space : nowrap; 
               text-overflow : ellipsis;
               overflow:hidden;
           }
           .price{
               color:#FF8A3D;
+              font-size: 15px;
+              margin: 0;
           }
       }
       .like{
