@@ -9,6 +9,7 @@ const CardItemArticle = styled.div`
   border:1px solid #ddd;
   margin: 34px 34px 0 0;
   border-radius:20px;
+  background-color: #ffffff;
   overflow:hidden;
   &:hover{
       box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.2);
@@ -23,6 +24,11 @@ const CardItemArticle = styled.div`
   &:nth-child(-n + 4){
       margin-top:0;
   }
+ 	> a {
+ 		width: 100%;
+ 		height: 100%;
+ 		display: block;
+ 	}
   .card-item{
   width: 100%;
   height: 100%;
