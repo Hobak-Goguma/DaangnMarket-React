@@ -77,28 +77,24 @@ const SearchPage = () => {
 	const [totalCount, settotalCount] = useState([]);
 	const [page, setPage] = useState(0);
 	const [fetched, setFetched] = useState(false);
-	const searchValue = decodeURIComponent(window.location.href.split("=")[1]);
+	const [searchValue, setSearchValue] = useState('');
 
 	useEffect(() => {
-		api.get(`/product/search?q=${searchValue}`)
+		setSearchValue(decodeURIComponent(window.location.href.split("=")[1]));
+		api.get(`/product/search?q=${window.location.href.split("=")[1]}`)
 		.then((res) => {
 			setProducts(res.data);
-			// Todo: api response 변경 예정. total_count 주면 대입
-			settotalCount(30)
-		});
-		let timer = setTimeout(() => {
 			setFetched(true);
-		}, 2000);
-
-		return () => {
-			clearTimeout(timer);
-		};
+			// Todo: api response 변경 예정. total_count 주면 대입
+			settotalCount(res.data.length)
+		})
+		.catch(err => {
+			console.error(err)
+		});
 	}, [page]);
 
-
 	return (
-		<Layout setProducts={setProducts}
-		        searchValue={searchValue}>
+		<Layout setProducts={setProducts}>
 			<SearchContainerWrapper>
 				<div className="container">
 					<div className="articles-wrap">
