@@ -20,7 +20,7 @@ const Mains = styled.section`
                 p:first-child{
                     font-size:40px;
                     font-weight:bold;
-                    margin-bottom:10px;
+                    margin-bottom:20px;
                 }
             }
             img{
@@ -73,7 +73,7 @@ const Mains = styled.section`
         }
     }
     .card-section {
-        padding: 150px 0;
+        padding: 80px 0;
         .container{
             .title{
                 text-align:center;
@@ -99,7 +99,7 @@ const Mains = styled.section`
         background:#eee;
         .container{
             .title{
-                padding-top:100px;
+                padding-top:80px;
                 padding-bottom:50px;
                 text-align : center; 
                 position:relative;
@@ -141,7 +141,7 @@ const Mains = styled.section`
     .review-section {
         .container{
             .title{
-                padding-top:100px;
+                padding-top:80px;
                 padding-bottom:50px;
                 margin-bottom:50px;
                 text-align : center; 
