@@ -191,6 +191,7 @@ const Mains = styled.section`
 const HomePage = () => {
   const itemData = [
     {
+      pk: 1,
       name: "접이식자전거",
       addr: "인천 연수구 송도동",
       img: "./img/접이식자전거.jpg",
@@ -198,6 +199,7 @@ const HomePage = () => {
       like: 5,
       chat: 40
     }, {
+      pk: 2,
       name: "캠핑 테이블",
       addr: "경기도 시흥시 능곡동",
       img: "./img/캠핑 테이블.jpg",
@@ -205,6 +207,7 @@ const HomePage = () => {
       like: 5,
       chat: 25
     }, {
+      pk: 3,
       name: "TV모니터 32인치",
       addr: "경기도 고양시 일산서구 주엽동",
       img: "./img/TV모니터 32인치.jpg",
@@ -212,6 +215,7 @@ const HomePage = () => {
       like: 5,
       chat: 28
     }, {
+      pk: 4,
       name: "창고정리 예초기 전기톱",
       addr: "서귀포시 서귀동",
       img: "./img/예초기.jpg",
@@ -219,6 +223,7 @@ const HomePage = () => {
       like: 3,
       chat: 30
     }, {
+      pk: 5,
       name: "4단 선반",
       addr: "제주 제주시 연동",
       img: "./img/4단선반.jpg",
@@ -226,6 +231,7 @@ const HomePage = () => {
       like: 23,
       chat: 35
     }, {
+      pk: 6,
       name: "전자렌지",
       addr: "울산 중구 우정동",
       img: "./img/전자렌지.jpg",
@@ -233,6 +239,7 @@ const HomePage = () => {
       like: 6,
       chat: 34
     }, {
+      pk: 7,
       name: "김치냉장고",
       addr: "제주 제주시 삼도1동",
       img: "./img/김치냉장고.jpg",
@@ -240,6 +247,7 @@ const HomePage = () => {
       like: 2,
       chat: 29
     }, {
+      pk: 8,
       name: "싱거 재봉틀 싱거미싱기",
       addr: "서울 송파구 잠실3동",
       img: "./img/미싱.jpg",
@@ -247,6 +255,7 @@ const HomePage = () => {
       like: 14,
       chat: 24
     }, {
+      pk: 9,
       name: "화분무료드림",
       addr: "경기도 구리시 갈매동",
       img: "./img/화분.jpg",

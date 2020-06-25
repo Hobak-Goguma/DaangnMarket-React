@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import {Link} from "react-router-dom";
 
 const CardItemArticle = styled.div`
   position:relative;
@@ -96,25 +97,28 @@ const CardItem = (props) => {
 	}
 	return (
 		<CardItemArticle>
-			<div className="card-item" key={props.item.name}>
-				<div className="img">
-					<img src="./img/4단선반.jpg" alt="사진임둥"/>
-					{/*<img src={props.item.thumb} alt={props.item.name}/>*/}
-				</div>
-				<div className="text-group">
-					<div className="description">
-						<h1>{props.item.name}</h1>
-						<p>{props.item.addr}</p>
-						<p className="price">{props.item.cost !== 0 ?
-							cost + "원"
-							: "무료"}</p>
+			<Link to={`/products/${props.item.pk}`}>
+				<div className="card-item" key={props.item.name}>
+					<div className="img">
+						<img src="./img/4단선반.jpg" alt="사진임둥"/>
+						{/*<img src={props.item.thumb} alt={props.item.name}/>*/}
 					</div>
-					<div className="like">
+					<div className="text-group">
+						<div className="description">
+							<h1>{props.item.name}</h1>
+							<p>{props.item.addr}</p>
+							<p className="price">{props.item.cost !== 0 ?
+								cost + "원"
+								: "무료"}</p>
+						</div>
+						<div className="like">
 						<span>{`관심 ${props.item.like ? props.item.like
 							: 0} ${props.item.chat ? ` ∙ 채팅 ${props.item.chat}` : ''}`}</span>
+						</div>
 					</div>
+
 				</div>
-			</div>
+			</Link>
 		</CardItemArticle>
 	);
 };
