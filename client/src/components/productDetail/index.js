@@ -4,7 +4,7 @@ import api from "../../common/api";
 import styled from "styled-components";
 import Slider from "./Slider";
 import DetailHeader from "../DetailHeader";
-import Description from "./Description";
+import Description from "../DetailDescription";
 import { useState } from "react";
 
 const ProductDetail = ({ isModal, setModal, match }) => {

@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import DetailProfile from "./Profile/index.js"
-import Temper from "./Temper/index.js";
+import DetailProfile from "./Profile"
+import Temper from "./Temper";
 
 const DetailHeader = () => {
   const user = {
