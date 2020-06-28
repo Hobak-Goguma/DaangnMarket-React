@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ProductDetail from "../components/productDetail";
+import ProductDetail from "../components/ProductDetail";
 import Layout from "../common/components/Layout";
 
 const ProductDetailContainer = () => {
@@ -13,6 +13,9 @@ const ProductDetailContainer = () => {
     </Layout>
   );
 };
+
+
+
 
 export default ProductDetailContainer;
  

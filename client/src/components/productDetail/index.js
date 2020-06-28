@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import api from "../../common/api";
 import styled from "styled-components";
-import Slider from "./Slider";
+import Slider from "../Slider";
 import DetailHeader from "../DetailHeader";
 import Description from "../DetailDescription";
 import { useState } from "react";
