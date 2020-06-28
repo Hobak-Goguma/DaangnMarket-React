@@ -3,9 +3,8 @@ import { withRouter } from "react-router-dom";
 import api from "../../common/api";
 import styled from "styled-components";
 import Slider from "./Slider";
-import Profile from "./Profile";
+import DetailHeader from "../DetailHeader";
 import Description from "./Description";
-import Footer from "./Footer";
 import { useState } from "react";
 
 const ProductDetail = ({ isModal, setModal, match }) => {
@@ -27,9 +26,8 @@ const ProductDetail = ({ isModal, setModal, match }) => {
   return (
     <ArticleWrapper>
       <Slider sliderData={sliderData} isModal={isModal} setModal={setModal} />
-      <Profile />
+      <DetailHeader />
       <Description detail={detail} />
-      <Footer detail={detail} id={id} />
     </ArticleWrapper>
   );
 };
@@ -40,3 +38,5 @@ const ArticleWrapper = styled.div`
   margin-top: 120px;
   padding-bottom: 50px;
 `;
+
+
