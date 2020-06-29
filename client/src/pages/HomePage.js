@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import Layout from "../common/components/Layout";
+import Layout from "../components/Layout";
 import Rank from "../components/Rank";
 import CardList from "../components/Card/List";
 

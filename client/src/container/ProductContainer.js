@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import React, { useState,useEffect } from "react";
 import api from "../common/api";
-import Layout from "../common/components/Layout";
+import Layout from "../components/Layout";
 import Slider from "../components/Slider";
 import DetailHeader from "../components/DetailHeader";
 import Description from "../components/DetailDescription";
@@ -35,7 +35,6 @@ const ProductDetailContainer = () => {
       overflow={isModal ? "hidden" : "unset"}
       height={isModal ? "100vh" : "unset"}
     >
-      {/* <ProductDetail isModal={isModal} setModal={setModal} /> */}
       <ArticleWrapper>
         <Slider sliderData={sliderData} isModal={isModal} setModal={setModal} />
         <DetailHeader />
