@@ -62,7 +62,7 @@ def member_detail(request, id_member):
     elif request.method == 'DELETE':
         member.delete()
         content = {
-            "message" : "pk :" + pk + " 삭제 완료",
+            "message" : "pk :" + id_member + " 삭제 완료",
             "result" : {}
                 }
         return Response(content ,status=status.HTTP_204_NO_CONTENT)
@@ -114,9 +114,9 @@ def member_addr(request, id_member):
     """
     멤버 주소 조회 수정, 삭제
     """
-    try:
-        memberAddr = Memberaddr.objects.get(id_member=id_member)
-    except Memberaddr.DoesNotExist:
+    # try:
+    memberAddr = Memberaddr.objects.filter(id_member=id_member)
+    if memberAddr.count() == 0:
         content = {
             "message" : "없는 사용자 입니다.",
             "result" : {}
@@ -296,7 +296,7 @@ def product_detail(request, id_product):
     if request.method == 'GET':
         product.views += 1
         product.save()
-        product = Product.objects.get(pk=pk)
+        product = Product.objects.get(pk=id_product)
         serializer = ProductSerializer(product)
         return Response(serializer.data)
 
@@ -310,7 +310,7 @@ def product_detail(request, id_product):
     elif request.method == 'DELETE':
         product.delete()
         content = {
-            "message" : "pk :" + pk + " 삭제 완료",
+            "message" : "pk :" + id_product + " 삭제 완료",
             "result" : {}
                 }
         content = "" 
@@ -323,13 +323,16 @@ def product_search(request):
     """
     제목에 검색어가 포함된 물건들 리스트
     """
-    try:
-        Search = request.GET['q']
-        product = Product.objects.filter(name__contains = Search)
-        # product = Product.objects.get(name = Search)
-    except Product.DoesNotExist:
+    Search = request.GET['q']
+    product = Product.objects.filter(name__contains = Search)
+    # product = Product.objects.get(name = Search)
+    if product.count() == 0:
         #검색 결과 없음.
-        return Response(status=status.HTTP_404_NOT_FOUND)
+        content = {
+            "message" : "검색한 제품이 없습니다.",
+            "result" : {"입력한 검색어" : Search}
+                }
+        return Response(content, status=status.HTTP_204_NO_CONTENT)
     #검색결과 있음.
     serializer = ProductSerializer(product, many=True)
     return Response(serializer.data)
@@ -403,7 +406,7 @@ def company_detail(request, id_company):
     elif request.method == 'DELETE':
         company.delete()
         content = {
-            "message" : "pk :" + pk + " 삭제 완료",
+            "message" : "pk :" + id_company + " 삭제 완료",
             "result" : {}
         }
         return Response(content, status=status.HTTP_204_NO_CONTENT)
@@ -451,9 +454,8 @@ def wishlist_detail(request, id_member):
     """
     특정 유저의 찜리스트를 조회, 삭제 합니다.
     """
-    try:
-        wishlist = Wishlist.objects.filter(id_member = id_member)
-    except Wishlist.DoesNotExist:
+    wishlist = Wishlist.objects.filter(id_member = id_member)
+    if wishlist.count() == 0:
         content = {
             "message" : "찜한 상품이 없습니다.",
             "result" : {}
@@ -473,26 +475,42 @@ def wishlist_detail(request, id_member):
 
 
 
-# @api_view(['GET'])
-# def location_search(request):
-#     '''
-#     사용자의 위치에 따른 product 검색
-#     '''
-#     # GET방식으로 데이터 address, distance 그리고 검색어를 보냄.
-#     addr = request.GET['addr']
-#     dis = request.GET['dis']
-#     Search = request.GET['q']
-
-
-#     # request 한 정보들 토대로 nearby_locations 에서 거리에 따른 인접동을 가져오고,
-#     # 그 동들 위치에 해당하는 물품을을 화면에 뿌려준다. 단, 제목에 검색에가 포함되어야 함. 
-#     location = nearby_locations.objects.filter(dong = addr, distance = dis)
-#     product = Product.objects.filter(addr = nearby_locations.nearby_dong and addr = nearby_locations.dong, name__contains = Search )
-
-#     # 성공적으로 가져왔다면 뿌린다.
-#     serializer = ProductSerializer(product, many=True)
-#     return Response(serializer.data)
-
+@api_view(['GET'])
+def location_search(request):
+    '''
+    사용자의 위치에 따른 product 검색
+    '''
+    # GET방식으로 데이터 address, distance 그리고 검색어를 보냄.
+    addr = request.GET['addr']
+    dis = request.GET['dis']
+    Search = request.GET['q']
+    try :
+        Location.objects.get(dong = addr)
+    except Location.DoesNotExist:
+        content = {
+            "message" : "없는 주소입니다",
+            "result" : {}
+                }
+        return Response(content, status=status.HTTP_400_BAD_REQUEST) 
+    location = NearbyLocation.objects.filter(dong = addr).filter(distance = dis)
+    if location.count() == 0:
+        content = {
+            "message" : "없는 거리값입니다",
+            "result" : {}
+                }
+        return Response(content, status=status.HTTP_400_BAD_REQUEST)
+    product_sum = Product.objects.filter(name__contains = Search).filter(addr = addr)
+    for i in location :
+        product = Product.objects.filter(name__contains = Search).filter(addr = i.nearby_dong)
+        product_sum = product_sum | product
+    if product_sum.count() == 0 :
+        content = {
+            "message" : "검색한 제품이 없습니다.",
+            "result" : {"입력한 검색어" : Search}
+                }
+        return Response(content,status=status.HTTP_204_NO_CONTENT)
+    serializer = ProductSerializer(product_sum, many =True)
+    return Response(serializer.data)
 
 @api_view(['GET'])
 def selling_product_list(request, id_member):
@@ -503,7 +521,6 @@ def selling_product_list(request, id_member):
     # objects.filter는 여러 건의 객체를 조회하기 위한 용도이고, 없을 경우 빈 queryset을 리턴한다.
     # 즉, filter를 할 때 DoesNotExist Exception을 체크하는 것은 의미가 없다.
     product = Product.objects.filter(id_member = id_member)
-    
     serializer = ProductSerializer(product, many=True)
     return Response(serializer.data)
 
@@ -514,75 +531,6 @@ def test(request):
     테스트용 api
     """
     return Response(status=status.HTTP_200_OK)
-
-
-@api_view(['GET', 'POST'])
-def realdeal_list(request):
-    """
-    실거래리스트를 모두 보여주거나 새 실거래를 추가합니다.
-    """
-    if request.method == 'GET':
-        # realdeal 테이블에 실거래키가 같은 memberseller, membershopper 테이블 조인, 
-        # 실거래키, 제품키, 구매자, 판매자 조회
-        realdeal = RealDeal.objects.raw("""SELECT R.id_real_deal, R.id_product, MS.id_member AS seller, MP.id_member AS shopper FROM daangn.real_deal AS R 
-                                            JOIN daangn.member_seller AS MS ON R.id_real_deal = MS.id_real_deal 
-                                            JOIN daangn.member_shopper AS MP ON R.id_real_deal = MP.id_real_deal""")
-        serializer = RealDealSerializer(realdeal, many=True)
-        return Response(serializer.data)
-
-    elif request.method == 'POST':
-        Data = json.loads(request.body)
-        #request 검사
-        #필수 항목 부족 
-        if not(Data.get('seller') and Data.get('id_product') and Data.get('shopper')) :
-            content = "필수값이 없습니다 [필요한 필드 : id_product, seller(판매자), shopper(구매자)]"
-            return Response(content, status=status.HTTP_400_BAD_REQUEST)
-        #모든 항목 충족
-        elif Data.get('seller') and Data.get('seller') and Data.get('seller'):
-            serializer = RealDealSerializer(data=request.data)
-            if serializer.is_valid():
-                #실거래 등록
-                serializer.save()
-                #제품 테이블 판매여부 수정
-                product = Product.objects.get(id_product=int(Data['id_product']))
-                product.sold_tf = 1
-                product.save()
-                #판매자, 구매자 등록
-                seller = int(Data['seller'])
-                shopper = int(Data['shopper'])
-                realdeal = int(serializer.data['id_real_deal'])
-                temp_seller = Member.objects.get(id_member=seller)
-                temp_shopper = Member.objects.get(id_member=shopper)
-                temp_real = RealDeal.objects.get(id_real_deal = realdeal)
-                MemberSeller.objects.create(id_member = temp_seller, id_real_deal = temp_real)
-                MemberShopper.objects.create(id_member = temp_shopper, id_real_deal = temp_real)
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(['GET'])
-def realdeal_detail(request, id_product):
-    """
-    특정 제품의 실거래를 보여줍니다.
-    """
-    try:
-        realdeal = RealDeal.objects.filter(id_product = id_product)
-    except RealDeal.DoesNotExist:
-        content = {
-            "message" : "거래되지 않은 상품 없습니다.",
-            "result" : {}
-                }
-        return Response(content, status=status.HTTP_404_NOT_FOUND)
-
-    if request.method == 'GET':
-        # realdeal 테이블에 실거래키가 memberseller, membershopper 테이블 조인
-        #그 중 제품키와 pk 가 같은 row의 실거래키, 제품키, 구매자, 판매자 조회
-        realdeal = RealDeal.objects.raw("""SELECT R.id_real_deal, R.id_product, MS.id_member AS seller, MP.id_member AS shopper FROM daangn.real_deal AS R 
-                                            JOIN daangn.member_seller AS MS ON R.id_real_deal = MS.id_real_deal 
-                                            JOIN daangn.member_shopper AS MP ON R.id_real_deal = MP.id_real_deal 
-                                            WHERE R.id_product ="""+id_product)
-        serializer = RealDealSerializer(realdeal, many=True)
-        return Response(serializer.data)
 
 
 @api_view(['POST'])
@@ -596,21 +544,49 @@ def seller_review(request):
         return Response(serializer.data)
 
     elif request.method == 'POST':
+        Data = json.loads(request.body)
         serializer = SellerReviewSerializer(data=request.data)
-        q = request.data.dict()
         if serializer.is_valid():
-            #판매자리뷰 저장
-            serializer.save()
-            q = request.data.dict()
-            #세부평가 저장
-            rate = q['rate'].split(',')
-            pk = int(serializer.data['id_review_seller'])
-            temp_seller_review = SellerReview.objects.get(id_review_seller = pk)
-            for i in rate:
-                temp_rate = Rate.objects.get(id_rate=i)
-                SellerRate.objects.create(id_review_seller = temp_seller_review, id_rate =temp_rate)
-
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            #json 확인
+            if Data.get('id_shopper'):
+                if Data.get('rate'):
+                    #seller review 저장
+                    serializer.save()
+                    shopper = Data['id_shopper']
+                    review = int(serializer.data['id_review_seller'])
+                    product = Data['id_product']
+                    temp_shopper = Member.objects.get(id_member=shopper)
+                    temp_review = SellerReview.objects.get(id_review_seller=review)
+                    temp_product = Product.objects.get(id_product = product)
+                    #realdeal 저장
+                    RealDeal.objects.create(id_shopper = temp_shopper, id_review_seller = temp_review,id_product = temp_product)
+                    #rate 저장
+                    rate = Data['rate'].split(',')
+                    for i in rate:
+                        temp_rate = Rate.objects.get(id_rate=i)
+                        SellerRate.objects.create(id_review_seller = temp_review, id_rate =temp_rate)
+                    content = {
+                                "message" : "후기등록 완료", 
+                                "result"  : {
+                                                "review" : serializer.data, 
+                                                "rate" : rate, 
+                                                "shopper" : shopper,
+                                                "id_product" : product
+                                            }
+                              }
+                    return Response(content, status=status.HTTP_201_CREATED)
+                else :
+                    content =   {
+                        "message" : "rate 필드는 필수입니다.",
+                        "result" : {}
+                            }
+                    return Response(content, status=status.HTTP_400_BAD_REQUEST)
+            else :
+                content =   {
+                        "message" : "id_shopper 필드는 필수입니다.",
+                        "result" : {}
+                            }
+                return Response(content, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -625,21 +601,33 @@ def shopper_review(request):
         return Response(serializer.data)
 
     elif request.method == 'POST':
+        Data = json.loads(request.body)
         serializer = ShopperReviewSerializer(data=request.data)
-        q = request.data.dict()
         if serializer.is_valid():
-            #판매자리뷰 저장
-            serializer.save()
-            q = request.data.dict()
-            #세부평가 저장
-            rate = q['rate'].split(',')
-            pk = int(serializer.data['id_review_shopper'])
-            temp_shopper_review = ShopperReview.objects.get(id_review_shopper = pk)
-            for i in rate:
-                temp_rate = Rate.objects.get(id_rate=i)
-                ShopperRate.objects.create(id_review_shopper = temp_shopper_review, id_rate =temp_rate)
-
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+                if Data.get('rate'):
+                    #seller review 저장
+                    serializer.save()
+                    review = int(serializer.data['id_review_shopper'])
+                    temp_review = SellerReview.objects.get(id_review_seller=review)
+                    #rate 저장
+                    rate = Data['rate'].split(',')
+                    for i in rate:
+                        temp_rate = Rate.objects.get(id_rate=i)
+                        ShopperRate.objects.create(id_review_shopper = temp_review, id_rate =temp_rate)
+                    content = {
+                                "message" : "후기등록 완료", 
+                                "result"  : {
+                                                "review" : serializer.data, 
+                                                "rate" : rate
+                                            }
+                              }
+                    return Response(content, status=status.HTTP_201_CREATED)
+                else :
+                    content =   {
+                        "message" : "rate 필드는 필수입니다.",
+                        "result" : {}
+                            }
+                    return Response(content, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -655,3 +643,4 @@ def seller_review_list(id_real_deal) :
     sellerreview = ShopperReview.objects.filter(id_real_deal = id_real_deal)
     serializer = ShopperReviewSerializer(sellerreview, many=True)
     return serializer.data
+

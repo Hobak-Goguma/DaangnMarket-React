@@ -22,10 +22,9 @@ urlpatterns = [
     path('wishlist', views.wishlist_list, name='wishlist_list'),
     path('wishlist/<id_member>', views.wishlist_detail, name='wishlist_detail'),
     path('product/selling/<id_member>', views.selling_product_list, name='selling_product_list'),
-    path('realdeal', views.realdeal_list, name='realdeal_list'),
-    path('realdeal/<id_product>', views.realdeal_detail, name='realdeal_detail'),
-    path('sellerreview', views.seller_review, name='seller_review_list'),
-    path('shopperreview', views.shopper_review, name='shopper_review_list'),
+    path('review/seller', views.seller_review, name='seller_review_list'),
+    path('review/shopper', views.shopper_review, name='shopper_review_list'),
+    path('product/search/location', views.location_search, name='shopper_review_list'),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

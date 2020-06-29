@@ -30,14 +30,14 @@ class Location(models.Model):
         db_table = 'location'
 
 
-class NearbyLocations(models.Model):
+class NearbyLocation(models.Model):
     dong = models.OneToOneField(Location, models.DO_NOTHING, db_column='dong', primary_key=True)
     nearby_dong = models.CharField(max_length=20)
     distance = models.IntegerField()
 
     class Meta:
         managed = False
-        db_table = 'nearby_locations'
+        db_table = 'nearby_location'
         unique_together = (('dong', 'nearby_dong', 'distance'),)
 
 
@@ -123,7 +123,7 @@ class Product(models.Model):
     category = models.CharField(max_length=15, blank=True, null=True)
     img = models.CharField(max_length=2000, blank=True, null=True)
     views = models.IntegerField(default=0)
-    state = models.CharField(max_length=10)
+    state = models.CharField(max_length=10, defualt = '판매중')
     addr = models.CharField(max_length=200)
     cdate = models.DateTimeField(auto_now_add=True)
     udate = models.DateTimeField(auto_now=True)
