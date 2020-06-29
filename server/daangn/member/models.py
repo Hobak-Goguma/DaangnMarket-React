@@ -23,6 +23,7 @@ class Location(models.Model):
     dong = models.CharField(primary_key=True, max_length=20)
     latitude = models.DecimalField(max_digits=10, decimal_places=0)
     longitude = models.DecimalField(max_digits=10, decimal_places=0)
+    gu = models.CharField(max_length=20)
 
     class Meta:
         managed = False
@@ -30,7 +31,7 @@ class Location(models.Model):
 
 
 class NearbyLocations(models.Model):
-    dong = models.ForeignKey(Location, models.DO_NOTHING, db_column='dong', primary_key=True)
+    dong = models.OneToOneField(Location, models.DO_NOTHING, db_column='dong', primary_key=True)
     nearby_dong = models.CharField(max_length=20)
     distance = models.IntegerField()
 
@@ -75,7 +76,7 @@ class MannerLog(models.Model):
 
 
 class MannerReviewer(models.Model):
-    id_manner_log = models.ForeignKey(MannerLog, models.DO_NOTHING, db_column='id_manner_log', blank=True, null=True)
+    id_manner_log = models.ForeignKey(MannerLog, models.DO_NOTHING, db_column='id_manner_log')
     reviewer = models.ForeignKey('Member', models.DO_NOTHING, db_column='reviewer')
 
     class Meta:
@@ -86,8 +87,8 @@ class MannerReviewer(models.Model):
 class Member(models.Model):
     id_member = models.AutoField(primary_key=True)
     name = models.CharField(max_length=30)
-    user_id = models.CharField(max_length=30)
-    user_pw = models.CharField(max_length=55)
+    user_id = models.CharField(unique=True, max_length=30)
+    user_pw = models.CharField(max_length=300)
     nick_name = models.CharField(max_length=30)
     tel = models.CharField(max_length=20)
     birth = models.DateField()
@@ -113,25 +114,6 @@ class Memberaddr(models.Model):
         db_table = 'memberaddr'
 
 
-class MemberSeller(models.Model):
-    id_member = models.ForeignKey(Member, models.DO_NOTHING, db_column='id_member')
-    id_real_deal = models.ForeignKey('RealDeal', models.DO_NOTHING, db_column='id_real_deal')
-
-    class Meta:
-        managed = False
-        db_table = 'member_seller'
-
-
-class MemberShopper(models.Model):
-    id_member = models.ForeignKey(Member, models.DO_NOTHING, db_column='id_member')
-    id_real_deal = models.ForeignKey('RealDeal', models.DO_NOTHING, db_column='id_real_deal')
-
-    class Meta:
-        managed = False
-        db_table = 'member_shopper'
-
-
-
 class Product(models.Model):
     id_product = models.AutoField(primary_key=True)
     id_member = models.ForeignKey(Member, models.CASCADE, db_column='id_member')
@@ -141,7 +123,7 @@ class Product(models.Model):
     category = models.CharField(max_length=15, blank=True, null=True)
     img = models.CharField(max_length=2000, blank=True, null=True)
     views = models.IntegerField(default=0)
-    sold_tf = models.IntegerField(db_column='sold_TF', default=0)  # Field name made lowercase.
+    state = models.CharField(max_length=10)
     addr = models.CharField(max_length=200)
     cdate = models.DateTimeField(auto_now_add=True)
     udate = models.DateTimeField(auto_now=True)
@@ -164,9 +146,9 @@ class Rate(models.Model):
 
 class RealDeal(models.Model):
     id_real_deal = models.AutoField(primary_key=True)
+    id_review_seller = models.ForeignKey('SellerReview', models.DO_NOTHING, db_column='id_review_seller')
+    id_shopper = models.ForeignKey(Member, models.DO_NOTHING, db_column='id_shopper')
     id_product = models.ForeignKey(Product, models.DO_NOTHING, db_column='id_product')
-    cdate = models.DateTimeField(auto_now_add=True)
-
     class Meta:
         managed = False
         db_table = 'real_deal'
@@ -183,8 +165,8 @@ class SellerRate(models.Model):
 
 class SellerReview(models.Model):
     id_review_seller = models.AutoField(primary_key=True)
-    id_real_deal = models.ForeignKey(RealDeal, models.DO_NOTHING, db_column='id_real_deal')
-    title = models.CharField(max_length=50)
+    id_seller = models.ForeignKey(Member, models.DO_NOTHING, db_column='id_seller')
+    content = models.CharField(max_length=100)
     cdate = models.DateTimeField(auto_now_add=True)
     
     class Meta:
@@ -204,7 +186,7 @@ class ShopperRate(models.Model):
 class ShopperReview(models.Model):
     id_review_shopper = models.AutoField(primary_key=True)
     id_real_deal = models.ForeignKey(RealDeal, models.DO_NOTHING, db_column='id_real_deal')
-    title = models.CharField(max_length=50)
+    content = models.CharField(max_length=100)
     cdate = models.DateTimeField(auto_now_add=True)
 
     class Meta:
