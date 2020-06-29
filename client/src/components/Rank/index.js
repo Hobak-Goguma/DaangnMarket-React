@@ -1,5 +1,6 @@
 import React from "react";
 import styled from 'styled-components';
+import api from "../../common/api"
 
 const RankList = styled.ul`
   display: block;
@@ -43,7 +44,8 @@ const RankList = styled.ul`
   .down{color:blue;}
 `;
 
-const Rank = () => {
+const Rank = ({history}) => {
+	console.log(history);
 
 	// map으로 순위 매기기
 	const rank = [{
@@ -96,13 +98,16 @@ const Rank = () => {
 		prevRank: 15
 	}];
 
+	const searchOnclick = (keyword) => {
+		history.push(`/search?q=${keyword}`);
+	  };
 	const ranks = rank.slice(0, 7);
 
 	const Ranking = ranks.map((v) => {
 		if (v.nowRank < 8) { // 7위까지만 넣기위해
 			return (
-				<li key={v.name}><a href="#">
-					<div><strong>{v.nowRank} </strong>{v.name}</div>
+				<li key={v.name}><a href="">
+					<div onClick={()=>searchOnclick(v.name)}><strong>{v.nowRank} </strong>{v.name}</div>
 					<div className={v.nowRank === v.prevRank ? `upDown` : v.nowRank
 					< v.prevRank ? `upDown up` : `upDown down`}>
 						{v.nowRank === v.prevRank ? `-` :
