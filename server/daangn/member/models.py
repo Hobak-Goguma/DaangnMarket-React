@@ -123,7 +123,7 @@ class Product(models.Model):
     category = models.CharField(max_length=15, blank=True, null=True)
     img = models.CharField(max_length=2000, blank=True, null=True)
     views = models.IntegerField(default=0)
-    state = models.CharField(max_length=10, defualt = '판매중')
+    state = models.CharField(max_length=10, default = '판매중')
     addr = models.CharField(max_length=200)
     cdate = models.DateTimeField(auto_now_add=True)
     udate = models.DateTimeField(auto_now=True)
