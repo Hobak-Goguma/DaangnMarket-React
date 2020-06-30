@@ -502,7 +502,7 @@ def location_search(request):
     product_sum = Product.objects.filter(name__contains = Search).filter(addr = addr)
     for i in location :
         product = Product.objects.filter(name__contains = Search).filter(addr = i.nearby_dong)
-        product_sum = product_sum|product
+        product_sum = product_sum | product
     if product_sum.count() == 0 :
         content = {
             "message" : "검색한 제품이 없습니다.",
