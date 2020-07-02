@@ -83,7 +83,7 @@ const SearchPage = () => {
 		setSearchValue(decodeURIComponent(window.location.href.split("=")[1]));
 		api.get(`/product/search?q=${window.location.href.split("=")[1]}&page_size=16&page=${page}`)
 		.then((res) => {
-			setProducts(products.concat(res.data.results));
+			setProducts(v => v.concat(res.data.results));
 			setFetched(true);
 			settotalCount(res.data.count)
 		})
