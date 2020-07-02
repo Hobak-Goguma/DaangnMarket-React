@@ -99,92 +99,90 @@ const Headers = styled.header`
 
 let user;
 const Header = (props) => {
-  const [login, setLogin] = useState(false);
-  const [keyword, setKeyword] = useState("");
+	const [login, setLogin] = useState(false);
+	const [keyword, setKeyword] = useState("");
 
-  useEffect(() => {
-    user = JSON.parse(window.sessionStorage.getItem("user"));
-    if (user) {
-      setLogin(true);
-    } else {
-      setLogin(false);
-    }
-    if(props.location.search.substring(3)!==""){
-      setKeyword(decodeURI(props.location.search.substring(3)));
-    }
-  }, []);
-  const logOut = () => {
-    window.sessionStorage.clear();
-    setLogin(false);
+	useEffect(() => {
+		user = JSON.parse(window.sessionStorage.getItem("user"));
+		if (user) {
+			setLogin(true);
+		} else {
+			setLogin(false);
+		}
+		if (props.location.pathname === "/search"
+			&& window.location.href.split("=")[1]) {
+			setKeyword(decodeURIComponent(window.location.href.split("=")[1]))
+		}
+	}, []);
 
-    // localStorage.setItem("id", "");
-    // localStorage.setItem("pw", "");
-  };
-  const onClickCategory = (element) => {
-    if (props.location.pathname === "/search") {
-      api.get(`/product/search?q=${element}`).then((res) => {
-        props.setProducts(res.data);
-        props.setNumB(6);
-      });
-    }
-    props.history.push(`/search?q=${element}`);
-  };
+	const logOut = () => {
+		window.sessionStorage.clear();
+		setLogin(false);
+	};
 
-  const searchKeyPress = () => {
-    if (
-      window.event.keyCode === 13 &&
-      keyword !== "" &&
-      !/[`!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~]/.test(keyword)
-    ) {
-      if (props.location.pathname === "/search") {
-        api.get(`product/search?q=${keyword}`).then((res) => {
-          props.setProducts(res.data);
-          props.setNumB(6);
-        });
-      }
-      props.history.push(`/search?q=${keyword}`);
-    }
-  };
+	const onClickCategory = (element) => {
+		if (props.location.pathname === "/search") {
+			api.get(`/product/search?q=${element}`).then((res) => {
+				props.setProducts(res.data);
+			});
+		}
+		props.history.push(`/search?q=${element}`);
+	};
 
-  return (
-    <Headers>
-      <div className="container">
-        <Link to="/">
-          {
-            // 로고 클릭시 메인으로 이동
-          }
-          <img src="/img/logo.svg" alt="로고" />
-        </Link>
-        <div className="inputBox">
-          <input
-            type="text"
-            name="search"
-            id="searchItem"
-            placeholder="지역, 상품, 업체등을 검색해보세요."
-            onKeyPress={searchKeyPress}
-            value={keyword}
-            onChange={(e) => setKeyword(e.target.value)}
-          />
-          <label htmlFor="searchItem">
-            <img src="/img/search-icon.svg" alt="search" />
-          </label>
-        </div>
+	const searchKeyPress = () => {
+		if (
+			window.event.keyCode === 13 &&
+			keyword !== "" &&
+			!/[`!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~]/.test(keyword)
+		) {
+			if (props.location.pathname === "/search") {
+				api.get(`product/search?q=${keyword}`).then((res) => {
+					props.setProducts(res.data);
+				});
+			}
+			props.history.push(`/search?q=${keyword}`);
+		}
+	};
 
-        {login ? ( //로그인 여부확인
-          <MyDrop localID={user.user_id}></MyDrop>
-        ) : (
-          <section className="log">
-            <Link to="/login">
-              <div className="logIn">
-                <div>로그인</div>
-              </div>
-            </Link>
-          </section>
-        )}
-        <TotalMenu logOut={logOut} login={login} onClick={onClickCategory} />
-      </div>
-    </Headers>
-  );
+	return (
+		<Headers>
+			<div className="container">
+				<Link to="/">
+					{
+						// 로고 클릭시 메인으로 이동
+					}
+					<img src="/img/logo.svg" alt="로고"/>
+				</Link>
+				<div className="inputBox">
+					<input
+						type="text"
+						name="search"
+						id="searchItem"
+						placeholder="지역, 상품, 업체등을 검색해보세요."
+						onKeyPress={searchKeyPress}
+						value={keyword}
+						onChange={(e) => setKeyword(e.target.value)}
+					/>
+					<label htmlFor="searchItem">
+						<img src="/img/search-icon.svg" alt="search"/>
+					</label>
+				</div>
+
+				{login ? ( //로그인 여부확인
+					<MyDrop localID={user.user_id}></MyDrop>
+				) : (
+					<section className="log">
+						<Link to="/login">
+							<div className="logIn">
+								<div>로그인</div>
+							</div>
+						</Link>
+					</section>
+				)}
+				<TotalMenu logOut={logOut} login={login} onClick={onClickCategory}/>
+			</div>
+		</Headers>
+	);
 };
 
 export default withRouter(Header);

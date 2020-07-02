@@ -43,10 +43,27 @@ export default createGlobalStyle`
     margin: 0;
     padding: 0;
   }
+  html {
+    width:100%;
+    height: 100%;
+  }
   body {
+    width:100%;
+    height: 100%;
     background-color: ${(props) => props.theme.bgColor};
     font-family: 'NotoSansKR', sans-serif;
   }
+  #root {
+    width:100%;
+    height: 100%;
+    > div {
+      width:100%;
+      height: 100%;
+      padding-top: 6rem;
+      box-sizing: border-box;
+    }
+  }
+  
   label,
   .btn {
     cursor: pointer;
