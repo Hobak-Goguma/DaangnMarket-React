@@ -500,6 +500,12 @@ def location_search(request):
     '''
     사용자의 위치에 따른 product 검색
     '''
+    # 디폴트 페이지네이션 사용
+    paginator = PageNumberPagination()
+    
+    # 페이지 사이즈를 page_size라는 이름의 파라미터로 받을 거임
+    paginator.page_size_query_param = "page_size"
+
     # GET방식으로 데이터 address, distance 그리고 검색어를 보냄.
     addr = request.GET['addr']
     dis = request.GET['dis']
@@ -529,6 +535,17 @@ def location_search(request):
             "result" : {"입력한 검색어" : Search}
                 }
         return Response(content,status=status.HTTP_204_NO_CONTENT)
+
+    # 페이지 적용된 쿼리셋
+    paginated_product_sum = paginator.paginate_queryset(product_sum, request)
+    # 페이지 파라미터 (page, page_size) 있을 경우
+    # page_size 만 있을 경우 page=1 처럼 동작함
+    # page만 있을 경우 아래 if문 안 탐
+    if paginated_product_sum is not None:
+        serializers = ProductSerializer(paginated_product_sum, many=True)
+        return paginator.get_paginated_response(serializers.data)
+
+    # 페이지 파라미터 없을 경우
     serializer = ProductSerializer(product_sum, many =True)
     return Response(serializer.data)
 
