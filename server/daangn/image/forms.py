@@ -1,5 +1,11 @@
 from django import forms
+from .models import UploadFileModel
 
-class UploadFileForm(forms.Form):
-    title = forms.CharField(max_length=50)
-    file = forms.FileField()
+class UploadFileForm(forms.ModelForm):
+    class Meta:
+        model = UploadFileModel
+        fields = ('title', 'file')
+
+    def __init__(self, *args, **kwargs):
+        super(UploadFileForm, self).__init__(*args, **kwargs)
+        self.fields['file'].required = False
