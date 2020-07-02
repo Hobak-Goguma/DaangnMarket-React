@@ -33,11 +33,15 @@ def member_list(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
+# @swagger_auto_schema(method='GET', responses={200:'OK'})
+# 'methods' can be used to apply the same modification to multiple methods
+# @swagger_auto_schema(methods=['post'], request_body=MemberSerializer)
 @api_view(['GET', 'PUT', 'DELETE'])
 def member_detail(request, id_member):
     """
-    코드 조각 조회, 업데이트, 삭제
+    개별 유저 조회, 업데이트, 삭제
+    ---
+    유저의 id_member를 통해 개별 조회, 업데이트, 삭제 합니다.
     """
     try:
         member = Member.objects.get(pk=id_member)
