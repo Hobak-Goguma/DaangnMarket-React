@@ -98,18 +98,19 @@ const StyledTotalMenu = styled.ul`
       font-size: 16px;
       color: #ff8a3d;
       font-weight: bold;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      /* border: 1px solid #ff8a3d;
-      border-radius: 20px; */
-      text-align: center;
+      //display: flex;
+      //justify-content: center;
+      //align-items: center;
+      //text-align: center;
       height: 60px;
+      text-align: right;
+      line-height: 60px;
       div {
-        margin-left: 8px;
-        position: relative;
         width: 23px;
         height: 2px;
+        margin-left: 8px;
+        position: relative;
+        top: -5px;
         background: #ff8a3d;
         &:before {
           content: "";
@@ -147,10 +148,11 @@ const StyledTotalMenu = styled.ul`
       background: #fff;
 
       li {
-        width: 140px;
+        width: 120px;
         transition: 0.2s;
         height: 50px;
         line-height: 50px;
+      text-align: right;
         &:hover {
           background: #ffbe93;
         }
