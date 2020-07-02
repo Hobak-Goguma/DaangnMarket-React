@@ -6,8 +6,8 @@ import {Link} from "react-router-dom";
 import Modyfy from "../components/myinfochange/Modify";
 
 const Info = styled.div`
-    width:calc(100% - 250px);
-    margin-left:250px;
+    width:calc(100% - 170px);
+    margin-left:170px;
     margin-top: 70px;
     .title{
         position:relative;
@@ -22,7 +22,7 @@ const Info = styled.div`
     .infoBox{
         position: relative;
         box-sizing:border-box; 
-        margin: 30px 0 30px;
+        margin: 30px 0;
         border:1px solid #ccc;
         border-radius:10px;
         width:100%;
@@ -246,7 +246,7 @@ const MyInfo = ({history}) => {
 		<>
 			<Layout>
 				<div className="container">
-					<MyNav choose="내 정보 보기" history={history}/>
+					<MyNav choose="내 정보" history={history}/>
 					<Info>
 						<div className="title">
               <span className="tit">{

@@ -7,10 +7,10 @@ import Birth from "../components/myinfochange/Birth";
 import Modify from "../components/myinfochange/Modify";
 
 const ChangeLayout = styled.div`
-  width: calc(100% - 250px);
-  margin-left: 250px;
+  width:calc(100% - 170px);
+  margin-left:170px;
   margin-top: 70px;
-  padding-bottom: 250px;
+  padding-bottom: 100px;
   .title {
     position: relative;
     border-bottom: 3px solid #ff8a3d;

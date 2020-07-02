@@ -7,8 +7,8 @@ import styled from "styled-components";
 import Wishlist from "../components/myproduct/index";
 
 const MyProd = styled.div`
-  width: calc(100% - 250px);
-  margin-left: 250px;
+  width:calc(100% - 170px);
+  margin-left:170px;
   margin-top: 70px;
   .title {
     position: relative;
