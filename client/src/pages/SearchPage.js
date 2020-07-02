@@ -75,18 +75,17 @@ const SearchPage = () => {
 
 	const [products, setProducts] = useState([]);
 	const [totalCount, settotalCount] = useState([]);
-	const [page, setPage] = useState(0);
+	const [page, setPage] = useState(1);
 	const [fetched, setFetched] = useState(false);
 	const [searchValue, setSearchValue] = useState('');
 
 	useEffect(() => {
 		setSearchValue(decodeURIComponent(window.location.href.split("=")[1]));
-		api.get(`/product/search?q=${window.location.href.split("=")[1]}`)
+		api.get(`/product/search?q=${window.location.href.split("=")[1]}&page_size=16&page=${page}`)
 		.then((res) => {
-			setProducts(res.data);
+			setProducts(products.concat(res.data.results));
 			setFetched(true);
-			// Todo: api response 변경 예정. total_count 주면 대입
-			settotalCount(res.data.length)
+			settotalCount(res.data.count)
 		})
 		.catch(err => {
 			console.error(err)
