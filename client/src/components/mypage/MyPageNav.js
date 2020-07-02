@@ -21,7 +21,7 @@ li{
         display:block;
         padding:5px 25px;
         position:relative;
-        font-size:13px;
+        font-size:14px;
         i{
             display: block;
             position:absolute;
@@ -32,7 +32,8 @@ li{
     }
 }
 li.on{
-    background:#dcdbde;
+    color: #ffffff;
+    background: #56C271;
 }
 `;
 const MyNav = ({choose,history}) =>{
@@ -72,7 +73,7 @@ const MyNav = ({choose,history}) =>{
         );
     };
     })
-    return( 
+    return(
         <Mynav>
             {menu}
         </Mynav>

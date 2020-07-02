@@ -1,6 +1,7 @@
-import React, { useState , useCallback } from "react";
+import React, {useState, useCallback} from "react";
 import styled from "styled-components";
-import MyLayout from "../components/mypage/MypageLayout";
+import Layout from "../common/components/Layout";
+import MyNav from "../components/mypage/MyPageNav";
 import Gender from "../components/myinfochange/Gender";
 import Birth from "../components/myinfochange/Birth";
 import Modify from "../components/myinfochange/Modify";
@@ -8,7 +9,8 @@ import Modify from "../components/myinfochange/Modify";
 const ChangeLayout = styled.div`
   width: calc(100% - 250px);
   margin-left: 250px;
-  margin-top: 200px;
+  margin-top: 70px;
+  padding-bottom: 250px;
   .title {
     position: relative;
     border-bottom: 3px solid #ff8a3d;
@@ -29,7 +31,8 @@ const ChangeLayout = styled.div`
     box-sizing:border-box;
     padding :30px 20px 100px; 
     .infoTit{
-      font-size: 10px;
+      font-size: 20px;
+      text-align: center;
       margin-bottom:20px;
     }
     .btnFinish{
@@ -49,125 +52,130 @@ const ChangeLayout = styled.div`
   }
 `;
 
-const Changelayout = ({ location, history }) => {
-  const choose = "내 정보 보기";
-  let { state: temp } = location;
-  const { state, user } = temp;
-  const [chClass, setClass] = useState({
-    modifyon : false,
-    state : state,
-    key : "",
-    value : ""
-  });
-  if(chClass.key === ""){
-    switch (state) {
-      case "nick_name":
-        setClass({
-          ...chClass,
-          key : "닉네임",
-          value : user.nick_name
-        });
-        break;
+const Changelayout = ({location, history}) => {
+	let {state: temp} = location;
+	const {state, user} = temp;
+	const [chClass, setClass] = useState({
+		modifyon: false,
+		state: state,
+		key: "",
+		value: ""
+	});
+	if (chClass.key === "") {
+		switch (state) {
+			case "nick_name":
+				setClass({
+					...chClass,
+					key: "닉네임",
+					value: user.nick_name
+				});
+				break;
 
-      case "tel":
-        setClass({
-          ...chClass,
-          key : "전화번호",
-          value : user.tel
-        });
-        break;
+			case "tel":
+				setClass({
+					...chClass,
+					key: "전화번호",
+					value: user.tel
+				});
+				break;
 
-      case "addr":
-        setClass({
-          ...chClass,
-          key : "주소",
-          value : user.addr
-        });
-        break;
+			case "addr":
+				setClass({
+					...chClass,
+					key: "주소",
+					value: user.addr
+				});
+				break;
 
-      case "gender":
-        setClass({
-          ...chClass,
-          key : "성별",
-          value : user.gender
-        });
-        break;
+			case "gender":
+				setClass({
+					...chClass,
+					key: "성별",
+					value: user.gender
+				});
+				break;
 
-      case "birth":
-        setClass({
-          ...chClass,
-          key : "생년월일",
-          value : user.birth
-        });
-        break;
+			case "birth":
+				setClass({
+					...chClass,
+					key: "생년월일",
+					value: user.birth
+				});
+				break;
 
-      default:
-        history.goBack();
-        break;
-    }
-  }
-  const changeModifyOn = useCallback( () =>{
-    setClass({
-      ...chClass,
-      modifyon:true
-    });
-    console.log(chClass);
-  },[chClass]);
-  // const changeModifyOff = useCallback( () =>{
-  //   setClass({
-  //     ...chClass,
-  //     modifyon:false
-  //   });
-  // },[chClass]);
-  const changeClassValue = useCallback( (value) =>{
-    setClass({
-      ...chClass,
-      value:value
-    });
-  },[chClass]);
+			default:
+				history.goBack();
+				break;
+		}
+	}
+	const changeModifyOn = useCallback(() => {
+		setClass({
+			...chClass,
+			modifyon: true
+		});
+		console.log(chClass);
+	}, [chClass]);
+	// const changeModifyOff = useCallback( () =>{
+	//   setClass({
+	//     ...chClass,
+	//     modifyon:false
+	//   });
+	// },[chClass]);
+	const changeClassValue = useCallback((value) => {
+		setClass({
+			...chClass,
+			value: value
+		});
+	}, [chClass]);
 
+	/*
 
+		,pk: 1,
+		user_id: "root",
+		name: "root",
+		gender: "MALE",
+		birth:"19200101",
+		email: "sunwoo@wonsang.ggum",
+		nick_name: "루트",
+		tel: "010-1234-1234",
+		add: ["서울특별시 영등포구 짜장동"]
 
-
-  /*
-
-    ,pk: 1,
-    user_id: "root",
-    name: "root",
-    gender: "MALE",
-    birth:"19200101",
-    email: "sunwoo@wonsang.ggum",
-    nick_name: "루트",
-    tel: "010-1234-1234",
-    add: ["서울특별시 영등포구 짜장동"]
-
-  */
-  return (
-    <>
-      <MyLayout history={history} choose={choose}>
-        <ChangeLayout>
-          <div className="title">
-            <span className="tit">{chClass.key}</span>
-          </div>
-          <div className="infoChange">
-            <div className="infoTit">{chClass.key}변경</div>
-
-          {state==="nick_name"? <></>:
-          state==="tel"? <></>:
-          state==="addr"? <></>:
-          state==="gender"? <Gender changeValue={chClass.value} change={changeClassValue}></Gender>:
-          state==="birth"? <Birth changeValue={chClass.value} change={changeClassValue}></Birth>:
-          history.goBack()
-          }
-            <div className="btnFinish" onClick={()=>changeModifyOn()}>
-              <i className="fas fa-pen"></i>
-            </div>
-          </div>
-        </ChangeLayout>
-      </MyLayout>
-      {chClass.modifyon? <Modify></Modify>:<></>}
-    </>
-  );
+	*/
+	return (
+		<>
+			<Layout>
+				<div className="container">
+					<MyNav choose="내 정보 보기" history={history}/>
+					<ChangeLayout>
+						<div className="title">
+							<span className="tit">{chClass.key} 변경</span>
+						</div>
+						<div className="infoChange">
+							<div className="infoTit">{chClass.key} 변경</div>
+							{state === "nick_name" ? <input type="text"
+							                                value={chClass.value}/> :
+								state === "tel" ? <input type="tel" value={chClass.value}/> :
+									state === "addr" ? <></> :
+										state === "gender" ?
+											<Gender changeValue={chClass.value}
+											        change={changeClassValue}/>
+											:
+											state === "birth" ?
+												<Birth changeValue={chClass.value}
+												       change={changeClassValue}/>
+												:
+												history.goBack()
+							}
+							<div className="btnFinish" onClick={() => changeModifyOn()}>
+								<i className="fas fa-pen"/> 변경
+							</div>
+						</div>
+					</ChangeLayout>
+				</div>
+			</Layout>
+			{chClass.modifyon ? <Modify></Modify> : <></>}
+		</>
+	);
 };
 
 export default Changelayout;
