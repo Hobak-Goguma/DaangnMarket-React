@@ -1,6 +1,6 @@
 import React, {useState, useCallback} from "react";
 import styled from "styled-components";
-import Layout from "../common/components/Layout";
+import Layout from "../components/Layout";
 import MyNav from "../components/mypage/MyPageNav";
 import Gender from "../components/myinfochange/Gender";
 import Birth from "../components/myinfochange/Birth";

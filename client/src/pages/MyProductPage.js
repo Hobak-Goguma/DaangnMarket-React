@@ -1,5 +1,5 @@
 import React from "react";
-import Layout from "../common/components/Layout";
+import Layout from "../components/Layout";
 import MyNav from "../components/mypage/MyPageNav";
 import styled from "styled-components";
 

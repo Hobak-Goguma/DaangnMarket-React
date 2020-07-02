@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import styled from "styled-components";
-import Layout from "../common/components/Layout";
+import Layout from "../components/Layout";
 import MyNav from "../components/mypage/MyPageNav";
 import {Link} from "react-router-dom";
 import Modyfy from "../components/myinfochange/Modify";

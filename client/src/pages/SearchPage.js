@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import api from "../common/api";
-import Layout from "../common/components/Layout";
+import Layout from "../components/Layout";
 import styled from "styled-components";
 import CardList from "../components/Card/List";
 import {withRouter} from "react-router-dom";
