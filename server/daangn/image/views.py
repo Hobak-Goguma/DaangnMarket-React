@@ -1,6 +1,8 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from .forms import *
+from rest_framework.response import Response
+from rest_framework import status
 # from .templates.image import *
 
 
@@ -16,9 +18,9 @@ def upload_file(request):
         if form.is_valid():
             # file is saved
             form.save()
-            return make_response(200, "Success")
+            return Response(status=status.HTTP_200_OK)
     else:
         form = ModelFormWithFileField()
-        return make_response(404, "Failed.")
-    return make_response(404, "Failed.")
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    return Response(status=status.HTTP_404_NOT_FOUND)
     # return render(request, 'image/upload.html', {'form': form})
