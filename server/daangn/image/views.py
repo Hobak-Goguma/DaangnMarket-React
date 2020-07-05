@@ -6,13 +6,6 @@ from rest_framework import status
 from rest_framework.decorators import api_view, renderer_classes
 import json
 from django.http import JsonResponse
-# from .templates.image import *
-
-
-# def handle_uploaded_file(f):
-#     with open('some/file/name.txt', 'wb+') as destination:
-#         for chunk in f.chunks():
-#             destination.write(chunk)
 
 @api_view(('POST', 'DELETE'))
 def upload_file(request):
@@ -31,10 +24,6 @@ def upload_file(request):
 
     
     elif request.method == 'DELETE':
-        # 파라미터 get방식
-        # Addr = request.GET['addr']
-
-        # 제이슨 방식
         data = request.body.decode('utf-8')
         received_json_data = json.loads(data)
         Title = received_json_data['title']
