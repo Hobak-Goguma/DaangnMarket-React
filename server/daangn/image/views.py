@@ -1,11 +1,13 @@
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .forms import *
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view, renderer_classes
 import json
 from django.http import JsonResponse
+from sorl.thumbnail import get_thumbnail
+from sorl.thumbnail import delete
 
 @api_view(('POST', 'DELETE'))
 def upload_file(request):
@@ -34,3 +36,24 @@ def upload_file(request):
             "result" : {"title" : Title}
                 }
         return Response(content ,status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(('GET',))
+def productThumbnail(request, title):
+    if request.method == 'GET':
+        Data = UploadFileModel.objects.get(title=title)
+        s = request.GET['s']
+        return redirect('/image' + get_thumbnail(Data.image, s, crop='center', quality=82).url)
+
+
+
+'''
+# template 활용
+@api_view(('GET',))
+def productThumbnail(request, title):
+    if request.method == 'GET':
+        Data = UploadFileModel.objects.get(title=title)
+        s = request.GET['s']
+        return render(request, 'image/product.html', {"Data":Data} )
+'''
+
