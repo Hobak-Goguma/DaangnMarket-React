@@ -3,6 +3,7 @@ from django.shortcuts import render
 from .forms import *
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.decorators import api_view, renderer_classes
 # from .templates.image import *
 
 
@@ -11,9 +12,9 @@ from rest_framework import status
 #         for chunk in f.chunks():
 #             destination.write(chunk)
 
+@api_view(('POST',))
 def upload_file(request):
     if request.method == 'POST':
-        
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
             # file is saved
