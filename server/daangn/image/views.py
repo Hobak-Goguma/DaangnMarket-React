@@ -8,7 +8,7 @@ import json
 from django.http import JsonResponse
 from sorl.thumbnail import get_thumbnail
 from sorl.thumbnail import delete
-from django.contrib.sites.models import Site
+
 
 
 @api_view(('POST', 'DELETE'))
