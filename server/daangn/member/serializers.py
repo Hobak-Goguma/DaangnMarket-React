@@ -110,11 +110,11 @@ class ShopperReviewSerializer(serializers.ModelSerializer):
 
 
 class memberAddrSerializer(serializers.ModelSerializer):
-    
     class Meta:
         model = Memberaddr
-        fields = ('id_member', 'addr')
+        fields = ('id_member', 'addr', 'distance', 'select')
         # read_only_fields = ['user_id']
+
 
 
 # class MemberSerializer(serializers.Serializer):

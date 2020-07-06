@@ -5,32 +5,35 @@ import {
   Switch,
   Redirect,
 } from "react-router-dom";
-import App from "./App";
+import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
-import MyChange from "./pages/myPage/MyChange";
-import MyProduct from "./pages/myPage/MyProduct";
-import MyInfo from "./pages/myPage/MyInfo";
+import MyProduct from "./pages/MyProductPage";
+import MyInfo from "./pages/MyInfoPage";
+import Changelayout from "./pages/MyInfoChangePage";
 import SearchPage from "./pages/SearchPage";
-import ArticlePage from "./pages/ArticlePage";
+import ProductDetailPage from "./pages/ProductPage";
 import OtherUserPage from "./pages/OtherUserPage";
 import UploadPage from "./pages/UploadPage";
+
+// Style Wrapper
 import { ThemeProvider } from "styled-components";
-import Theme from "./lib/themes/Theme";
-import Global from "./lib/themes/GlobalStyles";
+import Theme from "./common/themes/Theme";
+import Global from "./common/themes/GlobalStyles";
 
 export default function Routes() {
   return (
     <ThemeProvider theme={Theme}>
       <Router>
         <Switch>
-          <Route exact path="/" component={App} />
-          <Route exact path="/mychange" component={MyChange} />
-          <Route exact path="/myproduct" component={MyProduct} />
+          <Route exact path="/" component={HomePage} />
+          <Route exact path="/myinfo" component={MyInfo} />
           <Route exact path="/login" component={LoginPage} />
           <Route exact path="/register" component={RegisterPage} />
+          <Route path="/myproduct" component={MyProduct} />
           <Route path="/search" component={SearchPage} />
-          <Route path="/articles/:articles_id" component={ArticlePage} />
+          <Route path="/myinfochange" component={Changelayout} />
+          <Route path="/products/:product_id" component={ProductDetailPage} />
           <Route path="/user" component={OtherUserPage} />
           <Route path="/upload" component={UploadPage} />
           <Redirect from="*" to="/" />

@@ -1,11 +1,11 @@
 import React from "react";
 import Layout from "../components/Layout";
-import OtherUserContainer from "../containers/OtherUserContainer";
+import OtherUser from "../components/otherUser/index";
 
 const OtherUserPage = () => {
   return (
     <Layout>
-      <OtherUserContainer />
+      <OtherUser />
     </Layout>
   );
 };

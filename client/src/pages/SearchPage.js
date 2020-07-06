@@ -1,13 +1,8 @@
 import React from "react";
-import Layout from "../components/Layout";
-import SearchContainer from "../containers/SearchContainer";
+import Container from "../container/SearchContainer";
 
 const SearchPage = () => {
-  return (
-    <Layout>
-      <SearchContainer />
-    </Layout>
-  );
+  return <Container />;
 };
 
 export default SearchPage;

@@ -1,0 +1,8 @@
+{
+  "parser": "babel-eslint",
+  "plugins": ["react", "react-hooks"],
+  "rules": {
+    "react-hooks/exhaustive-deps": 0,
+    "extends": ["plugin:react/recommended"]
+  }
+}

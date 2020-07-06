@@ -1,6 +1,6 @@
 import React from "react";
-import LoginContainer from "../containers/LoginContainer";
 import Layout from "../components/Layout";
+import LoginContainer from "../container/LoginContainer";
 
 const LoginPage = () => {
   return (
