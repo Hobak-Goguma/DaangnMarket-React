@@ -13,6 +13,15 @@ from sorl.thumbnail import delete
 
 @api_view(('POST', 'DELETE'))
 def upload_file(request):
+    """
+    Product 사진 업로드 API
+
+    ---
+    # 내용
+        - title : 저장 할 파일이름
+        - id_product : Product 외래키
+        - image : 업로드 할 이미지
+    """
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
