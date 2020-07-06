@@ -42,18 +42,21 @@ def upload_file(request):
 
 @api_view(('GET',))
 def productThumbnail(request, id_product):
+    """
+    물품 상세페이지의 썸네일을 리스트로 주는 API
+
+    ---
+    # 내용
+        - s : 사진픽셀 크기 ex)500x500
+        - q : 사진품질 0~100 ex)82 당근마켓 기본값 
+    """
     if request.method == 'GET':
-        print("----------------0-------------------")
         s = request.GET['s']
-        print("----------------1-------------------")
+        q = int(request.GET['q'])
         Data = UploadFileModel.objects.filter(id_product=id_product)
-        # print(Site.objects.get_current(request).domain)
-        print("----------------2-------------------")
         imageList=[]
         for i in range(Data.count()):
-            imageList.append(request.META['HTTP_HOST'] + '/image' + get_thumbnail(Data[i].image, s, crop='center', quality=82).url)
-        print("----------------3-------------------")
-        print(imageList)
+            imageList.append(request.META['HTTP_HOST'] + '/image' + get_thumbnail(Data[i].image, s, crop='center', quality=q).url)
         return Response(imageList, status=status.HTTP_200_OK)
 
 
