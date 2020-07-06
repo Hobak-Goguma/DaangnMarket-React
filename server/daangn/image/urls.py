@@ -6,8 +6,8 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     # path('product/<title>', views.productThumbnail, name='productThumbnail'),
-    path('product/<title>', views.productThumbnail, name='productThumbnail'),
     path('upload', views.upload_file, name='imagetest'),
+    path('product/<int:id_product>', views.productThumbnail, name='productThumbnail'),
     
 ]
 if settings.DEBUG:

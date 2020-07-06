@@ -8,6 +8,8 @@ import json
 from django.http import JsonResponse
 from sorl.thumbnail import get_thumbnail
 from sorl.thumbnail import delete
+from django.contrib.sites.models import Site
+
 
 @api_view(('POST', 'DELETE'))
 def upload_file(request):
@@ -39,11 +41,36 @@ def upload_file(request):
 
 
 @api_view(('GET',))
-def productThumbnail(request, title):
+def productThumbnail(request, id_product):
     if request.method == 'GET':
-        Data = UploadFileModel.objects.get(title=title)
+        print("----------------0-------------------")
         s = request.GET['s']
-        return redirect('/image' + get_thumbnail(Data.image, s, crop='center', quality=82).url)
+        print("----------------1-------------------")
+        Data = UploadFileModel.objects.filter(id_product=id_product)
+        # print(Site.objects.get_current(request).domain)
+        print("----------------2-------------------")
+        imageList=[]
+        for i in range(Data.count()):
+            imageList.append(request.META['HTTP_HOST'] + '/image' + get_thumbnail(Data[i].image, s, crop='center', quality=82).url)
+        print("----------------3-------------------")
+        print(imageList)
+        return Response(imageList, status=status.HTTP_200_OK)
+
+
+
+
+# @api_view(('GET',))
+# def productThumbnail(request, id_product):
+#     if request.method == 'GET':
+#         print("----------------1-------------------")
+#         Data = UploadFileModel.objects.get(id_product=id_product)
+#         print("----------------2-------------------")
+#         # print(Data[0].image)
+#         print("----------------2-1-----------------")
+#         s = request.GET['s']
+#         print("----------------3-------------------")
+#         # print(get_thumbnail(Data[0].image, s, crop='center', quality=82))
+#         return redirect('/image' + get_thumbnail(Data.image, s, crop='center', quality=82).url)
 
 
 
