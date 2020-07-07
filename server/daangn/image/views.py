@@ -8,7 +8,8 @@ import json
 from django.http import JsonResponse
 from sorl.thumbnail import get_thumbnail
 from sorl.thumbnail import delete
-
+from PIL import Image
+import os, sys
 
 
 @api_view(('POST', 'DELETE'))
@@ -26,7 +27,12 @@ def upload_file(request):
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
             # file is saved
-            form.save()
+            fileURL = form.save()
+            
+            im = Image.open('.' + str(fileURL))
+            f, e = os.path.splitext(im.filename)
+            im.save(f + '.jpg')
+
             return Response(status=status.HTTP_200_OK)
     # else:
     #     form = ModelFormWithFileField()
