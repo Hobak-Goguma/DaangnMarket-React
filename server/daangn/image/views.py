@@ -29,19 +29,13 @@ def upload_file(request):
             # file is saved
             fileURL = form.save()
             
-            im = Image.open('.' + str(fileURL))
-            f, e = os.path.splitext(im.filename)
-            im.save(f + '.jpg')
+            # im = Image.open('.' + str(fileURL))
+            # f, e = os.path.splitext(im.filename)
+            # im.save(f + '.jpg')
 
             return Response(status=status.HTTP_200_OK)
-    # else:
-    #     form = ModelFormWithFileField()
-    #     return Response(status=status.HTTP_404_NOT_FOUND)
-    # return Response(status=status.HTTP_404_NOT_FOUND)
 
-    # return render(request, 'image/upload.html', {'form': form})
-
-    
+   
     elif request.method == 'DELETE':
         data = request.body.decode('utf-8')
         received_json_data = json.loads(data)

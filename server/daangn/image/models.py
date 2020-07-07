@@ -3,6 +3,9 @@ from member.models import Product
 from django.conf import settings
 import os
 from sorl.thumbnail import ImageField
+from imagekit.models import ProcessedImageField
+from imagekit.processors import ResizeToFill
+
 
 class UploadFileModel(models.Model):
     def __str__(self):
@@ -10,7 +13,11 @@ class UploadFileModel(models.Model):
     id_productImg = models.AutoField(primary_key=True)
     id_product = models.ForeignKey(Product, on_delete = models.CASCADE, db_column='id_product')
     title = models.CharField(default='', max_length=50)
-    image = models.ImageField(null=True, upload_to="product")
+    image = ProcessedImageField(
+        null=True, 
+        upload_to="product",
+        format = 'JPEG'
+        )
 
     # def image_tag(self):
     #     return u'<img src="%s" width="300"/>' % self.image.url #Not bad code
