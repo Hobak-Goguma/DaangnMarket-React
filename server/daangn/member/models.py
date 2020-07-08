@@ -21,8 +21,8 @@ class Company(models.Model):
 
 class Location(models.Model):
     dong = models.CharField(primary_key=True, max_length=20)
-    latitude = models.DecimalField(max_digits=10, decimal_places=0)
-    longitude = models.DecimalField(max_digits=10, decimal_places=0)
+    latitude = models.DecimalField(max_digits=11, decimal_places=8)
+    longitude = models.DecimalField(max_digits=11, decimal_places=8)
     gu = models.CharField(max_length=20)
 
     class Meta:
