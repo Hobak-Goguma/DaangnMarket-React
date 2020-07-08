@@ -10,6 +10,9 @@ import json
 from django.http import JsonResponse
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.pagination import PageNumberPagination
+from sorl.thumbnail import get_thumbnail
+from image.forms import *
+
 
 # 'method' can be used to customize a single HTTP method of a view
 @swagger_auto_schema(method='get', responses={200:'OK'})
@@ -268,6 +271,10 @@ def member_login(request):
 def product_list(request):
     """
     상품을 모두 보여주거나 새 상품리스트를 만듭니다.
+    
+    ---
+    # 내용
+
     """
     if request.method == 'GET':
         product = Product.objects.all()
@@ -285,7 +292,20 @@ def product_list(request):
 @api_view(['GET', 'PUT', 'DELETE'])
 def product_detail(request, id_product):
     """
-    코드 조각 조회, 업데이트, 삭제
+    제품 상세 조회, 업데이트, 삭제
+        
+    ---
+    # 내용
+        - id_product : seq key 
+        - id_member : 상품을 올린 member 외래키
+        - name : 상품 제목
+        - price : 상품 가격
+        - info : 상품 내용
+        - category : 상품 카테고리
+        - views : 상품 조회수
+        - state : '판매중' / '예약중' / '판매완료' 텍스트로 
+        - addr : 판매가 이루어질 장소 (동설정까지만 가능)
+        - image : 리스트형식의 이미지 URLs
     """
     try:
         product = Product.objects.get(pk=id_product)
@@ -303,7 +323,20 @@ def product_detail(request, id_product):
         product.save()
         product = Product.objects.get(pk=id_product)
         serializer = ProductSerializer(product)
-        return Response(serializer.data)
+
+        s = request.GET['s']
+        q = int(request.GET['q'])
+        Data = UploadFileModel.objects.filter(id_product=id_product)
+        
+        imageList=[]
+        originList=[]
+        for i in range(Data.count()):
+            imageList.append(request.META['HTTP_HOST'] + '/image' + get_thumbnail(Data[i].image, s, crop='center', quality=q).url)
+            originList.append(request.META['HTTP_HOST'] + '/image/media/' + str(Data[i].image))
+        content = serializer.data
+        content['image'] = imageList
+        content['origin'] = originList
+        return Response(content, status=status.HTTP_200_OK)
 
     elif request.method == 'PUT':
         serializer = ProductTouchSerializer(product, data=request.data)

@@ -30,7 +30,8 @@ class ProductSerializer(serializers.ModelSerializer):
     # member = serializers.ForeignKey(Member, models.CASCADE, related_name='member_id')
     class Meta:
         model = Product
-        fields = ('id_product', 'id_member', 'name', 'price', 'info', 'category', 'img', 'views', 'state', 'addr')
+        fields = ('id_product', 'id_member', 'name', 'price', 'info', 'category', 'views', 'state', 'addr')
+        
 
 
 class ProductTouchSerializer(serializers.ModelSerializer):
