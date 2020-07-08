@@ -8,7 +8,7 @@ class MemberSerializer(serializers.ModelSerializer):
     last_date = serializers.DateTimeField(default=timezone.now)
     class Meta:
         model = Member
-        fields = ('id_member', 'name', 'nick_name', 'user_id', 'user_pw', 'tel', 'birth', 'email', 'gender',  'img', 'udate' ,'last_date')
+        fields = ('id_member', 'name', 'nick_name', 'user_id', 'user_pw', 'tel', 'birth', 'email', 'gender', 'img', 'cdate', 'udate', 'last_date')
 
 
 class MemberReviseSerializer(serializers.ModelSerializer):
@@ -30,15 +30,15 @@ class ProductSerializer(serializers.ModelSerializer):
     # member = serializers.ForeignKey(Member, models.CASCADE, related_name='member_id')
     class Meta:
         model = Product
-        fields = ('id_product', 'id_member', 'name', 'price', 'info', 'category', 'img', 'views', 'sold_tf', 'addr')
+        fields = ('id_product', 'id_member', 'name', 'price', 'info', 'category', 'views', 'state', 'addr')
+        
 
 
 class ProductTouchSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ('id_product', 'id_member', 'name', 'price', 'info', 'category', 'img', 'views', 'sold_tf', 'addr')
-        read_only_fields = ['id_member', 'views', 'sold_tf']
-
+        fields = ('id_product', 'id_member', 'name', 'price', 'info', 'category', 'views', 'state', 'addr')
+        read_only_fields = ['id_product','id_member', 'views', 'state']
 
 class LoginSerializer(serializers.ModelSerializer):
     last_date = serializers.DateTimeField(default=timezone.now)
@@ -65,26 +65,24 @@ class WishlistSerializer(serializers.ModelSerializer):
         model = Wishlist
         fields = ('id_wishlist', 'id_product', 'id_member', 'cdate')
 
-# realdeal api 
-class MemberSellerSerializer(serializers.ModelSerializer):
-    class Meta:
-        id_member = MemberSerializer(read_only= True)
-        model = MemberSeller
-        fields = ('id_member', 'id_real_deal')
+# # realdeal api 
+# class MemberSellerSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         id_member = MemberSerializer(read_only= True)
+#         model = MemberSeller
+#         fields = ('id_member', 'id_real_deal')
 
 
-class MemberShopperSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MemberShopper
-        fields = ('id_member', 'id_real_deal')
+# class MemberShopperSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = MemberShopper
+#         fields = ('id_member', 'id_real_deal')
 
         
 class RealDealSerializer(serializers.ModelSerializer):
-    seller = serializers.IntegerField(read_only=True)
-    shopper = serializers.IntegerField(read_only=True)
     class Meta:
         model = RealDeal
-        fields = ('id_real_deal', 'id_product','seller', 'shopper', 'cdate')
+        fields = ('id_real_deal', 'id_member','id_review_seller')
 
 
 class SellerRateSerializer(serializers.ModelSerializer):
@@ -102,21 +100,21 @@ class ShopperRateSerializer(serializers.ModelSerializer):
 class SellerReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = SellerReview
-        fields = ('id_review_seller', 'id_real_deal', 'title', 'cdate')
+        fields = ('id_review_seller', 'id_seller', 'content', 'cdate')
 
 
 class ShopperReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = ShopperReview
-        fields = ('id_review_shopper', 'id_real_deal', 'title', 'cdate')
+        fields = ('id_review_shopper', 'id_real_deal', 'content', 'cdate')
 
 
 class memberAddrSerializer(serializers.ModelSerializer):
-    
     class Meta:
         model = Memberaddr
-        fields = ('id_member', 'addr')
+        fields = ('id_member', 'addr', 'distance', 'select')
         # read_only_fields = ['user_id']
+
 
 
 # class MemberSerializer(serializers.Serializer):

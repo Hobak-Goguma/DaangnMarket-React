@@ -1,11 +1,11 @@
 from django import forms
-from .models import UploadFileModel
+from .models import Product_image
 
-class UploadFileForm(forms.ModelForm):
+class ProductUploadFileForm(forms.ModelForm):
     class Meta:
-        model = UploadFileModel
+        model = Product_image
         fields = ('title', 'image', 'id_product')
 
     def __init__(self, *args, **kwargs):
-        super(UploadFileForm, self).__init__(*args, **kwargs)
+        super(ProductUploadFileForm, self).__init__(*args, **kwargs)
         self.fields['image'].required = False

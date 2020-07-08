@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import Layout from "../common/components/Layout";
+import Layout from "../components/Layout";
 import Rank from "../components/Rank";
 import CardList from "../components/Card/List";
 
@@ -188,7 +188,7 @@ const Mains = styled.section`
     }
 `;
 
-const HomePage = () => {
+const HomePage = ({history}) => {
   const itemData = [
     {
       name: "접이식자전거",
@@ -358,7 +358,7 @@ const HomePage = () => {
                 <p>우리 동네 중고 직거래 마켓</p>
                 <p>동네 주민들과 가깝고 따뜻한 거래를 지금 경험해보세요.</p>
               </div>
-              <Rank/>
+              <Rank history={history}/>
               <img src="./img/mainpageBgc.png" alt="거래화면"/>
             </div>
           </div>

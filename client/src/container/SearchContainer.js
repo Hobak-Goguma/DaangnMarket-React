@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import api from "../common/api";
-import Layout from "../common/components/Layout";
+import Layout from "../components/Layout";
 import Search from "../components/search";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
