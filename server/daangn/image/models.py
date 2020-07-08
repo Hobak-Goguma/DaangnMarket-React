@@ -18,6 +18,7 @@ class Product_image(models.Model):
         upload_to="product",
         format = 'JPEG'
         )
+# TODO 확장자 화이트 리스트 함수 작성 
 
     # def image_tag(self):
     #     return u'<img src="%s" width="300"/>' % self.image.url #Not bad code

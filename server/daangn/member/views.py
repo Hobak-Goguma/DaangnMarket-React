@@ -284,7 +284,6 @@ def product_list(request):
         - state : '판매중' / '예약중' / '판매완료' 텍스트로 
         - addr : 판매가 이루어질 장소 (동설정까지만 가능)
         - image : 리스트형식의 이미지 URLs
-
     """
     if request.method == 'GET':
         product = Product.objects.all()
@@ -342,16 +341,18 @@ def product_detail(request, id_product):
 
         s = request.GET['s']
         q = int(request.GET['q'])
+# TODO 데이터 가져올때, id_product_img기준으로 정렬(오름차순)
         Data = Product_image.objects.filter(id_product=id_product)
 
         imageList=[]
         imageDict={}
+# TODO 'SERVER_PROTOCOL': 'HTTP/1.0', request.META['SERVER_PROTOCOL'] HTTP값으로 변환
         for i in range(Data.count()):
-            imageDict['thum'] = request.META['HTTP_HOST'] + '/image' + get_thumbnail(Data[i].image, s, crop='center', quality=q).url
+            imageDict['thum'] = request.META['HTTP_HOST']+ '/image' + get_thumbnail(Data[i].image, s, crop='center', quality=q).url
             imageDict['origin'] = request.META['HTTP_HOST'] + '/image/media/' + str(Data[i].image)
             imageList.append(imageDict)
             imageDict={}
-                
+
         content = serializer.data
         content['image'] = imageList
 
@@ -584,6 +585,7 @@ def location_search(request):
     product_sum = Product.objects.filter(name__contains = Search).filter(addr = addr)
     for i in location :
         product = Product.objects.filter(name__contains = Search).filter(addr = i.nearby_dong)
+
         product_sum = product_sum | product
     if product_sum.count() == 0 :
         content = {
