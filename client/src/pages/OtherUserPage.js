@@ -1,5 +1,5 @@
 import React from "react";
-import Layout from "../common/components/Layout";
+import Layout from "../components/Layout";
 import OtherUser from "../components/otherUser/index";
 
 const OtherUserPage = () => {

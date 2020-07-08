@@ -1,6 +1,6 @@
 import React from "react";
 import MyNav from "./MyPageNav";
-import Layout from "../../common/components/Layout";
+import Layout from "../Layout";
 
 const MyLayout = ({ children, choose, history }) => {
   return (

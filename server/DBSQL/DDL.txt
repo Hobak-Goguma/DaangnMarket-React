@@ -1,4 +1,55 @@
--- 2020.06.16
+--2020.07.05 
+-- 멤버
+DROP TABLE IF EXISTS `daangn`.`member` RESTRICT;
+
+-- 제품
+DROP TABLE IF EXISTS `daangn`.`product` RESTRICT;
+
+-- 메너온도
+DROP TABLE IF EXISTS `daangn`.`manner` RESTRICT;
+
+-- 구매자후기
+DROP TABLE IF EXISTS `daangn`.`shopper_review` RESTRICT;
+
+-- 로그
+DROP TABLE IF EXISTS `daangn`.`log` RESTRICT;
+
+-- 판매자후기
+DROP TABLE IF EXISTS `daangn`.`seller_review` RESTRICT;
+
+-- 실거래
+DROP TABLE IF EXISTS `daangn`.`real_deal` RESTRICT;
+
+-- 업체
+DROP TABLE IF EXISTS `daangn`.`company` RESTRICT;
+
+-- 찜목록
+DROP TABLE IF EXISTS `daangn`.`wishlist` RESTRICT;
+
+-- 매너온도_리뷰어
+DROP TABLE IF EXISTS `daangn`.`manner_reviewer` RESTRICT;
+
+-- 평가
+DROP TABLE IF EXISTS `daangn`.`rate` RESTRICT;
+
+-- 판평관계
+DROP TABLE IF EXISTS `daangn`.`seller_rate` RESTRICT;
+
+-- 구평관계
+DROP TABLE IF EXISTS `daangn`.`shopper_rate` RESTRICT;
+
+-- 멤버판매자
+DROP TABLE IF EXISTS `daangn`.`member_seller` RESTRICT;
+
+-- 멤버구매자
+DROP TABLE IF EXISTS `daangn`.`member_shopper` RESTRICT;
+
+-- 매너온도로그
+DROP TABLE IF EXISTS `daangn`.`manner_log` RESTRICT;
+
+-- 주소
+DROP TABLE IF EXISTS `daangn`.`memberaddr` RESTRICT;
+
 -- 멤버
 CREATE TABLE `daangn`.`member` (
 	`id_member` INT          NOT NULL COMMENT '멤버 키', -- 멤버 키
@@ -24,6 +75,12 @@ ALTER TABLE `daangn`.`member`
 			`id_member` -- 멤버 키
 		);
 
+-- 멤버 유니크 인덱스
+CREATE UNIQUE INDEX `UIX_member`
+	ON `daangn`.`member` ( -- 멤버
+		`user_id` ASC -- 아이디
+	);
+
 ALTER TABLE `daangn`.`member`
 	MODIFY COLUMN `id_member` INT NOT NULL AUTO_INCREMENT COMMENT '멤버 키';
 
@@ -37,7 +94,7 @@ CREATE TABLE `daangn`.`product` (
 	`category`   VARCHAR(15)   NULL     COMMENT '카테고리', -- 카테고리
 	`img`        VARCHAR(2000) NULL     COMMENT '제품 사진', -- 제품 사진
 	`views`      INT           NOT NULL DEFAULT 0 COMMENT '조회수', -- 조회수
-	`sold_TF`    BOOLEAN       NOT NULL DEFAULT 0 COMMENT '판매여부', -- 판매여부
+	`state`      VARCHAR(10)   NOT NULL DEFAULT '판매중' COMMENT '상태', -- 상태
 	`addr`       VARCHAR(200)  NOT NULL COMMENT '제품주소', -- 제품주소
 	`cdate`      DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성일', -- 생성일
 	`udate`      DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '수정일' -- 수정일
@@ -76,10 +133,10 @@ ALTER TABLE `daangn`.`manner`
 
 -- 구매자후기
 CREATE TABLE `daangn`.`shopper_review` (
-	`id_review_shopper` INT         NOT NULL COMMENT '리뷰 키', -- 리뷰 키
-	`id_real_deal`      INT         NOT NULL COMMENT '거래키', -- 거래키
-	`title`             VARCHAR(50) NOT NULL COMMENT '후기 제목', -- 후기 제목
-	`cdate`             DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성일' -- 생성일
+	`id_review_shopper` INT          NOT NULL COMMENT '리뷰 키', -- 리뷰 키
+	`id_real_deal`      INT          NOT NULL COMMENT '거래키', -- 거래키
+	`content`           VARCHAR(100) NOT NULL COMMENT '내용', -- 내용
+	`cdate`             DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성일' -- 생성일
 )
 COMMENT '구매자후기';
 
@@ -114,10 +171,10 @@ ALTER TABLE `daangn`.`log`
 
 -- 판매자후기
 CREATE TABLE `daangn`.`seller_review` (
-	`id_review_seller` INT         NOT NULL COMMENT '리뷰 키', -- 리뷰 키
-	`id_real_deal`     INT         NOT NULL COMMENT '거래키', -- 거래키
-	`title`            VARCHAR(50) NOT NULL COMMENT '후기 제목', -- 후기 제목
-	`cdate`            DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성일' -- 생성일
+	`id_review_seller` INT          NOT NULL COMMENT '리뷰 키', -- 리뷰 키
+	`id_seller`        INT          NOT NULL COMMENT '판매자', -- 판매자
+	`content`          VARCHAR(100) NOT NULL COMMENT '내용', -- 내용
+	`cdate`            DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성일' -- 생성일
 )
 COMMENT '판매자후기';
 
@@ -133,9 +190,10 @@ ALTER TABLE `daangn`.`seller_review`
 
 -- 실거래
 CREATE TABLE `daangn`.`real_deal` (
-	`id_real_deal` INT      NOT NULL COMMENT '거래키', -- 거래키
-	`id_product`   INT      NOT NULL COMMENT '제품키', -- 제품키
-	`cdate`        DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성일' -- 생성일
+	`id_real_deal`     INT NOT NULL COMMENT '거래키', -- 거래키
+	`id_review_seller` INT NOT NULL COMMENT '리뷰 키', -- 리뷰 키
+	`id_shopper`       INT NOT NULL COMMENT '구매자', -- 구매자
+	`id_product`       INT NOT NULL COMMENT '제품키' -- 제품키
 )
 COMMENT '실거래';
 
@@ -242,7 +300,6 @@ COMMENT '멤버판매자';
 
 -- 멤버구매자
 CREATE TABLE `daangn`.`member_shopper` (
-	`id_member`    INT NOT NULL COMMENT '멤버 키', -- 멤버 키
 	`id_real_deal` INT NOT NULL COMMENT '거래키' -- 거래키
 )
 COMMENT '멤버구매자';
@@ -267,7 +324,9 @@ ALTER TABLE `daangn`.`manner_log`
 CREATE TABLE `daangn`.`memberaddr` (
 	`id_member_addr` INT          NOT NULL COMMENT '주소키', -- 주소키
 	`id_member`      INT          NOT NULL COMMENT '멤버 키', -- 멤버 키
-	`addr`           VARCHAR(200) NOT NULL COMMENT '주소' -- 주소
+	`addr`           VARCHAR(200) NOT NULL COMMENT '주소', -- 주소
+	`distance`       INT          NOT NULL DEFAULT 0 COMMENT '거리', -- 거리
+	`select`         VARCHAR(2)   NOT NULL DEFAULT "Y" COMMENT '선택여부' -- 선택여부
 )
 COMMENT '주소';
 
@@ -323,12 +382,32 @@ ALTER TABLE `daangn`.`log`
 
 -- 판매자후기
 ALTER TABLE `daangn`.`seller_review`
-	ADD CONSTRAINT `FK_real_deal_TO_seller_review` -- 실거래 -> 판매자후기
+	ADD CONSTRAINT `FK_member_TO_seller_review` -- 멤버 -> 판매자후기
 		FOREIGN KEY (
-			`id_real_deal` -- 거래키
+			`id_seller` -- 판매자
 		)
-		REFERENCES `daangn`.`real_deal` ( -- 실거래
-			`id_real_deal` -- 거래키
+		REFERENCES `daangn`.`member` ( -- 멤버
+			`id_member` -- 멤버 키
+		);
+
+-- 실거래
+ALTER TABLE `daangn`.`real_deal`
+	ADD CONSTRAINT `FK_seller_review_TO_real_deal` -- 판매자후기 -> 실거래
+		FOREIGN KEY (
+			`id_review_seller` -- 리뷰 키
+		)
+		REFERENCES `daangn`.`seller_review` ( -- 판매자후기
+			`id_review_seller` -- 리뷰 키
+		);
+
+-- 실거래
+ALTER TABLE `daangn`.`real_deal`
+	ADD CONSTRAINT `FK_member_TO_real_deal` -- 멤버 -> 실거래
+		FOREIGN KEY (
+			`id_shopper` -- 구매자
+		)
+		REFERENCES `daangn`.`member` ( -- 멤버
+			`id_member` -- 멤버 키
 		);
 
 -- 실거래
@@ -449,16 +528,6 @@ ALTER TABLE `daangn`.`member_seller`
 		)
 		REFERENCES `daangn`.`real_deal` ( -- 실거래
 			`id_real_deal` -- 거래키
-		);
-
--- 멤버구매자
-ALTER TABLE `daangn`.`member_shopper`
-	ADD CONSTRAINT `FK_member_TO_member_shopper` -- 멤버 -> 멤버구매자
-		FOREIGN KEY (
-			`id_member` -- 멤버 키
-		)
-		REFERENCES `daangn`.`member` ( -- 멤버
-			`id_member` -- 멤버 키
 		);
 
 -- 멤버구매자

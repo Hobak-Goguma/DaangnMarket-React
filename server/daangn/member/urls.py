@@ -10,7 +10,8 @@ urlpatterns = [
     path('member/search', views.member_search, name='member_search'),
     path('member/<id_member>', views.member_detail, name='member_detail'),
     path('member/touch/<id_member>', views.member_touch, name='member_touch'),
-    path('product/search', views.product_search, name='prduct_search'),
+    path('product/search', views.location_search, name='location_search'),
+    # path('product/search', views.product_search, name='prduct_search'),
     path('member/addr/create', views.member_addr_create, name='member_addr_create'),
     path('member/addr/<id_member>', views.member_addr, name='member_addr'),
     path('product/search/category', views.product_category, name='product_category'),
@@ -22,10 +23,8 @@ urlpatterns = [
     path('wishlist', views.wishlist_list, name='wishlist_list'),
     path('wishlist/<id_member>', views.wishlist_detail, name='wishlist_detail'),
     path('product/selling/<id_member>', views.selling_product_list, name='selling_product_list'),
-    path('realdeal', views.realdeal_list, name='realdeal_list'),
-    path('realdeal/<id_product>', views.realdeal_detail, name='realdeal_detail'),
-    path('sellerreview', views.seller_review, name='seller_review_list'),
-    path('shopperreview', views.shopper_review, name='shopper_review_list'),
+    path('review/seller', views.seller_review, name='seller_review_list'),
+    path('review/shopper', views.shopper_review, name='shopper_review_list'),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
