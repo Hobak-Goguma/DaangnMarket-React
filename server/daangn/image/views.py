@@ -8,8 +8,8 @@ import json
 from django.http import JsonResponse
 from sorl.thumbnail import get_thumbnail
 from sorl.thumbnail import delete
-from django.forms import modelformset_factory
-
+from PIL import Image
+import os, sys
 
 
 @api_view(('POST', 'DELETE'))
@@ -36,9 +36,14 @@ def upload_file(request):
                     id_product = form['id_product']
                     photo = UploadFileModel(image=image, title=title, id_product=id_product)
             # file is saved
-            form.save()
+            fileURL = form.save()
+            
+            # im = Image.open('.' + str(fileURL))
+            # f, e = os.path.splitext(im.filename)
+            # im.save(f + '.jpg')
+
             return Response(status=status.HTTP_200_OK)
-    
+   
     elif request.method == 'DELETE':
         data = request.body.decode('utf-8')
         received_json_data = json.loads(data)
