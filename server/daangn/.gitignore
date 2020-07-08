@@ -1,9 +1,9 @@
 /member/__pycache__/
 /member/migrations/__pycache__/
-/image/__pycache__/
-/image/migrations/__pycache__/
+
 /__pycache__/
 /daangn/__pycache__/
 /daangn/settings.py
 
-
+/image/__pycache__/
+/image/migrations/__pycache__/

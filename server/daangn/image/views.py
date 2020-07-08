@@ -8,6 +8,7 @@ import json
 from django.http import JsonResponse
 from sorl.thumbnail import get_thumbnail
 from sorl.thumbnail import delete
+from django.forms import modelformset_factory
 
 
 
@@ -22,19 +23,21 @@ def upload_file(request):
         - id_product : Product 외래키
         - image : 업로드 할 이미지
     """
+    ImageFormSet = modelformset_factory(UploadFileModel, form=UploadFileForm, extra=3)
+
     if request.method == 'POST':
-        form = UploadFileForm(request.POST, request.FILES)
-        if form.is_valid():
+        image_form = UploadFileForm(request.POST, request.FILES, queryset=UploadFileModel.objects.none())
+        if image_form.is_valid():
+            
+            for form in image_form.cleaned_data:
+                if form:
+                    image = form['image']
+                    title = form['title']
+                    id_product = form['id_product']
+                    photo = UploadFileModel(image=image, title=title, id_product=id_product)
             # file is saved
             form.save()
             return Response(status=status.HTTP_200_OK)
-    # else:
-    #     form = ModelFormWithFileField()
-    #     return Response(status=status.HTTP_404_NOT_FOUND)
-    # return Response(status=status.HTTP_404_NOT_FOUND)
-
-    # return render(request, 'image/upload.html', {'form': form})
-
     
     elif request.method == 'DELETE':
         data = request.body.decode('utf-8')
@@ -48,6 +51,21 @@ def upload_file(request):
                 }
         return Response(content ,status=status.HTTP_204_NO_CONTENT)
 
+
+'''
+    if request.method == 'POST':
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            # file is saved
+            form.save()
+            return Response(status=status.HTTP_200_OK)
+        # else:
+        #     form = ModelFormWithFileField()
+        #     return Response(status=status.HTTP_404_NOT_FOUND)
+        # return Response(status=status.HTTP_404_NOT_FOUND)
+
+        # return render(request, 'image/upload.html', {'form': form})
+'''
 
 @api_view(('GET',))
 def productThumbnail(request, id_product):
