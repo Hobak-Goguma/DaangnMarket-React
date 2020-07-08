@@ -15,6 +15,7 @@ class Company(models.Model):
     udate = models.DateTimeField(auto_now=True)
 
     class Meta:
+        managed = False
         db_table = 'company'
 
 
@@ -25,6 +26,7 @@ class Location(models.Model):
     gu = models.CharField(max_length=20)
 
     class Meta:
+        managed = False
         db_table = 'location'
 
 
@@ -46,6 +48,7 @@ class Log(models.Model):
     cdate = models.DateTimeField(auto_now_add=True)
 
     class Meta:
+        managed = False
         db_table = 'log'
 
 
@@ -57,6 +60,7 @@ class Manner(models.Model):
     udate = models.DateTimeField(auto_now=True)
 
     class Meta:
+        managed = False
         db_table = 'manner'
 
 
@@ -67,6 +71,7 @@ class MannerLog(models.Model):
     cdate = models.DateTimeField(auto_now_add=True)
 
     class Meta:
+        managed = False
         db_table = 'manner_log'
 
 
@@ -75,6 +80,7 @@ class MannerReviewer(models.Model):
     reviewer = models.ForeignKey('Member', models.DO_NOTHING, db_column='reviewer')
 
     class Meta:
+        managed = False
         db_table = 'manner_reviewer'
 
 
@@ -94,6 +100,7 @@ class Member(models.Model):
     img = models.CharField(max_length=500, blank=True, null=True)
 
     class Meta:
+        managed = False
         db_table = 'member'
 
 
@@ -105,6 +112,7 @@ class Memberaddr(models.Model):
     select = models.CharField(max_length=8, default="Y")
 
     class Meta:
+        managed = False
         db_table = 'memberaddr'
 
 
@@ -123,6 +131,7 @@ class Product(models.Model):
     udate = models.DateTimeField(auto_now=True)
 
     class Meta:
+        managed = False
         db_table = 'product'
 
 
@@ -133,6 +142,7 @@ class Rate(models.Model):
     score = models.FloatField()
 
     class Meta:
+        managed = False
         db_table = 'rate'
 
 
@@ -141,7 +151,9 @@ class RealDeal(models.Model):
     id_review_seller = models.ForeignKey('SellerReview', models.DO_NOTHING, db_column='id_review_seller')
     id_shopper = models.ForeignKey(Member, models.DO_NOTHING, db_column='id_shopper')
     id_product = models.ForeignKey(Product, models.DO_NOTHING, db_column='id_product')
+
     class Meta:
+        managed = False
         db_table = 'real_deal'
 
 
@@ -150,6 +162,7 @@ class SellerRate(models.Model):
     id_rate = models.ForeignKey(Rate, models.DO_NOTHING, db_column='id_rate')
 
     class Meta:
+        managed = False
         db_table = 'seller_rate'
 
 
@@ -160,6 +173,7 @@ class SellerReview(models.Model):
     cdate = models.DateTimeField(auto_now_add=True)
     
     class Meta:
+        managed = False
         db_table = 'seller_review'
 
 
@@ -168,6 +182,7 @@ class ShopperRate(models.Model):
     id_rate = models.ForeignKey(Rate, models.DO_NOTHING, db_column='id_rate')
 
     class Meta:
+        managed = False
         db_table = 'shopper_rate'
 
 
@@ -178,6 +193,7 @@ class ShopperReview(models.Model):
     cdate = models.DateTimeField(auto_now_add=True)
 
     class Meta:
+        managed = False
         db_table = 'shopper_review'
 
 
@@ -188,4 +204,5 @@ class Wishlist(models.Model):
     cdate = models.DateTimeField(auto_now_add=True)
 
     class Meta:
+        managed = False
         db_table = 'wishlist'
