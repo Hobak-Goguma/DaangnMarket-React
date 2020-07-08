@@ -10,7 +10,7 @@ from sorl.thumbnail import get_thumbnail
 from sorl.thumbnail import delete
 from PIL import Image
 import os, sys
-
+from django.forms import modelformset_factory
 
 @api_view(('POST', 'DELETE'))
 def upload_file(request):
@@ -23,26 +23,16 @@ def upload_file(request):
         - id_product : Product 외래키
         - image : 업로드 할 이미지
     """
-    ImageFormSet = modelformset_factory(UploadFileModel, form=UploadFileForm, extra=3)
+    # 이미지 업로드 제한갯수 최대 10개 (try)
+    # ImageFormSet = modelformset_factory(UploadFileModel, form=UploadFileForm, extra=10)
 
     if request.method == 'POST':
-        image_form = UploadFileForm(request.POST, request.FILES, queryset=UploadFileModel.objects.none())
-        if image_form.is_valid():
-            
-            for form in image_form.cleaned_data:
-                if form:
-                    image = form['image']
-                    title = form['title']
-                    id_product = form['id_product']
-                    photo = UploadFileModel(image=image, title=title, id_product=id_product)
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
             # file is saved
             fileURL = form.save()
-            
-            # im = Image.open('.' + str(fileURL))
-            # f, e = os.path.splitext(im.filename)
-            # im.save(f + '.jpg')
 
-            return Response(status=status.HTTP_200_OK)
+            return Response(request, status=status.HTTP_200_OK)
    
     elif request.method == 'DELETE':
         data = request.body.decode('utf-8')

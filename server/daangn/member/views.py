@@ -273,7 +273,17 @@ def product_list(request):
     상품을 모두 보여주거나 새 상품리스트를 만듭니다.
     
     ---
-    # 내용
+    # form/data OR json/data
+        - id_product : seq key 
+        - id_member : 상품을 올린 member 외래키
+        - name : 상품 제목
+        - price : 상품 가격
+        - info : 상품 내용
+        - category : 상품 카테고리
+        - views : 상품 조회수
+        - state : '판매중' / '예약중' / '판매완료' 텍스트로 
+        - addr : 판매가 이루어질 장소 (동설정까지만 가능)
+        - image : 리스트형식의 이미지 URLs
 
     """
     if request.method == 'GET':
@@ -295,18 +305,24 @@ def product_detail(request, id_product):
     제품 상세 조회, 업데이트, 삭제
         
     ---
-    # 내용
-        - id_product : seq key 
-        - id_member : 상품을 올린 member 외래키
+    # parameter
+        - s = 사진픽셀 크기 ex) 400x400
+        - q = 사진품질 ex) 1~100 당근마켓은 82
+
+    # 수정가능 목록 form/data OR json/data
         - name : 상품 제목
         - price : 상품 가격
         - info : 상품 내용
         - category : 상품 카테고리
-        - views : 상품 조회수
-        - state : '판매중' / '예약중' / '판매완료' 텍스트로 
         - addr : 판매가 이루어질 장소 (동설정까지만 가능)
-        - image : 리스트형식의 이미지 URLs
+    
+    # 내용 
+        image : {
+        - thum : 사진 썸네일
+        - origin : 사진 원본
+        }
     """
+
     try:
         product = Product.objects.get(pk=id_product)
     except Product.DoesNotExist:
@@ -327,15 +343,20 @@ def product_detail(request, id_product):
         s = request.GET['s']
         q = int(request.GET['q'])
         Data = UploadFileModel.objects.filter(id_product=id_product)
-        
+
         imageList=[]
         originList=[]
+        imageData={}
+        imageDict={}
         for i in range(Data.count()):
-            imageList.append(request.META['HTTP_HOST'] + '/image' + get_thumbnail(Data[i].image, s, crop='center', quality=q).url)
-            originList.append(request.META['HTTP_HOST'] + '/image/media/' + str(Data[i].image))
+            imageDict['thum'] = request.META['HTTP_HOST'] + '/image' + get_thumbnail(Data[i].image, s, crop='center', quality=q).url
+            imageDict['origin'] = request.META['HTTP_HOST'] + '/image/media/' + str(Data[i].image)
+            imageList.append(imageDict)
+            imageDict={}
+                
         content = serializer.data
         content['image'] = imageList
-        content['origin'] = originList
+
         return Response(content, status=status.HTTP_200_OK)
 
     elif request.method == 'PUT':

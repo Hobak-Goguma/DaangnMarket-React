@@ -37,9 +37,8 @@ class ProductSerializer(serializers.ModelSerializer):
 class ProductTouchSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ('id_product', 'id_member', 'name', 'price', 'info', 'category', 'img', 'views', 'state', 'addr')
-        read_only_fields = ['id_member', 'views', 'state']
-
+        fields = ('id_product', 'id_member', 'name', 'price', 'info', 'category', 'views', 'state', 'addr')
+        read_only_fields = ['id_product','id_member', 'views', 'state']
 
 class LoginSerializer(serializers.ModelSerializer):
     last_date = serializers.DateTimeField(default=timezone.now)
