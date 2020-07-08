@@ -342,11 +342,9 @@ def product_detail(request, id_product):
 
         s = request.GET['s']
         q = int(request.GET['q'])
-        Data = UploadFileModel.objects.filter(id_product=id_product)
+        Data = Product_image.objects.filter(id_product=id_product)
 
         imageList=[]
-        originList=[]
-        imageData={}
         imageDict={}
         for i in range(Data.count()):
             imageDict['thum'] = request.META['HTTP_HOST'] + '/image' + get_thumbnail(Data[i].image, s, crop='center', quality=q).url
@@ -552,7 +550,6 @@ def wishlist_detail(request, id_member):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-
 @api_view(['GET'])
 def location_search(request):
     '''
@@ -568,6 +565,7 @@ def location_search(request):
     addr = request.GET['addr']
     dis = request.GET['dis']
     Search = request.GET['q']
+
     try :
         Location.objects.get(dong = addr)
     except Location.DoesNotExist:

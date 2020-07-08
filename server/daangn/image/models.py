@@ -7,10 +7,10 @@ from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFill
 
 
-class UploadFileModel(models.Model):
+class Product_image(models.Model):
     def __str__(self):
         return self.image.url
-    id_productImg = models.AutoField(primary_key=True)
+    id_product_img = models.AutoField(primary_key=True)
     id_product = models.ForeignKey(Product, on_delete = models.CASCADE, db_column='id_product')
     title = models.CharField(default='', max_length=50)
     image = ProcessedImageField(
@@ -25,4 +25,4 @@ class UploadFileModel(models.Model):
 
     def delete(self, *args, **kargs):
         os.remove(os.path.join(settings.MEDIA_ROOT, self.file.path))
-        super(UploadFileModel, self).delete(*args, **kargs)
+        super(Product_image, self).delete(*args, **kargs)

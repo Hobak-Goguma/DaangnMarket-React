@@ -27,18 +27,18 @@ def upload_file(request):
     # ImageFormSet = modelformset_factory(UploadFileModel, form=UploadFileForm, extra=10)
 
     if request.method == 'POST':
-        form = UploadFileForm(request.POST, request.FILES)
+        form = ProductUploadFileForm(request.POST, request.FILES)
         if form.is_valid():
             # file is saved
             fileURL = form.save()
 
-            return Response(request, status=status.HTTP_200_OK)
+            return Response(status=status.HTTP_200_OK)
    
     elif request.method == 'DELETE':
         data = request.body.decode('utf-8')
         received_json_data = json.loads(data)
         Title = received_json_data['title']
-        q = UploadFileModel.objects.get(title = Title)
+        q = Product_image.objects.get(title = Title)
         q.delete()
         content = {
             "message" : "삭제 완료",
@@ -75,7 +75,7 @@ def productThumbnail(request, id_product):
     if request.method == 'GET':
         s = request.GET['s']
         q = int(request.GET['q'])
-        Data = UploadFileModel.objects.filter(id_product=id_product)
+        Data = Product_image.objects.filter(id_product=id_product)
         imageList=[]
         for i in range(Data.count()):
             imageList.append(request.META['HTTP_HOST'] + '/image' + get_thumbnail(Data[i].image, s, crop='center', quality=q).url)
