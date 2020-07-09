@@ -624,15 +624,13 @@ def selling_product_list(request, id_member):
 def test(request):
     """
     테스트용 api
-    """
+    """ 
     if request.method == 'GET':
         product = Product.objects.filter(id_product=1)
         print(product)
-        serializer = ProductSearchSerializer(product, many=True)
-        return Response(serializer.data)
-
-
-    return Response(status=status.HTTP_200_OK)
+        serializer = ProductSearchSerializer(product, many=True) 
+        print(serializer)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])

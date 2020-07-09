@@ -129,6 +129,14 @@ class Product(models.Model):
     cdate = models.DateTimeField(auto_now_add=True)
     udate = models.DateTimeField(auto_now=True)
 
+    # @property
+    # def image_code(self):
+    #     image_field = self.image_info.filter()
+    #     print('----------------------------------------------')
+    #     if image_field.exists():
+    #         return image_field.first().code
+    #     return ''
+
     class Meta:
         managed = False
         db_table = 'product'
