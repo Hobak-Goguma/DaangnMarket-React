@@ -575,7 +575,7 @@ def location_search(request):
             "result" : {}
                 }
         return Response(content, status=status.HTTP_400_BAD_REQUEST) 
-    location = NearbyLocation.objects.filter(dong = addr).filter(distance = dis)
+    location = Nearby_Location.objects.filter(dong = addr).filter(distance = dis)
     if location.count() == 0:
         content = {
             "message" : "없는 거리값입니다",
@@ -604,7 +604,7 @@ def location_search(request):
         return paginator.get_paginated_response(serializers.data)
 
     # 페이지 파라미터 없을 경우
-    serializer = ProductSerializer(product_sum, many =True)
+    serializer = ProductSearchSerializer(product_sum, many =True)
     return Response(serializer.data)
 
 @api_view(['GET'])
@@ -625,6 +625,13 @@ def test(request):
     """
     테스트용 api
     """
+    if request.method == 'GET':
+        product = Product.objects.filter(id_product=1)
+        print(product)
+        serializer = ProductSearchSerializer(product, many=True)
+        return Response(serializer.data)
+
+
     return Response(status=status.HTTP_200_OK)
 
 

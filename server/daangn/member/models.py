@@ -30,7 +30,7 @@ class Location(models.Model):
         db_table = 'location'
 
 
-class NearbyLocation(models.Model):
+class Nearby_Location(models.Model):
     dong = models.OneToOneField(Location, models.DO_NOTHING, db_column='dong', primary_key=True, unique=True)
     nearby_dong = models.CharField(max_length=20)
     distance = models.IntegerField()
@@ -123,7 +123,6 @@ class Product(models.Model):
     price = models.IntegerField(default=0)
     info = models.CharField(max_length=3000)
     category = models.CharField(max_length=15, blank=True, null=True)
-    img = models.CharField(max_length=2000, blank=True, null=True)
     views = models.IntegerField(default=0)
     state = models.CharField(max_length=10, default = '판매중')
     addr = models.CharField(max_length=200)

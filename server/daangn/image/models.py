@@ -10,8 +10,8 @@ from imagekit.processors import ResizeToFill
 class Product_image(models.Model):
     def __str__(self):
         return self.image.url
+    id_product = models.ForeignKey(Product, models.CASCADE, db_column='id_product')
     id_product_img = models.AutoField(primary_key=True)
-    id_product = models.ForeignKey(Product, on_delete = models.CASCADE, db_column='id_product')
     title = models.CharField(default='', max_length=50)
     image = ProcessedImageField(
         null=True, 

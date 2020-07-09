@@ -33,17 +33,20 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = ('id_product', 'id_member', 'name', 'price', 'info', 'category', 'views', 'state', 'addr')
 
+
 class ProductImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product_image
         fields = ('id_product_img', 'title', 'image', 'id_product')
 
+
 class ProductSearchSerializer(serializers.ModelSerializer):
+    print("---------------------------------1-------------------------------------")
+    id_product = ProductImageSerializer(read_only = True)
+    print(id_product)
     class Meta:
         model = Product
-        fields = ('id_product', 'id_member', 'name', 'price', 'info', 'category', 'views', 'state', 'addr', 'image')
-        id_product = ProductImageSerializer(read_only = True)
-
+        fields = ('id_product', 'id_member', 'name', 'price', 'info', 'category', 'views', 'state', 'addr')
 
 class ProductTouchSerializer(serializers.ModelSerializer):
     class Meta:
