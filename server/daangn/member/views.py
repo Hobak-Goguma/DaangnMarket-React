@@ -76,7 +76,6 @@ def member_detail(request, id_member):
         return Response(content ,status=status.HTTP_204_NO_CONTENT)
 
 
-
 @api_view(['POST'])
 def member_addr_create(request):
     """
@@ -93,28 +92,71 @@ def member_addr_create(request):
         id_member = received_json_data['id_member']
         addr = received_json_data['addr']
         Person = Memberaddr.objects.filter(id_member = id_member)
-        if Person.count() < 2 :
+        #주소 유효성 검사
+        try :
+            Location.objects.get(dong = addr)
+        except Location.DoesNotExist:
+            content = {
+                "message" : "없는 주소입니다",
+                "result" : {}
+                    }
+            return Response(content, status=status.HTTP_400_BAD_REQUEST) 
+        #Case 1. 주소가 0개인 회원
+        if Person.count() == 0 :
+            serializer = memberAddrSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        #Case 2. 주소가 1개인 회원
+        elif Person.count() == 1 :
+            #중복체크
             try:
                 overlap = Person.get(addr = addr)
                 content = {
                 "message" : "중복된 주소가 있습니다.",
                 "result" : {"id_member = " + str(id_member) : addr}
                 }
+            #중복 없을 때
             except Memberaddr.DoesNotExist:
+                #기존에 있던 주소의 선택사항은 "선택안함"
+                select = Person.get(id_member = id_member)
+                select.select = "N"
+                select.save()
+                #새로운 주소 등록
                 serializer = memberAddrSerializer(data=request.data)
                 if serializer.is_valid():
                     serializer.save()
                     return Response(serializer.data, status=status.HTTP_201_CREATED)
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             return Response(content, status=status.HTTP_409_CONFLICT)
                     # return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-
         elif Person.count() >= 2 : 
             content = {
             "message" : "허용된 주소의 갯수는 2개입니다.",
             "result" : {}
                 }
             return Response(content, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+def member_addr_select(request, id_member):
+    """
+    특정멤버 주소 선택 & 거리 견경
+    """
+    Data = json.loads(request.body)
+    #해당 멤버의 주소를 모두 N 으로 바꿈
+    member = Memberaddr.objects.filter(id_member = id_member)
+    member.update(select = "N")
+    addr = Data['addr']
+    dis = Data['dis']
+    #받은 주소의 선택값 "Y", 거리 변경
+    addrselect = member.get(addr = addr)
+    addrselect.select = "Y"
+    addrselect.distance = dis
+    addrselect.save()
+    serializer = memberAddrSerializer(member, many=True)
+    return Response(serializer.data ,status=status.HTTP_404_NOT_FOUND)
 
 
 @api_view(['GET', 'DELETE'])
@@ -126,7 +168,7 @@ def member_addr(request, id_member):
     memberAddr = Memberaddr.objects.filter(id_member=id_member)
     if memberAddr.count() == 0:
         content = {
-            "message" : "없는 사용자 입니다.",
+            "message" : "사용자가 설정한 주소가 없습니다.",
             "result" : {}
                 }
         return Response(content, status=status.HTTP_404_NOT_FOUND)
@@ -143,8 +185,19 @@ def member_addr(request, id_member):
         data = request.body.decode('utf-8')
         received_json_data = json.loads(data)
         Addr = received_json_data['addr']
+        memberaddr = Memberaddr.objects.filter(id_member = id_member)
+        #1개인 경우 삭제 불가
+        if memberaddr.count() <= 1 :
+            content = {
+                "message" : "동네가 1개만 선택된 상태에서는 삭제를 할 수 없습니다.",
+                "result" : {"addr" : Addr}
+                }
+            return Response(content, status=status.HTTP_202_ACCEPTED)
+        #삭제
         q = memberAddr.get(addr = Addr)
         q.delete()
+        #다른 주소는 Y로 변경
+        Memberaddr.objects.filter(id_member = id_member).update(select = "Y")
         content = {
             "message" : "삭제 완료",
             "result" : {"addr" : Addr}
@@ -561,51 +614,86 @@ def location_search(request):
     
     # 페이지 사이즈를 page_size라는 이름의 파라미터로 받을 거임
     paginator.page_size_query_param = "page_size"
-
-    # GET방식으로 데이터 address, distance 그리고 검색어를 보냄.
-    addr = request.GET['addr']
-    dis = request.GET['dis']
     Search = request.GET['q']
 
-    try :
-        Location.objects.get(dong = addr)
-    except Location.DoesNotExist:
-        content = {
-            "message" : "없는 주소입니다",
-            "result" : {}
-                }
-        return Response(content, status=status.HTTP_400_BAD_REQUEST) 
-    location = Nearby_Location.objects.filter(dong = addr).filter(distance = dis)
-    if location.count() == 0:
-        content = {
-            "message" : "없는 거리값입니다",
-            "result" : {}
-                }
-        return Response(content, status=status.HTTP_400_BAD_REQUEST)
-    product_sum = Product.objects.filter(name__contains = Search).filter(addr = addr)
-    for i in location :
-        product = Product.objects.filter(name__contains = Search).filter(addr = i.nearby_dong)
+    #회원 검색
+    if 'id-member' in request.headers :
+        #주소 유무 체크 
+        try : 
+            memberaddr = Memberaddr.objects.filter(id_member = request.headers['id_member']).get(select = 'Y')
+            addr =  memberaddr.addr
+            dis = memberaddr.distance
+        #설정된 주소가 없을 
+        except Memberaddr.DoesNotExist :
+            product = Product.objects.filter(name__contains = Search)
+            if product.count() == 0 :
+                content = {
+                "message" : "검색한 제품이 없습니다.",
+                "result" : {"입력한 검색어" : Search}
+                    }
+                return Response(content,status=status.HTTP_204_NO_CONTENT)
+            serializer = ProductSearchSerializer(product, many=True)
+            # 페이지 적용된 쿼리셋
+            paginated_product = paginator.paginate_queryset(product, request)
+            # 페이지 파라미터 (page, page_size) 있을 경우
+            # page_size 만 있을 경우 page=1 처럼 동작함
+            # page만 있을 경우 아래 if문 안 탐
+            if paginated_product is not None:
+                serializers = ProductSearchSerializer(paginated_product, many=True)
+                return paginator.get_paginated_response(serializers.data)
 
-        product_sum = product_sum | product
-    if product_sum.count() == 0 :
-        content = {
+            # # 페이지 파라미터 없을 경우
+            serializer = ProductSearchSerializer(product_sum, many =True)
+            return Response(serializer.data)
+
+        #근처 주소 검색
+        location = NearbyLocation.objects.filter(dong = addr).filter(distance = dis)
+        product_sum = Product.objects.filter(name__contains = Search).filter(addr = addr)
+        for i in location :
+            product = Product.objects.filter(name__contains = Search).filter(addr = i.nearby_dong)
+            product_sum = product_sum | product
+        if product_sum.count() == 0 :
+            content = {
+                "message" : "검색한 제품이 없습니다.",
+                "result" : {"입력한 검색어" : Search}
+                    }
+            return Response(content,status=status.HTTP_204_NO_CONTENT)
+        # 페이지 적용된 쿼리셋
+        paginated_product_sum = paginator.paginate_queryset(product_sum, request)
+        # 페이지 파라미터 (page, page_size) 있을 경우
+        # page_size 만 있을 경우 page=1 처럼 동작함
+        # page만 있을 경우 아래 if문 안 탐
+        if paginated_product_sum is not None:
+            serializers = ProductSearchSerializer(paginated_product_sum, many=True)
+            return paginator.get_paginated_response(serializers.data)
+
+        # # 페이지 파라미터 없을 경우
+        serializer = ProductSearchSerializer(product_sum, many =True)
+        return Response(serializer.data)
+    #비회원
+    else : 
+        #모든 제품 검색
+        product = Product.objects.filter(name__contains = Search)
+        if product.count() == 0 :
+            content = {
             "message" : "검색한 제품이 없습니다.",
             "result" : {"입력한 검색어" : Search}
                 }
-        return Response(content,status=status.HTTP_204_NO_CONTENT)
+            return Response(content,status=status.HTTP_204_NO_CONTENT)
+        serializer = ProductSearchSerializer(product, many=True)
+        # 페이지 적용된 쿼리셋
+        paginated_product = paginator.paginate_queryset(product, request)
+        # 페이지 파라미터 (page, page_size) 있을 경우
+        # page_size 만 있을 경우 page=1 처럼 동작함
+        # page만 있을 경우 아래 if문 안 탐
+        if paginated_product is not None:
+            serializers = ProductSearchSerializer(paginated_product, many=True)
+            return paginator.get_paginated_response(serializers.data)
 
-    # 페이지 적용된 쿼리셋
-    paginated_product_sum = paginator.paginate_queryset(product_sum, request)
-    # 페이지 파라미터 (page, page_size) 있을 경우
-    # page_size 만 있을 경우 page=1 처럼 동작함
-    # page만 있을 경우 아래 if문 안 탐
-    if paginated_product_sum is not None:
-        serializers = ProductSearchSerializer(paginated_product_sum, many=True)
-        return paginator.get_paginated_response(serializers.data)
+        # # 페이지 파라미터 없을 경우
+        serializer = ProductSearchSerializer(product_sum, many =True)
+        return Response(serializer.data)
 
-    # 페이지 파라미터 없을 경우
-    serializer = ProductSearchSerializer(product_sum, many =True)
-    return Response(serializer.data)
 
 @api_view(['GET'])
 def selling_product_list(request, id_member):
