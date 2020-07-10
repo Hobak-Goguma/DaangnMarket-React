@@ -20,8 +20,8 @@ class Product_image(models.Model):
         )
 
     @property
-    def thum(self):
-        return self.image.first() 
+    def thum_first(self):
+        return self.image.filter()
 
 # TODO 확장자 화이트 리스트 함수 작성 
 

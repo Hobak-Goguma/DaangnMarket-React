@@ -600,7 +600,7 @@ def location_search(request):
     # page_size 만 있을 경우 page=1 처럼 동작함
     # page만 있을 경우 아래 if문 안 탐
     if paginated_product_sum is not None:
-        serializers = ProductSerializer(paginated_product_sum, many=True)
+        serializers = ProductSearchSerializer(paginated_product_sum, many=True)
         return paginator.get_paginated_response(serializers.data)
 
     # 페이지 파라미터 없을 경우
@@ -627,10 +627,15 @@ def test(request):
     """ 
     if request.method == 'GET':
         product = Product.objects.filter(id_product=1)
-        print(product)
         serializer = ProductSearchSerializer(product, many=True) 
-        print(serializer)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    # if request.method == 'GET':
+    #     product = Product_image.objects.filter(id_product=1)
+    #     print(product)
+    #     serializer = ProductImageSerializer(product, many=True) 
+    #     print(serializer)
+    #     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])

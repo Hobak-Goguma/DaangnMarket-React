@@ -35,7 +35,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
 
 class ProductImageSerializer(serializers.ModelSerializer):
-
+    
     class Meta:
         model = Product_image
         fields = ('image',)
@@ -43,6 +43,7 @@ class ProductImageSerializer(serializers.ModelSerializer):
 
 class ProductSearchSerializer(serializers.ModelSerializer):
     thum = ProductImageSerializer(many=True)
+    # thum_first = ProductImageSerializer(read_only=True)
     class Meta:
         model = Product
         fields = ('id_product', 'id_member', 'name', 'price', 'info', 'category', 'views', 'state', 'addr', 'thum')
