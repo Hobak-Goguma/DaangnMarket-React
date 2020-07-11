@@ -624,6 +624,7 @@ def location_search(request):
     # 페이지 사이즈를 page_size라는 이름의 파라미터로 받을 거임
     paginator.page_size_query_param = "page_size"
     Search = request.GET['q']
+
     #회원 검색
     if 'id-member' in request.headers :
         #주소 유무 체크 
@@ -640,18 +641,18 @@ def location_search(request):
                 "result" : {"입력한 검색어" : Search}
                     }
                 return Response(content,status=status.HTTP_204_NO_CONTENT)
-            serializer = ProductSerializer(product, many=True)
+            serializer = ProductSearchSerializer(product, many=True)
             # 페이지 적용된 쿼리셋
             paginated_product = paginator.paginate_queryset(product, request)
             # 페이지 파라미터 (page, page_size) 있을 경우
             # page_size 만 있을 경우 page=1 처럼 동작함
             # page만 있을 경우 아래 if문 안 탐
             if paginated_product is not None:
-                serializers = ProductSerializer(paginated_product, many=True)
+                serializers = ProductSearchSerializer(paginated_product, many=True)
                 return paginator.get_paginated_response(serializers.data)
 
             # # 페이지 파라미터 없을 경우
-            serializer = ProductSerializer(product_sum, many =True)
+            serializer = ProductSearchSerializer(product_sum, many =True)
             return Response(serializer.data)
 
         #근처 주소 검색
@@ -672,11 +673,11 @@ def location_search(request):
         # page_size 만 있을 경우 page=1 처럼 동작함
         # page만 있을 경우 아래 if문 안 탐
         if paginated_product_sum is not None:
-            serializers = ProductSerializer(paginated_product_sum, many=True)
+            serializers = ProductSearchSerializer(paginated_product_sum, many=True)
             return paginator.get_paginated_response(serializers.data)
 
         # # 페이지 파라미터 없을 경우
-        serializer = ProductSerializer(product_sum, many =True)
+        serializer = ProductSearchSerializer(product_sum, many =True)
         return Response(serializer.data)
     #비회원
     else : 
@@ -688,18 +689,18 @@ def location_search(request):
             "result" : {"입력한 검색어" : Search}
                 }
             return Response(content,status=status.HTTP_204_NO_CONTENT)
-        serializer = ProductSerializer(product, many=True)
+        serializer = ProductSearchSerializer(product, many=True)
         # 페이지 적용된 쿼리셋
         paginated_product = paginator.paginate_queryset(product, request)
         # 페이지 파라미터 (page, page_size) 있을 경우
         # page_size 만 있을 경우 page=1 처럼 동작함
         # page만 있을 경우 아래 if문 안 탐
         if paginated_product is not None:
-            serializers = ProductSerializer(paginated_product, many=True)
+            serializers = ProductSearchSerializer(paginated_product, many=True)
             return paginator.get_paginated_response(serializers.data)
 
         # # 페이지 파라미터 없을 경우
-        serializer = ProductSerializer(product_sum, many =True)
+        serializer = ProductSearchSerializer(product_sum, many =True)
         return Response(serializer.data)
 
 
@@ -720,8 +721,18 @@ def selling_product_list(request, id_member):
 def test(request):
     """
     테스트용 api
-    """
-    return Response(status=status.HTTP_200_OK)
+    """ 
+    if request.method == 'GET':
+        product = Product.objects.filter(id_product=1)
+        serializer = ProductSearchSerializer(product, many=True) 
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    # if request.method == 'GET':
+    #     product = Product_image.objects.filter(id_product=1)
+    #     print(product)
+    #     serializer = ProductImageSerializer(product, many=True) 
+    #     print(serializer)
+    #     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])

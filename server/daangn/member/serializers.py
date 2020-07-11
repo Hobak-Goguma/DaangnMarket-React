@@ -1,6 +1,7 @@
 from django.forms import widgets
 from rest_framework import serializers
 from member.models import *
+from image.models import *
 # from member.serializers import *
 
 class MemberSerializer(serializers.ModelSerializer):
@@ -31,7 +32,21 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = ('id_product', 'id_member', 'name', 'price', 'info', 'category', 'views', 'state', 'addr')
-        
+
+
+class ProductImageSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Product_image
+        fields = ('image',)
+
+
+class ProductSearchSerializer(serializers.ModelSerializer):
+    thum = ProductImageSerializer(many=True)
+    # thum_first = ProductImageSerializer(read_only=True)
+    class Meta:
+        model = Product
+        fields = ('id_product', 'id_member', 'name', 'price', 'info', 'category', 'views', 'state', 'addr', 'thum')
 
 
 class ProductTouchSerializer(serializers.ModelSerializer):

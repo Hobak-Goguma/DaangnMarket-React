@@ -10,14 +10,19 @@ from imagekit.processors import ResizeToFill
 class Product_image(models.Model):
     def __str__(self):
         return self.image.url
+    id_product = models.ForeignKey(Product, on_delete=models.CASCADE, db_column='id_product', related_name='thum')
     id_product_img = models.AutoField(primary_key=True)
-    id_product = models.ForeignKey(Product, on_delete = models.CASCADE, db_column='id_product')
     title = models.CharField(default='', max_length=50)
     image = ProcessedImageField(
         null=True, 
         upload_to="product",
-        format = 'JPEG'
+        format = 'JPEG',
         )
+
+    @property
+    def thum_first(self):
+        return self.image.filter()
+
 # TODO 확장자 화이트 리스트 함수 작성 
 
     # def image_tag(self):
@@ -27,3 +32,5 @@ class Product_image(models.Model):
     def delete(self, *args, **kargs):
         os.remove(os.path.join(settings.MEDIA_ROOT, self.file.path))
         super(Product_image, self).delete(*args, **kargs)
+
+    
