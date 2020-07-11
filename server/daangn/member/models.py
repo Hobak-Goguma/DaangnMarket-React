@@ -21,8 +21,8 @@ class Company(models.Model):
 
 class Location(models.Model):
     dong = models.CharField(primary_key=True, max_length=20)
-    latitude = models.DecimalField(max_digits=10, decimal_places=0)
-    longitude = models.DecimalField(max_digits=10, decimal_places=0)
+    latitude = models.DecimalField(max_digits=11, decimal_places=8)
+    longitude = models.DecimalField(max_digits=11, decimal_places=8)
     gu = models.CharField(max_length=20)
 
     class Meta:
@@ -30,8 +30,8 @@ class Location(models.Model):
         db_table = 'location'
 
 
-class NearbyLocation(models.Model):
-    dong = models.OneToOneField(Location, models.DO_NOTHING, db_column='dong', primary_key=True)
+class Nearby_Location(models.Model):
+    dong = models.OneToOneField(Location, models.DO_NOTHING, db_column='dong', primary_key=True, unique=True)
     nearby_dong = models.CharField(max_length=20)
     distance = models.IntegerField()
 
@@ -120,15 +120,22 @@ class Product(models.Model):
     id_product = models.AutoField(primary_key=True)
     id_member = models.ForeignKey(Member, models.CASCADE, db_column='id_member')
     name = models.CharField(max_length=100)
-    price = models.IntegerField()
+    price = models.IntegerField(default=0)
     info = models.CharField(max_length=3000)
     category = models.CharField(max_length=15, blank=True, null=True)
-    img = models.CharField(max_length=2000, blank=True, null=True)
     views = models.IntegerField(default=0)
     state = models.CharField(max_length=10, default = '판매중')
     addr = models.CharField(max_length=200)
     cdate = models.DateTimeField(auto_now_add=True)
     udate = models.DateTimeField(auto_now=True)
+
+    # @property
+    # def image_code(self):
+    #     image_field = self.image_info.filter()
+    #     print('----------------------------------------------')
+    #     if image_field.exists():
+    #         return image_field.first().code
+    #     return ''
 
     class Meta:
         managed = False
@@ -151,6 +158,7 @@ class RealDeal(models.Model):
     id_review_seller = models.ForeignKey('SellerReview', models.DO_NOTHING, db_column='id_review_seller')
     id_shopper = models.ForeignKey(Member, models.DO_NOTHING, db_column='id_shopper')
     id_product = models.ForeignKey(Product, models.DO_NOTHING, db_column='id_product')
+
     class Meta:
         managed = False
         db_table = 'real_deal'

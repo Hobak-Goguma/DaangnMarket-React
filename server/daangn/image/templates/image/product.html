@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    {% load sorl_thumbnail %}
+    <div class="thumbnail">
+        {% thumbnail Data.image "300x300" crop="center" as im %}
+        <img src="/image{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+        {% endthumbnail %}
+        <!-- <img src="{{ im.url }}" style="width: 100%;"> -->
+    </div>
+</body>
+</html>
