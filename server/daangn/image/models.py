@@ -5,9 +5,12 @@ import os
 from sorl.thumbnail import ImageField
 from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFill
+from rest_framework import serializers
+
+# from member.serializers import ProductImageSerializer
 
 
-class Product_image(models.Model):
+class ProductImage(models.Model):
     def __str__(self):
         return self.image.url
     id_product = models.ForeignKey(Product, on_delete=models.CASCADE, db_column='id_product', related_name='thum')
@@ -18,10 +21,10 @@ class Product_image(models.Model):
         upload_to="product",
         format = 'JPEG',
         )
-
-    @property
-    def thum_first(self):
-        return self.image.filter()
+    
+    # @property
+    # def thum_first(self):
+    #     return self.image.filter()
 
 # TODO 확장자 화이트 리스트 함수 작성 
 
@@ -31,6 +34,8 @@ class Product_image(models.Model):
 
     def delete(self, *args, **kargs):
         os.remove(os.path.join(settings.MEDIA_ROOT, self.file.path))
-        super(Product_image, self).delete(*args, **kargs)
+        super(ProductImage, self).delete(*args, **kargs)
 
-    
+    class Meta:
+        # managed = False
+        db_table = 'image_product_image'

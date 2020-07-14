@@ -3,6 +3,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from member.models import *
+from image.models import ProductImage
 from member.serializers import *
 from django.http import HttpResponse
 from django.utils import timezone
@@ -383,7 +384,7 @@ def product_detail(request, id_product):
     """
 
     try:
-        product = Product.objects.get(pk=id_product)
+        product = Product.objects.get(id_product=id_product)
     except Product.DoesNotExist:
         content = {
             "message" : "없는 물품리스트 입니다.",
@@ -394,15 +395,17 @@ def product_detail(request, id_product):
     #     return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
+        # product = Product.objects.get(id_product=id_product)
+        print('-------------------------------1--------------------------------')
         product.views += 1
         product.save()
-        product = Product.objects.get(pk=id_product)
+        print('-------------------------------1--------------------------------')
         serializer = ProductSerializer(product)
 
         s = request.GET['s']
         q = int(request.GET['q'])
 # TODO 데이터 가져올때, id_product_img기준으로 정렬(오름차순)
-        Data = Product_image.objects.filter(id_product=id_product)
+        Data = ProductImage.objects.filter(id_product=id_product)
 
         imageList=[]
         imageDict={}
@@ -613,9 +616,18 @@ def wishlist_detail(request, id_member):
 
 @api_view(['GET'])
 def location_search(request):
-    '''
+    """
     사용자의 위치에 따른 product 검색
-    '''
+    
+    ---
+    # 내용
+        - q = 검색어
+        - page = 현재 페이지
+        - page_size = 한번에 뿌려주는 상품 갯수
+    # Header 
+        - id-member : header에 id_member를 캐치해서 선택된 addr, dis를 활용한다.
+        * header에 id-member값이 없을경우, 비회원 전체검색 로직
+    """
     # 디폴트 페이지네이션 사용
     paginator = PageNumberPagination()
     
@@ -650,7 +662,7 @@ def location_search(request):
                 return paginator.get_paginated_response(serializers.data)
 
             # # 페이지 파라미터 없을 경우
-            serializer = ProductSerializer(product, many =True)
+            serializer = ProductSearchSerializer(product, many =True)
             return Response(serializer.data)
 
         #근처 주소 검색
@@ -698,7 +710,7 @@ def location_search(request):
             return paginator.get_paginated_response(serializers.data)
 
         # # 페이지 파라미터 없을 경우
-        serializer = ProductSerializer(product, many =True)
+        serializer = ProductSearchSerializer(product, many =True)
 
         return Response(serializer.data)
 
@@ -720,13 +732,18 @@ def selling_product_list(request, id_member):
 def test(request):
     """
     테스트용 api
-    """
+    """ 
+    if request.method == 'GET':
+        product = Product.objects.filter(name__contains = '자전거')
+        serializer = ProductSearchSerializer(product, many=True) 
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     # if request.method == 'GET':
-    #     product = Product_image.objects.filter(id_product=1)
+    #     product = ProductImage.objects.filter(id_product=44).order_by('id_product_img')
+    #     print('=========================================')
     #     print(product)
     #     serializer = ProductImageSerializer(product, many=True) 
-    #     print(serializer)
+    #     # print(serializer)
     #     return Response(serializer.data, status=status.HTTP_200_OK)
 
 

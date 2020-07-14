@@ -1,9 +1,9 @@
 from django import forms
-from .models import Product_image
+from .models import ProductImage
 
 class ProductUploadFileForm(forms.ModelForm):
     class Meta:
-        model = Product_image
+        model = ProductImage
         fields = ('title', 'image', 'id_product')
 
     def __init__(self, *args, **kwargs):
