@@ -3,6 +3,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from member.models import *
+from image.models import ProductImage
 from member.serializers import *
 from django.http import HttpResponse
 from django.utils import timezone
@@ -376,7 +377,7 @@ def product_detail(request, id_product):
     """
 
     try:
-        product = Product.objects.get(pk=id_product)
+        product = Product.objects.get(id_product=id_product)
     except Product.DoesNotExist:
         content = {
             "message" : "없는 물품리스트 입니다.",
@@ -387,15 +388,17 @@ def product_detail(request, id_product):
     #     return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
+        # product = Product.objects.get(id_product=id_product)
+        print('-------------------------------1--------------------------------')
         product.views += 1
         product.save()
-        product = Product.objects.get(pk=id_product)
+        print('-------------------------------1--------------------------------')
         serializer = ProductSerializer(product)
 
         s = request.GET['s']
         q = int(request.GET['q'])
 # TODO 데이터 가져올때, id_product_img기준으로 정렬(오름차순)
-        Data = Product_image.objects.filter(id_product=id_product)
+        Data = ProductImage.objects.filter(id_product=id_product)
 
         imageList=[]
         imageDict={}
@@ -652,7 +655,7 @@ def location_search(request):
                 return paginator.get_paginated_response(serializers.data)
 
             # # 페이지 파라미터 없을 경우
-            serializer = ProductSearchSerializer(product_sum, many =True)
+            serializer = ProductSearchSerializer(product, many =True)
             return Response(serializer.data)
 
         #근처 주소 검색
@@ -700,7 +703,7 @@ def location_search(request):
             return paginator.get_paginated_response(serializers.data)
 
         # # 페이지 파라미터 없을 경우
-        serializer = ProductSearchSerializer(product_sum, many =True)
+        serializer = ProductSearchSerializer(product, many =True)
         return Response(serializer.data)
 
 
@@ -723,15 +726,16 @@ def test(request):
     테스트용 api
     """ 
     if request.method == 'GET':
-        product = Product.objects.filter(id_product=1)
+        product = Product.objects.filter(name__contains = '자전거')
         serializer = ProductSearchSerializer(product, many=True) 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     # if request.method == 'GET':
-    #     product = Product_image.objects.filter(id_product=1)
+    #     product = ProductImage.objects.filter(id_product=44).order_by('id_product_img')
+    #     print('=========================================')
     #     print(product)
     #     serializer = ProductImageSerializer(product, many=True) 
-    #     print(serializer)
+    #     # print(serializer)
     #     return Response(serializer.data, status=status.HTTP_200_OK)
 
 

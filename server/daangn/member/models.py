@@ -26,7 +26,7 @@ class Location(models.Model):
     gu = models.CharField(max_length=20)
 
     class Meta:
-        managed = False
+        # managed = False
         db_table = 'location'
 
 

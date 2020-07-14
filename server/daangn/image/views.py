@@ -1,6 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from .forms import *
+from image.models import ProductImage
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view, renderer_classes
@@ -38,13 +39,13 @@ def upload_file(request):
         data = request.body.decode('utf-8')
         received_json_data = json.loads(data)
         Title = received_json_data['title']
-        q = Product_image.objects.get(title = Title)
+        q = ProductImage.objects.get(title = Title)
         q.delete()
         content = {
             "message" : "삭제 완료",
             "result" : {"title" : Title}
                 }
-        return Response(content ,status=status.HTTP_204_NO_CONTENT)
+        return Response(content, status=status.HTTP_204_NO_CONTENT)
 
 
 '''
@@ -75,7 +76,7 @@ def productThumbnail(request, id_product):
     if request.method == 'GET':
         s = request.GET['s']
         q = int(request.GET['q'])
-        Data = Product_image.objects.filter(id_product=id_product)
+        Data = ProductImage.objects.filter(id_product=id_product)
         imageList=[]
         for i in range(Data.count()):
             imageList.append(request.META['HTTP_HOST'] + '/image' + get_thumbnail(Data[i].image, s, crop='center', quality=q).url)
