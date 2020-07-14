@@ -73,7 +73,7 @@ class ProductSearchSerializer(serializers.ModelSerializer):
             # print(obj.thum)
             # print(_PATH)
             # print(settings.BASE_DIR + str(obj.thum.first()))
-            Data['image'] =   '/image' + get_thumbnail(obj.thum.first().image, '1500x1500', crop='center', quality=82).url
+            Data['image'] =   'http://www.daangn.site/image' + get_thumbnail(obj.thum.first().image, '1500x1500', crop='center', quality=82).url
         # request.META['HTTP_HOST']+
         # self.context['request'].META.get('HTTP_HOST')
         return Data

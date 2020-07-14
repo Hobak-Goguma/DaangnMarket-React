@@ -37,5 +37,5 @@ class ProductImage(models.Model):
         super(ProductImage, self).delete(*args, **kargs)
 
     class Meta:
-        managed = False
+        # managed = False
         db_table = 'image_product_image'
