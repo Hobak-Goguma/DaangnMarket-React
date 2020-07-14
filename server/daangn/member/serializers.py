@@ -128,9 +128,10 @@ class WishlistSerializer(serializers.ModelSerializer):
 
         
 class RealDealSerializer(serializers.ModelSerializer):
+    id_product = ProductSerializer(read_only=True)
     class Meta:
         model = RealDeal
-        fields = ('id_real_deal', 'id_member','id_review_seller')
+        fields = ('id_real_deal','id_review_seller', 'id_shopper', 'id_product')
 
 
 class SellerRateSerializer(serializers.ModelSerializer):
