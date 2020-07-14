@@ -3,6 +3,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from member.models import *
+from image.models import ProductImage
 from member.serializers import *
 from django.http import HttpResponse
 from django.utils import timezone
@@ -10,6 +11,9 @@ import json
 from django.http import JsonResponse
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.pagination import PageNumberPagination
+from sorl.thumbnail import get_thumbnail
+from image.forms import *
+
 
 # 'method' can be used to customize a single HTTP method of a view
 @swagger_auto_schema(method='get', responses={200:'OK'})
@@ -34,11 +38,15 @@ def member_list(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
+# @swagger_auto_schema(method='GET', responses={200:'OK'})
+# 'methods' can be used to apply the same modification to multiple methods
+# @swagger_auto_schema(methods=['post'], request_body=MemberSerializer)
 @api_view(['GET', 'PUT', 'DELETE'])
 def member_detail(request, id_member):
     """
-    코드 조각 조회, 업데이트, 삭제
+    개별 유저 조회, 업데이트, 삭제
+    ---
+    유저의 id_member를 통해 개별 조회, 업데이트, 삭제 합니다.
     """
     try:
         member = Member.objects.get(pk=id_member)
@@ -69,7 +77,6 @@ def member_detail(request, id_member):
         return Response(content ,status=status.HTTP_204_NO_CONTENT)
 
 
-
 @api_view(['POST'])
 def member_addr_create(request):
     """
@@ -86,28 +93,79 @@ def member_addr_create(request):
         id_member = received_json_data['id_member']
         addr = received_json_data['addr']
         Person = Memberaddr.objects.filter(id_member = id_member)
-        if Person.count() < 2 :
+        #주소 유효성 검사
+        try :
+            Location.objects.get(dong = addr)
+        except Location.DoesNotExist:
+            content = {
+                "message" : "없는 주소입니다",
+                "result" : {}
+                    }
+            return Response(content, status=status.HTTP_400_BAD_REQUEST) 
+        #Case 1. 주소가 0개인 회원
+        if Person.count() == 0 :
+            serializer = memberAddrSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        #Case 2. 주소가 1개인 회원
+        elif Person.count() == 1 :
+            #중복체크
             try:
                 overlap = Person.get(addr = addr)
                 content = {
-                "message" : "중복된 주소가 있습니다.",
-                "result" : {"id_member = " + str(id_member) : addr}
+                    "message" : "중복된 주소가 있습니다.",
+                    "result" : {"id_member = " + str(id_member) : addr}
                 }
+            #중복 없을 때
             except Memberaddr.DoesNotExist:
+                #기존에 있던 주소의 선택사항은 "선택안함"
+                select = Person.get(id_member = id_member)
+                select.select = "N"
+                select.save()
+                #새로운 주소 등록
                 serializer = memberAddrSerializer(data=request.data)
                 if serializer.is_valid():
                     serializer.save()
                     return Response(serializer.data, status=status.HTTP_201_CREATED)
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             return Response(content, status=status.HTTP_409_CONFLICT)
                     # return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-
         elif Person.count() >= 2 : 
             content = {
-            "message" : "허용된 주소의 갯수는 2개입니다.",
-            "result" : {}
-                }
+                "message" : "허용된 주소의 갯수는 2개입니다.",
+                "result" : {}
+            }
             return Response(content, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['PUT'])
+def member_addr_dis_update(request, id_member):
+    """
+    특정멤버 주소 선택 & 거리 견경
+    """
+    Data = json.loads(request.body)
+    #해당 멤버의 주소를 모두 N 으로 바꿈
+    member = Memberaddr.objects.filter(id_member = id_member)
+    member.update(select = "N")
+    addr = Data['addr']
+    dis = Data['dis']
+    #거리값 유효성 검사
+    if dis in [0, 2, 5, 10 ,15]:
+        #받은 주소의 선택값 "Y", 거리 변경
+        addrselect = member.get(addr = addr)
+        addrselect.select = "Y"
+        addrselect.distance = dis
+        addrselect.save()
+        serializer = memberAddrSerializer(member, many=True)
+        return Response(serializer.data ,status=status.HTTP_404_NOT_FOUND)
+    else :
+        content = {
+            "message" : "없는 거리값입니다. 유효한 거리값 : 0, 2, 5, 10 ,15(단위 : km)",
+            "result" : {}
+        }
+        return Response(content, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET', 'DELETE'])
@@ -119,7 +177,7 @@ def member_addr(request, id_member):
     memberAddr = Memberaddr.objects.filter(id_member=id_member)
     if memberAddr.count() == 0:
         content = {
-            "message" : "없는 사용자 입니다.",
+            "message" : "사용자가 설정한 주소가 없습니다.",
             "result" : {}
                 }
         return Response(content, status=status.HTTP_404_NOT_FOUND)
@@ -136,8 +194,18 @@ def member_addr(request, id_member):
         data = request.body.decode('utf-8')
         received_json_data = json.loads(data)
         Addr = received_json_data['addr']
+        #1개인 경우 삭제 불가
+        if memberAddr.count() <= 1 :
+            content = {
+                "message" : "동네가 1개만 선택된 상태에서는 삭제를 할 수 없습니다.",
+                "result" : {"addr" : Addr}
+                }
+            return Response(content, status=status.HTTP_202_ACCEPTED)
+        #삭제
         q = memberAddr.get(addr = Addr)
         q.delete()
+        #다른 주소는 Y로 변경
+        Memberaddr.objects.filter(id_member = id_member).update(select = "Y")
         content = {
             "message" : "삭제 완료",
             "result" : {"addr" : Addr}
@@ -264,6 +332,19 @@ def member_login(request):
 def product_list(request):
     """
     상품을 모두 보여주거나 새 상품리스트를 만듭니다.
+    
+    ---
+    # form/data OR json/data
+        - id_product : seq key 
+        - id_member : 상품을 올린 member 외래키
+        - name : 상품 제목
+        - price : 상품 가격
+        - info : 상품 내용
+        - category : 상품 카테고리
+        - views : 상품 조회수
+        - state : '판매중' / '예약중' / '판매완료' 텍스트로 
+        - addr : 판매가 이루어질 장소 (동설정까지만 가능)
+        - image : 리스트형식의 이미지 URLs
     """
     if request.method == 'GET':
         product = Product.objects.all()
@@ -281,10 +362,29 @@ def product_list(request):
 @api_view(['GET', 'PUT', 'DELETE'])
 def product_detail(request, id_product):
     """
-    코드 조각 조회, 업데이트, 삭제
+    제품 상세 조회, 업데이트, 삭제
+        
+    ---
+    # parameter
+        - s = 사진픽셀 크기 ex) 400x400
+        - q = 사진품질 ex) 1~100 당근마켓은 82
+
+    # 수정가능 목록 form/data OR json/data
+        - name : 상품 제목
+        - price : 상품 가격
+        - info : 상품 내용
+        - category : 상품 카테고리
+        - addr : 판매가 이루어질 장소 (동설정까지만 가능)
+    
+    # 내용 
+        image : {
+        - thum : 사진 썸네일
+        - origin : 사진 원본
+        }
     """
+
     try:
-        product = Product.objects.get(pk=id_product)
+        product = Product.objects.get(id_product=id_product)
     except Product.DoesNotExist:
         content = {
             "message" : "없는 물품리스트 입니다.",
@@ -295,11 +395,31 @@ def product_detail(request, id_product):
     #     return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
+        # product = Product.objects.get(id_product=id_product)
+        print('-------------------------------1--------------------------------')
         product.views += 1
         product.save()
-        product = Product.objects.get(pk=id_product)
+        print('-------------------------------1--------------------------------')
         serializer = ProductSerializer(product)
-        return Response(serializer.data)
+
+        s = request.GET['s']
+        q = int(request.GET['q'])
+# TODO 데이터 가져올때, id_product_img기준으로 정렬(오름차순)
+        Data = ProductImage.objects.filter(id_product=id_product)
+
+        imageList=[]
+        imageDict={}
+# TODO 'SERVER_PROTOCOL': 'HTTP/1.0', request.META['SERVER_PROTOCOL'] HTTP값으로 변환
+        for i in range(Data.count()):
+            imageDict['thum'] = request.META['HTTP_HOST']+ '/image' + get_thumbnail(Data[i].image, s, crop='center', quality=q).url
+            imageDict['origin'] = request.META['HTTP_HOST'] + '/image/media/' + str(Data[i].image)
+            imageList.append(imageDict)
+            imageDict={}
+
+        content = serializer.data
+        content['image'] = imageList
+
+        return Response(content, status=status.HTTP_200_OK)
 
     elif request.method == 'PUT':
         serializer = ProductTouchSerializer(product, data=request.data)
@@ -494,60 +614,106 @@ def wishlist_detail(request, id_member):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-
 @api_view(['GET'])
 def location_search(request):
-    '''
+    """
     사용자의 위치에 따른 product 검색
-    '''
+    
+    ---
+    # 내용
+        - q = 검색어
+        - page = 현재 페이지
+        - page_size = 한번에 뿌려주는 상품 갯수
+    # Header 
+        - id-member : header에 id_member를 캐치해서 선택된 addr, dis를 활용한다.
+        * header에 id-member값이 없을경우, 비회원 전체검색 로직
+    """
     # 디폴트 페이지네이션 사용
     paginator = PageNumberPagination()
     
     # 페이지 사이즈를 page_size라는 이름의 파라미터로 받을 거임
     paginator.page_size_query_param = "page_size"
-
-    # GET방식으로 데이터 address, distance 그리고 검색어를 보냄.
-    addr = request.GET['addr']
-    dis = request.GET['dis']
     Search = request.GET['q']
-    try :
-        Location.objects.get(dong = addr)
-    except Location.DoesNotExist:
-        content = {
-            "message" : "없는 주소입니다",
-            "result" : {}
-                }
-        return Response(content, status=status.HTTP_400_BAD_REQUEST) 
-    location = NearbyLocation.objects.filter(dong = addr).filter(distance = dis)
-    if location.count() == 0:
-        content = {
-            "message" : "없는 거리값입니다",
-            "result" : {}
-                }
-        return Response(content, status=status.HTTP_400_BAD_REQUEST)
-    product_sum = Product.objects.filter(name__contains = Search).filter(addr = addr)
-    for i in location :
-        product = Product.objects.filter(name__contains = Search).filter(addr = i.nearby_dong)
-        product_sum = product_sum | product
-    if product_sum.count() == 0 :
-        content = {
+
+    #회원 검색
+    if 'id-member' in request.headers :
+        #주소 유무 체크 
+        try : 
+            memberaddr = Memberaddr.objects.filter(id_member = request.headers['id-member']).get(select = 'Y')
+            addr =  memberaddr.addr
+            dis = memberaddr.distance
+        #설정된 주소가 없을 
+        except Memberaddr.DoesNotExist :
+            product = Product.objects.filter(name__contains = Search)
+            if product.count() == 0 :
+                content = {
+                "message" : "검색한 제품이 없습니다.",
+                "result" : {"입력한 검색어" : Search}
+                    }
+                return Response(content,status=status.HTTP_204_NO_CONTENT)
+            serializer = ProductSearchSerializer(product, many=True)
+            # 페이지 적용된 쿼리셋
+            paginated_product = paginator.paginate_queryset(product, request)
+            # 페이지 파라미터 (page, page_size) 있을 경우
+            # page_size 만 있을 경우 page=1 처럼 동작함
+            # page만 있을 경우 아래 if문 안 탐
+            if paginated_product is not None:
+                serializers = ProductSearchSerializer(paginated_product, many=True)
+                return paginator.get_paginated_response(serializers.data)
+
+            # # 페이지 파라미터 없을 경우
+            serializer = ProductSearchSerializer(product, many =True)
+            return Response(serializer.data)
+
+        #근처 주소 검색
+        location = NearbyLocation.objects.filter(dong = addr).filter(distance = dis)
+        product_sum = Product.objects.filter(name__contains = Search).filter(addr = addr)
+        for i in location :
+            product = Product.objects.filter(name__contains = Search).filter(addr = i.nearby_dong)
+            product_sum = product_sum | product
+        if product_sum.count() == 0 :
+            content = {
+                "message" : "검색한 제품이 없습니다.",
+                "result" : {"입력한 검색어" : Search}
+                    }
+            return Response(content,status=status.HTTP_204_NO_CONTENT)
+        # 페이지 적용된 쿼리셋
+        paginated_product_sum = paginator.paginate_queryset(product_sum, request)
+        # 페이지 파라미터 (page, page_size) 있을 경우
+        # page_size 만 있을 경우 page=1 처럼 동작함
+        # page만 있을 경우 아래 if문 안 탐
+        if paginated_product_sum is not None:
+            serializers = ProductSearchSerializer(paginated_product_sum, many=True)
+            return paginator.get_paginated_response(serializers.data)
+
+        # # 페이지 파라미터 없을 경우
+        serializer = ProductSearchSerializer(product_sum, many =True)
+        return Response(serializer.data)
+    #비회원
+    else : 
+        #모든 제품 검색
+        product = Product.objects.filter(name__contains = Search)
+        if product.count() == 0 :
+            content = {
             "message" : "검색한 제품이 없습니다.",
             "result" : {"입력한 검색어" : Search}
                 }
-        return Response(content,status=status.HTTP_204_NO_CONTENT)
+            return Response(content,status=status.HTTP_204_NO_CONTENT)
+        serializer = ProductSearchSerializer(product, many=True)
+        # 페이지 적용된 쿼리셋
+        paginated_product = paginator.paginate_queryset(product, request)
+        # 페이지 파라미터 (page, page_size) 있을 경우
+        # page_size 만 있을 경우 page=1 처럼 동작함
+        # page만 있을 경우 아래 if문 안 탐
+        if paginated_product is not None:
+            serializers = ProductSearchSerializer(paginated_product, many=True)
+            return paginator.get_paginated_response(serializers.data)
 
-    # 페이지 적용된 쿼리셋
-    paginated_product_sum = paginator.paginate_queryset(product_sum, request)
-    # 페이지 파라미터 (page, page_size) 있을 경우
-    # page_size 만 있을 경우 page=1 처럼 동작함
-    # page만 있을 경우 아래 if문 안 탐
-    if paginated_product_sum is not None:
-        serializers = ProductSerializer(paginated_product_sum, many=True)
-        return paginator.get_paginated_response(serializers.data)
+        # # 페이지 파라미터 없을 경우
+        serializer = ProductSearchSerializer(product, many =True)
 
-    # 페이지 파라미터 없을 경우
-    serializer = ProductSerializer(product_sum, many =True)
-    return Response(serializer.data)
+        return Response(serializer.data)
+
 
 @api_view(['GET'])
 def selling_product_list(request, id_member):
@@ -566,11 +732,22 @@ def selling_product_list(request, id_member):
 def test(request):
     """
     테스트용 api
-    """
-    return Response(status=status.HTTP_200_OK)
+    """ 
+    if request.method == 'GET':
+        product = Product.objects.filter(name__contains = '자전거')
+        serializer = ProductSearchSerializer(product, many=True) 
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    # if request.method == 'GET':
+    #     product = ProductImage.objects.filter(id_product=44).order_by('id_product_img')
+    #     print('=========================================')
+    #     print(product)
+    #     serializer = ProductImageSerializer(product, many=True) 
+    #     # print(serializer)
+    #     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-@api_view(['POST'])
+@api_view(['GET','POST'])
 def seller_review(request):
     """
     판매자의 리뷰를 봅니다(판매자 -> 구매자)
@@ -580,54 +757,49 @@ def seller_review(request):
         serializer = SellerReviewSerializer(sellerreview, many=True)
         return Response(serializer.data)
 
-    elif request.method == 'POST':
+    #POST일 경우
+    if request.body :
         Data = json.loads(request.body)
-        serializer = SellerReviewSerializer(data=request.data)
-        if serializer.is_valid():
-            #json 확인
-            if Data.get('id_shopper'):
-                if Data.get('rate'):
-                    #seller review 저장
-                    serializer.save()
-                    shopper = Data['id_shopper']
-                    review = int(serializer.data['id_review_seller'])
-                    product = Data['id_product']
-                    temp_shopper = Member.objects.get(id_member=shopper)
-                    temp_review = SellerReview.objects.get(id_review_seller=review)
-                    temp_product = Product.objects.get(id_product = product)
-                    #realdeal 저장
-                    RealDeal.objects.create(id_shopper = temp_shopper, id_review_seller = temp_review,id_product = temp_product)
-                    #rate 저장
-                    rate = Data['rate'].split(',')
-                    for i in rate:
-                        temp_rate = Rate.objects.get(id_rate=i)
-                        SellerRate.objects.create(id_review_seller = temp_review, id_rate =temp_rate)
-                    content = {
-                                "message" : "후기등록 완료", 
-                                "result"  : {
-                                                "review" : serializer.data, 
-                                                "rate" : rate, 
-                                                "shopper" : shopper,
-                                                "id_product" : product
-                                            }
-                              }
-                    return Response(content, status=status.HTTP_201_CREATED)
-                else :
-                    content =   {
-                        "message" : "rate 필드는 필수입니다.",
-                        "result" : {}
-                            }
-                    return Response(content, status=status.HTTP_400_BAD_REQUEST)
-            else :
+        #json 확인
+        essential_fields = ['id_shopper', 'id_product', 'rate']
+        for essential_field in essential_fields :
+            if not(Data.get(essential_field)):
                 content =   {
-                        "message" : "id_shopper 필드는 필수입니다.",
+                        "message" : essential_field + " 필드는 필수입니다.",
                         "result" : {}
                             }
                 return Response(content, status=status.HTTP_400_BAD_REQUEST)
+        serializer = SellerReviewSerializer(data=request.data)
+        if serializer.is_valid():
+            #seller review 저장
+            serializer.save()
+            shopper = Data['id_shopper']
+            review = int(serializer.data['id_review_seller'])
+            product = Data['id_product']
+            temp_shopper = Member.objects.get(id_member=shopper)
+            temp_review = SellerReview.objects.get(id_review_seller=review)
+            temp_product = Product.objects.get(id_product = product)
+            #realdeal 저장
+            RealDeal.objects.create(id_shopper = temp_shopper, id_review_seller = temp_review,id_product = temp_product)
+            #rate 저장
+            rate = Data['rate'].split(',')
+            for i in rate:
+                temp_rate = Rate.objects.get(id_rate=i)
+                SellerRate.objects.create(id_review_seller = temp_review, id_rate =temp_rate)
+            content = {
+                        "message" : "후기등록 완료", 
+                        "result"  : {
+                                        "review" : serializer.data,
+                                        "rate" : rate,
+                                        "id_shopper" : shopper,
+                                        "id_product" : product
+                                    }
+                    }
+            return Response(content, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['POST'])
+@api_view(['GET','POST'])
 def shopper_review(request):
     """
     구매자의 리뷰를 봅니다(구매자 -> 판매자)
@@ -635,37 +807,64 @@ def shopper_review(request):
     if request.method == 'GET':
         shopperreview = ShopperReview.objects.all()
         serializer = ShopperReviewSerializer(shopperreview, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data)  
+    #POST일 경우
+    if not(request.body) :
+        content =   {
+            "message" : "rate, id_product 필드는 필수입니다.",
+            "result" : {}
+        }
+        return Response(content, status=status.HTTP_400_BAD_REQUEST)
+    Data = json.loads(request.body)
+#TODO content 메세지 메소드 리팩토링, api별 필수 파라미터가 없는 경우에 대한 Response 를 메소드 처리 해야합니다 *^^*
+    essential_fields = ['id_product', 'rate', 'content']
+    for essential_field in essential_fields :
+        if not(Data.get(essential_field)):
+            content =   {
+            "message" : essential_field + " 필드는 필수입니다.",
+            "result" : {}
+            }
+            return Response(content, status=status.HTTP_400_BAD_REQUEST)
 
-    elif request.method == 'POST':
-        Data = json.loads(request.body)
-        serializer = ShopperReviewSerializer(data=request.data)
-        if serializer.is_valid():
-                if Data.get('rate'):
-                    #seller review 저장
-                    serializer.save()
-                    review = int(serializer.data['id_review_shopper'])
-                    temp_review = SellerReview.objects.get(id_review_seller=review)
-                    #rate 저장
-                    rate = Data['rate'].split(',')
-                    for i in rate:
-                        temp_rate = Rate.objects.get(id_rate=i)
-                        ShopperRate.objects.create(id_review_shopper = temp_review, id_rate =temp_rate)
-                    content = {
-                                "message" : "후기등록 완료", 
-                                "result"  : {
-                                                "review" : serializer.data, 
-                                                "rate" : rate
-                                            }
-                              }
-                    return Response(content, status=status.HTTP_201_CREATED)
-                else :
-                    content =   {
-                        "message" : "rate 필드는 필수입니다.",
-                        "result" : {}
+    # if not(Data.get('id_product')) :
+    #     content =   {
+    #         "message" : "id_product 필드는 필수입니다.",
+    #         "result" : {}
+    #     }
+    #     return Response(content, status=status.HTTP_400_BAD_REQUEST)
+    # if not(Data.get('rate')) :
+    #     content =   {
+    #         "message" : "rate 필드는 필수입니다.",
+    #         "result" : {}
+    #     }
+    #     return Response(content, status=status.HTTP_400_BAD_REQUEST)
+    # if not(Data.get('content')) :
+    #     content = {
+    #         "message" : "content 필드는 필수입니다.",
+    #         "result" : {}
+    #     }
+    #     return Response(content, status=status.HTTP_400_BAD_REQUEST)
+
+    #seller review 저장
+    id_real_deal = RealDeal.objects.get(id_product = Data.get('id_product'))
+    review = ShopperReview.objects.create(id_real_deal = id_real_deal, content = Data.get('content'))
+    review = int(review.id_review_shopper)
+    temp_review = ShopperReview.objects.get(id_review_shopper=review)
+    #rate 저장
+    rate = Data['rate'].split(',')
+    for i in rate:
+        temp_rate = Rate.objects.get(id_rate=i)
+        ShopperRate.objects.create(id_review_shopper = temp_review, id_rate =temp_rate)
+    shopperreview = ShopperReview.objects.get(id_review_shopper = review)
+    serializer = ShopperReviewSerializer(shopperreview)
+    content = {
+                "message" : "후기등록 완료", 
+                "result"  : {
+                                "review" : serializer.data, 
+                                "rate" : rate
                             }
-                    return Response(content, status=status.HTTP_400_BAD_REQUEST)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    }
+    return Response(content, status=status.HTTP_201_CREATED)  
 
 
 #특정 실거래의 구매자 리뷰

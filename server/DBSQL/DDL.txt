@@ -1,6 +1,4 @@
--- 2020.06.28
--- 외래키 체크 끄기 (삭제할 때 오류 뜸)
-SET foreign_key_checks = 0;
+--2020.07.05 
 -- 멤버
 DROP TABLE IF EXISTS `daangn`.`member` RESTRICT;
 
@@ -326,7 +324,9 @@ ALTER TABLE `daangn`.`manner_log`
 CREATE TABLE `daangn`.`memberaddr` (
 	`id_member_addr` INT          NOT NULL COMMENT '주소키', -- 주소키
 	`id_member`      INT          NOT NULL COMMENT '멤버 키', -- 멤버 키
-	`addr`           VARCHAR(200) NOT NULL COMMENT '주소' -- 주소
+	`addr`           VARCHAR(200) NOT NULL COMMENT '주소', -- 주소
+	`distance`       INT          NOT NULL DEFAULT 0 COMMENT '거리', -- 거리
+	`select`         VARCHAR(2)   NOT NULL DEFAULT "Y" COMMENT '선택여부' -- 선택여부
 )
 COMMENT '주소';
 

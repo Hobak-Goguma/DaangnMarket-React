@@ -1,6 +1,13 @@
 from django.forms import widgets
 from rest_framework import serializers
 from member.models import *
+from image.models import ProductImage
+from django.http import HttpResponse
+from sorl.thumbnail import get_thumbnail
+from django.conf import settings
+
+import os
+
 # from member.serializers import *
 
 class MemberSerializer(serializers.ModelSerializer):
@@ -30,15 +37,56 @@ class ProductSerializer(serializers.ModelSerializer):
     # member = serializers.ForeignKey(Member, models.CASCADE, related_name='member_id')
     class Meta:
         model = Product
-        fields = ('id_product', 'id_member', 'name', 'price', 'info', 'category', 'img', 'views', 'state', 'addr')
+        fields = ('id_product', 'id_member', 'name', 'price', 'info', 'category', 'views', 'state', 'addr')
+
+        
+class ProductImageSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ProductImage
+        fields = ('image',)
+
+
+
+class ProductSearchSerializer(serializers.ModelSerializer):
+    # thum = serializers.SerializerMethodField()
+    thum_first = serializers.SerializerMethodField()
+    class Meta:
+        model = Product
+        fields = ('id_product', 'id_member', 'name', 'price', 'info', 'category', 'views', 'state', 'addr', 'thum_first')
+    
+    # def get_thum_first(self, obj):
+    #     k = ProductImage.objects.filter(id_product = obj.id_product).first()
+    #     k2 = ProductImageSerializer(k).data
+    #     if k2['image']:
+    #         k2 = 'http://127.0.0.1:8000' + '/image' + str(k2['image'])
+    #     return k2
+
+    
+    def get_thum_first(self, obj):
+        Data = ProductImageSerializer(obj.thum.first()).data
+        if Data['image']:
+            # print('------------------BASE_DIR', settings.MEDIA_URL)
+            # print('-----------object', obj.thum.first())
+            # print()
+            # _PATH = os.path.join(settings.BASE_DIR, str(obj.thum.first()))
+            # print(obj.thum)
+            # print(_PATH)
+            # print(settings.BASE_DIR + str(obj.thum.first()))
+            Data['image'] =   'http://www.daangn.site/image' + get_thumbnail(obj.thum.first().image, '1500x1500', crop='center', quality=82).url
+        # request.META['HTTP_HOST']+
+        # self.context['request'].META.get('HTTP_HOST')
+        return Data
+
+    # def get_thum(self, obj):
+    #     return  ProductImageSerializer(obj.thum.first()).data
 
 
 class ProductTouchSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ('id_product', 'id_member', 'name', 'price', 'info', 'category', 'img', 'views', 'state', 'addr')
-        read_only_fields = ['id_member', 'views', 'state']
-
+        fields = ('id_product', 'id_member', 'name', 'price', 'info', 'category', 'views', 'state', 'addr')
+        read_only_fields = ['id_product','id_member', 'views', 'state']
 
 class LoginSerializer(serializers.ModelSerializer):
     last_date = serializers.DateTimeField(default=timezone.now)
@@ -80,9 +128,10 @@ class WishlistSerializer(serializers.ModelSerializer):
 
         
 class RealDealSerializer(serializers.ModelSerializer):
+    id_product = ProductSerializer(read_only=True)
     class Meta:
         model = RealDeal
-        fields = ('id_real_deal', 'id_member','id_review_seller')
+        fields = ('id_real_deal','id_review_seller', 'id_shopper', 'id_product')
 
 
 class SellerRateSerializer(serializers.ModelSerializer):
@@ -110,11 +159,11 @@ class ShopperReviewSerializer(serializers.ModelSerializer):
 
 
 class memberAddrSerializer(serializers.ModelSerializer):
-    
     class Meta:
         model = Memberaddr
-        fields = ('id_member', 'addr')
+        fields = ('id_member', 'addr', 'distance', 'select')
         # read_only_fields = ['user_id']
+
 
 
 # class MemberSerializer(serializers.Serializer):
