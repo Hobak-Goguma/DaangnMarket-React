@@ -107,8 +107,8 @@ def member_addr_create(request):
             try:
                 overlap = Person.get(addr = addr)
                 content = {
-                "message" : "중복된 주소가 있습니다.",
-                "result" : {"id_member = " + str(id_member) : addr}
+                    "message" : "중복된 주소가 있습니다.",
+                    "result" : {"id_member = " + str(id_member) : addr}
                 }
             #중복 없을 때
             except Memberaddr.DoesNotExist:
@@ -126,14 +126,14 @@ def member_addr_create(request):
                     # return Response(serializer.data, status=status.HTTP_201_CREATED)
         elif Person.count() >= 2 : 
             content = {
-            "message" : "허용된 주소의 갯수는 2개입니다.",
-            "result" : {}
-                }
+                "message" : "허용된 주소의 갯수는 2개입니다.",
+                "result" : {}
+            }
             return Response(content, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['POST'])
-def member_addr_select(request, id_member):
+@api_view(['PUT'])
+def member_addr_dis_update(request, id_member):
     """
     특정멤버 주소 선택 & 거리 견경
     """
@@ -143,13 +143,21 @@ def member_addr_select(request, id_member):
     member.update(select = "N")
     addr = Data['addr']
     dis = Data['dis']
-    #받은 주소의 선택값 "Y", 거리 변경
-    addrselect = member.get(addr = addr)
-    addrselect.select = "Y"
-    addrselect.distance = dis
-    addrselect.save()
-    serializer = memberAddrSerializer(member, many=True)
-    return Response(serializer.data ,status=status.HTTP_404_NOT_FOUND)
+    #거리값 유효성 검사
+    if dis in [0, 2, 5, 10 ,15]:
+        #받은 주소의 선택값 "Y", 거리 변경
+        addrselect = member.get(addr = addr)
+        addrselect.select = "Y"
+        addrselect.distance = dis
+        addrselect.save()
+        serializer = memberAddrSerializer(member, many=True)
+        return Response(serializer.data ,status=status.HTTP_404_NOT_FOUND)
+    else :
+        content = {
+            "message" : "없는 거리값입니다. 유효한 거리값 : 0, 2, 5, 10 ,15(단위 : km)",
+            "result" : {}
+        }
+        return Response(content, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET', 'DELETE'])
@@ -178,9 +186,8 @@ def member_addr(request, id_member):
         data = request.body.decode('utf-8')
         received_json_data = json.loads(data)
         Addr = received_json_data['addr']
-        memberaddr = Memberaddr.objects.filter(id_member = id_member)
         #1개인 경우 삭제 불가
-        if memberaddr.count() <= 1 :
+        if memberAddr.count() <= 1 :
             content = {
                 "message" : "동네가 1개만 선택된 상태에서는 삭제를 할 수 없습니다.",
                 "result" : {"addr" : Addr}
@@ -563,7 +570,7 @@ def location_search(request):
     if 'id-member' in request.headers :
         #주소 유무 체크 
         try : 
-            memberaddr = Memberaddr.objects.filter(id_member = request.headers['id_member']).get(select = 'Y')
+            memberaddr = Memberaddr.objects.filter(id_member = request.headers['id-member']).get(select = 'Y')
             addr =  memberaddr.addr
             dis = memberaddr.distance
         #설정된 주소가 없을 
@@ -586,7 +593,7 @@ def location_search(request):
                 return paginator.get_paginated_response(serializers.data)
 
             # # 페이지 파라미터 없을 경우
-            serializer = ProductSerializer(product_sum, many =True)
+            serializer = ProductSerializer(product, many =True)
             return Response(serializer.data)
 
         #근처 주소 검색
@@ -634,7 +641,7 @@ def location_search(request):
             return paginator.get_paginated_response(serializers.data)
 
         # # 페이지 파라미터 없을 경우
-        serializer = ProductSerializer(product_sum, many =True)
+        serializer = ProductSerializer(product, many =True)
         return Response(serializer.data)
 
 
@@ -659,7 +666,7 @@ def test(request):
     return Response(status=status.HTTP_200_OK)
 
 
-@api_view(['POST'])
+@api_view(['GET','POST'])
 def seller_review(request):
     """
     판매자의 리뷰를 봅니다(판매자 -> 구매자)
@@ -669,54 +676,49 @@ def seller_review(request):
         serializer = SellerReviewSerializer(sellerreview, many=True)
         return Response(serializer.data)
 
-    elif request.method == 'POST':
+    #POST일 경우
+    if request.body :
         Data = json.loads(request.body)
-        serializer = SellerReviewSerializer(data=request.data)
-        if serializer.is_valid():
-            #json 확인
-            if Data.get('id_shopper'):
-                if Data.get('rate'):
-                    #seller review 저장
-                    serializer.save()
-                    shopper = Data['id_shopper']
-                    review = int(serializer.data['id_review_seller'])
-                    product = Data['id_product']
-                    temp_shopper = Member.objects.get(id_member=shopper)
-                    temp_review = SellerReview.objects.get(id_review_seller=review)
-                    temp_product = Product.objects.get(id_product = product)
-                    #realdeal 저장
-                    RealDeal.objects.create(id_shopper = temp_shopper, id_review_seller = temp_review,id_product = temp_product)
-                    #rate 저장
-                    rate = Data['rate'].split(',')
-                    for i in rate:
-                        temp_rate = Rate.objects.get(id_rate=i)
-                        SellerRate.objects.create(id_review_seller = temp_review, id_rate =temp_rate)
-                    content = {
-                                "message" : "후기등록 완료", 
-                                "result"  : {
-                                                "review" : serializer.data, 
-                                                "rate" : rate, 
-                                                "shopper" : shopper,
-                                                "id_product" : product
-                                            }
-                              }
-                    return Response(content, status=status.HTTP_201_CREATED)
-                else :
-                    content =   {
-                        "message" : "rate 필드는 필수입니다.",
-                        "result" : {}
-                            }
-                    return Response(content, status=status.HTTP_400_BAD_REQUEST)
-            else :
+        #json 확인
+        essential_fields = ['id_shopper', 'id_product', 'rate']
+        for essential_field in essential_fields :
+            if not(Data.get(essential_field)):
                 content =   {
-                        "message" : "id_shopper 필드는 필수입니다.",
+                        "message" : essential_field + " 필드는 필수입니다.",
                         "result" : {}
                             }
                 return Response(content, status=status.HTTP_400_BAD_REQUEST)
+        serializer = SellerReviewSerializer(data=request.data)
+        if serializer.is_valid():
+            #seller review 저장
+            serializer.save()
+            shopper = Data['id_shopper']
+            review = int(serializer.data['id_review_seller'])
+            product = Data['id_product']
+            temp_shopper = Member.objects.get(id_member=shopper)
+            temp_review = SellerReview.objects.get(id_review_seller=review)
+            temp_product = Product.objects.get(id_product = product)
+            #realdeal 저장
+            RealDeal.objects.create(id_shopper = temp_shopper, id_review_seller = temp_review,id_product = temp_product)
+            #rate 저장
+            rate = Data['rate'].split(',')
+            for i in rate:
+                temp_rate = Rate.objects.get(id_rate=i)
+                SellerRate.objects.create(id_review_seller = temp_review, id_rate =temp_rate)
+            content = {
+                        "message" : "후기등록 완료", 
+                        "result"  : {
+                                        "review" : serializer.data,
+                                        "rate" : rate,
+                                        "id_shopper" : shopper,
+                                        "id_product" : product
+                                    }
+                    }
+            return Response(content, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['POST'])
+@api_view(['GET','POST'])
 def shopper_review(request):
     """
     구매자의 리뷰를 봅니다(구매자 -> 판매자)
@@ -724,37 +726,64 @@ def shopper_review(request):
     if request.method == 'GET':
         shopperreview = ShopperReview.objects.all()
         serializer = ShopperReviewSerializer(shopperreview, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data)  
+    #POST일 경우
+    if not(request.body) :
+        content =   {
+            "message" : "rate, id_product 필드는 필수입니다.",
+            "result" : {}
+        }
+        return Response(content, status=status.HTTP_400_BAD_REQUEST)
+    Data = json.loads(request.body)
+#TODO content 메세지 메소드 리팩토링, api별 필수 파라미터가 없는 경우에 대한 Response 를 메소드 처리 해야합니다 *^^*
+    essential_fields = ['id_product', 'rate', 'content']
+    for essential_field in essential_fields :
+        if not(Data.get(essential_field)):
+            content =   {
+            "message" : essential_field + " 필드는 필수입니다.",
+            "result" : {}
+            }
+            return Response(content, status=status.HTTP_400_BAD_REQUEST)
 
-    elif request.method == 'POST':
-        Data = json.loads(request.body)
-        serializer = ShopperReviewSerializer(data=request.data)
-        if serializer.is_valid():
-                if Data.get('rate'):
-                    #seller review 저장
-                    serializer.save()
-                    review = int(serializer.data['id_review_shopper'])
-                    temp_review = SellerReview.objects.get(id_review_seller=review)
-                    #rate 저장
-                    rate = Data['rate'].split(',')
-                    for i in rate:
-                        temp_rate = Rate.objects.get(id_rate=i)
-                        ShopperRate.objects.create(id_review_shopper = temp_review, id_rate =temp_rate)
-                    content = {
-                                "message" : "후기등록 완료", 
-                                "result"  : {
-                                                "review" : serializer.data, 
-                                                "rate" : rate
-                                            }
-                              }
-                    return Response(content, status=status.HTTP_201_CREATED)
-                else :
-                    content =   {
-                        "message" : "rate 필드는 필수입니다.",
-                        "result" : {}
+    # if not(Data.get('id_product')) :
+    #     content =   {
+    #         "message" : "id_product 필드는 필수입니다.",
+    #         "result" : {}
+    #     }
+    #     return Response(content, status=status.HTTP_400_BAD_REQUEST)
+    # if not(Data.get('rate')) :
+    #     content =   {
+    #         "message" : "rate 필드는 필수입니다.",
+    #         "result" : {}
+    #     }
+    #     return Response(content, status=status.HTTP_400_BAD_REQUEST)
+    # if not(Data.get('content')) :
+    #     content = {
+    #         "message" : "content 필드는 필수입니다.",
+    #         "result" : {}
+    #     }
+    #     return Response(content, status=status.HTTP_400_BAD_REQUEST)
+
+    #seller review 저장
+    id_real_deal = RealDeal.objects.get(id_product = Data.get('id_product'))
+    review = ShopperReview.objects.create(id_real_deal = id_real_deal, content = Data.get('content'))
+    review = int(review.id_review_shopper)
+    temp_review = ShopperReview.objects.get(id_review_shopper=review)
+    #rate 저장
+    rate = Data['rate'].split(',')
+    for i in rate:
+        temp_rate = Rate.objects.get(id_rate=i)
+        ShopperRate.objects.create(id_review_shopper = temp_review, id_rate =temp_rate)
+    shopperreview = ShopperReview.objects.get(id_review_shopper = review)
+    serializer = ShopperReviewSerializer(shopperreview)
+    content = {
+                "message" : "후기등록 완료", 
+                "result"  : {
+                                "review" : serializer.data, 
+                                "rate" : rate
                             }
-                    return Response(content, status=status.HTTP_400_BAD_REQUEST)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    }
+    return Response(content, status=status.HTTP_201_CREATED)  
 
 
 #특정 실거래의 구매자 리뷰
