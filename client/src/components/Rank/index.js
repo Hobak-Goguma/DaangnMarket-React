@@ -45,7 +45,6 @@ const RankList = styled.ul`
 `;
 
 const Rank = ({history}) => {
-	console.log(history);
 
 	// map으로 순위 매기기
 	const rank = [{

@@ -1,5 +1,6 @@
 import React from "react";
 import Header from "./Header";
+import Dialog from "../Dialog";
 import Footer from "./Footer";
 
 const Layout = ({ children, setProducts, overflow, height }) => {

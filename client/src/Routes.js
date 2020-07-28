@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
-import RegisterPage from "./pages/userform/RegisterPage";
+import RegisterPage from "./pages/Userform/Register";
 import MyProduct from "./pages/MyProductPage";
 import MyInfo from "./pages/MyInfoPage";
 import Changelayout from "./pages/MyInfoChangePage";

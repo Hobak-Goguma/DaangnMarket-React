@@ -200,7 +200,7 @@ const HomePage = ({history}) => {
 			pk: 1,
 			name: "접이식자전거",
 			addr: "인천 연수구 송도동",
-			img: "./img/접이식자전거.jpg",
+			thum_first:{image: "./img/접이식자전거.jpg"},
 			price: 20000,
 			like: 5,
 			chat: 40
@@ -208,7 +208,7 @@ const HomePage = ({history}) => {
 			pk: 2,
 			name: "캠핑 테이블",
 			addr: "경기도 시흥시 능곡동",
-			img: "./img/캠핑 테이블.jpg",
+			thum_first:{image: "./img/캠핑 테이블.jpg"},
 			price: 5000,
 			like: 5,
 			chat: 25
@@ -216,7 +216,7 @@ const HomePage = ({history}) => {
 			pk: 3,
 			name: "TV모니터 32인치",
 			addr: "경기도 고양시 일산서구 주엽동",
-			img: "./img/TV모니터 32인치.jpg",
+			thum_first:{image: "./img/TV모니터 32인치.jpg"},
 			price: 15000,
 			like: 5,
 			chat: 28
@@ -224,7 +224,7 @@ const HomePage = ({history}) => {
 			pk: 4,
 			name: "창고정리 예초기 전기톱",
 			addr: "서귀포시 서귀동",
-			img: "./img/예초기.jpg",
+			thum_first:{image: "./img/예초기.jpg"},
 			price: 60000,
 			like: 3,
 			chat: 30
@@ -232,7 +232,7 @@ const HomePage = ({history}) => {
 			pk: 5,
 			name: "4단 선반",
 			addr: "제주 제주시 연동",
-			img: "./img/4단선반.jpg",
+			thum_first:{image: "./img/4단선반.jpg"},
 			price: 25000,
 			like: 23,
 			chat: 35
@@ -240,7 +240,7 @@ const HomePage = ({history}) => {
 			pk: 6,
 			name: "전자렌지",
 			addr: "울산 중구 우정동",
-			img: "./img/전자렌지.jpg",
+			thum_first:{image: "./img/전자렌지.jpg"},
 			price: 20000,
 			like: 6,
 			chat: 34
@@ -248,7 +248,7 @@ const HomePage = ({history}) => {
 			pk: 7,
 			name: "김치냉장고",
 			addr: "제주 제주시 삼도1동",
-			img: "./img/김치냉장고.jpg",
+			thum_first:{image: "./img/김치냉장고.jpg"},
 			price: 100000,
 			like: 2,
 			chat: 29
@@ -256,7 +256,7 @@ const HomePage = ({history}) => {
 			pk: 8,
 			name: "싱거 재봉틀 싱거미싱기",
 			addr: "서울 송파구 잠실3동",
-			img: "./img/미싱.jpg",
+			thum_first:{image: "./img/미싱.jpg"},
 			price: 25000,
 			like: 14,
 			chat: 24
@@ -264,7 +264,7 @@ const HomePage = ({history}) => {
 			pk: 9,
 			name: "화분무료드림",
 			addr: "경기도 구리시 갈매동",
-			img: "./img/화분.jpg",
+			thum_first:{image: "./img/화분.jpg"},
 			price: 0,
 			like: 3,
 			chat: 11

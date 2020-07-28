@@ -92,7 +92,7 @@ const CardItemArticle = styled.div`
 `;
 
 const CardItem = (props) => {
-	let cost = "";
+    let cost = "";
 	const costString = String(props.item.price);
 	for (let i = 0; i < costString.length; i++) { // 3자리마다 , 넣기위하여
 		cost += costString[i];
@@ -103,11 +103,10 @@ const CardItem = (props) => {
 	}
 	return (
 		<CardItemArticle>
-			<Link to={`/products/${props.item.pk}`}>
+			<Link to={`/products/${props.item.id_product}`}>
 				<div className="card-item" key={props.item.name}>
 					<div className="img">
-						<img src="./img/4단선반.jpg" alt="사진임둥"/>
-						{/*<img src={props.item.thumb} alt={props.item.name}/>*/}
+						<img src={props.item.thum_first.image} alt={props.item.name+"썸네일"}/>
 					</div>
 					<div className="text-group">
 						<div className="description">
