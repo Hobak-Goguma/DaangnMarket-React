@@ -113,19 +113,6 @@ class WishlistSerializer(serializers.ModelSerializer):
         model = Wishlist
         fields = ('id_wishlist', 'id_product', 'id_member', 'cdate')
 
-# # realdeal api 
-# class MemberSellerSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         id_member = MemberSerializer(read_only= True)
-#         model = MemberSeller
-#         fields = ('id_member', 'id_real_deal')
-
-
-# class MemberShopperSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = MemberShopper
-#         fields = ('id_member', 'id_real_deal')
-
         
 class RealDealSerializer(serializers.ModelSerializer):
     id_product = ProductSerializer(read_only=True)
@@ -158,13 +145,17 @@ class ShopperReviewSerializer(serializers.ModelSerializer):
         fields = ('id_review_shopper', 'id_real_deal', 'content', 'cdate')
 
 
-class memberAddrSerializer(serializers.ModelSerializer):
+class MemberAddrSerializer(serializers.ModelSerializer):
     class Meta:
         model = Memberaddr
         fields = ('id_member', 'addr', 'distance', 'select')
         # read_only_fields = ['user_id']
 
 
+class LocationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Location
+        fields = ('gu','dong')
 
 # class MemberSerializer(serializers.Serializer):
 #     id_member = serializers.AutoField(primary_key=True)

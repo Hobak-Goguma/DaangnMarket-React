@@ -76,6 +76,73 @@ def member_detail(request, id_member):
                 }
         return Response(content ,status=status.HTTP_204_NO_CONTENT)
 
+@api_view(['GET'])
+def sigungu(request):
+    """
+    구리스트 호출 API
+    """
+    # gu = request.GET['gu']
+
+    gu = Location.objects.all()
+    serializer = LocationSerializer(gu, many=True)
+
+    # type : list [ 시군구 리스트 ]
+    gu_list = list(set([i['gu'] for i in serializer.data]))
+
+    if not(request.GET.get('sido')) or request.GET['sido'] != "서울특별시":
+        content = {
+            "message" : "현재 서울특별시만 서비스 진행 중입니다 !",
+            "result" : {}
+        }
+        return Response(content)
+
+    content = {
+            "message" : request.GET['sido']+"의 모든 시군구입니다.",
+            "result" : gu_list
+    }
+    return Response(content)
+
+
+@api_view(['GET'])
+def eupmyundong(request):
+    """
+    동 리스트 호출 API
+    """
+    gu = Location.objects.all()
+    serializer = LocationSerializer(gu, many=True)
+
+    # type : list [ 구 리스트 ]
+    gu_list = list(set([i['gu'] for i in serializer.data]))
+
+    # type : dict   { 시군구 : [읍면동 리스트] }
+    gu_dong_dict = dict.fromkeys(gu_list, [])
+    for i in gu_list:
+        temp = []
+        for j in serializer.data:
+            if j['gu'] == i :
+                temp.append(j['dong'])
+                gu_dong_dict[i] = temp
+    
+    if not(request.GET.get('sigungu')):
+        content = {
+            "message" : "구를 입력하지 않음",
+            "result" : gu_dong_dict
+        }
+        return Response(content)
+    
+    if gu_dong_dict.get(request.GET.get('sigungu')) is None :
+        content = {
+            "message" : "해당 구는 없습니다.",
+            "result" : {}
+        }
+        return Response(content)
+
+    content = {
+            "message" : request.GET.get('sigungu') + "의 동 리스트입니다.",
+            "result" :  gu_dong_dict[request.GET.get('sigungu')]
+        }
+    return Response(content)
+
 
 @api_view(['POST'])
 def member_addr_create(request):
@@ -104,7 +171,7 @@ def member_addr_create(request):
             return Response(content, status=status.HTTP_400_BAD_REQUEST) 
         #Case 1. 주소가 0개인 회원
         if Person.count() == 0 :
-            serializer = memberAddrSerializer(data=request.data)
+            serializer = MemberAddrSerializer(data=request.data)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -125,7 +192,7 @@ def member_addr_create(request):
                 select.select = "N"
                 select.save()
                 #새로운 주소 등록
-                serializer = memberAddrSerializer(data=request.data)
+                serializer = MemberAddrSerializer(data=request.data)
                 if serializer.is_valid():
                     serializer.save()
                     return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -158,7 +225,7 @@ def member_addr_dis_update(request, id_member):
         addrselect.select = "Y"
         addrselect.distance = dis
         addrselect.save()
-        serializer = memberAddrSerializer(member, many=True)
+        serializer = MemberAddrSerializer(member, many=True)
         return Response(serializer.data ,status=status.HTTP_404_NOT_FOUND)
     else :
         content = {
@@ -183,7 +250,7 @@ def member_addr(request, id_member):
         return Response(content, status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
-        serializer = memberAddrSerializer(memberAddr, many=True)
+        serializer = MemberAddrSerializer(memberAddr, many=True)
         return Response(serializer.data)
 
     elif request.method == 'DELETE':
