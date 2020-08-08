@@ -77,9 +77,9 @@ def member_detail(request, id_member):
         return Response(content ,status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['GET'])
-def sigungu(request):
+def sigungu(request,sido):
     """
-    구리스트 호출 API
+    시군구리스트 호출 API
     """
     # gu = request.GET['gu']
 
@@ -89,28 +89,30 @@ def sigungu(request):
     # type : list [ 시군구 리스트 ]
     gu_list = list(set([i['gu'] for i in serializer.data]))
 
-    if not(request.GET.get('sido')) or request.GET['sido'] != "서울특별시":
+    if sido != "서울특별시":
         content = {
             "message" : "현재 서울특별시만 서비스 진행 중입니다 !",
             "result" : {}
         }
         return Response(content)
 
+
     content = {
-            "message" : request.GET['sido']+"의 모든 시군구입니다.",
+            "message" : sido +"의 모든 시군구입니다.",
             "result" : gu_list
     }
     return Response(content)
 
 
 @api_view(['GET'])
-def eupmyundong(request):
+def eupmyundong(request, sido, sigungu):
     """
-    동 리스트 호출 API
+    읍면동 리스트 호출 API
     """
+
     gu = Location.objects.all()
     serializer = LocationSerializer(gu, many=True)
-
+    # print(sido,sigungu)
     # type : list [ 구 리스트 ]
     gu_list = list(set([i['gu'] for i in serializer.data]))
 
@@ -123,14 +125,14 @@ def eupmyundong(request):
                 temp.append(j['dong'])
                 gu_dong_dict[i] = temp
     
-    if not(request.GET.get('sigungu')):
+    if sigungu is None:
         content = {
             "message" : "구를 입력하지 않음",
             "result" : gu_dong_dict
         }
         return Response(content)
     
-    if gu_dong_dict.get(request.GET.get('sigungu')) is None :
+    if gu_dong_dict.get(sigungu) is None :
         content = {
             "message" : "해당 구는 없습니다.",
             "result" : {}
@@ -138,9 +140,26 @@ def eupmyundong(request):
         return Response(content)
 
     content = {
-            "message" : request.GET.get('sigungu') + "의 동 리스트입니다.",
-            "result" :  gu_dong_dict[request.GET.get('sigungu')]
+            "message" : sigungu + "의 동 리스트입니다.",
+            "result" :  { sigungu : gu_dong_dict[sigungu] }
         }
+    return Response(content)
+
+
+@api_view(['GET'])
+def eupmyundong_check(request, sido):
+    content = {
+    "message" : "구를 입력하지 않음",
+    # "result" : gu_dong_dict
+    }
+    return Response(content)
+
+@api_view(['GET'])
+def eupmyundong_check2(request):
+    content = {
+    "message" : "시도를 입력하지 않음",
+    # "result" : gu_dong_dict
+    }
     return Response(content)
 
 
