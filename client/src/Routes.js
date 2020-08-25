@@ -26,17 +26,17 @@ export default function Routes() {
     <ThemeProvider theme={Theme}>
       <Router>
         <Switch>
-          <Route exact path="/" component={HomePage} />
-          <Route exact path="/myinfo" component={MyInfo} />
-          <Route exact path="/login" component={LoginPage} />
-          <Route exact path="/register" component={RegisterPage} />
-          <Route path="/myproduct" component={MyProduct} />
-          <Route path="/search" component={SearchPage} />
-          <Route path="/myinfochange" component={Changelayout} />
-          <Route path="/products/:product_id" component={ProductDetailPage} />
-          <Route path="/user" component={OtherUserPage} />
-          <Route path="/upload" component={UploadPage} />
-          <Redirect from="*" to="/" />
+          <Route exact path="/portfolioData/dangn/" component={HomePage} />
+          <Route exact path="/portfolioData/dangn/myinfo" component={MyInfo} />
+          <Route exact path="/portfolioData/dangn/login" component={LoginPage} />
+          <Route exact path="/portfolioData/dangn/register" component={RegisterPage} />
+          <Route path="/portfolioData/dangn/myproduct" component={MyProduct} />
+          <Route path="/portfolioData/dangn/search" component={SearchPage} />
+          <Route path="/portfolioData/dangn/myinfochange" component={Changelayout} />
+          <Route path="/portfolioData/dangn/products/:product_id" component={ProductDetailPage} />
+          <Route path="/portfolioData/dangn/user" component={OtherUserPage} />
+          <Route path="/portfolioData/dangn/upload" component={UploadPage} />
+          <Redirect from="*" to="/portfolioData/dangn/" />
         </Switch>
         <Global />
       </Router>
