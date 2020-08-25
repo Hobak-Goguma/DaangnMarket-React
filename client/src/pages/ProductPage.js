@@ -126,7 +126,7 @@ const ProductDetailPage = () => {
         setSliderData(res.sliderData1);
       });
     api.get(`/product/${id}`).then((res) => setDetail(res.data));
-  }, []);
+  }, [id]);
 
   return (
     

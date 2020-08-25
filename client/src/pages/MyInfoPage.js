@@ -280,43 +280,25 @@ const MyInfo = ({history}) => {
                   </dl>
                 </div>
                 <dl className="nickName info changeAble">
-                  <Link to={{
-                    pathname: `/myinfoChange`,
-                    state: {
-                      state: "nick_name",
-                      user: sessionInfo
-                    }
-                  }}>
+                  
                     <dt>닉네임</dt>
                     <dd>{sessionInfo.nick_name}</dd>
-                  </Link>
+                  
                 </dl>
                 <dl className="phone info changeAble">
-                  <Link to={{
-                    pathname: `/myinfoChange`,
-                    state: {
-                      state: "tel",
-                      user: sessionInfo
-                    }
-                  }}>
+                  
                     <dt>전화번호</dt>
                     <dd>{sessionInfo.tel}</dd>
-                  </Link>
+                 
                 </dl>
                 <dl className="addr info changeAble">
-                  <Link to={{
-                    pathname: `/myi\nfoChange`,
-                    state: {
-                      state: "addr",
-                      user: sessionInfo
-                    }
-                  }}>
+                  
                     <dt>주소</dt>
                     <dd>{sessionInfo.add[0]}</dd>
                     {sessionInfo.add[1] && sessionInfo.add[1] !== "" ?
                         <dd>{sessionInfo.add[1]}</dd> :
                         <></>}
-                  </Link>
+                  
                 </dl>
                 <dl className="addr info changeAble">
                   <Link to={{

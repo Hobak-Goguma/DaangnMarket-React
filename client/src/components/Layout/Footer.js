@@ -53,7 +53,7 @@ const StyledFooter = styled.footer`
   line-height: 1.6;
   letter-spacing: -0.6px;
   text-align: center;
-  z-index: 100;
+  z-index: 99;
 
   .copyright {
     color: #868e96;

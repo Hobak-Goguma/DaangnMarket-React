@@ -1,6 +1,5 @@
 import React from "react";
 import styled from 'styled-components';
-import api from "../../common/api"
 
 const RankList = styled.ul`
   display: block;
@@ -118,7 +117,10 @@ const Rank = ({history}) => {
 									v.nowRank - v.prevRank)}</>
 							)}
 					</div>
-				</a></li>);
+				</a></li>
+			);
+		}else{
+			return null;
 		}
 	});
 

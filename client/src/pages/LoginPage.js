@@ -1,7 +1,6 @@
 import Layout from "../components/Layout";
 import React, { useState } from "react";
 import styled from "styled-components";
-import { withRouter } from "react-router-dom";
 import api from "../common/api";
 
 
@@ -89,7 +88,19 @@ const LoginWrapper = styled.div`
 const LoginPage = ({history}) => {
   const [ID, setID] = useState("");
   const [PW, setPW] = useState("");
-
+  const setDummyInfo = (v) => {
+    return {
+      ...v, pk: 1,
+      user_id: "root",
+      name: "썰영화니",
+      gender: "MALE",
+      birth: "19200101",
+      email: "sunwoo@wonsang.ggum",
+      nick_name: "루트",
+      tel: "010-1234-1234",
+      add: ["서울특별시 영등포구 짜장동"]
+    }
+  };
   const handleID = (e) => {
     setID(e.target.value);
   };
@@ -99,21 +110,24 @@ const LoginPage = ({history}) => {
   };
 
   const loginFetch = () => {
-    api
-      .post("/member/login", { user_id: ID, user_pw: PW })
-      .then(async (res) => {
-        if (res.status === 200) {
-          alert("정상 로그인 되었습니다");
-          const  user = await res.data;
-          sessionStorage.setItem("user", JSON.stringify(user));
-          history.push("/");
-          const storage = JSON.parse(sessionStorage.getItem("user"));
-          console.log(storage.name);
-        } else {
-          alert("응 틀렸어~");
-        }
-      })
-      .catch((err)=>console.log(err));
+    // api
+    //   .post("/member/login", { user_id: ID, user_pw: PW })
+    //   .then(async (res) => {
+    //     if (res.status === 200) {
+    //       alert("정상 로그인 되었습니다");
+    //       const  user = await res.data;
+    //       sessionStorage.setItem("user", JSON.stringify(user));
+    //       history.push("/");
+    //       const storage = JSON.parse(sessionStorage.getItem("user"));
+    //       console.log(storage.name);
+    //     } else {
+    //       alert("응 틀렸어~");
+    //     }
+    //   })
+    //   .catch((err)=>console.log(err));
+    const user = setDummyInfo();
+    sessionStorage.setItem("user", JSON.stringify(user));
+    history.push("/");
   };
   const goRegister = () => {
     history.push("/register");

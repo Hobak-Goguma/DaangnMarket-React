@@ -1,13 +1,22 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { useState } from "react";
 
 const TotalMenu = ({ logOut, login, onClick }) => {
-  // let localID;
-  // useEffect(() => {
-  //   localID = window.sessionStorage.getItem("id");
-  // }, []);
+  const Dummy= {
+    강남구:["양재1동","양재2동","강남1동","강남2동"],
+    금천구:["가산동","금천동","금산동"],
+    관악구:["신림1동","신림2동","대학동"]
+  }
+  const [changeAddress,setChaAdd] = useState(false);
+  const dummyGu = Object.keys(Dummy);
+  const ChangeAdd = () =>{
+    return(<></>);
+  }
+
   return (
+    <>
     <StyledTotalMenu>
       <li className="totalLists">
         <div>
@@ -42,11 +51,9 @@ const TotalMenu = ({ logOut, login, onClick }) => {
             </Link>
           </li>
           <li>
-            <Link to="/address">
-              <div>
-                <span>주소 변경</span>
-              </div>
-            </Link>
+            <div>
+              <span>주소 변경</span>
+            </div>
           </li>
           <li>
             <Link to="/upload">
@@ -75,6 +82,8 @@ const TotalMenu = ({ logOut, login, onClick }) => {
         </ul>
       </li>
     </StyledTotalMenu>
+    
+    </>
   );
 };
 
