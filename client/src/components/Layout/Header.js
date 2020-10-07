@@ -155,7 +155,7 @@ const Header = (props) => {
 					{
 						// 로고 클릭시 메인으로 이동
 					}
-					<img src="/img/logo.svg" alt="로고"/>
+					<img src="./img/logo.svg" alt="로고"/>
 				</Link>
 				<div className="inputBox">
 					<input
@@ -168,7 +168,7 @@ const Header = (props) => {
 						onChange={(e) => setKeyword(e.target.value)}
 					/>
 					<label htmlFor="searchItem">
-						<img src="/img/search-icon.svg" alt="search"/>
+						<img src="./img/search-icon.svg" alt="search"/>
 					</label>
 				</div>
 
