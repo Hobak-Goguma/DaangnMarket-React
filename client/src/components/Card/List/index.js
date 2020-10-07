@@ -37,7 +37,7 @@ const Section = styled.section`
 const CardList = (props) => {
 	const Items = props.list.map(v => {
 		return (
-			<CardItem item={v} key={v.pk}/>);
+			<CardItem item={v} key={v.id_product}/>);
 	});
 
 	return (

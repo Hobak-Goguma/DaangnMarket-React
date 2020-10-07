@@ -280,55 +280,25 @@ const MyInfo = ({history}) => {
                   </dl>
                 </div>
                 <dl className="nickName info changeAble">
-                  <Link to={{
-                    pathname: `/myinfoChange`,
-                    state: {
-                      state: "nick_name",
-                      user: sessionInfo
-                    }
-                  }}>
+                  
                     <dt>닉네임</dt>
                     <dd>{sessionInfo.nick_name}</dd>
-                    <dd className="change">
-                      변경하기
-                      <i className="fas fa-chevron-right"/>
-                    </dd>
-                  </Link>
+                  
                 </dl>
                 <dl className="phone info changeAble">
-                  <Link to={{
-                    pathname: `/myinfoChange`,
-                    state: {
-                      state: "tel",
-                      user: sessionInfo
-                    }
-                  }}>
+                  
                     <dt>전화번호</dt>
                     <dd>{sessionInfo.tel}</dd>
-                    <dd className="change">
-                      변경하기
-                      <i className="fas fa-chevron-right"/>
-                    </dd>
-                  </Link>
+                 
                 </dl>
                 <dl className="addr info changeAble">
-                  <Link to={{
-                    pathname: `/myi\nfoChange`,
-                    state: {
-                      state: "addr",
-                      user: sessionInfo
-                    }
-                  }}>
+                  
                     <dt>주소</dt>
                     <dd>{sessionInfo.add[0]}</dd>
                     {sessionInfo.add[1] && sessionInfo.add[1] !== "" ?
                         <dd>{sessionInfo.add[1]}</dd> :
                         <></>}
-                    <dd className="change">
-                      변경하기
-                      <i className="fas fa-chevron-right"/>
-                    </dd>
-                  </Link>
+                  
                 </dl>
                 <dl className="addr info changeAble">
                   <Link to={{
@@ -343,10 +313,6 @@ const MyInfo = ({history}) => {
                         <dd>{sessionInfo.gender === "MALE" ? "남성" : "여성"}</dd>
                         :
                         <></>}
-                    <dd className="change">
-                      변경하기
-                      <i className="fas fa-chevron-right"/>
-                    </dd>
                   </Link>
                 </dl>
                 <dl className="addr info changeAble">
@@ -361,10 +327,6 @@ const MyInfo = ({history}) => {
                     {sessionInfo.gender && sessionInfo.gender !== "" ?
                         <dd>{birthYear}년 {birthMonth}월 {birthDay}일</dd> :
                         <></>}
-                    <dd className="change">
-                      변경하기
-                      <i className="fas fa-chevron-right"/>
-                    </dd>
                   </Link>
                 </dl>
               </div>

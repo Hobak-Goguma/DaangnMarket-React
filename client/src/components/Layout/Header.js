@@ -57,7 +57,10 @@ const Headers = styled.header`
       }
     }
     section.log {
-      right: 140px;
+      right: 160px;
+    }
+    section.register {
+      right:0px;
     }
     section {
       position: absolute;
@@ -103,7 +106,8 @@ const Header = (props) => {
 	const [keyword, setKeyword] = useState("");
 
 	useEffect(() => {
-		user = JSON.parse(window.sessionStorage.getItem("user"));
+    user = JSON.parse(window.sessionStorage.getItem("user"));
+    console.log(user)
 		if (user) {
 			setLogin(true);
 		} else {
@@ -113,7 +117,7 @@ const Header = (props) => {
 			&& window.location.href.split("=")[1]) {
 			setKeyword(decodeURIComponent(window.location.href.split("=")[1]))
 		}
-	}, []);
+	}, [props.location.pathname]);
 
 	const logOut = () => {
 		window.sessionStorage.clear();
@@ -151,7 +155,7 @@ const Header = (props) => {
 					{
 						// 로고 클릭시 메인으로 이동
 					}
-					<img src="/img/logo.svg" alt="로고"/>
+					<img src="./img/logo.svg" alt="로고"/>
 				</Link>
 				<div className="inputBox">
 					<input
@@ -164,12 +168,12 @@ const Header = (props) => {
 						onChange={(e) => setKeyword(e.target.value)}
 					/>
 					<label htmlFor="searchItem">
-						<img src="/img/search-icon.svg" alt="search"/>
+						<img src="./img/search-icon.svg" alt="search"/>
 					</label>
 				</div>
 
 				{login ? ( //로그인 여부확인
-					<MyDrop localID={user.user_id}></MyDrop>
+					<MyDrop localID={user.nick_name}></MyDrop>
 				) : (
 					<section className="log">
 						<Link to="/login">
@@ -179,7 +183,15 @@ const Header = (props) => {
 						</Link>
 					</section>
 				)}
-				<TotalMenu logOut={logOut} login={login} onClick={onClickCategory}/>
+				{login ? (<TotalMenu logOut={logOut} login={login} onClick={onClickCategory}/>):(
+					<section className="register">
+          <Link to="/register">
+            <div className="logIn">
+              <div>회원가입</div>
+            </div>
+          </Link>
+        </section>
+        )}
 			</div>
 		</Headers>
 	);

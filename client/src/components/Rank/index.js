@@ -1,6 +1,5 @@
 import React from "react";
 import styled from 'styled-components';
-import api from "../../common/api"
 
 const RankList = styled.ul`
   display: block;
@@ -45,7 +44,6 @@ const RankList = styled.ul`
 `;
 
 const Rank = ({history}) => {
-	console.log(history);
 
 	// map으로 순위 매기기
 	const rank = [{
@@ -119,7 +117,10 @@ const Rank = ({history}) => {
 									v.nowRank - v.prevRank)}</>
 							)}
 					</div>
-				</a></li>);
+				</a></li>
+			);
+		}else{
+			return null;
 		}
 	});
 

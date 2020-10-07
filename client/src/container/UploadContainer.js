@@ -82,7 +82,7 @@ const UploadContainer = ({ history }) => {
       reader.readAsDataURL(file);
       return file;
     });
-  }, []);
+  }, [setImageData,imageData]);
   return (
     <Upload
       onDrop={onDrop}
