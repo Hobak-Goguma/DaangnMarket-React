@@ -15,8 +15,9 @@
         "root": ["./"],
         "alias": {
           "@common": "src/common",
-          "@images": "public/images",
-          "@components": "src/components"
+          "@components": "src/components",
+          "@requesters": "src/requesters",
+          "@services": "src/services"
         }
       }
     ]

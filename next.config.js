@@ -11,8 +11,9 @@ module.exports = withImages({
     config.resolve.alias = {
       ...config.resolve.alias,
       '@common': path.resolve(__dirname, 'src', 'common'),
-      '@images': path.resolve(__dirname, 'public', 'images'),
       '@components': path.resolve(__dirname, 'src', 'components'),
+      '@requesters': path.resolve(__dirname, 'src', 'requesters'),
+      '@services': path.resolve(__dirname, 'src', 'services'),
     };
 
     config.module.rules = [

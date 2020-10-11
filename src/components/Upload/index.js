@@ -1,7 +1,8 @@
-import React from "react";
-import { UploadWrapper, File, UploadBtn, ErrorMessage } from "./style";
-import Dropzone from "./Dropzone";
-import { ReactSortable } from "react-sortablejs";
+import React from 'react';
+import { ReactSortable } from 'react-sortablejs';
+
+import Dropzone from './Dropzone';
+import { ErrorMessage, File, UploadBtn, UploadWrapper } from './style';
 
 const Upload = ({
   onSubmit,
@@ -33,7 +34,7 @@ const Upload = ({
 
   const renderImages = () => {
     return imageData.map((file, i) => (
-      <div style={{ position: "relative" }} key={i}>
+      <div style={{ position: 'relative' }} key={i}>
         <span className="delete" onClick={() => handleDelete(i)}>
           &times;
         </span>
@@ -44,7 +45,7 @@ const Upload = ({
 
   return (
     <UploadWrapper>
-      <h5>{isEdit ? "상품 수정" : "중고거래 상품 등록"}</h5>
+      <h5>{isEdit ? '상품 수정' : '중고거래 상품 등록'}</h5>
       <form onSubmit={onSubmit} className="form-control">
         <File>
           <Dropzone onDrop={onDrop} imageCount={imageCount} />
@@ -75,7 +76,7 @@ const Upload = ({
           // value={category || "default"}
           // onChange={onCategoryChange}
         >
-          <option value={"default"} disabled>
+          <option value={'default'} disabled>
             카테고리를 선택해주세요.
           </option>
           {categoryOptions.map((item, index) => (
@@ -104,7 +105,7 @@ const Upload = ({
         />
       </div>
       {error && <ErrorMessage>{error}</ErrorMessage>}
-      <UploadBtn text={`상품 ${isEdit ? "수정" : "등록"}하기`} />
+      <UploadBtn text={`상품 ${isEdit ? '수정' : '등록'}하기`} />
     </UploadWrapper>
   );
 };

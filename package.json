@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon",
-    "build": "next build"
+    "build": "next build",
+    "test": "jest --updateSnapshot"
   },
   "keywords": [],
   "author": "",
@@ -34,6 +35,7 @@
     "@types/axios": "^0.14.0",
     "@types/debug": "^4.1.5",
     "@types/express": "^4.17.8",
+    "@types/jest": "^26.0.14",
     "@types/next": "^9.0.0",
     "@types/node": "^14.11.8",
     "@types/react": "^16.9.51",
@@ -43,7 +45,9 @@
     "@types/styled-components": "^5.1.3",
     "babel-plugin-module-resolver": "^4.0.0",
     "file-loader": "^6.1.1",
+    "jest": "^26.5.2",
     "nodemon": "^2.0.4",
+    "ts-jest": "^26.4.1",
     "ts-node": "^9.0.0",
     "typescript": "^4.0.3",
     "url-loader": "^4.1.1"
