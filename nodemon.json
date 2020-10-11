@@ -6,7 +6,7 @@
   "ignore": ["node_modules"],
   "env": {
     "NODE_ENV": "development",
-    "PORT": 8000,
+    "PORT": 3000,
     "DEBUG": "Luna:*"
   }
 }

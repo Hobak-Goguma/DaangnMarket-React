@@ -16,6 +16,9 @@ app
   .then(() => {
     const server = express();
 
+    server.use((req, _, next) => {
+      next();
+    });
     server.use(handler);
 
     server.listen(port, () => {
