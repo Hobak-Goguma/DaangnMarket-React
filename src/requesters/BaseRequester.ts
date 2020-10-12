@@ -29,23 +29,6 @@ export default class BaseRequester extends APIRequester {
       return this.reject({ warn: true, msg: 'HTTP Method is required' });
     }
 
-    console.dir({
-      url: endpoint,
-      ...config,
-    });
-
     return this.reqeust<T>(endpoint, config);
-
-    // switch (method.toLowerCase()) {
-    //   case 'get':
-    //     return this.get<T>(endpoint, config);
-    //   case 'post':
-    //     return this.post<T>(endpoint, config);
-    //   default:
-    //     return this.reject({
-    //       warn: true,
-    //       msg: 'Method must be one of the HTTP methods',
-    //     });
-    // }
   }
 }

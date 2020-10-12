@@ -3,3 +3,5 @@ __snapshots__
 
 .next
 .env
+
+yarn-error.log

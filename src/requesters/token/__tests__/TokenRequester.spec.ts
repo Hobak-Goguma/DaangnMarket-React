@@ -1,4 +1,4 @@
-import { TokenPayload } from '@payloads/token/TokenPayload';
+import { TokenErrorPayload, TokenPayload } from '@payloads/token/TokenPayload';
 import EitherResponse from '@services/EitherResponse';
 
 import TokenRequester from '../TokenRequester';
@@ -18,7 +18,34 @@ describe('TokenRequester', () => {
 
       const payload = res.pickRight((d) => d.data);
 
-      expect(res).toMatchSnapshot();
+      expect(typeof payload.access).toBe('string');
+      expect(typeof payload.refresh).toBe('string');
+      done();
+    });
+  });
+
+  describe('데이터 불러오기 실패', () => {
+    it('id 를 잘못 입력하면 에러를 받는다', async (done) => {
+      const res = (await requester.getToken({
+        username: 'zzz',
+        password: '1234',
+      })) as EitherResponse<any>;
+
+      const payload = res.pickRight((d) => d.data) as TokenErrorPayload;
+
+      expect(typeof payload.detail).toBe('string');
+      done();
+    });
+
+    it('pw 를 잘못 입력하면 에러를 받는다', async (done) => {
+      const res = (await requester.getToken({
+        username: 'ddusi',
+        password: 'hi',
+      })) as EitherResponse<any>;
+
+      const payload = res.pickRight((d) => d.data) as TokenErrorPayload;
+
+      expect(typeof payload.detail).toBe('string');
       done();
     });
   });

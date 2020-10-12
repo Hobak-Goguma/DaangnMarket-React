@@ -11,7 +11,6 @@ export default class TokenRequester extends BaseRequester {
     username: string;
     password: string;
   }) {
-    console.log('들어옴');
     return await this.call<TokenPayload>('/api/token/', {
       method: 'post',
       data: { username, password },

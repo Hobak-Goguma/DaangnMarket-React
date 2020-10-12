@@ -5,8 +5,8 @@ import debug from 'debug';
 
 axiosDebugLog({
   request: (debug, config) => {
-    console.log('config');
-    console.dir(config);
+    // console.log('config');
+    // console.dir(config);
     debug('Requested with');
     debug(config);
   },
@@ -15,7 +15,7 @@ axiosDebugLog({
     debug(response);
   },
   error: (debug, error) => {
-    console.log('error');
+    // console.log('error');
     // console.dir(error)
     debug('Error caused by');
     debug(error);
@@ -59,48 +59,11 @@ export default class APIRequester {
 
       return EitherResponse.Right(this.pick(res));
     } catch (error) {
+      const { response } = error;
       return EitherResponse.Left<null>({
-        data: null,
-        status: error.status || 400,
-        statusText: error.statusText || 'Unknown Error',
-      });
-    }
-  }
-
-  // TODO: get 과 post 를 합치면서 try-catch 를 좀 더 괜찮게 바꿀 수 있는 방법을 모색해보자
-  async get<T>(url: string, config: APIRequestConfig) {
-    try {
-      const res = await axios.get<T>(url, config);
-
-      if (this.isClientError(res.status) || this.isServerError(res.status)) {
-        throw this.pick(res);
-      }
-
-      return EitherResponse.Right(this.pick(res));
-    } catch (error) {
-      return EitherResponse.Left<null>({
-        data: null,
-        status: error.status || 400,
-        statusText: error.statusText || 'Unknown Error',
-      });
-    }
-  }
-
-  async post<T>(url: string, config: APIRequestConfig) {
-    try {
-      const res = await axios.post<T>(url, config);
-
-      if (this.isClientError(res.status) || this.isServerError(res.status)) {
-        throw this.pick(res);
-      }
-
-      return EitherResponse.Right(this.pick(res));
-    } catch (error) {
-      // console.error(error);
-      return EitherResponse.Left<null>({
-        data: null,
-        status: error.status || 400,
-        statusText: error.statusText || 'Unknown Error',
+        data: response?.data ?? null,
+        status: response?.status || 400,
+        statusText: response?.statusText || 'Unknown Error',
       });
     }
   }
