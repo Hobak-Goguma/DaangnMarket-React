@@ -14,6 +14,7 @@ module.exports = withImages({
       '@components': path.resolve(__dirname, 'src', 'components'),
       '@requesters': path.resolve(__dirname, 'src', 'requesters'),
       '@services': path.resolve(__dirname, 'src', 'services'),
+      '@payloads': path.resolve(__dirname, 'src', 'payloads'),
     };
 
     config.module.rules = [

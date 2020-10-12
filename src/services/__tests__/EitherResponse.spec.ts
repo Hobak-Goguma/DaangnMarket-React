@@ -1,6 +1,4 @@
-import { exec } from 'child_process';
-
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 
 import EitherResponse from '../EitherResponse';
 

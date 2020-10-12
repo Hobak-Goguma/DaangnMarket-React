@@ -17,7 +17,8 @@
           "@common": "src/common",
           "@components": "src/components",
           "@requesters": "src/requesters",
-          "@services": "src/services"
+          "@services": "src/services",
+          "@payloads": "src/payloads"
         }
       }
     ]

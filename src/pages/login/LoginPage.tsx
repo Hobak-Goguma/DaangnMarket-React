@@ -1,5 +1,6 @@
-import api from '@common/api';
+// import api from '@common/api';
 import Layout from '@components/Layout';
+import TokenRequester from '@requesters/token/TokenRequester';
 import debug from 'debug';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
@@ -89,9 +90,10 @@ const LoginWrapper = styled.div`
 `;
 
 const LoginPage: NextPage = () => {
+  const requester = new TokenRequester();
   const router = useRouter();
-  const [ID, setID] = useState('');
-  const [PW, setPW] = useState('');
+  const [id, setID] = useState('');
+  const [pw, setPW] = useState('');
 
   // const setDummyInfo = (v) => {
   //   return {
@@ -116,9 +118,15 @@ const LoginPage: NextPage = () => {
     setPW(e.target.value);
   };
 
-  const loginFetch = () => {
+  const loginFetch = async () => {
     // const user = setDummyInfo();
     // sessionStorage.setItem('user', JSON.stringify(user));
+
+    await requester.getToken({
+      username: id,
+      password: pw,
+    });
+
     router.push('/');
   };
 
