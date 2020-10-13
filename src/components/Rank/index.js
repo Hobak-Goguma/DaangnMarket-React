@@ -3,10 +3,10 @@ import styled from 'styled-components';
 
 const RankList = styled.ul`
   display: block;
-  width: 200px;
   position: absolute;
-  bottom: 50px;
   right: 0;
+  width: 200px;
+  bottom: 50px;
   .keyword {
     height: 50px;
     border-bottom: 1px solid #ccc;

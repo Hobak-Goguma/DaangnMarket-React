@@ -9,201 +9,133 @@ import { useRouter } from 'next/router';
 import styled from 'styled-components';
 
 const log = debug('Luna:HomePage');
-
-const Mains = styled.section`
-  .main-banner {
-    width: 100%;
-    height: 600px;
-    background: #eee;
-    .container {
-      height: 100%;
-      .title {
-        text-align: center;
-        padding-top: 96px;
-        p {
-          font-size: 17px;
-        }
-        p:first-child {
-          font-size: 40px;
-          font-weight: bold;
-          margin-bottom: 20px;
-        }
-      }
-      img {
-        display: block;
-        position: absolute;
-        bottom: 0;
-        left: 0;
-      }
-      ul {
-        display: block;
-        width: 200px;
-        position: absolute;
-        bottom: 50px;
-        right: 0;
-        .keyword {
-          height: 50px;
-          border-bottom: 1px solid #ccc;
-          font-size: 20px;
-          font-weight: bold;
-        }
-        li {
-          display: block;
-          width: 100%;
-          font-size: 17px;
-          margin-top: 16px;
-          position: relative;
-          a {
-            width: 100%;
-          }
-          div {
-            display: inline-block;
-            strong {
-              font-weight: bold;
-              margin-right: 4px;
-            }
-          }
-          .upDown {
-            width: 50px;
-            text-align: center;
-            position: absolute;
-            top: 0;
-            right: 0;
-            font-size: 12px;
-            i {
-              margin-right: 4px;
-            }
-          }
-        }
-        .up {
-          color: red;
-        }
-        .down {
-          color: blue;
-        }
-      }
+const StyledContainer = styled.div`
+  height: 100%;
+  .title {
+    text-align: center;
+    padding-top: 96px;
+    p {
+      font-size: 17px;
+    }
+    p:first-child {
+      font-size: 40px;
+      font-weight: bold;
+      margin-bottom: 20px;
     }
   }
-  .card-section {
-    padding: 80px 0;
-    .container {
-      .title {
-        text-align: center;
-        font-size: 32px;
-        font-weight: bold;
-        position: relative;
-        margin-bottom: 120px;
-        &::before {
-          display: block;
-          position: absolute;
-          left: 50%;
-          bottom: -60px;
-          transform: translateX(-50%);
-          content: '';
-          width: 80px;
-          height: 2px;
-          background-color: #ff8a3d;
-        }
-      }
-    }
+  img {
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 0;
   }
-  .about-section {
-    background: #eee;
-    .container {
-      .title {
-        padding-top: 80px;
-        padding-bottom: 50px;
-        text-align: center;
-        position: relative;
-        font-size: 32px;
-        &::before {
-          content: '';
-          position: absolute;
-          bottom: 0;
-          left: 50%;
-          transform: translateX(-50%);
-          width: 80px;
-          height: 2px;
-          background-color: #ff8a3d;
-        }
-      }
-      article {
-        padding: 40px 0 80px;
-        text-align: center;
-        .descript {
-          width: 230px;
-          display: inline-block;
-          margin: 40px ${(980 - 230 * 3) / 2}px 0 0;
-          &:nth-child(3n) {
-            margin-right: 0;
-          }
-          &:nth-child(-n + 3) {
-            margin-top: 0;
-          }
-          h1 {
-            margin: 30px 0 12px;
-            font-size: 20px;
-          }
-          p {
-            line-height: 1.43;
-            word-break: keep-all;
-          }
-        }
-      }
-    }
-  }
-  .review-section {
-    .container {
-      padding: 80px 0 100px;
-      .title {
-        padding-bottom: 50px;
-        margin-bottom: 50px;
-        text-align: center;
-        position: relative;
-        font-size: 32px;
-        &::before {
-          content: '';
-          position: absolute;
-          bottom: 0;
-          left: 50%;
-          transform: translateX(-50%);
-          width: 80px;
-          height: 2px;
-          background-color: #ff8a3d;
-        }
-      }
-      .review {
-        width: 260px;
-        padding: 26px 0 0 40px;
-        display: inline-block;
-        vertical-align: top;
-        position: relative;
-        margin: 80px ${(980 - 300 * 3) / 2}px 0 0;
-        font-size: 16px;
-        line-height: 1.43;
-        letter-spacing: -0.33px;
-        &:nth-child(-n + 4) {
-          margin-top: 0;
-        }
-        &:nth-child(3n + 1) {
-          margin-right: 0;
-        }
-        .icon {
-          background: url('https://www.daangn.com/assets/home/base/icon-set-50e8f0ea464db3f581f26893911142973cff6fedc7c2c917725338ddd47f5648.png');
-          background-position: -172px -1380px;
-          width: 16px;
-          height: 15px;
-          position: absolute;
-          top: 0;
-          left: 27px;
-        }
-        span {
-          color: #ff8a3d;
-        }
-      }
+`;
+const StyledMainBanner = styled.div`
+  width: 100%;
+  height: 600px;
+  background: #eee;
+  position:relative;
+`;
+const StyledCardSection = styled.div`
+  padding: 80px 0;
+  .title {
+    text-align: center;
+    font-size: 32px;
+    font-weight: bold;
+    position: relative;
+    margin-bottom: 120px;
+    &::before {
+      display: block;
+      position: absolute;
+      left: 50%;
+      bottom: -60px;
+      transform: translateX(-50%);
+      content: '';
+      width: 80px;
+      height: 2px;
+      background-color: #ff8a3d;
     }
   }
 `;
+const StyledAboutArticle = styled.article`
+  padding: 40px 0 80px;
+  text-align: center;
+  .descript {
+    width: 230px;
+    display: inline-block;
+    margin: 40px ${(980 - 230 * 3) / 2}px 0 0;
+    &:nth-child(3n) {
+      margin-right: 0;
+    }
+    &:nth-child(-n + 3) {
+      margin-top: 0;
+    }
+    h1 {
+      margin: 30px 0 12px;
+      font-size: 20px;
+    }
+    p {
+      line-height: 1.43;
+      word-break: keep-all;
+    }
+  }
+`;
+const StyledAboutSection = styled.div`
+  background: #eee;
+  .title {
+    padding-top: 80px;
+    padding-bottom: 50px;
+    text-align: center;
+    position: relative;
+    font-size: 32px;
+    &::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 2px;
+      background-color: #ff8a3d;
+    }
+  }
+`;
+const StyledReview = styled.div`
+  width: 260px;
+  padding: 26px 0 0 40px;
+  display: inline-block;
+  vertical-align: top;
+  position: relative;
+  margin: 80px ${(980 - 300 * 3) / 2}px 0 0;
+  font-size: 16px;
+  line-height: 1.43;
+  letter-spacing: -0.33px;
+  &:nth-child(-n + 4) {
+    margin-top: 0;
+  }
+  &:nth-child(3n + 1) {
+    margin-right: 0;
+  }
+  .icon {
+    background: url('https://www.daangn.com/assets/home/base/icon-set-50e8f0ea464db3f581f26893911142973cff6fedc7c2c917725338ddd47f5648.png');
+    background-position: -172px -1380px;
+    width: 16px;
+    height: 15px;
+    position: absolute;
+    top: 0;
+    left: 27px;
+  }
+  span {
+    color: #ff8a3d;
+  }
+`;
+
+const StyledReviewSection = styled.section`
+  .container {
+    padding: 80px 0 100px;
+  }
+`;
+
 
 const HomePage: LunaPage = () => {
   const router = useRouter();
@@ -380,7 +312,7 @@ const HomePage: LunaPage = () => {
   ];
 
   const Deses = descriptions.map((v) => {
-    const Image = styled.div`
+    const StyledImage = styled.div`
       width: 230px;
       height: 230px;
       background: url('https://www.daangn.com/assets/home/base/icon-set-50e8f0ea464db3f581f26893911142973cff6fedc7c2c917725338ddd47f5648.png');
@@ -388,7 +320,7 @@ const HomePage: LunaPage = () => {
     `;
     return (
       <div className="descript" key={v.idx}>
-        <Image />
+        <StyledImage />
         <h1>{v.title}</h1>
         <p>{v.des}</p>
       </div>
@@ -397,51 +329,49 @@ const HomePage: LunaPage = () => {
 
   const revSection = reviews.map((v) => {
     return (
-      <div key={v.idx} className="review">
+      <StyledReview key={v.idx}>
         <div className="icon"></div>
         {v.review}
         <span>{` - ` + v.address}</span>
-      </div>
+      </StyledReview>
     );
   });
 
   return (
     // @ts-expect-error
     <Layout>
-      <Mains>
-        {/* 메인 및 랭킹 section */}
-        <div className="main-banner">
-          <div className="container">
-            <div className="title" key="0">
-              <p>우리 동네 중고 직거래 마켓</p>
-              <p>동네 주민들과 가깝고 따뜻한 거래를 지금 경험해보세요.</p>
-            </div>
-            <Rank router={router} />
-            <img src="./images/mainpageBgc.png" alt="거래화면" />
+      {/* 메인 및 랭킹 section */}
+      <StyledMainBanner>
+        <StyledContainer>
+          <div className="title" key="0">
+            <p>우리 동네 중고 직거래 마켓</p>
+            <p>동네 주민들과 가깝고 따뜻한 거래를 지금 경험해보세요.</p>
           </div>
+          <Rank router={router} />
+          <img src="./images/mainpageBgc.png" alt="거래화면" />
+        </StyledContainer>
+      </StyledMainBanner>
+      {/* 아이템 card section */}
+      <StyledCardSection>
+        <div className="container">
+          <div className="title">당근마켓 인기 매물</div>
+          <CardList list={itemData} />
         </div>
-        {/* 아이템 card section */}
-        <div className="card-section">
-          <div className="container">
-            <div className="title">당근마켓 인기 매물</div>
-            <CardList list={itemData} />
-          </div>
+      </StyledCardSection>
+      {/* 당근마켓 특징 설명 section */}
+      <StyledAboutSection>
+        <div className="container">
+          <div className="title">당근마켓은 이런 점이 달라요!</div>
+          <StyledAboutArticle>{Deses}</StyledAboutArticle>
         </div>
-        {/* 당근마켓 특징 설명 section */}
-        <div className="about-section">
-          <div className="container">
-            <div className="title">당근마켓은 이런 점이 달라요!</div>
-            <article>{Deses}</article>
-          </div>
+      </StyledAboutSection>
+      {/* App Review section */}
+      <StyledReviewSection>
+        <div className="container">
+          <div className="title">당근마켓 사용자 후기</div>
+          {revSection}
         </div>
-        {/* App Review section */}
-        <div className="review-section">
-          <div className="container">
-            <div className="title">당근마켓 사용자 후기</div>
-            {revSection}
-          </div>
-        </div>
-      </Mains>
+      </StyledReviewSection>
     </Layout>
   );
 };
