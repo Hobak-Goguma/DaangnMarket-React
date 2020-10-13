@@ -1,6 +1,6 @@
 import type { AxiosResponse } from 'axios';
 
-interface Value<T>
+export interface Value<T>
   extends Pick<AxiosResponse<T>, 'data' | 'status' | 'statusText'> {}
 
 export default class EitherResponse<T> {

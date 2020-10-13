@@ -1,5 +1,5 @@
-// import api from '@common/api';
 import Layout from '@components/Layout';
+import { LunaPage } from '@payloads/common/Next';
 import TokenRequester from '@requesters/token/TokenRequester';
 import debug from 'debug';
 import { NextPage } from 'next';
@@ -89,7 +89,7 @@ const LoginWrapper = styled.div`
   }
 `;
 
-const LoginPage: NextPage = () => {
+const LoginPage: LunaPage = () => {
   const requester = new TokenRequester();
   const router = useRouter();
   const [id, setID] = useState('');
@@ -122,12 +122,15 @@ const LoginPage: NextPage = () => {
     // const user = setDummyInfo();
     // sessionStorage.setItem('user', JSON.stringify(user));
 
-    await requester.getToken({
+    const payload = await requester.getToken({
       username: id,
       password: pw,
     });
 
-    router.push('/');
+    console.dir(payload);
+    debugger;
+
+    // router.push('/');
   };
 
   const goRegister = () => {
@@ -178,8 +181,9 @@ const LoginPage: NextPage = () => {
   );
 };
 
-LoginPage.getInitialProps = async () => {
+LoginPage.getInitialProps = async ({ req }) => {
   log('getInitialProps');
+
   return {};
 };
 

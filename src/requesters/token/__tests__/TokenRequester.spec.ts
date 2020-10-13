@@ -6,7 +6,8 @@ import TokenRequester from '../TokenRequester';
 describe('TokenRequester', () => {
   let requester: TokenRequester;
   beforeEach(() => {
-    requester = new TokenRequester();
+    // @ts-expect-error
+    requester = new TokenRequester({});
   });
 
   describe('데이터를 불러오기 성공', () => {

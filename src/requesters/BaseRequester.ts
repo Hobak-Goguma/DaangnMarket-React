@@ -1,5 +1,6 @@
 import URL from 'url';
 
+import { CustomRequest } from '@payloads/common/Next';
 import debug from 'debug';
 
 import APIRequester, { APIRequestConfig } from './APIRequester';
@@ -10,7 +11,15 @@ export default class BaseRequester extends APIRequester {
   private protocol = 'http';
   private host = 'www.daangn.site';
 
-  private format(url: string): string {
+  constructor(private req?: CustomRequest['req']) {
+    super();
+  }
+
+  private format(url: string, fallbackUrl: string = ''): string {
+    if (!this.req) {
+      return fallbackUrl;
+    }
+
     return URL.format({
       protocol: this.protocol,
       host: this.host,
@@ -23,7 +32,7 @@ export default class BaseRequester extends APIRequester {
     log('call');
 
     const { method } = config;
-    const endpoint = this.format(url);
+    const endpoint = this.format(url, config.fallbackUrl);
 
     if (!method) {
       return this.reject({ warn: true, msg: 'HTTP Method is required' });

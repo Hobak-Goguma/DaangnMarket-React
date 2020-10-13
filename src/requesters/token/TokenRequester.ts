@@ -5,8 +5,8 @@ import BaseRequester from '../BaseRequester';
 
 export default class TokenRequester extends BaseRequester {
   async getToken({
-    username,
-    password,
+    username = '',
+    password = '',
   }: {
     username: string;
     password: string;
@@ -14,7 +14,7 @@ export default class TokenRequester extends BaseRequester {
     return await this.call<TokenPayload>('/api/token/', {
       method: 'post',
       data: { username, password },
-      timeout: 5000,
+      fallbackUrl: '/api/token/',
     });
   }
 }
