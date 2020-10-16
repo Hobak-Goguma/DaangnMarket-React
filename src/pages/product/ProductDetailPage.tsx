@@ -157,7 +157,7 @@ const ProductDetailPage: NextPage = () => {
               <a href="/user">
                 <DetailProfile>{user}</DetailProfile>
               </a>
-              <Temper>{user}</Temper>
+              <Temper user={user} />
             </div>
           </div>
         </ProfileTitle>
