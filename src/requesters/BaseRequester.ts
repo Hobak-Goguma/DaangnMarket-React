@@ -1,22 +1,40 @@
 import URL from 'url';
 
-import { CustomRequest } from '@payloads/common/Next';
+import { Config } from '@payloads/common/Next';
 import debug from 'debug';
 
 import APIRequester, { APIRequestConfig } from './APIRequester';
 
 const log = debug('Luna:BaseRequester');
 
+export interface RequesterProps extends Config {
+  isFromServer: boolean;
+}
+
 export default class BaseRequester extends APIRequester {
   private protocol = 'http';
   private host = 'www.daangn.site';
 
-  constructor(private req?: CustomRequest['req']) {
+  constructor(private props?: RequesterProps) {
     super();
   }
 
+  protected get accessToken() {
+    log(`accessToken: ${this.props?.accessToken}`);
+    return this.props?.accessToken ?? '';
+  }
+
+  protected get refreshToken() {
+    log(`refreshToken: ${this.props?.refreshToken}`);
+    return this.props?.refreshToken ?? '';
+  }
+
+  protected get isFromServer() {
+    return !!this.props?.isFromServer;
+  }
+
   private format(url: string, fallbackUrl: string = ''): string {
-    if (!this.req) {
+    if (!this.isFromServer) {
       return fallbackUrl;
     }
 

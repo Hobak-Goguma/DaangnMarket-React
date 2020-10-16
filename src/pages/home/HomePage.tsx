@@ -1,8 +1,10 @@
 import CardList from '@components/Card/List';
 import Layout from '@components/Layout';
 import Rank from '@components/Rank';
+import TokenRequester from '@requesters/token/TokenRequester';
 import debug from 'debug';
 import { NextPage } from 'next';
+import { LunaPage } from '@payloads/common/Next'
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 
@@ -203,7 +205,7 @@ const Mains = styled.section`
   }
 `;
 
-const HomePage: NextPage = () => {
+const HomePage: LunaPage = () => {
   const router = useRouter();
 
   const itemData = [
@@ -444,8 +446,9 @@ const HomePage: NextPage = () => {
   );
 };
 
-HomePage.getInitialProps = async () => {
+HomePage.getInitialProps = async ({ req }) => {
   log('getInitialProps');
+  log(`req.token: ${req['token']}`);
   return {};
 };
 

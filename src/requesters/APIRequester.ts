@@ -1,6 +1,7 @@
 import EitherResponse, { Value } from '@services/EitherResponse';
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import debug from 'debug';
+import { camelizeKeys } from 'humps';
 
 /** 디버깅 할 때 사용 */
 // import axiosDebugLog from 'axios-debug-log';
@@ -36,15 +37,13 @@ export default class APIRequester {
 
   private pick<T>(res: AxiosResponse<T>): Value<T> {
     return {
-      data: res.data,
+      data: (camelizeKeys((res.data as any) as object) as any) as T,
       status: res.status,
       statusText: res.statusText,
     };
   }
 
   async reqeust<T>(url: string, config: APIRequestConfig) {
-    log('request');
-
     try {
       const res = (await axios({
         ...config,

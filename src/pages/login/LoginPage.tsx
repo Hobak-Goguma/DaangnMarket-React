@@ -1,8 +1,8 @@
 import Layout from '@components/Layout';
 import { LunaPage } from '@payloads/common/Next';
+import LoginRequester from '@requesters/login/LoginRequester';
 import TokenRequester from '@requesters/token/TokenRequester';
 import debug from 'debug';
-import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import styled from 'styled-components';
@@ -90,7 +90,8 @@ const LoginWrapper = styled.div`
 `;
 
 const LoginPage: LunaPage = () => {
-  const requester = new TokenRequester();
+  const tokenRequester = new TokenRequester();
+  const loginRequester = new LoginRequester();
   const router = useRouter();
   const [id, setID] = useState('');
   const [pw, setPW] = useState('');
@@ -122,13 +123,18 @@ const LoginPage: LunaPage = () => {
     // const user = setDummyInfo();
     // sessionStorage.setItem('user', JSON.stringify(user));
 
-    const payload = await requester.getToken({
+    await tokenRequester.getToken({
       username: id,
       password: pw,
     });
-
-    console.dir(payload);
     debugger;
+    // const payload = await loginRequester.login({
+    //   username: id,
+    //   password: pw,
+    // });
+
+    // console.dir(payload);
+    // debugger;
 
     // router.push('/');
   };

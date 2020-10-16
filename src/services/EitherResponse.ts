@@ -25,7 +25,7 @@ export default class EitherResponse<T> {
     return EitherResponse.Right<R>(res);
   }
 
-  caseOf<L, R = T>({
+  caseOf<L, R>({
     left,
     right,
   }: {
