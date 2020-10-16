@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const ButtonWrapper = styled.button`
   border: none;
@@ -8,10 +8,11 @@ export const ButtonWrapper = styled.button`
   font-weight: 600;
   font-size: 1rem;
   background-color: ${(props) => props.theme.primaryColor};
-  :hover {
-    background-color: ${(props) => props.theme.primaryDarker};
-  }
   text-align: center;
   padding: 0.5rem 0;
   cursor: pointer;
+
+  :hover {
+    background-color: ${(props) => props.theme.primaryDarker};
+  }
 `;
