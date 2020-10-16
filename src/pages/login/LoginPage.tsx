@@ -123,20 +123,12 @@ const LoginPage: LunaPage = () => {
     // const user = setDummyInfo();
     // sessionStorage.setItem('user', JSON.stringify(user));
 
-    await tokenRequester.getToken({
+    const tokenPayload = await tokenRequester.getToken({
       username: id,
       password: pw,
     });
+
     debugger;
-    // const payload = await loginRequester.login({
-    //   username: id,
-    //   password: pw,
-    // });
-
-    // console.dir(payload);
-    // debugger;
-
-    // router.push('/');
   };
 
   const goRegister = () => {
