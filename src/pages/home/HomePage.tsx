@@ -34,27 +34,31 @@ const StyledMainBanner = styled.div`
   background: #eee;
   position:relative;
 `;
-const StyledCardSection = styled.div`
-  padding: 80px 0;
-  .title {
-    text-align: center;
-    font-size: 32px;
-    font-weight: bold;
-    position: relative;
-    margin-bottom: 120px;
-    &::before {
-      display: block;
-      position: absolute;
-      left: 50%;
-      bottom: -60px;
-      transform: translateX(-50%);
-      content: '';
-      width: 80px;
-      height: 2px;
-      background-color: #ff8a3d;
-    }
+const StyledTitle = styled.div`
+  padding-top:50px;
+  text-align: center;
+  font-size: 32px;
+  font-weight: bold;
+  position: relative;
+  margin-bottom: 120px;
+  &::before {
+    display: block;
+    position: absolute;
+    left: 50%;
+    bottom: -60px;
+    transform: translateX(-50%);
+    content: '';
+    width: 80px;
+    height: 2px;
+    background-color: #ff8a3d;
   }
 `;
+const mainTitle = styled(StyledTitle)`
+  padding-top: 96px;
+  p:first-child{
+    font-size:40px;
+  }
+`
 const StyledAboutArticle = styled.article`
   padding: 40px 0 80px;
   text-align: center;
@@ -75,26 +79,6 @@ const StyledAboutArticle = styled.article`
     p {
       line-height: 1.43;
       word-break: keep-all;
-    }
-  }
-`;
-const StyledAboutSection = styled.div`
-  background: #eee;
-  .title {
-    padding-top: 80px;
-    padding-bottom: 50px;
-    text-align: center;
-    position: relative;
-    font-size: 32px;
-    &::before {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 80px;
-      height: 2px;
-      background-color: #ff8a3d;
     }
   }
 `;
@@ -350,23 +334,23 @@ const HomePage: NextPage = () => {
         </StyledContainer>
       </StyledMainBanner>
       {/* 아이템 card section */}
-      <StyledCardSection>
+      <section>
         <div className="container">
-          <div className="title">당근마켓 인기 매물</div>
+          <StyledTitle>당근마켓 인기 매물</StyledTitle>
           <CardList list={itemData} />
         </div>
-      </StyledCardSection>
+      </section>
       {/* 당근마켓 특징 설명 section */}
-      <StyledAboutSection>
+      <section style={{background: "#eee"}}>
         <div className="container">
-          <div className="title">당근마켓은 이런 점이 달라요!</div>
+          <StyledTitle>당근마켓은 이런 점이 달라요!</StyledTitle>
           <StyledAboutArticle>{Deses}</StyledAboutArticle>
         </div>
-      </StyledAboutSection>
+      </section>
       {/* App Review section */}
       <StyledReviewSection>
         <div className="container">
-          <div className="title">당근마켓 사용자 후기</div>
+          <StyledTitle>당근마켓 사용자 후기</StyledTitle>
           {revSection}
         </div>
       </StyledReviewSection>
