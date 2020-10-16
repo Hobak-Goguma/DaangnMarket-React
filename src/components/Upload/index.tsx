@@ -4,20 +4,41 @@ import { ReactSortable } from 'react-sortablejs';
 import Dropzone from './Dropzone';
 import { ErrorMessage, File, UploadBtn, UploadWrapper } from './style';
 
-const Upload = ({
+interface UploadProps {
+  title?: string;
+  price?: string;
+  typeError?: string;
+  error?: string;
+  description?: string;
+  isEdit?: boolean;
+  dropFinished: boolean;
+  categoryOptions: {
+    value: number;
+    label: string;
+  }[];
+  imageData: any[];
+  setImageData: React.Dispatch<React.SetStateAction<any[]>>;
+  imageCount: number;
+  onSubmit: (e: any) => void;
+  onDrop: (files: any) => Promise<void>;
+  onPriceChange: (e: any) => void;
+  onDescriptionChange?: (e: React.ChangeEvent) => void;
+  onCategoryChange?: (e: React.ChangeEvent) => void;
+  onTitleChange?: (e: React.ChangeEvent) => void;
+}
+
+const Upload: React.FC<UploadProps> = ({
   onSubmit,
-  image,
   typeError,
   onDrop,
-  title,
-  onTitleChange,
-  category,
-  onCategoryChange,
+  title = '',
+  onTitleChange = () => {},
+  onCategoryChange = () => {},
   categoryOptions,
-  price,
+  price = '',
   onPriceChange,
-  description,
-  onDescriptionChange,
+  description = '',
+  onDescriptionChange = () => {},
   error,
   isEdit,
   dropFinished,

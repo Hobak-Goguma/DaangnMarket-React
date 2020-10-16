@@ -1,8 +1,8 @@
-// import api from '@common/api';
 import Layout from '@components/Layout';
+import { LunaPage } from '@payloads/common/Next';
+import LoginRequester from '@requesters/login/LoginRequester';
 import TokenRequester from '@requesters/token/TokenRequester';
 import debug from 'debug';
-import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import styled from 'styled-components';
@@ -89,8 +89,9 @@ const LoginWrapper = styled.div`
   }
 `;
 
-const LoginPage: NextPage = () => {
-  const requester = new TokenRequester();
+const LoginPage: LunaPage = () => {
+  const tokenRequester = new TokenRequester();
+  const loginRequester = new LoginRequester();
   const router = useRouter();
   const [id, setID] = useState('');
   const [pw, setPW] = useState('');
@@ -122,12 +123,12 @@ const LoginPage: NextPage = () => {
     // const user = setDummyInfo();
     // sessionStorage.setItem('user', JSON.stringify(user));
 
-    await requester.getToken({
+    const tokenPayload = await tokenRequester.getToken({
       username: id,
       password: pw,
     });
 
-    router.push('/');
+    debugger;
   };
 
   const goRegister = () => {
@@ -178,8 +179,9 @@ const LoginPage: NextPage = () => {
   );
 };
 
-LoginPage.getInitialProps = async () => {
+LoginPage.getInitialProps = async ({ req }) => {
   log('getInitialProps');
+
   return {};
 };
 

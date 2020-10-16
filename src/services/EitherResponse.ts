@@ -1,6 +1,6 @@
 import type { AxiosResponse } from 'axios';
 
-interface Value<T>
+export interface Value<T>
   extends Pick<AxiosResponse<T>, 'data' | 'status' | 'statusText'> {}
 
 export default class EitherResponse<T> {
@@ -25,7 +25,7 @@ export default class EitherResponse<T> {
     return EitherResponse.Right<R>(res);
   }
 
-  caseOf<L, R = T>({
+  caseOf<L, R>({
     left,
     right,
   }: {

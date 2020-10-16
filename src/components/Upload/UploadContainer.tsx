@@ -2,8 +2,8 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 import Upload from './index';
 
-const UploadContainer = () => {
-  const [imageData, setImageData] = useState([]);
+const UploadContainer: React.FC = () => {
+  const [imageData, setImageData] = useState<any[]>([]);
   const [imageCount, setImageCount] = useState(imageData.length);
   const [isDropFinished, setIsDropFinished] = useState(false);
   const [price, setPrice] = useState('');
@@ -70,11 +70,13 @@ const UploadContainer = () => {
         const reader = new FileReader();
         reader.addEventListener('load', (v) => {
           console.log('yogiyo', v);
-          setImageData((prevState) => {
-            console.log('vkdlf', prevState);
-            console.log(imageData);
-            return [...prevState, imageData.concat(reader.result)];
-          });
+
+          // TODO: 이 부분 오류나는데 callback 을 넘기지 않는 식으로 작업해야함
+          // setImageData((prevState) => {
+          //   console.log('vkdlf', prevState);
+          //   console.log(imageData);
+          //   return [...prevState, imageData.concat(reader.result)];
+          // });
         });
         reader.readAsDataURL(file);
         return file;

@@ -2,7 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-const CardItemArticle = styled.div`
+interface CardItemProps {
+  item: any;
+}
+
+const StyledWrapper = styled.div`
   position: relative;
   width: calc(25% - 34px);
   height: 280px;
@@ -11,6 +15,15 @@ const CardItemArticle = styled.div`
   border-radius: 20px;
   background-color: #ffffff;
   overflow: hidden;
+`;
+
+const StyledAnchor = styled.a`
+  width: 100%;
+  height: 100%;
+  display: block;
+`;
+
+const CardItemArticle = styled.div`
   &:hover {
     box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.2);
     -webkit-box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.2);
@@ -24,11 +37,7 @@ const CardItemArticle = styled.div`
   &:nth-child(-n + 4) {
     margin-top: 0;
   }
-  > a {
-    width: 100%;
-    height: 100%;
-    display: block;
-  }
+
   .card-item {
     width: 100%;
     height: 100%;
@@ -91,9 +100,9 @@ const CardItemArticle = styled.div`
   }
 `;
 
-const CardItem = (props) => {
+const CardItem: React.FC<CardItemProps> = ({ item }) => {
   let cost = '';
-  const costString = String(props.item.price);
+  const costString = String(item.price);
   for (let i = 0; i < costString.length; i++) {
     // 3자리마다 , 넣기위하여
     cost += costString[i];
@@ -101,33 +110,30 @@ const CardItem = (props) => {
       cost += ',';
     }
   }
+
   return (
-    <CardItemArticle>
-      <a href={`/products/${props.item.id_product}`}>
-        <div className="card-item" key={props.item.name}>
+    <StyledWrapper>
+      <StyledAnchor href={`/products/${item.id_product}`}>
+        <div className="card-item" key={item.name}>
           <div className="img">
-            <img
-              src={props.item.thum_first.image}
-              alt={props.item.name + '썸네일'}
-            />
+            <img src={item.thum_first.image} alt={item.name + '썸네일'} />
           </div>
           <div className="text-group">
             <div className="description">
-              <h1>{props.item.name}</h1>
-              <p>{props.item.addr}</p>
-              <p className="price">
-                {props.item.cost !== 0 ? cost + '원' : '무료'}
-              </p>
+              <h1>{item.name}</h1>
+              <p>{item.addr}</p>
+              <p className="price">{item.cost !== 0 ? cost + '원' : '무료'}</p>
             </div>
             <div className="like">
-              <span>{`관심 ${props.item.like ? props.item.like : 0} ${
-                props.item.chat ? ` ∙ 채팅 ${props.item.chat}` : ''
+              <span>{`관심 ${item.like ? item.like : 0} ${
+                item.chat ? ` ∙ 채팅 ${item.chat}` : ''
               }`}</span>
             </div>
           </div>
         </div>
-      </a>
-    </CardItemArticle>
+      </StyledAnchor>
+    </StyledWrapper>
   );
 };
+
 export default CardItem;

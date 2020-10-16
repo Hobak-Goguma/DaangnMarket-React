@@ -1,20 +1,28 @@
 import { TokenPayload } from '@payloads/token/TokenPayload';
-import EitherResponse from '@services/EitherResponse';
+import debug from 'debug';
 
-import BaseRequester from '../BaseRequester';
+import BaseRequester, { RequesterProps } from '../BaseRequester';
+
+const log = debug('Luna:TokenRequester');
 
 export default class TokenRequester extends BaseRequester {
+  constructor(props?: RequesterProps) {
+    super(props);
+  }
+
   async getToken({
-    username,
-    password,
+    username = '',
+    password = '',
   }: {
     username: string;
     password: string;
   }) {
+    log('getToken');
+
     return await this.call<TokenPayload>('/api/token/', {
       method: 'post',
       data: { username, password },
-      timeout: 5000,
+      fallbackUrl: '/api/token',
     });
   }
 }

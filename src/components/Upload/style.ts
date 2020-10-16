@@ -1,5 +1,6 @@
-import styled from "styled-components";
-import Button from "./button";
+import styled from 'styled-components';
+
+import Button from './button';
 
 export const UploadWrapper = styled.div`
   max-width: 680px;
@@ -11,7 +12,7 @@ export const UploadWrapper = styled.div`
     margin: 0;
 
     ::after {
-      content: "";
+      content: '';
       width: 80px;
       height: 2px;
       background: ${(props) => props.theme.primaryColor};
@@ -58,14 +59,14 @@ export const File = styled.div`
   }
 
   .delete {
-    height:20px;
-    width:20px;
+    height: 20px;
+    width: 20px;
     position: absolute;
     top: -7px;
     right: -8px;
     font-size: 1rem;
     cursor: pointer;
-    text-align:center;
+    text-align: center;
     border-radius: 50%;
     color: #fff;
     background: rgba(0, 0, 0, 0.5);
@@ -73,11 +74,12 @@ export const File = styled.div`
 
   img {
     margin-left: 10px;
-    src: ${(props) => props.children.props};
     width: 130px;
     object-fit: cover;
     height: 130px;
     border: 1px solid #e8ecf3;
+
+    ${({ children }) => children && `src: ${children['props']}`};
   }
 `;
 

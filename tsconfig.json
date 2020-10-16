@@ -38,21 +38,11 @@
     "moduleResolution": "node" /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */,
     "baseUrl": "./" /* Base directory to resolve non-absolute module names. */,
     "paths": {
-      "@common/*": [
-        "src/common/*"
-      ],
-      "@components/*": [
-        "src/components/*"
-      ],
-      "@requesters/*": [
-        "src/requesters/*"
-      ],
-      "@services/*": [
-        "src/services/*"
-      ],
-      "@payloads/*": [
-        "src/payloads/*"
-      ]
+      "@common/*": ["src/common/*"],
+      "@components/*": ["src/components/*"],
+      "@requesters/*": ["src/requesters/*"],
+      "@services/*": ["src/services/*"],
+      "@payloads/*": ["src/payloads/*"]
     } /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */,
     // "rootDirs": [],                        /* List of root folders whose combined content represents the structure of the project at runtime. */
     "typeRoots": [
@@ -74,22 +64,12 @@
     // "emitDecoratorMetadata": true,         /* Enables experimental support for emitting type metadata for decorators. */
     /* Advanced Options */
     "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */,
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "skipLibCheck": true,
     "noEmit": true,
     "resolveJsonModule": true,
     "isolatedModules": true
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
 }

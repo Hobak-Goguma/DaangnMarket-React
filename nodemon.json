@@ -1,7 +1,6 @@
 {
   "verbose": true,
   "ext": "ts",
-  "exec": "ts-node ./src/server/index.ts",
   "watch": "src/server",
   "ignore": ["node_modules"],
   "env": {
