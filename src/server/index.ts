@@ -3,7 +3,7 @@ import debug from 'debug';
 import express from 'express';
 import next from 'next';
 
-import pageRoutes from './routes';
+import pageRoutes from './pageRoutes';
 import serverRoutes from './serverRoutes';
 
 const dev = process.env.NODE_ENV !== 'production';
