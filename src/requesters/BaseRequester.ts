@@ -46,7 +46,7 @@ export default class BaseRequester extends APIRequester {
   }
 
   // TODO: Left 타입에 대한 처리도 가능하게 변경하면 좋겠다
-  async call<T>(url: string, config: APIRequestConfig) {
+  async call<L, R>(url: string, config: APIRequestConfig) {
     log('call');
 
     const { method } = config;
@@ -56,6 +56,6 @@ export default class BaseRequester extends APIRequester {
       return this.reject({ warn: true, msg: 'HTTP Method is required' });
     }
 
-    return this.reqeust<T>(endpoint, config);
+    return this.reqeust<L, R>(endpoint, config);
   }
 }

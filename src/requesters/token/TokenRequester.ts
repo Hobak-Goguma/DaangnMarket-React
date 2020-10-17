@@ -1,4 +1,4 @@
-import { TokenPayload } from '@payloads/token/TokenPayload';
+import { TokenErrorPayload, TokenPayload } from '@payloads/token/TokenPayload';
 import debug from 'debug';
 
 import BaseRequester, { RequesterProps } from '../BaseRequester';
@@ -19,7 +19,7 @@ export default class TokenRequester extends BaseRequester {
   }) {
     log('getToken');
 
-    return await this.call<TokenPayload>('/api/token/', {
+    return await this.call<TokenErrorPayload, TokenPayload>('/api/token/', {
       method: 'post',
       data: { username, password },
       fallbackUrl: '/api/token',

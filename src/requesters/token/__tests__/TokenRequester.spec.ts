@@ -6,8 +6,7 @@ import TokenRequester from '../TokenRequester';
 describe('TokenRequester', () => {
   let requester: TokenRequester;
   beforeEach(() => {
-    // @ts-expect-error
-    requester = new TokenRequester({});
+    requester = new TokenRequester({ isFromServer: true });
   });
 
   describe('데이터를 불러오기 성공', () => {
@@ -30,9 +29,9 @@ describe('TokenRequester', () => {
       const res = (await requester.getToken({
         username: 'zzz',
         password: '1234',
-      })) as EitherResponse<any>;
+      })) as EitherResponse<TokenErrorPayload>;
 
-      const payload = res.pickRight((d) => d.data) as TokenErrorPayload;
+      const payload = res.pickLeft((d) => d.data);
 
       expect(typeof payload.detail).toBe('string');
       done();
@@ -42,9 +41,9 @@ describe('TokenRequester', () => {
       const res = (await requester.getToken({
         username: 'ddusi',
         password: 'hi',
-      })) as EitherResponse<any>;
+      })) as EitherResponse<TokenErrorPayload>;
 
-      const payload = res.pickRight((d) => d.data) as TokenErrorPayload;
+      const payload = res.pickLeft((d) => d.data);
 
       expect(typeof payload.detail).toBe('string');
       done();

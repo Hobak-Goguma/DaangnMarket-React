@@ -43,23 +43,23 @@ export default class APIRequester {
     };
   }
 
-  async reqeust<T>(url: string, config: APIRequestConfig) {
+  async reqeust<L, R>(url: string, config: APIRequestConfig) {
     try {
       const res = (await axios({
         ...config,
         url,
         timeout: 5000,
-      })) as AxiosResponse<T>;
+      })) as AxiosResponse<R> | AxiosResponse<L>;
 
       if (this.isClientError(res.status) || this.isServerError(res.status)) {
-        throw this.pick(res);
+        throw this.pick<L>(res as AxiosResponse<L>);
       }
 
-      return EitherResponse.Right<T>(this.pick(res));
+      return EitherResponse.Right<R>(this.pick<R>(res as AxiosResponse<R>));
     } catch (error) {
       const { response } = error;
-      return EitherResponse.Left<null>({
-        data: response?.data ?? null,
+      return EitherResponse.Left<L>({
+        data: response?.data,
         status: response?.status || 400,
         statusText: response?.statusText || 'Unknown Error',
       });
