@@ -1,10 +1,8 @@
 import CardList from '@components/Card/List';
 import Layout from '@components/Layout';
 import Rank from '@components/Rank';
-import TokenRequester from '@requesters/token/TokenRequester';
+import { LunaPage } from '@payloads/common/Next';
 import debug from 'debug';
-import { NextPage } from 'next';
-import { LunaPage } from '@payloads/common/Next'
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 
@@ -34,10 +32,10 @@ const StyledMainBanner = styled.div`
   width: 100%;
   height: 600px;
   background: #eee;
-  position:relative;
+  position: relative;
 `;
 const StyledTitle = styled.div`
-  padding-top:50px;
+  padding-top: 50px;
   text-align: center;
   font-size: 32px;
   font-weight: bold;
@@ -57,10 +55,10 @@ const StyledTitle = styled.div`
 `;
 const mainTitle = styled(StyledTitle)`
   padding-top: 96px;
-  p:first-child{
-    font-size:40px;
+  p:first-child {
+    font-size: 40px;
   }
-`
+`;
 const StyledAboutArticle = styled.article`
   padding: 40px 0 80px;
   text-align: center;
@@ -119,7 +117,6 @@ const StyledReviewSection = styled.section`
     padding: 80px 0 100px;
   }
 `;
-
 
 const HomePage: LunaPage = () => {
   const router = useRouter();
@@ -343,7 +340,7 @@ const HomePage: LunaPage = () => {
         </div>
       </section>
       {/* 당근마켓 특징 설명 section */}
-      <section style={{background: "#eee"}}>
+      <section style={{ background: '#eee' }}>
         <div className="container">
           <StyledTitle>당근마켓은 이런 점이 달라요!</StyledTitle>
           <StyledAboutArticle>{Deses}</StyledAboutArticle>
@@ -362,7 +359,7 @@ const HomePage: LunaPage = () => {
 
 HomePage.getInitialProps = async ({ req }) => {
   log('getInitialProps');
-  log(`req.token: ${req['token']}`);
+  // log(req);
   return {};
 };
 

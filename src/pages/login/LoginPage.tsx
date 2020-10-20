@@ -128,6 +128,7 @@ const LoginPage: LunaPage = () => {
       password: pw,
     });
 
+    const loginPayload = await loginRequester.login();
     debugger;
   };
 

@@ -4,23 +4,22 @@ import {
   RouteRequest,
   RouteResponse,
 } from '@payloads/common/Next';
-import { TokenPayload } from '@payloads/token/TokenPayload';
-import TokenRequester from '@requesters/token/TokenRequester';
-import EitherResponse from '@services/EitherResponse';
+import { LoginErrorPayload, LoginPayload } from '@payloads/login/LoginPayload';
+import LoginRequester from '@requesters/login/LoginRequester';
 import autoBind from 'auto-bind';
 import debug from 'debug';
 
 import CommonRoute from '../CommonRoute';
 
-const log = debug('Luna:TokenRoute');
+const log = debug('Luna:LoginRoute');
 
-export default class TokenRoute extends CommonRoute {
-  private requester: TokenRequester = new TokenRequester({
+export default class LoginRoute extends CommonRoute {
+  private requester: LoginRequester = new LoginRequester({
     isFromServer: true,
   });
 
   constructor(private config: Config) {
-    super('/api/token');
+    super('/api/login');
     autoBind(this);
   }
 
@@ -31,18 +30,14 @@ export default class TokenRoute extends CommonRoute {
   async post(req: RouteRequest, res: RouteResponse, next: RouteNext) {
     log('post');
 
-    const config = this.config;
-    const payload = (await this.requester.getToken({
-      username: req.body.username,
-      password: req.body.password,
-    })) as EitherResponse<TokenPayload>;
+    const config = this.config || {};
+    const { accessToken } = config;
+    const payload = await this.requester.login(accessToken);
 
-    payload.caseOf({
+    // @ts-expect-error
+    payload.caseOf<LoginErrorPayload, LoginPayload>({
       left: next,
-      right: (r) => {
-        config.accessToken = r.data.access;
-        config.refreshToken = r.data.refresh;
-
+      right: () => {
         res.status(200).end();
       },
     });

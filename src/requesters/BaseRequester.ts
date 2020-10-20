@@ -20,12 +20,10 @@ export default class BaseRequester extends APIRequester {
   }
 
   protected get accessToken() {
-    log(`accessToken: ${this.props?.accessToken}`);
     return this.props?.accessToken ?? '';
   }
 
   protected get refreshToken() {
-    log(`refreshToken: ${this.props?.refreshToken}`);
     return this.props?.refreshToken ?? '';
   }
 

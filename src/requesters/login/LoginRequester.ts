@@ -1,4 +1,4 @@
-import { LoginPayload } from '@payloads/login/LoginPayload';
+import { LoginErrorPayload, LoginPayload } from '@payloads/login/LoginPayload';
 import debug from 'debug';
 
 import BaseRequester from '../BaseRequester';
@@ -6,22 +6,17 @@ import BaseRequester from '../BaseRequester';
 const log = debug('Luna:LoginRequester');
 
 export default class LoginRequester extends BaseRequester {
-  async login({
-    username = '',
-    password = '',
-  }: {
-    username: string;
-    password: string;
-  }) {
+  async login(accessToken?: string) {
     log('login');
 
-    return await this.call<LoginPayload>('/member/login', {
+    return await this.call<LoginErrorPayload, LoginPayload>('/member/login/', {
       method: 'post',
-      data: { username, password },
-      headers: {
-        Authorization: `Bearer ${this.accessToken}`,
-      },
-      fallbackUrl: '/ff',
+      ...(this.isFromServer && {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }),
+      fallbackUrl: '/api/login',
     });
   }
 }
