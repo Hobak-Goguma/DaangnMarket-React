@@ -5,7 +5,7 @@ import TokenRequester from '@requesters/token/TokenRequester';
 import debug from 'debug';
 import { NextPage } from 'next';
 import { LunaPage } from '@payloads/common/Next'
-import { useRouter } from 'next/router';
+import { Router } from 'next/router';
 import styled from 'styled-components';
 
 const log = debug('Luna:HomePage');
